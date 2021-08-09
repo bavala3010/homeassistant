@@ -53,8 +53,7 @@ http:
 pi_hole:
   host: 192.168.86.101:8081
   name: pihole
-  api_key: f22ee572b023a48d8a190f48c5c00322c2f5fa1967fab49584a04fec501ec9db
-
+  api_key: !secret pihole_api_key
            
 recorder:
   purge_keep_days: 31
@@ -76,41 +75,18 @@ fan:
   - platform: xiaomi_miio_fan
     name: Xiaomi Smart Fan 3C
     host: 192.168.86.29
-    token: 42590d9797f66a814283b93368324264
+    token: !secret fan_3C_token
     
   - platform: xiaomi_miio_fan
     name: Xiaomi Smart Fan 1C
     host: 192.168.86.28
-    token: f002f672c108d1aa383f697d05ea1323
+    token: !secret fan_1C_token
     
   - platform: xiaomi_miio_airpurifier
     name: Xiaomi Air Purifier 3H
     host: 192.168.86.250
-    token: c42e7185e25262255e45292e31383c4c
+    token: !secret purifier_3H_token
     model: zhimi.airpurifier.mb3
-
-#######################################################
-# Mi Air
-# IP: 192.168.86.29
-# Token: c42e7185e25262255e45292e31383c4c
-# MAC: 44:23:7C:34:83:F2
-# Model: zhimi.airpurifier.mb3
-# Region: de
-
-# Fan 2
-# IP: 192.168.86.29
-# Token: 42590d9797f66a814283b93368324264
-# MAC: 40:31:3C:49:7E:F2
-# Model: zhimi.fan.za4
-# Region: de
-
-# Fan 1
-# IP: 192.168.86.38
-# Token: f002f672c108d1aa383f697d05ea1323
-# MAC: 44:23:7C:C7:B8:AA
-# Model: dmaker.fan.1c
-# Region: de
-#######################################################
 
 netatmo:
 # create client_id and client_secret at https://dev.netatmo.com/apps
@@ -122,14 +98,10 @@ netatmo:
   client_id: 60e3e87226bd613977210595
   client_secret: t3OJP8WvSQR538Wb1WpAXqARxfzq
 
-withings:
-  client_id: 4de039bf0b7e4f6cbe046fc0ab5fef6833607cca015c4b6f7e182b1e4efcad07
-  client_secret: 972553ec3aca574eb0f723dcae6f573bbd66140829f1f8e5dda328219d157d65
-
 alarm_control_panel:
   - platform: manual
     name: home_alarm
-    code: 7856
+    code: !secret alarm_code
     code_arm_required: false
     arming_time: 30
     delay_time: 5
@@ -226,7 +198,7 @@ sensor:
       - papier
       - pmd
     postcode: 3010
-    streetname: Eikenboslaan
+    streetname: !secret streetname
     streetnumber: 25
     upcomingsensor: 1
     dateformat: '%d-%m-%Y'
@@ -347,15 +319,6 @@ sensor:
     name: precipitation_statement
     select: "#precip-graph > div > lib-precipitation-graph-alert > div > h2 > span"
     scan_interval: 1200
-
-# - platform: scrape
-#   resource: https://edi.evc-net.com/
-#   name: EDI
-#   authentication: digest
-#   verify_ssl: false
-#   username: bartland@gmail.com
-#   password: "!Hu2Su5!@WTyzhP"
-#   select: “body > div.wrapper > header > nav > div > ul > li.dropdown.user.user-menu.open > a > span”
 
   - platform: template
     sensors:  
