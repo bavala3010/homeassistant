@@ -1,0 +1,124 @@
+############################ Table of Contents ############################ 
+# 
+#   Automations
+#     TBD
+#     TBD
+
+
+############################ Automations ################################## 
+
+automation:
+- id: '1620855956412'
+  alias: 🔌S20+ Madouce 90% geladen = stekker uit
+  description: ''
+  trigger:
+  - type: battery_level
+    platform: device
+    device_id: d434bc1199aafa4c5d9e448b1fd55e30
+    entity_id: sensor.madouce_s20_batterijniveau
+    domain: sensor
+    above: 90
+  condition:
+  - condition: time
+    after: '23:00:00'
+    before: 06:00:00
+  action:
+  - type: turn_off
+    device_id: 67e877428d1284033bae308054594b87
+    entity_id: switch.3504547724a160162a33_3
+    domain: switch
+  mode: single
+- id: '1620856017616'
+  alias: 🔌S10+ Bart 90% geladen = stekker uit
+  description: ''
+  trigger:
+  - type: battery_level
+    platform: device
+    device_id: b5d28be91fff8c03aece377f73b28dd2
+    entity_id: sensor.sm_g975f_battery_level
+    domain: sensor
+    below: 90
+  condition:
+  - condition: time
+    after: '23:00:00'
+    before: 06:00:00
+  action:
+  - type: turn_off
+    device_id: 1e52a9c7a4b24f4cf71f9bf521b58d4a
+    entity_id: switch.53703774d8f15ba9d6e4
+    domain: switch
+  mode: single
+- id: '1621196156686'
+  alias: 🔌's morgens Bart S10+ nog bijladen
+  description: ''
+  trigger:
+  - platform: time
+    at: 06:00:00
+  condition:
+  - type: is_battery_level
+    condition: device
+    device_id: b5d28be91fff8c03aece377f73b28dd2
+    entity_id: sensor.bart_s10_batterijniveau
+    domain: sensor
+    below: 95
+  action:
+  - type: turn_on
+    device_id: 1e52a9c7a4b24f4cf71f9bf521b58d4a
+    entity_id: switch.53703774d8f15ba9d6e4
+    domain: switch
+  - wait_template: ''
+    timeout: 02:00:00
+  - type: turn_off
+    device_id: 1e52a9c7a4b24f4cf71f9bf521b58d4a
+    entity_id: switch.53703774d8f15ba9d6e4
+    domain: switch
+  mode: single
+- id: '1621196550196'
+  alias: 🔌's morgens Madouce S20+ nog bijladen
+  description: ''
+  trigger:
+  - platform: time
+    at: 06:00:00
+  condition:
+  - type: is_battery_level
+    condition: device
+    device_id: d434bc1199aafa4c5d9e448b1fd55e30
+    entity_id: sensor.madouce_s20_batterijniveau
+    domain: sensor
+    below: 90
+  action:
+  - type: turn_on
+    device_id: 67e877428d1284033bae308054594b87
+    entity_id: switch.3504547724a160162a33_3
+    domain: switch
+  - wait_template: ''
+    timeout: 02:00:00
+  - type: turn_off
+    device_id: 67e877428d1284033bae308054594b87
+    entity_id: switch.3504547724a160162a33_3
+    domain: switch
+  mode: single
+- id: '1621080877622'
+  alias: 🔌Lader terug aanzetten als batterij gsm Madouce laag is (tussen 22:00 en
+    24:00)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.3504547724a160162a33_3
+    from: 'on'
+    to: 'off'
+  condition:
+  - condition: and
+    conditions:
+    - condition: time
+      before: 00:00
+      after: '22:00'
+    - condition: numeric_state
+      entity_id: sensor.madouce_s20_batterijniveau
+      below: '90'
+  action:
+  - type: turn_on
+    device_id: 67e877428d1284033bae308054594b87
+    entity_id: switch.3504547724a160162a33_3
+    domain: switch
+  mode: single

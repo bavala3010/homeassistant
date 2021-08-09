@@ -1,0 +1,248 @@
+############################ Table of Contents ############################ 
+# 
+#   Automations
+#     Vocht in master bedroom (Bart)
+#     Vocht in master bedroom (Madouce)
+#     Vocht in kamer Alunya (Bart)
+#     Vocht in kamer Alunya (Madouce)
+#     vocht master bedroom -> machine aan
+#     vocht buiten >80% = melding ramen dicht (Bart)
+#     vocht buiten >80% = melding ramen dicht (Madouce)
+
+############################ Automations ################################## 
+
+automation:
+- id: '1523688715264'
+  alias: 💧 Vocht in master bedroom (Bart)
+  description: ''
+  trigger:
+  - platform: time_pattern
+    hours: /1
+  condition:
+  - condition: template
+    value_template: '{{ states(''sensor.master_bedroom_humidity'') | float > 60 }}'
+  - condition: template
+    value_template: '{{ states(''sensor.humidity_leuven24_wunderground'') | float
+      < 80 }}'
+  - condition: zone
+    entity_id: person.bart
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:00:00'
+  - condition: state
+    entity_id: binary_sensor.master_bedroom_raamsensor
+    state: 'off'
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: Master bedroom vocht is {{states('sensor.master_bedroom_humidity')}}%.
+        Buiten {{states('sensor.humidity_leuven24_wunderground')}}%.
+      title: Verlucht master bedroom!
+      data:
+        color: blue
+        channel: Vocht
+        timeout: 3600
+        tag: vocht_master_bedroom
+        actions:
+        - action: URI
+          title: Meer info
+          uri: /lovelace/humidity
+  mode: single
+- id: '1624810896301'
+  alias: 💧 Vocht in master bedroom (Madouce)
+  description: ''
+  trigger:
+  - platform: time_pattern
+    hours: /1
+  condition:
+  - condition: template
+    value_template: '{{ states(''sensor.master_bedroom_humidity'') | float > 60 }}'
+  - condition: template
+    value_template: '{{ states(''sensor.humidity_leuven24_wunderground'') | float
+      < 80 }}'
+  - condition: zone
+    entity_id: person.madouce
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:00:00'
+  - condition: state
+    entity_id: binary_sensor.master_bedroom_raamsensor
+    state: 'off'
+  action:
+  - service: notify.mobile_app_madouce_s20
+    data:
+      message: Master bedroom vocht is {{states('sensor.master_bedroom_humidity')}}%.
+        Buiten {{states('sensor.humidity_leuven24_wunderground')}}%.
+      title: Verlucht master bedroom!
+      data:
+        color: blue
+        channel: Vocht
+        timeout: 3600
+        tag: vocht_master_bedroom
+        actions:
+        - action: URI
+          title: Meer info
+          uri: /lovelace/humidity
+  mode: single
+- id: '1612577615153'
+  alias: 💧 Vocht in kamer Alunya (Bart)
+  description: ''
+  trigger:
+  - platform: time_pattern
+    hours: /1
+  condition:
+  - condition: template
+    value_template: '{{ states(''sensor.kamer_alunya_humidity'') | float > 70 }}'
+  - condition: template
+    value_template: '{{ states(''sensor.humidity_leuven24_wunderground'') | float
+      < 80 }}'
+  - condition: zone
+    entity_id: person.bart
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:00:00'
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: Kamer Alunya vocht is {{states('sensor.kamer_alunya_humidity')}}%.
+        Buiten {{states('sensor.humidity_leuven24_wunderground')}}%.
+      title: Verlucht kamer Alunya!
+      data:
+        color: blue
+        actions:
+        - action: URI
+          title: Meer info
+          uri: /lovelace/humidity
+        channel: Vocht
+        timeout: 3600
+        tag: vocht_kamer_alunya
+  mode: single
+- id: '1432775616337'
+  alias: 💧 Vocht in kamer Alunya (Madouce)
+  description: ''
+  trigger:
+  - platform: time_pattern
+    hours: /1
+  condition:
+  - condition: template
+    value_template: '{{ states(''sensor.kamer_alunya_humidity'') | float > 70 }}'
+  - condition: template
+    value_template: '{{ states(''sensor.humidity_leuven24_wunderground'') | float
+      < 80 }}'
+  - condition: zone
+    entity_id: person.madouce
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:00:00'
+  action:
+  - service: notify.mobile_app_madouce_s20
+    data:
+      message: Kamer Alunya vocht is {{states('sensor.kamer_alunya_humidity')}}%.
+        Buiten {{states('sensor.humidity_leuven24_wunderground')}}%.
+      title: Verlucht kamer Alunya!
+      data:
+        color: blue
+        actions:
+        - action: URI
+          title: Meer info
+          uri: /lovelace/humidity
+        vibrationPattern: 10, 10, 10, 10, 10, 10, 10
+        channel: Vocht
+        timeout: 3600
+        tag: vocht_kamer_alunya
+  mode: single
+- id: '1625397477612'
+  alias: 💧 vocht master bedroom -> machine aan
+  description: ''
+  trigger:
+  - platform: time
+    at: '20:30'
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.master_bedroom_humidity
+    above: '75'
+  - condition: numeric_state
+    entity_id: sensor.humidity_leuven24_wunderground
+    above: '75'
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: Master bedroom vocht is {{states('sensor.master_bedroom_humidity')}}%.
+        Zet eventueel machine aan.
+      title: Zet ontvochtiger in master bedroom.
+      data:
+        color: blue
+        channel: Vocht
+        actions:
+        - action: URI
+          title: Meer info
+          uri: /lovelace/humidity
+  mode: single
+- id: '1625943760977'
+  alias: 💧vocht buiten >80% = melding ramen dicht (Bart)
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.humidity_leuven24_wunderground
+    above: '80'
+    for: 00:05:00
+  condition:
+  - condition: zone
+    entity_id: person.bart
+    zone: zone.home
+  - condition: time
+    after: '7:00:00'
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: 💧 Vochtigheidsgraad buiten is {{states('sensor.humidity_leuven24_wunderground')}}%.
+        Sluit alle ramen aub.
+      title: '{{ ["Ramen mogen dicht.", "Beetje te vochtig, ramen dicht doen ...",
+        "Het wordt nu te vochtig buiten..."] | random }}'
+      data:
+        color: blue
+        actions:
+        - action: URI
+          title: Meer info
+          uri: /lovelace/humidity
+        vibrationPattern: 100, 1000, 100, 1000, 100
+        channel: Vocht
+        timeout: 3600
+        tag: vocht
+  mode: single
+- id: '1626199682273'
+  alias: 💧vocht buiten >80% = melding ramen dicht (Madouce)
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.humidity_leuven24_wunderground
+    above: '80'
+    for: 00:05:00
+  condition:
+  - condition: zone
+    entity_id: person.madouce
+    zone: zone.home
+  - condition: time
+    after: '7:00:00'
+  action:
+  - service: notify.mobile_app_madouce_s20
+    data:
+      message: 💧 Vochtigheidsgraad buiten is {{states('sensor.humidity_leuven24_wunderground')}}%.
+        Sluit alle ramen aub.
+      title: '{{ ["Ramen mogen dicht.", "Beetje te vochtig, ramen dicht doen ...",
+        "Het wordt nu te vochtig buiten..."] | random }}'
+      data:
+        color: blue
+        actions:
+        - action: URI
+          title: Meer info
+          uri: /lovelace/humidity
+        vibrationPattern: 100, 1000, 100, 1000, 100
+        channel: Vocht
+        timeout: 3600
+        tag: vocht
+  mode: single

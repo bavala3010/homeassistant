@@ -1,0 +1,24 @@
+group_gezin:
+  name: gezin
+  entities:
+#     - device_tracker.bart_samsung_s10_plus
+#     - device_tracker.madouce_samsung_s20
+#     - device_tracker.amilya_iphone_xs
+#     - device_tracker.alunya_samsung_galaxy_a71
+      - person.bart
+      - person.madouce
+      - person.amilya
+      - person.alunya
+
+group_not_bart:
+  name: not_bart
+  entities:
+    - device_tracker.madouce_samsung_s20
+    - device_tracker.amilya_iphone_xs
+    - device_tracker.alunya_samsung_galaxy_a71
+      
+group_kinderen:
+  name: kinderen
+  entities:
+    - device_tracker.amilya_iphone_xs
+    - device_tracker.alunya_samsung_galaxy_a71

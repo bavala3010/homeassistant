@@ -1,0 +1,434 @@
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# useful links
+# https://pictogrammers.github.io/@mdi/font/5.3.45/
+# https://emojidb.org/
+# https://www.zapsplat.com/sound-effect-category/sirens-and-alarms/
+# https://www.uuidgenerator.net/
+# https://app.diagrams.net/
+# https://demo.home-assistant.io/#/energy
+
+
+discovery:
+
+# Text to speech
+tts:
+  - platform: google_translate
+    cache: false
+    cache_dir: /tmp/tts
+    time_memory: 300
+    base_url: http://192.168.86.101:8123
+    service_name: google_say
+    language: 'nl'
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+google_assistant: !include google_assistant_integration.yaml
+
+frontend:
+  themes: !include_dir_merge_named themes
+
+homeassistant:
+### The following installs all package files, including lights, alarm, humidity etc.
+  packages: !include_dir_named packages
+  customize: !include customize.yaml
+  
+  external_url: http://bartland.duckdns.org
+
+# secrets should not be mentioned in this file; it is automatic !
+# secrets: !include secrets.yaml
+
+# needed when using reverse proxy managers (eg. Nginx)
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 192.168.86.0/24 # the IP address of the proxy server
+    - 172.20.0.0/24
+    - 172.17.0.0/24
+    - 172.0.0.0/24
+
+pi_hole:
+  host: 192.168.86.101:8081
+  name: pihole
+  api_key: f22ee572b023a48d8a190f48c5c00322c2f5fa1967fab49584a04fec501ec9db
+
+           
+recorder:
+  purge_keep_days: 31
+
+device_tracker:
+  - platform: nmap_tracker
+    hosts: 192.168.68.0/24
+    home_interval: 10
+
+notify:
+  - platform: nfandroidtv
+    name: GoogleTV
+    host: 192.168.86.43
+  - platform: nfandroidtv
+    name: MasterBedroomTV
+    host: 192.168.86.246
+
+fan:
+  - platform: xiaomi_miio_fan
+    name: Xiaomi Smart Fan 3C
+    host: 192.168.86.29
+    token: 42590d9797f66a814283b93368324264
+    
+  - platform: xiaomi_miio_fan
+    name: Xiaomi Smart Fan 1C
+    host: 192.168.86.28
+    token: f002f672c108d1aa383f697d05ea1323
+    
+  - platform: xiaomi_miio_airpurifier
+    name: Xiaomi Air Purifier 3H
+    host: 192.168.86.250
+    token: c42e7185e25262255e45292e31383c4c
+    model: zhimi.airpurifier.mb3
+
+#######################################################
+# Mi Air
+# IP: 192.168.86.29
+# Token: c42e7185e25262255e45292e31383c4c
+# MAC: 44:23:7C:34:83:F2
+# Model: zhimi.airpurifier.mb3
+# Region: de
+
+# Fan 2
+# IP: 192.168.86.29
+# Token: 42590d9797f66a814283b93368324264
+# MAC: 40:31:3C:49:7E:F2
+# Model: zhimi.fan.za4
+# Region: de
+
+# Fan 1
+# IP: 192.168.86.38
+# Token: f002f672c108d1aa383f697d05ea1323
+# MAC: 44:23:7C:C7:B8:AA
+# Model: dmaker.fan.1c
+# Region: de
+#######################################################
+
+netatmo:
+# create client_id and client_secret at https://dev.netatmo.com/apps
+# Waarschoot
+#  client_id: 60d72f7458da3d00f57f4fd5 
+#  client_secret: cEP5HXSCw74AEey7KkpEFIBwrzO
+
+# Eikenbos
+  client_id: 60e3e87226bd613977210595
+  client_secret: t3OJP8WvSQR538Wb1WpAXqARxfzq
+
+withings:
+  client_id: 4de039bf0b7e4f6cbe046fc0ab5fef6833607cca015c4b6f7e182b1e4efcad07
+  client_secret: 972553ec3aca574eb0f723dcae6f573bbd66140829f1f8e5dda328219d157d65
+
+alarm_control_panel:
+  - platform: manual
+    name: home_alarm
+    code: 7856
+    code_arm_required: false
+    arming_time: 30
+    delay_time: 5
+    trigger_time: 4
+    disarmed:
+      trigger_time: 0
+    armed_home:
+      arming_time: 0
+      delay_time: 0
+
+#String om bij te houden welke sensor het alarm triggert
+input_text:
+  trigger_source:
+    name: Trigger Source
+
+utility_meter:
+  daily_energy:
+    source: sensor.ty02820620a4cf12eb80b8_2
+    cycle: daily
+  monthly_energy:
+    source: sensor.ty02820620a4cf12eb80b8_2
+    cycle: monthly
+
+sensor:
+  - platform: template
+    sensors:
+      xiaomi_air_purifier_air_quality_pm25:
+        friendly_name: "Air quality (AQI) PM2.5"
+        value_template: "{{ state_attr('fan.xiaomi_air_purifier_3h', 'aqi') }}"
+        unit_of_measurement: "μg/m³"
+        icon_template: "mdi:weather-fog"
+
+  - platform: history_stats
+    name: TV_living_on_today
+    entity_id: media_player.ue55ju7000
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+    end: '{{ now().replace(hour=23, minute=59, second=59) }}'
+
+  - platform: history_stats
+    name: ADS_TV_on_today
+    entity_id: media_player.ads_tv
+    state: 'playing'
+    type: time
+    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+    end: '{{ now().replace(hour=23, minute=59, second=59) }}'
+
+  - platform: history_stats
+    name: master_bedroom_TV_on_today
+    entity_id: media_player.master_bedroom_tv
+    state: 'playing'
+    type: time
+    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+    end: '{{ now().replace(hour=23, minute=59, second=59) }}'
+
+  - platform: history_stats
+    name: veranda_speaker_on_today
+    entity_id: media_player.veranda_speaker
+    state: 'playing'
+    type: time
+    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+    end: '{{ now().replace(hour=23, minute=59, second=59) }}'
+    
+  - platform: history_stats
+    name: living_light_links_on_today
+    entity_id: light.living_links 
+    state: on
+    type: time
+    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+    end: '{{ now().replace(hour=23, minute=59, second=59) }}'
+
+  - platform: history_stats
+    name: living_light_rechts_on_today
+    entity_id: light.living_rechts 
+    state: on
+    type: time
+    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+    end: '{{ now().replace(hour=23, minute=59, second=59) }}'
+
+  - platform: history_stats
+    name: veranda_light_on_today
+    entity_id: light.veranda 
+    state: on
+    type: time
+    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+    end: '{{ now().replace(hour=23, minute=59, second=59) }}'
+
+  - platform: afvalbeheer
+    wastecollector: RecycleApp
+    resources:
+      - restafval
+      - gft
+      - papier
+      - pmd
+    postcode: 3010
+    streetname: Eikenboslaan
+    streetnumber: 25
+    upcomingsensor: 1
+    dateformat: '%d-%m-%Y'
+    dateonly: 0
+    name: ""
+    nameprefix: 1
+    builtinicons: 1
+    dutch: 1
+
+  - platform: buienalarm
+    timeframe: 15
+    name: buienalarm
+    monitored_conditions:
+      - temperature
+      - precipitation
+      - precipitation_forecast_average
+      - precipitation_forecast_total
+      - next_rain_forecast
+
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+
+  - platform: min_max
+    type: mean
+    name: avg_outside_temp
+    entity_ids:
+      - sensor.buitensensor_vooraan_temperature
+      - sensor.buitensensor_deur_temperature
+      - sensor.temp_leuven24_wunderground
+      - sensor.temp_leuven24_wunderground
+      - sensor.temp_leuven24_wunderground
+    round_digits: 2
+    
+  - platform: min_max
+    type: mean
+    name: avg_inside_humidity
+    entity_ids:
+      - sensor.living_room_humidity
+      - sensor.kamer_amilya_humidity
+      - sensor.veranda_humidity
+      - sensor.gang_humidity
+      - sensor.badkamer_humidity
+      - sensor.kamer_alunya_humidity
+      - sensor.master_bedroom_humidity
+    round_digits: 0
+    
+  - platform: min_max
+    type: mean
+    name: avg_inside_temperature
+    entity_ids:
+      - sensor.living_room_temperature
+      - sensor.kamer_amilya_temperature
+      - sensor.veranda_temperature
+      - sensor.gang_temperature
+      - sensor.badkamer_temperature
+      - sensor.kamer_alunya_temperature
+      - sensor.master_bedroom_temperature
+    round_digits: 1
+    
+    
+  - platform: average
+    name: 'Gemiddelde temperatuur beneden'
+    entities:
+      - sensor.living_room_temperature
+      - sensor.gang_temperature
+      - sensor.berging_temperature
+    
+    
+  - platform: scrape
+    resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
+    select: "#main-page-content > div > div > div > div:nth-child(2) > div > lib-tile-current-conditions > div > div.module__body > div > div.small-4.columns.text-left.conditions-temp > div.main-temp > lib-display-unit > span > span.wu-value.wu-value-to"
+    name: temp_leuven24_wunderground
+#   convert Farenheit to Celcius
+    value_template: '{{ ((value | float -32) * (5/9)) |round(1) }}'
+    scan_interval: 600
+    unit_of_measurement: "°C"
+    
+  - platform: scrape
+    resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
+    name: humidity_leuven24_wunderground
+    select: "#main-page-content > div > div > div > div:nth-child(2) > div > lib-tile-current-conditions > div > div.module__body > div > div.weather__summary > div:nth-child(4) > div > div.weather__text > lib-display-unit > span > span.wu-value.wu-value-to"
+    scan_interval: 600
+    unit_of_measurement: "%"
+    
+  - platform: scrape  
+    resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
+    # hoeveelheid huidige neerslag
+    name: precip_rate_leuven24_wunderground
+    select: "#main-page-content > div > div > div > div:nth-child(8) > div > lib-tile-precipitation > div > div.module__body > div > div.small-5.columns > div > div:nth-child(2) > lib-display-unit > span > span.wu-value.wu-value-to"
+    # convert inch to mm
+    value_template: '{{ (value | float * 25.4 ) | round(2) }}'
+    scan_interval: 180
+    unit_of_measurement: "mm/u"
+    
+  - platform: scrape
+    resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
+    # hoeveelheid neerslag vandaag
+    name: precip_total_leuven24_wunderground
+#   select: "#main-page-content > div > div > div > div:nth-child(2) > div > lib-tile-current-conditions > div > div.module__body > div > div.weather__summary > div:nth-child(5) > div > div.weather__text > lib-display-unit > span > span.wu-value.wu-value-to"
+    select: "#main-page-content > div > div > div > div:nth-child(8) > div > lib-tile-precipitation > div > div.module__body > div > div.small-5.columns > div > div:nth-child(4) > lib-display-unit > span > span.wu-value.wu-value-to"
+    # convert inch to mm
+    value_template: '{{ (value | float * 25.4 ) | round(2) }}'
+    scan_interval: 600
+    unit_of_measurement: "l/m²"
+    
+  - platform: scrape
+    resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
+    # UV index
+    name: uvindex_leuven24_wunderground
+    select: "#main-page-content > div > div > div > div:nth-child(9) > div > lib-tile-uv > div > div.module__body > div > div.small-5.columns > div > div:nth-child(2) > lib-display-unit > span > span.wu-value.wu-value-to"
+    scan_interval: 600
+    unit_of_measurement: "index"
+
+  - platform: scrape
+    resource: "https://www.wunderground.com/precipitation/be/leuven/ILEUVE24?cm_ven=localwx_modprecip"
+    name: precipitation_statement
+    select: "#precip-graph > div > lib-precipitation-graph-alert > div > h2 > span"
+    scan_interval: 1200
+
+# - platform: scrape
+#   resource: https://edi.evc-net.com/
+#   name: EDI
+#   authentication: digest
+#   verify_ssl: false
+#   username: bartland@gmail.com
+#   password: "!Hu2Su5!@WTyzhP"
+#   select: “body > div.wrapper > header > nav > div > ul > li.dropdown.user.user-menu.open > a > span”
+
+  - platform: template
+    sensors:  
+      living_tv_elec:
+        unit_of_measurement: kWh
+        friendly_name: "elektriciteitsverbruik TV living"
+        value_template: "{{ states('sensor.tv_living_on_today') | float * 82 / 100 | int }}"
+   # TV consumes 82 W per hour
+   
+#   Examples    
+#   value_template: '{{ (value| float)}}'
+#   value_template: '{{ (value.rstrip(" °C") | float) }}'
+#   value_template: '{{ (value.rstrip(" %") | float) }}'
+
+
+localtuya:
+  - host: 192.168.86.247
+    device_id: 18857573dc4f22b78e02
+    local_key: 4d47d134c1763757
+    friendly_name: Garage Door
+    protocol_version: "3.3"
+    entities:
+      - platform: switch
+        friendly_name: Garage Door
+        id: 1
+        current: 7
+        current_consumption: 101
+        voltage: 102
+
+anniversaries:
+  sensors:
+  - name: huwelijk Madouce & Bart
+    date: '2022-04-30'
+  - name: verjaardag Alunya
+    date: '10-10'
+  - name: verjaardag Amilya
+    date: '05-04'
+  - name: verjaardag Madouce
+    date: '02-06'
+  - name: verjaardag Bart
+    date: '05-03'
+
+counter:
+  toilet_counter:
+    name: toilet bezoek
+    initial: 0
+    step: 1 
+    
+binary_sensor:
+  - platform: template
+    sensors:
+      warm_outside_living:
+        friendly_name: "buiten warmer dan in living"
+        value_template: "{{ states('sensor.temp_leuven24_wunderground') > states('sensor.living_room_temperature') }}"
+      warm_inside_living:
+        friendly_name: "in living warmer dan buiten"
+        value_template: "{{ states('sensor.living_room_temperature') > states('sensor.temp_leuven24_wunderground') }}"
+      warm_outside_amilya:
+        friendly_name: "buiten warmer dan in kamer Amilya"
+        value_template: "{{ states('sensor.temp_leuven24_wunderground') > states('sensor.kamer_amilya_temperature') }}"
+      warm_inside_amilya:
+        friendly_name: "in kamer Amilya warmer dan buiten"
+        value_template: "{{ states('sensor.kamer_amilya_temperature') > states('sensor.temp_leuven24_wunderground') }}"
+      warm_outside_veranda:
+        friendly_name: "buiten warmer dan in veranda"
+        value_template: "{{ states('sensor.temp_leuven24_wunderground') > states('sensor.veranda_temperature') }}"
+      warm_inside_veranda:
+        friendly_name: "in veranda warmer dan buiten"
+        value_template: "{{ states('sensor.veranda_temperature') > states('sensor.temp_leuven24_wunderground') }}"
+      warm_outside_bedroom:
+        friendly_name: "buiten warmer dan in master bedroom"
+        value_template: "{{ states('sensor.temp_leuven24_wunderground') > states('sensor.master_bedroom_temperature') }}"
+      warm_inside_bedroom:
+        friendly_name: "in master bedroom warmer dan buiten"
+        value_template: "{{ states('sensor.master_bedroom_temperature') > states('sensor.temp_leuven24_wunderground') }}"
+

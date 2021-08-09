@@ -1,0 +1,161 @@
+############################ Table of Contents ############################ 
+# 
+#   Automations
+#     TBD
+#     TBD
+
+
+############################ Automations ################################## 
+
+automation:
+# Switch ON Ensuite fan at high humidity
+# - id: ensuite_turn_on_fan_at_high_humidity
+    
+- id: '1622020824960'
+  alias: 💡 Amilya niet thuis = licht uit
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: device_tracker.amilya_iphone_xs
+    to: not_home
+    for: 00:03:00
+    from: home
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 7fa0163478cef7ca4d8f74d7d8f8872e
+    entity_id: light.amilya_badkamer
+    domain: light
+  - type: turn_off
+    device_id: 5849a609ec647763c122b1619fdcc430
+    entity_id: light.amilya_plafond_1
+    domain: light
+  - type: turn_off
+    device_id: d132ab8d29e675c160114d2470ce12e5
+    entity_id: light.amilya_plafond_2
+    domain: light
+  - type: turn_off
+    device_id: 31f28530e074ca664948b83668a55dfa
+    entity_id: light.amilya_bol
+    domain: light
+  - type: turn_off
+    device_id: c17c802d6eae726de2531355e36a0d5e
+    entity_id: light.amilya_strip
+  - type: turn_off
+    device_id: 9d669277f4723acb05096e1b847e7006
+    entity_id: light.tybf9568c425ed730da13isb
+    domain: light
+  mode: single
+- id: 5a39e383-1b8d-4185-a75f-85f59d311a2c
+  alias: 💡Alunya niet thuis = licht uit
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: device_tracker.alunya_samsung_galaxy_a71
+    to: not_home
+    for: 00:03:00
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 698a7cf7cee6d32dda3a430591d0ebe9
+    entity_id: light.alunya_bol
+    domain: light
+  - type: turn_off
+    device_id: c79c606a18f7c9049409ee7a945f768c
+    entity_id: light.alunya_staande_lamp
+    domain: light
+  - type: turn_off
+    device_id: bc3bf3bec76c984ab510c820d37ea63b
+    entity_id: light.alunya_wasbak
+    domain: light
+  mode: single
+- id: '1620857200876'
+  alias: 💡bij donker living bol inschakelen
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+  condition: []
+  action:
+  - type: turn_on
+    device_id: 3623c76590024bf538fcc54a365fc8cc
+    entity_id: light.living_bol
+    domain: light
+    brightness_pct: 10
+    flash: long
+  mode: single
+- id: '1624695491534'
+  alias: 💡 Alunya bol uit om 1u en 2u 's nachts
+  description: ''
+  trigger:
+  - platform: time
+    at: 01:00:00
+  - platform: time
+    at: 02:00:00
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 698a7cf7cee6d32dda3a430591d0ebe9
+    entity_id: light.alunya_bol
+    domain: light
+  - type: turn_off
+    device_id: c79c606a18f7c9049409ee7a945f768c
+    entity_id: light.alunya_staande_lamp
+    domain: light
+  - type: turn_off
+    device_id: bc3bf3bec76c984ab510c820d37ea63b
+    entity_id: light.alunya_wasbak
+    domain: light
+  mode: single
+- id: '1625600902872'
+  alias: Donker, <20° buiten en thuis = licht aan
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sun.sun
+    to: below_horizon
+  condition:
+  - condition: state
+    entity_id: person.madouce
+    state: home
+  - condition: numeric_state
+    entity_id: sensor.temp_leuven24_wunderground
+    below: '20'
+  action:
+  - type: turn_on
+    device_id: a0297c6061546a2108b2d33e01ed449d
+    entity_id: light.living_links_3
+    domain: light
+  mode: single
+- id: '1626256169469'
+  alias: 📺 TV aan + donker = TV strip aan
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: media_player.ue55ju7000
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: time
+    after: '19:30:00'
+  action:
+  - type: turn_on
+    device_id: d5ef9b4f569a408660e7e445331abfcc
+    entity_id: light.tv_strip
+    domain: light
+    brightness_pct: 25
+  mode: single
+- id: '1626256462926'
+  alias: 📺 TV uit = TV strip uit
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.samsung_tv_living_samsung_smart_tv
+    to: 'off'
+  condition: []
+  action:
+  - type: turn_off
+    device_id: d5ef9b4f569a408660e7e445331abfcc
+    entity_id: light.tv_strip
+    domain: light
+  mode: single

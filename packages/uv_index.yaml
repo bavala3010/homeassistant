@@ -1,0 +1,172 @@
+############################ Table of Contents ############################ 
+# 
+#   Automations
+#     UV index is 2 of 3 = waarschuwing Bart
+#     UV index is 4 of 5 = waarschuwing Bart
+#     UV index is 6 of 7 = waarschuwing Bart
+#     UV index is 2 of 3 = waarschuwing Madouce
+#     UV index is 4 of 5 = waarschuwing Madouce
+#     UV index is 6 of 7 = waarschuwing Madouce
+
+
+############################ Automations ################################## 
+
+automation:
+- id: UV_index_2_3_bart
+  alias: "UV index is 2 of 3 = waarschuwing Bart"
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.uvindex_leuven24_wunderground
+    to: '2'
+    for: '00:25:00'
+  - platform: state
+    entity_id: sensor.uvindex_leuven24_wunderground
+    to: '3'
+    for: '00:25:00'
+  condition:
+  - condition: state
+    entity_id: person.bart
+    state: home
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      title: Zon & gezondheid
+      message: "UV-index is hoog: {{states('sensor.uvindex_leuven24_wunderground')}}. Huid verbrandt langzaam."
+      data:
+        color: yellow
+        tag: uv_index
+        channel: uv_index
+  mode: single
+- id: UV_index_4_5_bart
+  alias: "UV index is 4 of 5 = waarschuwing Bart"
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.uvindex_leuven24_wunderground
+    to: '4'
+    for: '00:25:00'
+  - platform: state
+    entity_id: sensor.uvindex_leuven24_wunderground
+    to: '5'
+    for: '00:25:00'
+  condition:
+  - condition: state
+    entity_id: person.bart
+    state: home
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      title: "Zon & gezondheid: waarschuwing"
+      message: "UV-index is zeer hoog: {{states('sensor.uvindex_leuven24_wunderground')}}. Huid verbrandt gemakkelijk."
+      data:
+        color: yellow
+        tag: uv_index
+        channel: uv_index
+  mode: single
+- id: UV_index_6_7_bart
+  alias: "UV index is 6 of 7 = waarschuwing Bart"
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.uvindex_leuven24_wunderground
+    to: '6'
+    for: '00:25:00'
+  - platform: state
+    entity_id: sensor.uvindex_leuven24_wunderground
+    to: '7'
+    for: '00:25:00'
+  condition:
+  - condition: state
+    entity_id: person.bart
+    state: home
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      title: "Zon & gezondheid: gevaar"
+      message: "UV-index is extreem hoog: {{states('sensor.uvindex_leuven24_wunderground')}}. Huid verbrandt zeer snel."
+      data:
+        color: red
+        tag: uv_index
+        channel: uv_index
+        channel: uv_index
+  mode: single
+  
+- id: UV_index_2_3_madouce
+  alias: "UV index is 2 of 3 = waarschuwing Madouce"
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.uvindex_leuven24_wunderground
+    to: '2'
+    for: '00:25:00'
+  - platform: state
+    entity_id: sensor.uvindex_leuven24_wunderground
+    to: '3'
+    for: '00:25:00'
+  condition:
+  - condition: state
+    entity_id: person.madouce
+    state: home
+  action:
+  - service: notify.mobile_app_madouce_s20
+    data:
+      title: Zon & gezondheid
+      message: "UV-index is hoog: {{states('sensor.uvindex_leuven24_wunderground')}}. Huid verbrandt langzaam."
+      data:
+        color: yellow
+        tag: uv_index
+        channel: uv_index
+  mode: single
+- id: UV_index_4_5_madouce
+  alias: "UV index is 4 of 5 = waarschuwing Madouce"
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.uvindex_leuven24_wunderground
+    to: '4'
+    for: '00:25:00'
+  - platform: state
+    entity_id: sensor.uvindex_leuven24_wunderground
+    to: '5'
+    for: '00:25:00'
+  condition:
+  - condition: state
+    entity_id: person.madouce
+    state: home
+  action:
+  - service: notify.mobile_app_madouce_s20
+    data:
+      title: "Zon & gezondheid: waarschuwing"
+      message: "UV-index is zeer hoog: {{states('sensor.uvindex_leuven24_wunderground')}}. Huid verbrandt gemakkelijk."
+      data:
+        color: yellow
+        tag: uv_index
+        channel: uv_index
+  mode: single
+- id: UV_index_6_7_madouce
+  alias: "UV index is 6 of 7 = waarschuwing Madouce"
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.uvindex_leuven24_wunderground
+    to: '6'
+    for: '00:25:00'
+  - platform: state
+    entity_id: sensor.uvindex_leuven24_wunderground
+    to: '7'
+    for: '00:25:00'
+  condition:
+  - condition: state
+    entity_id: person.madouce
+    state: home
+  action:
+  - service: notify.mobile_app_madouce_s20
+    data:
+      title: "Zon & gezondheid: gevaar"
+      message: "UV-index is extreem hoog: {{states('sensor.uvindex_leuven24_wunderground')}}. Huid verbrandt zeer snel."
+      data:
+        color: red
+        tag: uv_index
+        channel: uv_index
+  mode: single  

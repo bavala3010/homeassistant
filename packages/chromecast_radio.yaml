@@ -1,0 +1,94 @@
+input_select:
+  radio_station:
+    name: 'Select Radio Station:'
+    options:
+      - Joe
+      - Joe Lage Landen
+      - Joe Easy
+      - Joe 80's & 90's
+      - Radio Relax
+      - Sky Radio
+      - Sky Radio non-stop hits
+      - VRT nieuws
+      - 100% NL Nederpop
+      - 100% NL non-stop
+    initial: Joe
+    icon: mdi:radio
+
+  chromecast_radio:
+    name: 'Select Speakers:'
+    options:
+      - Living
+      - Veranda
+      - Master bedroom
+    initial: Living
+    icon: mdi:speaker-wireless
+
+input_number: 
+  volume_radio:
+    name: Volume
+    icon: mdi:volume-high
+#    min: 0
+#    max: 1
+#    step: 0.05
+    min: 0
+    max: 100
+    step: 5
+    unit_of_measurement: "%"
+
+automation:
+  - alias: 'Listen Radio'
+    trigger:
+      - platform: state
+        entity_id: input_select.radio_station
+    action: 
+      - service: script.radio
+
+  - alias: 'Set Chromecast Radio Volume'
+    trigger:
+      platform: state
+      entity_id: input_number.volume_radio
+    action:
+      service: media_player.volume_set
+      data_template:
+        entity_id: >
+          {% if is_state("input_select.chromecast_radio", "Living") %} media_player.living_speaker
+          {% elif is_state("input_select.chromecast_radio", "Veranda") %} media_player.veranda_speaker
+          {% elif is_state("input_select.chromecast_radio", "Master bedroom") %} media_player.nestaudio3875
+          {% endif %}
+#       volume_level: '{{  states.input_number.volume_radio.state  }}'
+        volume_level: "{{ states('input_number.volume_radio') | float / 100 | round(0) }}"
+    
+script:
+  radio:
+    alias: Play Radio on Chromecast Audio
+    sequence:
+    - service: media_player.volume_set
+      data_template:
+        entity_id: >
+          {% if is_state("input_select.chromecast_radio", "Living") %} media_player.living_speaker
+          {% elif is_state("input_select.chromecast_radio", "Veranda") %} media_player.veranda_speaker
+          {% elif is_state("input_select.chromecast_radio", "Master bedroom") %} media_player.nestaudio3875
+          {% endif %}
+#       volume_level: '{{  states.input_number.volume_radio.state  }}'
+        volume_level: "{{ states('input_number.volume_radio') | float / 100 | round(0) }}"
+    - service: media_player.play_media
+      data_template:
+        entity_id: >
+          {% if is_state("input_select.chromecast_radio", "Living") %} media_player.living_speaker
+          {% elif is_state("input_select.chromecast_radio", "Veranda") %} media_player.veranda_speaker
+          {% elif is_state("input_select.chromecast_radio", "Master bedroom") %} media_player.nestaudio3875
+          {% endif %}
+        media_content_id: >
+          {% if is_state("input_select.radio_station", "Joe") %} https://22673.live.streamtheworld.com/JOE.mp3?pname=tunein&dist=tunein&DIST=TuneIn&TGT=TuneIn&maxServers=2
+          {% elif is_state("input_select.radio_station", "Joe Lage Landen") %} https://22603.live.streamtheworld.com/JOE_LAGE_LANDEN.mp3?DIST=TuneIn&TGT=TuneIn&maxServers=2
+          {% elif is_state("input_select.radio_station", "Joe Easy") %} https://20723.live.streamtheworld.com/JOE_EASY.mp3?pname=tunein&dist=tunein&DIST=TuneIn&TGT=TuneIn&maxServers=2
+          {% elif is_state("input_select.radio_station", "Joe 80's & 90's") %} https://23603.live.streamtheworld.com/JOE_80S.mp3?pname=tunein&dist=tunein&DIST=TuneIn&TGT=TuneIn&maxServers=2
+          {% elif is_state("input_select.radio_station", "Radio Relax") %} http://live.humorfm.by:8000/radiorelax
+          {% elif is_state("input_select.radio_station", "Sky Radio") %} https://22613.live.streamtheworld.com/SKYRADIO.mp3?dist=tunein&DIST=TuneIn&TGT=TuneIn&maxServers=2
+          {% elif is_state("input_select.radio_station", "Sky Radio non-stop hits") %} https://22713.live.streamtheworld.com/SRGSTR01.mp3?dist=tunein&DIST=TuneIn&TGT=TuneIn&maxServers=2
+          {% elif is_state("input_select.radio_station", "100% NL Nederpop") %} https://21293.live.streamtheworld.com/WEB04_MP3_SC?dist=TUNEIN
+          {% elif is_state("input_select.radio_station", "100% NL non-stop") %} https://20423.live.streamtheworld.com/WEB02_MP3_SC?dist=TUNEIN
+          {% elif is_state("input_select.radio_station", "VRT nieuws") %} https://progressive-audio.lwc.vrtcdn.be/content/fixed/11_11niws-snip_hi.mp3
+          {% endif %}
+        media_content_type: 'audio/mp4'

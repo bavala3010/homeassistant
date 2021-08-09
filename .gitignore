@@ -1,0 +1,37 @@
+# Whitelisted files & folders using ! in front
+# These will NOT be ignored and will be included in Github
+!*.yaml
+!.gitignore
+!*.md
+!/packages
+
+# EXCLUDED from upload to GITHUB
+# Ignore
+.storage
+.cloud
+.google.token
+.c9
+.ssh
+*.yaml.save
+*.yaml.save.*
+*.db
+*.json
+*.log
+_old_automations.yaml_old
+home-assistant_v2.*
+appdaemon
+blueprints
+custom_components
+deps
+docker-compose
+image
+themes
+tts
+www
+
+# Ensure these YAML files are ignored, otherwise your secret data/credentials will leak.
+# KEEP THIS LIST AT THE BOTTOM OF THIS FILE
+ip_bans.yaml
+secrets.yaml
+known_devices.yaml
+google_assistant_integration.yaml

@@ -1,0 +1,317 @@
+- id: '1523171764336'
+  alias: 👀 beweging oprit
+  description: Beweging op oprit = melding op living speaker
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.buitensensor_vooraan_motion
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: template
+    value_template: '{{ as_timestamp(now()) - as_timestamp(states.automation.beweging_oprit.attributes.last_triggered)
+      | int > 120 }}'
+  action:
+  - service: tts.google_say
+    data:
+      entity_id: media_player.living_speaker
+      message: Beweging op oprit!
+  - service: tts.google_say
+    data:
+      entity_id: media_player.veranda_speaker_2
+      message: Beweging op oprit!
+  - wait_template: ''
+    timeout: 00:00:10
+  - service: camera.play_stream
+    data:
+      media_player: media_player.living_speaker
+    target:
+      entity_id: camera.netatmo_eikenbos_oprit
+  - wait_template: ''
+    timeout: 00:01:30
+  - service: media_player.turn_off
+    entity_id: media_player.living_speaker
+  mode: single
+- id: '1622329889344'
+  alias: 🛌 Madouce thuis om 22u30 en <15° buiten = matras aan
+  description: ''
+  trigger:
+  - platform: time
+    at: '22:30'
+  condition:
+  - condition: state
+    entity_id: device_tracker.madouce_samsung_s20
+    state: home
+  - condition: numeric_state
+    entity_id: sensor.buitensensor_deur_temperature
+    below: '15'
+  action:
+  - type: turn_on
+    device_id: 81260564597a746196ba44e4eea0059e
+    entity_id: switch.3504547724a160162a33_4
+    domain: switch
+  mode: single
+- id: '1625236421420'
+  alias: 🏡 Bart is alleen thuis
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.group_not_bart
+    from: home
+    to: not_home
+    for: 00:03:00
+  condition:
+  - condition: state
+    entity_id: person.bart
+    state: home
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: TTS
+      title: Bart, je bent alleen thuis!
+  mode: single
+- id: '1620906941892'
+  alias: 🚀Low battery level detection & notification for all battery sensors
+  description: ''
+  use_blueprint:
+    path: sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
+    input:
+      threshold: 10
+      actions:
+      - device_id: b5d28be91fff8c03aece377f73b28dd2
+        domain: mobile_app
+        type: notify
+        title: Batterijen
+        message: Batterijen laag van {{sensors}}
+      day: 6
+      time: '12:00:00'
+- id: '1623870762333'
+  alias: '⏱ toiletteller: beweging = + 1'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.toilet_motion_sensor_motion
+    to: 'on'
+  condition: []
+  action:
+  - service: counter.increment
+    target:
+      entity_id: counter.toilet_counter
+  mode: single
+- id: '1623870917990'
+  alias: '⏱ toiletteller: reset om middernacht'
+  description: ''
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition: []
+  action:
+  - service: counter.reset
+    target:
+      entity_id: counter.toilet_counter
+  mode: single
+- id: '1623481635053'
+  alias: 🚀Home Assistant update notification
+  description: ''
+  use_blueprint:
+    path: Klumper/update_notification.yaml
+    input:
+      notification_message: Home Assistant {{ newest_version }} is available
+      delay: 0
+      updater: binary_sensor.updater
+      notify_device: b5d28be91fff8c03aece377f73b28dd2
+      is_ios: false
+      notification_title: Upgrade time!
+- id: '1624690710489'
+  alias: 🚀Database cleanen
+  description: ''
+  trigger:
+  - platform: time
+    at: 09:00:00
+  condition: []
+  action:
+  - service: recorder.purge
+    data:
+      keep_days: 30
+  mode: single
+- id: '1626947283881'
+  alias: 'fan: slaapkamer >21° = ventilator aan'
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{ states(''sensor.master_bedroom_temperature'') | float > 21
+      }}'
+  condition:
+  - condition: time
+    after: '22:30:00'
+    before: '8:00:00'
+  - condition: state
+    entity_id: person.bart
+    state: home
+  action:
+  - service: fan.turn_on
+    target:
+      entity_id: fan.xiaomi_smart_fan_3c
+    data:
+      percentage: 15
+  mode: single
+- id: '1626947798371'
+  alias: 'fan: slaapkamer <21° = ventilator uit'
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{ states(''sensor.master_bedroom_temperature'') | float < 21
+      }}'
+  condition: []
+  action:
+  - service: fan.turn_off
+    target:
+      entity_id: fan.xiaomi_smart_fan_3c
+  mode: single
+- id: '1585984405489'
+  alias: Air Quality Index > 8 = purifier on
+  description: ''
+  trigger:
+  - minutes: /5
+    platform: time_pattern
+  condition:
+  - condition: numeric_state
+    entity_id: fan.xiaomi_air_purifier_3h
+    attribute: aqi
+    above: '8'
+  - condition: state
+    entity_id: group.group_gezin
+    state: home
+  - condition: time
+    after: '7:00'
+    before: '23:30'
+  action:
+  - service: fan.set_preset_mode
+    data:
+      entity_id: fan.xiaomi_air_purifier_3h
+      preset_mode: auto
+  mode: single
+- id: '1627132017585'
+  alias: 'not home = Air purifier off '
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.group_gezin
+    to: not_home
+    for: 00:05:00
+  condition: []
+  action:
+  - service: fan.turn_off
+    target:
+      entity_id: fan.xiaomi_air_purifier_3h
+  mode: single
+- id: '1627745783008'
+  alias: RecycleApp notificaties
+  trigger:
+  - platform: time
+    at: '20:30:00'
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.recycleapp_morgen
+      state: Geen
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      title: '{{title}}'
+      message: '{{message}}'
+  - service: notify.mobile_app_madouce_S20
+    data:
+      title: '{{title}}'
+      message: '{{message}}'
+  variables:
+    title: '{% if state_attr(''sensor.recycleapp_gft'', ''Days-until'') == 1 %} Morgen
+      groene bak  {%elif state_attr(''sensor.recycleapp_restafval'', ''Days-until'')
+      == 1 %}  Morgen bruine zak {%elif state_attr(''sensor.recycleapp_pmd'', ''Days-until'')
+      == 1 %} Morgen roze zak {%elif state_attr(''sensor.recycleapp_papier'', ''Days-until'')
+      == 1 %} Morgen oud papier {%endif%}
+
+      '
+    message: '{% if state_attr(''sensor.recycleapp_gft'', ''Days-until'') == 1 %}
+      Zet de groene bak aan straat {%elif state_attr(''sensor.recycleapp_restafval'',
+      ''Days-until'') == 1 %} Zet de bruine zak aan straat {%elif state_attr(''sensor.recycleapp_pmd'',
+      ''Days-until'') == 1 %} Zet de roze zak aan straat {%elif state_attr(''sensor.recycleapp_papier'',
+      ''Days-until'') == 1 %} Zet het oud papier aan straat {%endif%}
+
+      '
+  mode: single
+- id: '1627749113699'
+  alias: Regen en raam open = melding
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.precip_rate_leuven24_wunderground
+    above: '0'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.amilya_window_sensor
+    state: 'on'
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: Het regent en het raam van Amilya staat open.
+      title: Het regent. Doe raam Amilya dicht aub.
+  - service: notify.mobile_app_madouce_s20
+    data:
+      message: Het regent en het raam van Amilya staat open.
+      title: Het regent. Doe raam Amilya dicht aub.
+  mode: single
+- id: '1627754705422'
+  alias: het regent
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.precip_rate_leuven24_wunderground
+    above: '0'
+  condition: []
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: Het regent. Zijn de ramen dicht?
+      title: Regen
+      tag: regen
+  - service: notify.mobile_app_madouce_s20
+    data:
+      message: Het regent. Zijn de ramen dicht?
+      title: Regen
+      tag: regen
+  mode: single
+- id: '1628319868217'
+  alias: Air Quality Index < 8 = purifier off
+  description: ''
+  trigger:
+  - minutes: /5
+    platform: time_pattern
+  condition:
+  - condition: numeric_state
+    entity_id: fan.xiaomi_air_purifier_3h
+    attribute: aqi
+    below: '8'
+  action:
+  - service: fan.turn_off
+    target:
+      entity_id: fan.xiaomi_air_purifier_3h
+  mode: single
+- id: '1628325671010'
+  alias: Vocht in huis >75%
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.avg_inside_humidity
+    above: '75'
+    for: 00:15
+  condition:
+  - condition: state
+    entity_id: person.bart
+    state: home
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      title: Vocht
+      message: 'Vocht % in huis is heel hoog: {{states(''sensor.avg_inside_humidity'')}}.'
+  mode: single

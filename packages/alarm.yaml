@@ -1,0 +1,277 @@
+############################ Table of Contents ############################ 
+# 
+#   Automations
+#     TBD
+#     TBD
+
+
+############################ Automations ################################## 
+
+automation:
+- id: '1625927840108'
+  alias: 🚨 Bart, Madouce en/of Alunya komt thuis (zone) = alarm uit
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: person.bart
+    to: home
+  - platform: state
+    entity_id: person.madouce
+    to: home
+  - platform: state
+    entity_id: person.alunya
+    to: home
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed
+  action:
+  - device_id: !secret id_tel_bart
+    domain: mobile_app
+    type: notify
+    title: ''
+    message: '✅  Alarm is automatisch uitgeschakeld door thuiskomst.'
+  - service: alarm_control_panel.alarm_disarm
+    target:
+      entity_id: alarm_control_panel.home_alarm
+    data:
+      code: !secret alarm_code
+  mode: single
+
+- id: '1625924372892'
+  alias: ✅ niemand thuis (enkel melding)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.group_gezin
+    from: home
+    to: not_home
+    for: 00:04:00
+  condition: []
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      title: Alarm inschakelen?
+      message: Niemand thuis?
+      data:
+# attention: these actions still need to be changed!
+        actions:
+        - action: open_garage
+          title: Alarm inschakelen
+        - action: open_voordeur
+          title: Niets doen
+  mode: single
+  
+- id: '1625925081448'
+  alias: ✅ iemand thuis (enkel melding)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.group_gezin
+    to: home
+  condition: []
+  action:
+  - device_id: !secret id_tel_bart
+    domain: mobile_app
+    type: notify
+    title: Home
+    message: Bart, er is nu wel iemand thuis.
+  mode: single
+  
+- id: '1625924920096'
+  alias: 🚨 niemand thuis = alarm aanzetten
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.group_gezin
+    to: not_home
+    for: 00:05:00
+  condition: []
+  action:
+  - service: alarm_control_panel.alarm_arm_away
+    data:
+      code: !secret alarm_code
+    target:
+      entity_id: alarm_control_panel.home_alarm
+  - device_id: !secret id_tel_bart
+    domain: mobile_app
+    type: notify
+    title: ''
+    message: ⛔ Alarm is automatisch ingeschakeld wegens niemand thuis.
+  mode: single
+
+
+- id: '1716925982379'
+  alias: '🚨 Iemand komt thuis (wifi) = alarm uitzetten'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.group_gezin
+    to: home
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed
+  action:
+  - service: alarm_control_panel.alarm_disarm
+    target:
+      entity_id: alarm_control_panel.home_alarm
+    data:
+      code: !secret alarm_code
+  - service: notify.mobile_app_bart_s10
+    title: ''
+    message: '✅  Alarm is automatisch uitgeschakeld door thuiskomst.'
+  mode: single
+
+- id: '1621252528464'
+  alias: 🚨 ingeschakeld aan voordeur
+  description: OK
+  trigger:
+  - platform: tag
+    tag_id: !secret tag_voordeur_arm_alarm
+  condition: []
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: ⛔ Alarm ingeschakeld aan voordeur.
+      title: ''
+      data:
+        color: blue
+        actions:
+        - action: URI
+          title: Meer info
+          uri: /lovelace/humidity
+  - service: alarm_control_panel.alarm_arm_away
+    target:
+      entity_id: alarm_control_panel.home_alarm
+    data:
+      code: !secret alarm_code
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.living_speaker
+      volume_level: 0.8
+  - service: tts.google_say
+    data:
+      entity_id: media_player.living_speaker
+      message: Alarm ingeschakeld!
+  - delay: 00:00:10
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.living_speaker
+      volume_level: 0.4
+  mode: queued
+
+- id: '1623442592516'
+  alias: 🚨 uitgeschakeld aan voordeur
+  description: OK
+  trigger:
+  - platform: tag
+    tag_id: !secret tag_voordeur_disarm_alarm
+  condition: []
+  action:
+  - device_id: !secret id_tel_bart
+    domain: mobile_app
+    type: notify
+    title: ''
+    message: ✅ Alarm uitgeschakeld aan voordeur.
+  - service: alarm_control_panel.alarm_disarm
+    data:
+      code: !secret alarm_code
+    target:
+      entity_id: alarm_control_panel.home_alarm
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.living_speaker
+      volume_level: 0.8
+  - service: tts.google_say
+    data:
+      entity_id: media_player.living_speaker
+      message: Alarm uitgeschakeld!
+  - delay: 00:00:10
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.living_speaker
+      volume_level: 0.4
+  mode: single
+  
+- id: '1621194550196'
+  alias: 🚨 alarm bij beweging
+  description: NOK
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.berging_sensor_motion
+    - binary_sensor.garage_sensor_motion
+    - binary_sensor.keldertrap_sensor_motion
+    - binary_sensor.trap_boven_motion_motion
+    - binary_sensor.toilet_motion_sensor_motion
+    - binary_sensor.terras_motion_sensor
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_away
+  action:
+  - service: input_text.set_value
+    data_template:
+      entity_id: input_text.trigger_source
+      value: '{{ trigger.to_state.attributes.friendly_name }}'
+  - service: alarm_control_panel.alarm_trigger
+    entity_id: alarm_control_panel.home_alarm
+  mode: single
+
+- id: '1621196550296'
+  alias: 🚨 melding bij alarm trigger
+  description: NOK
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.home_alarm
+    to: triggered
+  condition: []
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: TTS
+      title: Alarm in Eikenboslaan!
+      data:
+        color: red
+        actions:
+        - action: URI
+          title: Meer info
+          uri: /lovelace/alarm
+        vibrationPattern: 10, 10, 10, 10, 10, 10, 10
+        channel: alarm
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: 'Alarm in Eikenbos: beweging aan {{ states(''input_text.trigger_source'')}}'
+      title: '🚨 Alarm!'
+      data:
+        color: red
+        channel: alarm
+  - service: notify.mobile_app_madouce_s20
+    data:
+      message: 'Alarm in Eikenbos: beweging aan {{ states(''input_text.trigger_source'')}}'
+      title: '🚨 Alarm!'
+      data:
+        color: red
+        channel: alarm
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.nestaudio3875
+      volume_level: 0.8
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.living_speaker
+      media_content_id: http://192.168.86.101:8123/local/siren.mp3
+      media_content_type: music
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.nestaudio3875
+      media_content_id: http://192.168.86.101:8123/local/siren.mp3
+      media_content_type: music
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.nestaudio3875
+      volume_level: 0.8
+  mode: queued

@@ -1,0 +1,28 @@
+auto_status_verversen:
+  alias: audi_refresh
+  sequence:
+  - service: audiconnect.refresh_data
+    data:
+      vin: WAUZZZGE6MB019131
+  icon: hass:car
+  mode: single
+'1626465721373':
+  alias: check als auto echt niet op slot is
+  sequence:
+  - service: audiconnect.refresh_data
+    data:
+      vin: WAUZZZGE6MB019131
+  - delay: 00:05:00
+  - condition: state
+    entity_id: lock.audi_e_tron_sportback_55_door_lock_2
+    state: unlocked
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: 🚙 Auto niet op slot! (veeg omlaag voor acties)
+      data:
+        channel: Important
+        tag: slot_auto
+        color: red
+        actions:
+        - action: lock_car
+          title: SLUIT AUTO

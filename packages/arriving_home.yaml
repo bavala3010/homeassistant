@@ -1,0 +1,130 @@
+############################ Table of Contents ############################ 
+# 
+#   Automations
+#     TBD
+#     TBD
+
+
+############################ Automations ################################## 
+
+automation:
+- id: '1626193605013'
+  alias: 🏡 Bart komt thuis = welkom & melding garage/deur
+  description: ''
+  trigger:
+  - platform: device
+    device_id: b5d28be91fff8c03aece377f73b28dd2
+    domain: device_tracker
+    entity_id: device_tracker.bart_s10
+    type: enters
+    zone: zone.home
+  condition: []
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: TTS
+      title: Welkom thuis Bart!
+      data:
+        channel: alarm_stream
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: Welkom thuis! (veeg omlaag voor acties)
+      data:
+        channel: Important
+        persistent: true
+        tag: persistent
+        color: red
+        timeout: 420
+        actions:
+        - action: open_garage
+          title: OPEN GARAGE
+        - action: open_voordeur
+          title: OPEN VOORDEUR
+  mode: single
+- id: '1624729230446'
+  alias: 🏡 Madouce komt thuis = welkom & melding garage/deur
+  description: ''
+  trigger:
+  - platform: device
+    device_id: d434bc1199aafa4c5d9e448b1fd55e30
+    domain: device_tracker
+    entity_id: device_tracker.madouce_s20
+    type: enters
+    zone: zone.home
+  condition: []
+  action:
+  - service: notify.mobile_app_madouce_s20
+    data:
+      message: TTS
+      title: Welkom thuis Madouce!
+      data:
+        channel: alarm_stream
+  - service: notify.mobile_app_madouce_s20
+    data:
+      message: Welkom thuis! (veeg omlaag voor acties)
+      data:
+        channel: Important
+        persistent: true
+        tag: persistent
+        color: red
+        timeout: 420
+        actions:
+        - action: open_garage
+          title: OPEN GARAGE
+        - action: open_voordeur
+          title: OPEN VOORDEUR
+  mode: single
+- id: '1626512095991'
+  alias: 🏡 Alunya komt thuis = welkom & melding garage/deur
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 94ae27ff1307ca2428ac8963b4477de2
+    domain: device_tracker
+    entity_id: device_tracker.alunya_samsung_galaxy_a71
+    type: enters
+    zone: zone.home
+  condition: []
+  action:
+  - service: notify.mobile_app_alunya_a71
+    data:
+      message: TTS
+      title: Welkom thuis Alunya!
+      data:
+        channel: alarm_stream
+  - service: notify.mobile_app_alunya_a71
+    data:
+      message: Welkom thuis! (veeg omlaag voor acties)
+      data:
+        channel: Important
+        persistent: true
+        tag: persistent
+        color: red
+        timeout: 420
+        actions:
+        - action: open_garage
+          title: OPEN GARAGE
+        - action: open_voordeur
+          title: OPEN VOORDEUR
+  mode: single
+- id: '1626196804430'
+  alias: Open garage
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: open_garage
+  action:
+  - scene: scene.v5bab2lu7dc9oexz
+- id: '1626196924695'
+  alias: Open voordeur
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: open_voordeur
+  action:
+  - service: lock.unlock
+    target:
+      entity_id: lock.voordeur
+  mode: single
