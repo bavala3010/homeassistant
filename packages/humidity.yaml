@@ -12,7 +12,7 @@
 ############################ Automations ################################## 
 
 automation:
-- id: '1523688715264'
+- id: 'Vocht in mater bedroom (Bart)'
   alias: 💧 Vocht in master bedroom (Bart)
   description: ''
   trigger:
@@ -49,7 +49,7 @@ automation:
           title: Meer info
           uri: /lovelace/humidity
   mode: single
-- id: '1624810896301'
+- id: 'Vocht in master bedroom (Madouce)'
   alias: 💧 Vocht in master bedroom (Madouce)
   description: ''
   trigger:
@@ -86,7 +86,7 @@ automation:
           title: Meer info
           uri: /lovelace/humidity
   mode: single
-- id: '1612577615153'
+- id: 'Vocht in kamer Alunya (Bart)'
   alias: 💧 Vocht in kamer Alunya (Bart)
   description: ''
   trigger:
@@ -104,6 +104,12 @@ automation:
   - condition: time
     after: '7:0:0'
     before: '23:00:00'
+  - condition: state
+    entity_id: binary_sensor.alunya_raam_sensor
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.alunya_schuifraam_sensor
+    state: 'off'
   action:
   - service: notify.mobile_app_bart_s10
     data:
@@ -120,7 +126,7 @@ automation:
         timeout: 3600
         tag: vocht_kamer_alunya
   mode: single
-- id: '1432775616337'
+- id: 'Vocht in kamer Alunya (Madouce)'
   alias: 💧 Vocht in kamer Alunya (Madouce)
   description: ''
   trigger:
@@ -138,6 +144,12 @@ automation:
   - condition: time
     after: '7:0:0'
     before: '23:00:00'
+  - condition: state
+    entity_id: binary_sensor.alunya_raam_sensor
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.alunya_schuifraam_sensor
+    state: 'off'
   action:
   - service: notify.mobile_app_madouce_s20
     data:
@@ -155,7 +167,7 @@ automation:
         timeout: 3600
         tag: vocht_kamer_alunya
   mode: single
-- id: '1625397477612'
+- id: 'Vocht master bedroom machine aan'
   alias: 💧 vocht master bedroom -> machine aan
   description: ''
   trigger:
@@ -182,7 +194,7 @@ automation:
           title: Meer info
           uri: /lovelace/humidity
   mode: single
-- id: '1625943760977'
+- id: 'Vocht buiten >80% ramen dicht (Bart)'
   alias: 💧vocht buiten >80% = melding ramen dicht (Bart)
   description: ''
   trigger:
@@ -214,7 +226,7 @@ automation:
         timeout: 3600
         tag: vocht
   mode: single
-- id: '1626199682273'
+- id: 'Vocht buiten >80% ramen dicht (Madouce)'
   alias: 💧vocht buiten >80% = melding ramen dicht (Madouce)
   description: ''
   trigger:
