@@ -5,9 +5,10 @@
 #     Vocht in master bedroom (Madouce)
 #     Vocht in kamer Alunya (Bart)
 #     Vocht in kamer Alunya (Madouce)
-#     vocht master bedroom -> machine aan
-#     vocht buiten >80% = melding ramen dicht (Bart)
-#     vocht buiten >80% = melding ramen dicht (Madouce)
+#     Vocht master bedroom -> machine aan
+#     Vocht buiten >80% = melding ramen dicht (Bart)
+#     Vocht buiten >80% = melding ramen dicht (Madouce)
+#     Vocht in huis >75%
 
 ############################ Automations ################################## 
 
@@ -257,4 +258,22 @@ automation:
         channel: Vocht
         timeout: 3600
         tag: vocht
+  mode: single
+- id: "Vocht in huis >75%"
+  alias: Vocht in huis >75%
+  description: ''
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.avg_inside_humidity
+      above: '75'
+      for: '00:15'
+  condition:
+    - condition: state
+      entity_id: person.bart
+      state: home
+  action:
+    - service: notify.mobile_app_bart_s10
+      data:
+        title: Vocht
+        message: 'Vocht % in huis is heel hoog: {{states(''sensor.avg_inside_humidity'')}}.'
   mode: single

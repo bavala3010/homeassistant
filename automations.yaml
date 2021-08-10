@@ -297,21 +297,3 @@
     target:
       entity_id: fan.xiaomi_air_purifier_3h
   mode: single
-- id: '1628325671010'
-  alias: Vocht in huis >75%
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.avg_inside_humidity
-    above: '75'
-    for: 00:15
-  condition:
-  - condition: state
-    entity_id: person.bart
-    state: home
-  action:
-  - service: notify.mobile_app_bart_s10
-    data:
-      title: Vocht
-      message: 'Vocht % in huis is heel hoog: {{states(''sensor.avg_inside_humidity'')}}.'
-  mode: single

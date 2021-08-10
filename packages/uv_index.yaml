@@ -13,7 +13,7 @@
 
 automation:
 - id: UV_index_2_3_bart
-  alias: "UV index is 2 of 3 = waarschuwing Bart"
+  alias: "😎 UV index is 2 of 3 = waarschuwing Bart"
   description: ''
   trigger:
   - platform: state
@@ -39,7 +39,7 @@ automation:
         channel: uv_index
   mode: single
 - id: UV_index_4_5_bart
-  alias: "UV index is 4 of 5 = waarschuwing Bart"
+  alias: "😎 UV index is 4 of 5 = waarschuwing Bart"
   description: ''
   trigger:
   - platform: state
@@ -65,7 +65,7 @@ automation:
         channel: uv_index
   mode: single
 - id: UV_index_6_7_bart
-  alias: "UV index is 6 of 7 = waarschuwing Bart"
+  alias: "😎 UV index is 6 of 7 = waarschuwing Bart"
   description: ''
   trigger:
   - platform: state
@@ -93,7 +93,7 @@ automation:
   mode: single
   
 - id: UV_index_2_3_madouce
-  alias: "UV index is 2 of 3 = waarschuwing Madouce"
+  alias: "😎 UV index is 2 of 3 = waarschuwing Madouce"
   description: ''
   trigger:
   - platform: state
@@ -119,7 +119,7 @@ automation:
         channel: uv_index
   mode: single
 - id: UV_index_4_5_madouce
-  alias: "UV index is 4 of 5 = waarschuwing Madouce"
+  alias: "😎 UV index is 4 of 5 = waarschuwing Madouce"
   description: ''
   trigger:
   - platform: state
@@ -145,7 +145,7 @@ automation:
         channel: uv_index
   mode: single
 - id: UV_index_6_7_madouce
-  alias: "UV index is 6 of 7 = waarschuwing Madouce"
+  alias: "😎 UV index is 6 of 7 = waarschuwing Madouce"
   description: ''
   trigger:
   - platform: state
