@@ -233,10 +233,10 @@
 
       '
     message: '{% if state_attr(''sensor.recycleapp_gft'', ''Days-until'') == 1 %}
-      Zet de groene bak aan straat {%elif state_attr(''sensor.recycleapp_restafval'',
-      ''Days-until'') == 1 %} Zet de bruine zak aan straat {%elif state_attr(''sensor.recycleapp_pmd'',
-      ''Days-until'') == 1 %} Zet de roze zak aan straat {%elif state_attr(''sensor.recycleapp_papier'',
-      ''Days-until'') == 1 %} Zet het oud papier aan straat {%endif%}
+      Zet de groene bak aan straat. {%elif state_attr(''sensor.recycleapp_restafval'',
+      ''Days-until'') == 1 %} Zet de bruine zak aan straat. {%elif state_attr(''sensor.recycleapp_pmd'',
+      ''Days-until'') == 1 %} Zet de roze zak aan straat. {%elif state_attr(''sensor.recycleapp_papier'',
+      ''Days-until'') == 1 %} Zet het oud papier aan straat. {%endif%}
 
       '
   mode: single
@@ -296,4 +296,24 @@
   - service: fan.turn_off
     target:
       entity_id: fan.xiaomi_air_purifier_3h
+  mode: single
+- id: '1628708395094'
+  alias: Garagepoort staat lang open
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.ty18857573dc4f22b78e02
+    from: 'off'
+    to: 'on'
+    for: 00:05:00
+  condition: []
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      title: Garagepoort
+      message: Garagepoort staat al 5 minuten open.
+  - service: notify.mobile_app_madouce_s20
+    data:
+      title: Garagepoort
+      message: Garagepoort staat al 5 minuten open.
   mode: single

@@ -333,21 +333,6 @@ sensor:
 #   value_template: '{{ (value.rstrip(" °C") | float) }}'
 #   value_template: '{{ (value.rstrip(" %") | float) }}'
 
-
-localtuya:
-  - host: 192.168.86.247
-    device_id: 18857573dc4f22b78e02
-    local_key: 4d47d134c1763757
-    friendly_name: Garage Door
-    protocol_version: "3.3"
-    entities:
-      - platform: switch
-        friendly_name: Garage Door
-        id: 1
-        current: 7
-        current_consumption: 101
-        voltage: 102
-
 anniversaries:
   sensors:
   - name: huwelijk Madouce & Bart

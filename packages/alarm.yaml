@@ -1,14 +1,15 @@
 ############################ Table of Contents ############################ 
 # 
 #   Automations
-#     TBD
-#     TBD
+#     Bart, Madouce en/of Alunya komt thuis (zone) = alarm uit
+#     niemand thuis (enkel melding)
+#     iemand thuis (enkel melding)
 
 
 ############################ Automations ################################## 
 
 automation:
-- id: '1625927840108'
+- id: "Bart, Madouce en/of Alunya komt thuis (zone) = alarm uit"
   alias: 🚨 Bart, Madouce en/of Alunya komt thuis (zone) = alarm uit
   description: ''
   trigger:
@@ -38,7 +39,7 @@ automation:
       code: !secret alarm_code
   mode: single
 
-- id: '1625924372892'
+- id: "niemand thuis (enkel melding)"
   alias: ✅ niemand thuis (enkel melding)
   description: ''
   trigger:
@@ -62,7 +63,7 @@ automation:
           title: Niets doen
   mode: single
   
-- id: '1625925081448'
+- id: "iemand thuis (enkel melding)"
   alias: ✅ iemand thuis (enkel melding)
   description: ''
   trigger:
@@ -78,7 +79,7 @@ automation:
     message: Bart, er is nu wel iemand thuis.
   mode: single
   
-- id: '1625924920096'
+- id: "niemand thuis = alarm aanzetten"
   alias: 🚨 niemand thuis = alarm aanzetten
   description: ''
   trigger:
@@ -101,7 +102,7 @@ automation:
   mode: single
 
 
-- id: '1716925982379'
+- id: "Iemand komt thuis (wifi) = alarm uitzetten"
   alias: '🚨 Iemand komt thuis (wifi) = alarm uitzetten'
   description: ''
   trigger:
@@ -123,8 +124,8 @@ automation:
     message: '✅  Alarm is automatisch uitgeschakeld door thuiskomst.'
   mode: single
 
-- id: '1621252528464'
-  alias: 🚨 ingeschakeld aan voordeur
+- id: "alarm ingeschakeld aan voordeur"
+  alias: 🚨 alarm ingeschakeld aan voordeur
   description: OK
   trigger:
   - platform: tag
@@ -161,8 +162,8 @@ automation:
       volume_level: 0.4
   mode: queued
 
-- id: '1623442592516'
-  alias: 🚨 uitgeschakeld aan voordeur
+- id: "alarm uitgeschakeld aan voordeur"
+  alias: 🚨 alarm uitgeschakeld aan voordeur
   description: OK
   trigger:
   - platform: tag
@@ -194,7 +195,7 @@ automation:
       volume_level: 0.4
   mode: single
   
-- id: '1621194550196'
+- id: "alarm bij beweging"
   alias: 🚨 alarm bij beweging
   description: NOK
   trigger:
@@ -206,6 +207,17 @@ automation:
     - binary_sensor.trap_boven_motion_motion
     - binary_sensor.toilet_motion_sensor_motion
     - binary_sensor.terras_motion_sensor
+    # raam sensoren
+    - binary_sensor.alunya_raam_sensor
+    - binary_sensor.alunya_schuifraam_sensor
+    - binary_sensor.amilya_raam_sensor
+    - binary_sensor.veranda_schuifraam_sensor
+    - binary_sensor.badkamer_raam_sensor
+    - binary_sensor.berging_raam_sensor
+    - binary_sensor.keuken_raam_sensor
+    - binary_sensor.living_oprit_raam_sensor
+    - binary_sensor.master_bedroom_raam_sensor
+    - binary_sensor.veranda_raam_sensor
     from: 'off'
     to: 'on'
   condition:
@@ -221,7 +233,7 @@ automation:
     entity_id: alarm_control_panel.home_alarm
   mode: single
 
-- id: '1621196550296'
+- id: "melding bij alarm trigger"
   alias: 🚨 melding bij alarm trigger
   description: NOK
   trigger:
