@@ -58,7 +58,7 @@ automation:
 # attention: these actions still need to be changed!
         actions:
         - action: open_garage
-          title: Alarm inschakelen
+          title:  (niet doen) garage openen
         - action: open_voordeur
           title: Niets doen
   mode: single
@@ -154,8 +154,11 @@ automation:
   - service: tts.google_say
     data:
       entity_id: media_player.living_speaker
-      message: Alarm ingeschakeld!
-  - delay: 00:00:10
+      message: "Alarm ingeschakeld!
+      {% if is_state('group.group.raam_sensoren', 'off') %} Alle ramen zijn dicht!
+      {% else %} De volgende ramen staan nog open: {{ expand(states.binary_sensor.amilya_raam_sensor, states.binary_sensor.alunya_raam_sensor, states.binary_sensor.alunya_schuifraam_sensor, states.binary_sensor.badkamer_raam_sensor, states.binary_sensor.berging_raam_sensor, states.binary_sensor.keuken_raam_sensor, states.binary_sensor.living_oprit_raam_sensor, states.binary_sensor.living_tuin_raam_sensor, states.binary_sensor.master_bedroom_raam_sensor, states.binary_sensor.veranda_schuifraam_sensor) | selectattr('state','eq','on') | map(attribute='name')| list }}
+      {% endif %}"
+  - delay: 00:00:20
   - service: media_player.volume_set
     data:
       entity_id: media_player.living_speaker
@@ -201,6 +204,7 @@ automation:
   trigger:
   - platform: state
     entity_id:
+    # bewegingssensoren
     - binary_sensor.berging_sensor_motion
     - binary_sensor.garage_sensor_motion
     - binary_sensor.keldertrap_sensor_motion
@@ -211,13 +215,12 @@ automation:
     - binary_sensor.alunya_raam_sensor
     - binary_sensor.alunya_schuifraam_sensor
     - binary_sensor.amilya_raam_sensor
-    - binary_sensor.veranda_schuifraam_sensor
     - binary_sensor.badkamer_raam_sensor
     - binary_sensor.berging_raam_sensor
     - binary_sensor.keuken_raam_sensor
     - binary_sensor.living_oprit_raam_sensor
     - binary_sensor.master_bedroom_raam_sensor
-    - binary_sensor.veranda_raam_sensor
+    - binary_sensor.veranda_schuifraam_sensor
     from: 'off'
     to: 'on'
   condition:
@@ -268,22 +271,22 @@ automation:
       data:
         color: red
         channel: alarm
-  - service: media_player.volume_set
-    data:
-      entity_id: media_player.nestaudio3875
-      volume_level: 0.8
-  - service: media_player.play_media
-    data:
-      entity_id: media_player.living_speaker
-      media_content_id: http://192.168.86.101:8123/local/siren.mp3
-      media_content_type: music
-  - service: media_player.play_media
-    data:
-      entity_id: media_player.nestaudio3875
-      media_content_id: http://192.168.86.101:8123/local/siren.mp3
-      media_content_type: music
-  - service: media_player.volume_set
-    data:
-      entity_id: media_player.nestaudio3875
-      volume_level: 0.8
+#  - service: media_player.volume_set
+#    data:
+#      entity_id: media_player.nestaudio3875
+#      volume_level: 0.8
+#  - service: media_player.play_media
+#    data:
+#      entity_id: media_player.living_speaker
+#      media_content_id: http://192.168.86.101:8123/local/siren.mp3
+#      media_content_type: music
+#  - service: media_player.play_media
+#    data:
+#      entity_id: media_player.nestaudio3875
+#      media_content_id: http://192.168.86.101:8123/local/siren.mp3
+#      media_content_type: music
+#  - service: media_player.volume_set
+#    data:
+#      entity_id: media_player.nestaudio3875
+#      volume_level: 0.8
   mode: queued

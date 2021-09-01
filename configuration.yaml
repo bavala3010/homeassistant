@@ -28,10 +28,13 @@ script: !include scripts.yaml
 scene: !include scenes.yaml
 google_assistant: !include google_assistant_integration.yaml
 
+
 frontend:
   themes: !include_dir_merge_named themes
 
 homeassistant:
+  allowlist_external_dirs:
+    - "/config"
 ### The following installs all package files, including lights, alarm, humidity etc.
   packages: !include_dir_named packages
   customize: !include customize.yaml
@@ -50,26 +53,39 @@ http:
     - 172.17.0.0/24
     - 172.0.0.0/24
 
-pi_hole:
-  host: 192.168.86.101:8081
-  name: pihole
-  api_key: !secret pihole_api_key
+#pi_hole:
+#  host: 192.168.86.101:8081
+#  name: pihole
+#  api_key: !secret pihole_api_key
            
 recorder:
   purge_keep_days: 31
-
-device_tracker:
-  - platform: nmap_tracker
-    hosts: 192.168.68.0/24
-    home_interval: 10
-
-notify:
-  - platform: nfandroidtv
-    name: GoogleTV
-    host: 192.168.86.43
-  - platform: nfandroidtv
-    name: MasterBedroomTV
-    host: 192.168.86.246
+  exclude:
+    entities:
+      - sensor.cpu
+      - sensor.date
+      - sensor.time
+      - sensor.last_boot
+      - sun.sun
+      - sensor.processor_use
+      - sensor.disk_use_percent
+      - binary_sensor.alunya_a71_apparaat_vergrendeld
+      - binary_sensor.alunya_a71_applicatie_inactief
+      - binary_sensor.alunya_a71_interactief
+      - binary_sensor.sm_g975f_device_locked
+      - binary_sensor.sm_g975f_interactive
+    domains:
+      - automation
+      - camera
+      - group
+      - media_player
+      - updater
+      - persistent_notification
+      - sun
+      - switch
+      - weather
+      - zone
+      - zwave
 
 fan:
   - platform: xiaomi_miio_fan
@@ -133,6 +149,50 @@ sensor:
         value_template: "{{ state_attr('fan.xiaomi_air_purifier_3h', 'aqi') }}"
         unit_of_measurement: "μg/m³"
         icon_template: "mdi:weather-fog"
+
+  - platform: template
+    sensors:
+      max_humidity_allowed_house:
+       # dauwpunt
+       # https://bmcnoldy.rsmas.miami.edu/Humidity.html
+        friendly_name: Maximum vochtigheidsgraad in huis
+        device_class: humidity
+        unit_of_measurement: '%'
+        icon_template: mdi:water-percent
+        value_template: >-
+          {{ (100.0 * ( e ** ((17.625*(states('sensor.temp_leuven24_wunderground')|float))/(243.04+(states('sensor.temp_leuven24_wunderground')|float))) ) / ( e ** ((17.625*(states('sensor.avg_inside_temperature')|float))/(243.04+(states('sensor.avg_inside_temperature')|float))) )) | round(0) }}
+
+      max_humidity_allowed_master_bedroom:
+       # dauwpunt
+       # https://bmcnoldy.rsmas.miami.edu/Humidity.html
+        friendly_name: Maximum vochtigheidsgraad in master bedroom
+        device_class: humidity
+        unit_of_measurement: '%'
+        icon_template: mdi:water-percent
+        value_template: >-
+          {{ (100.0 * ( e ** ((17.625*(states('sensor.temp_leuven24_wunderground')|float))/(243.04+(states('sensor.temp_leuven24_wunderground')|float))) ) / ( e ** ((17.625*(states('sensor.master_bedroom_temperature')|float))/(243.04+(states('sensor.master_bedroom_temperature')|float))) )) | round(0) }}
+
+      max_humidity_allowed_badkamer:
+       # dauwpunt
+       # https://bmcnoldy.rsmas.miami.edu/Humidity.html
+        friendly_name: Maximum vochtigheidsgraad in badkamer
+        device_class: humidity
+        unit_of_measurement: '%'
+        icon_template: mdi:water-percent
+        value_template: >-
+          {{ (100.0 * ( e ** ((17.625*(states('sensor.temp_leuven24_wunderground')|float))/(243.04+(states('sensor.temp_leuven24_wunderground')|float))) ) / ( e ** ((17.625*(states('sensor.badkamer_temperature')|float))/(243.04+(states('sensor.badkamer_temperature')|float))) )) | round(0) }}
+
+  - platform: powercalc
+    entity_id: light.living
+    manufacturer: signify
+    model: LCT003
+  - platform: powercalc
+    entity_id: light.amilya
+  - platform: powercalc
+    entity_id: light.badkamer
+  - platform: powercalc
+    entity_id: light.buiten
+
 
   - platform: history_stats
     name: TV_living_on_today
@@ -268,7 +328,6 @@ sensor:
       - sensor.gang_temperature
       - sensor.berging_temperature
     
-    
   - platform: scrape
     resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
     select: "#main-page-content > div > div > div > div:nth-child(2) > div > lib-tile-current-conditions > div > div.module__body > div > div.small-4.columns.text-left.conditions-temp > div.main-temp > lib-display-unit > span > span.wu-value.wu-value-to"
@@ -282,9 +341,9 @@ sensor:
     resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
     name: humidity_leuven24_wunderground
     select: "#main-page-content > div > div > div > div:nth-child(2) > div > lib-tile-current-conditions > div > div.module__body > div > div.weather__summary > div:nth-child(4) > div > div.weather__text > lib-display-unit > span > span.wu-value.wu-value-to"
-    scan_interval: 600
+    scan_interval: 300
     unit_of_measurement: "%"
-    
+
   - platform: scrape  
     resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
     # hoeveelheid huidige neerslag
@@ -325,13 +384,72 @@ sensor:
       living_tv_elec:
         unit_of_measurement: kWh
         friendly_name: "elektriciteitsverbruik TV living"
-        value_template: "{{ states('sensor.tv_living_on_today') | float * 82 / 100 | int }}"
-   # TV consumes 82 W per hour
+        value_template: "{{ states('sensor.tv_living_on_today') | float * 0.085 | round(3) }}"
+   # TV consumes 82 W per hour + Google TV 3 W per hour
+   
+  - platform: template
+    sensors:  
+      master_bedroom_tv_elec:
+        unit_of_measurement: kWh
+        friendly_name: "elektriciteitsverbruik TV master bedroom"
+        value_template: "{{ states('sensor.master_bedroom_TV_on_today') | float * 0.063 | round(3) }}"
+   # TV + Google TV consumes 63 W per hour
    
 #   Examples    
 #   value_template: '{{ (value| float)}}'
 #   value_template: '{{ (value.rstrip(" °C") | float) }}'
 #   value_template: '{{ (value.rstrip(" %") | float) }}'
+
+      tv_energy:
+        friendly_name: "energieverbruik TV's"
+        unit_of_measurement: kWh
+        value_template: "{{ states('sensor.living_tv_elec') | float + states('sensor.master_bedroom_tv_elec') | float}}"
+        attribute_templates:
+          last_reset: "1970-01-01T00:00:00+00:00"
+          state_class: measurement
+          device_class: energy
+          icon: mdi:counter
+
+  - platform: systemmonitor
+    resources:
+    - type: processor_use
+    - type: disk_use_percent
+      arg: "/"
+    - type: disk_free
+      arg: "/"
+    - type: memory_use_percent
+    - type: network_in
+      arg: eth0
+    - type: throughput_network_in
+      arg: eth0
+    - type: network_out
+      arg: eth0
+    - type: throughput_network_out
+      arg: eth0
+    - type: processor_temperature
+    - type: last_boot
+# OPTIONAL CPU Raspberry Pi Temp
+  - platform: command_line
+    name: CPU Temp
+    command: "cat /sys/class/thermal/thermal_zone0/temp"
+    unit_of_measurement: "°C"
+    value_template: '{{ value | multiply(0.001) | round(2)  }}'
+
+  - platform: integration
+    source: sensor.ty02820620a4cf12eb80b8_2
+    name: droogkast_totaal_verbruik
+    unit_prefix: k
+    round: 2
+
+  - platform: integration
+    source: sensor.living_tv_elec
+    name: tv_living_totaal_verbruik
+    unit_prefix: k
+    round: 2
+
+  - platform: filesize
+    file_paths:
+      - /config/home-assistant_v2.db
 
 anniversaries:
   sensors:
@@ -379,4 +497,47 @@ binary_sensor:
       warm_inside_bedroom:
         friendly_name: "in master bedroom warmer dan buiten"
         value_template: "{{ states('sensor.master_bedroom_temperature') > states('sensor.temp_leuven24_wunderground') }}"
+
+  - platform: trend
+    sensors:
+      humidity_master_bedroom_rising:
+        entity_id: sensor.master_bedroom_humidity
+        sample_duration: 3600
+        # 1 sample every second. 1800 seconds = 30 minutes
+        min_gradient: 0.00027777777
+
+        device_class: moisture
+        # The gradient is measured in sensor units per second
+        # If you want to know when the humidity is rising by 4 % per hour, use a gradient of (4) / (60 x 60) = 0.00111111111
+        
+      humidity_kamer_alunya_rising:
+        entity_id: sensor.kamer_alunya_humidity
+        sample_duration: 3600
+        # 1 sample every second. 1800 seconds = 30 minutes
+        min_gradient: 0.00027777777
+        device_class: moisture
+
+      humidity_badkamer_rising:
+        entity_id: sensor.badkamer_humidity
+        sample_duration: 3600
+        # 1 sample every second. 1800 seconds = 30 minutes
+        min_gradient: 0.00027777777
+        device_class: moisture
+
+      humidity_eikenbos_rising:
+        entity_id: sensor.humidity_leuven24_wunderground
+        sample_duration: 3600  # 1 hour
+        min_gradient: 0.00027777777
+# 4% increase per hour = 4/(60x60) = 0.00111111111
+        device_class: moisture
+
+      humidity_eikenbos_falling:
+        entity_id: sensor.humidity_leuven24_wunderground
+        sample_duration: 3600  # 1 hour
+        min_gradient: -0.00027777777
+# 4% increase per hour = 4/(60x60) = 0.00111111111
+        device_class: moisture
+
+# Enables a map showing the location of tracked devices
+map:
 

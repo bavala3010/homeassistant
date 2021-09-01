@@ -50,7 +50,7 @@
     entity_id: switch.3504547724a160162a33_4
     domain: switch
   mode: single
-- id: '1625236421420'
+- id: Bart is alleen thuis
   alias: 🏡 Bart is alleen thuis
   description: ''
   trigger:
@@ -84,7 +84,7 @@
         message: Batterijen laag van {{sensors}}
       day: 6
       time: '12:00:00'
-- id: '1623870762333'
+- id: toiletteller
   alias: '⏱ toiletteller: beweging = + 1'
   description: ''
   trigger:
@@ -122,11 +122,11 @@
       is_ios: false
       notification_title: Upgrade time!
 - id: '1624690710489'
-  alias: 🚀Database cleanen
+  alias: 🚀 Database cleanen
   description: ''
   trigger:
   - platform: time
-    at: 09:00:00
+    at: 09:00
   condition: []
   action:
   - service: recorder.purge
@@ -168,7 +168,7 @@
       entity_id: fan.xiaomi_smart_fan_3c
   mode: single
 - id: '1585984405489'
-  alias: Air Quality Index > 8 = purifier on
+  alias: 💨 Air Quality Index > 8 = purifier on
   description: ''
   trigger:
   - minutes: /5
@@ -191,7 +191,7 @@
       preset_mode: auto
   mode: single
 - id: '1627132017585'
-  alias: 'not home = Air purifier off '
+  alias: '💨 not home = Air purifier off '
   description: ''
   trigger:
   - platform: state
@@ -228,17 +228,13 @@
     title: '{% if state_attr(''sensor.recycleapp_gft'', ''Days-until'') == 1 %} Morgen
       groene bak  {%elif state_attr(''sensor.recycleapp_restafval'', ''Days-until'')
       == 1 %}  Morgen bruine zak {%elif state_attr(''sensor.recycleapp_pmd'', ''Days-until'')
-      == 1 %} Morgen roze zak {%elif state_attr(''sensor.recycleapp_papier'', ''Days-until'')
-      == 1 %} Morgen oud papier {%endif%}
-
-      '
+      == 1 %} Morgen blauwe zak {%elif state_attr(''sensor.recycleapp_papier'', ''Days-until'')
+      == 1 %} Morgen oud papier {%endif%} '
     message: '{% if state_attr(''sensor.recycleapp_gft'', ''Days-until'') == 1 %}
       Zet de groene bak aan straat. {%elif state_attr(''sensor.recycleapp_restafval'',
       ''Days-until'') == 1 %} Zet de bruine zak aan straat. {%elif state_attr(''sensor.recycleapp_pmd'',
-      ''Days-until'') == 1 %} Zet de roze zak aan straat. {%elif state_attr(''sensor.recycleapp_papier'',
-      ''Days-until'') == 1 %} Zet het oud papier aan straat. {%endif%}
-
-      '
+      ''Days-until'') == 1 %} Zet de blauwe zak aan straat. {%elif state_attr(''sensor.recycleapp_papier'',
+      ''Days-until'') == 1 %} Zet het oud papier aan straat. {%endif%} '
   mode: single
 - id: '1627749113699'
   alias: Regen en raam open = melding
@@ -282,7 +278,7 @@
       tag: regen
   mode: single
 - id: '1628319868217'
-  alias: Air Quality Index < 8 = purifier off
+  alias: 💨 Air Quality Index < 8 = purifier off
   description: ''
   trigger:
   - minutes: /5
@@ -297,7 +293,7 @@
     target:
       entity_id: fan.xiaomi_air_purifier_3h
   mode: single
-- id: '1628708395094'
+- id: garagepoort staat lang open
   alias: Garagepoort staat lang open
   description: ''
   trigger:
@@ -316,4 +312,128 @@
     data:
       title: Garagepoort
       message: Garagepoort staat al 5 minuten open.
+  mode: single
+- id: '1628968597336'
+  alias: 🚀 Pi processor temp >72 °C = melding
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.processor_temperature
+    above: '72'
+    for: 00:10
+  condition: []
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: temperatuur Raspberry Pi CPU is %{{states('sensor.processor_temperature')}}%
+      title: Raspberry PI
+  mode: single
+- id: '1629102977277'
+  alias: 🚀 CPU > 60% = melding
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.processor_use_percent
+    above: '60'
+    for: 00:15
+  condition: []
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}%.
+      title: Raspberry Pi
+  mode: single
+- id: '1629324307314'
+  alias: 💨 purifier off @ 23u30
+  description: ''
+  trigger:
+  - platform: time
+    at: '23:30'
+  condition: []
+  action:
+  - service: fan.turn_off
+    target:
+      entity_id: fan.xiaomi_air_purifier_3h
+  mode: single
+- id: '1629798091047'
+  alias: Madouce verlaat huis, check mobiel internet
+  description: ''
+  trigger:
+  - platform: zone
+    entity_id: device_tracker.madouce_s20
+    zone: zone.home
+    event: leave
+  condition:
+  - condition: state
+    entity_id: binary_sensor.madouce_s20_mobiele_data
+    state: 'off'
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: Mobiele data telefoon Madouce staat niet aan.
+  mode: single
+- id: '1630089937341'
+  alias: auto niet op slot (nieuwe versie)
+  description: auto niet op slot (nieuwe versie)
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.audi_e_tron_sportback_55_trunk_lock
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: device_tracker.bart_s10
+    state: '0'
+    attribute: speed
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: Auto is niet op slot (ben bijna zeker)
+  mode: single
+- id: '1630139381340'
+  alias: 🚀 system shutdown notification
+  description: Send notification on Home Assistant stop
+  trigger:
+  - platform: homeassistant
+    event: shutdown
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: Home Assistant wordt gestopt.
+  mode: single
+- id: '1630139968618'
+  alias: 🚀 system restart notification
+  description: Send notification on Home Assistant start
+  trigger:
+  - platform: homeassistant
+    event: start
+  condition: []
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: Home Assistant is volledig gestart.
+  mode: single
+- id: '1630241023314'
+  alias: middernacht = reset schakelaars
+  description: reset booleans voor openzetten ramen ivm vocht
+  trigger:
+  - platform: time
+    at: 00:00
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    target:
+      entity_id:
+      - input_boolean.veranda_schuifraam_moet_open
+      - input_boolean.master_bedroom_raam_moet_open
+      - input_boolean.master_bedroom_humidity_pause2h
   mode: single

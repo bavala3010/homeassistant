@@ -9,7 +9,7 @@
 
 automation:
 - id: '1626193605013'
-  alias: 🏡 Bart komt thuis = welkom & melding garage/deur
+  alias: 🏡 Bart komt thuis = melding auto % + open garage/voordeur
   description: ''
   trigger:
   - platform: device
@@ -23,7 +23,7 @@ automation:
   - service: notify.mobile_app_bart_s10
     data:
       message: TTS
-      title: Welkom thuis Bart!
+      title: "Welkom thuis Bart! De auto batterij is {{states('sensor.audi_e_tron_sportback_55_state_of_charge') | round (0)}}%."
       data:
         channel: alarm_stream
   - service: notify.mobile_app_bart_s10
@@ -35,14 +35,9 @@ automation:
         tag: persistent
         color: red
         timeout: 420
-        actions:
-        - action: open_garage
-          title: OPEN GARAGE
-        - action: open_voordeur
-          title: OPEN VOORDEUR
   mode: single
 - id: '1624729230446'
-  alias: 🏡 Madouce komt thuis = welkom & melding garage/deur
+  alias: 🏡 Madouce komt thuis = melding auto % + open garage/voordeur
   description: ''
   trigger:
   - platform: device
@@ -56,7 +51,7 @@ automation:
   - service: notify.mobile_app_madouce_s20
     data:
       message: TTS
-      title: Welkom thuis Madouce!
+      title: "Welkom thuis Madouce! De auto batterij is {{states('sensor.audi_e_tron_sportback_55_state_of_charge') | round (0)}}%."
       data:
         channel: alarm_stream
   - service: notify.mobile_app_madouce_s20

@@ -231,7 +231,7 @@ automation:
   action:
   - service: notify.mobile_app_bart_s10
     data:
-      message: 🚙 Auto is terug op slot!
+      message: 🚙 Auto is op slot!
       data:
         channel: Important
         tag: slot_auto
@@ -239,7 +239,7 @@ automation:
         color: red
   - service: notify.mobile_app_madouce_s20
     data:
-      message: 🚙 Auto is terug op slot!
+      message: 🚙 Auto is op slot!
       data:
         channel: Important
         tag: slot_auto
