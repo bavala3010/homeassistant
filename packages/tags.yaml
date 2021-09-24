@@ -1,9 +1,12 @@
 ############################ Table of Contents ############################ 
 # 
 #   Automations
-#     TBD
-#     TBD
-
+#     garagepoorttag binnen gescand door Bart
+#     garagepoorttag binnen gescand door Madouce
+#     garagepoorttag binnen gescand door Alunya
+#     garagepoorttag buiten gescand door Madouce
+#     garagepoorttag buiten gescand door Alunya
+#     Tag gescand controle voor nacht
 
 ############################ Automations ################################## 
 
@@ -153,4 +156,45 @@ automation:
       data:
         color: "#FFA500"
         channel: home_access
+  mode: single
+  
+- id: 'Tag gescand controle voor nacht'
+  alias: Tag gescand controle voor nacht
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: df93d9d5-f6c6-4705-902a-b7e5d9dfbb77
+  condition: []
+  action:
+  - service: tts.google_say
+    data:
+      entity_id: media_player.nestaudio3875
+      message: "{% if is_state('lock.audi_e_tron_sportback_55_door_lock_2', 'unlocked') %} De auto is niet op slot. {% else %} De auto is op slot. {% endif %}"
+  - wait_template: ''
+    timeout: 00:00:05
+ #- wait_template: "{{ is_state('media_player.nestaudio3875','idle') }}"
+  - service: tts.google_say
+    data:
+      entity_id: media_player.nestaudio3875
+      message: "De auto is {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% geladen {% if is_state('sensor.audi_e_tron_sportback_55_plug_state', 'connected') %} en de laadkabel is verbonden. {%else%} maar de laadkabel is niet verbonden. {% endif %}"
+  - wait_template: ''
+    timeout: 00:00:06
+  - service: tts.google_say
+    data:
+      entity_id: media_player.nestaudio3875
+      message: "{% if is_state('lock.voordeur', 'unlocked') %} De voordeur is niet op slot. {% else %} De voordeur is op slot. {% endif %}"
+  - wait_template: ''
+    timeout: 00:00:03
+  - service: tts.google_say
+    data:
+      entity_id: media_player.nestaudio3875
+      message: '{% if is_state(''group.group.raam_sensoren'', ''off'')
+        %} Alle ramen zijn dicht! {% else %} De volgende ramen staan nog open: {{
+        expand(states.binary_sensor.kamer_amilya_raam_sensor, states.binary_sensor.kamer_alunya_raam_sensor,
+        states.binary_sensor.kamer_alunya_schuifraam_sensor, states.binary_sensor.badkamer_raam_sensor,
+        states.binary_sensor.berging_raam_sensor, states.binary_sensor.keuken_raam_sensor,
+        states.binary_sensor.living_oprit_raam_sensor, states.binary_sensor.living_tuin_raam_sensor,
+        states.binary_sensor.master_bedroom_raam_sensor, states.binary_sensor.veranda_schuifraam_sensor)
+        | selectattr(''state'',''eq'',''on'') | map(attribute=''name'')| list }} {%
+        endif %}'
   mode: single

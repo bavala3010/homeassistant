@@ -1,14 +1,17 @@
 ############################ Table of Contents ############################ 
 # 
 #   Automations
-#     TBD
-#     TBD
+#     S20+ Madouce 90% geladen = stekker uit
+#     S10+ Bart 90% geladen = stekker uit
+#     's morgens Bart S10+ nog bijladen
+#     's morgens Madouce S20+ nog bijladen
+#     Lader terug aanzetten als batterij gsm Madouce laag is (tussen 22:00 en 24:00)
 
 
 ############################ Automations ################################## 
 
 automation:
-- id: '1620855956412'
+- id: 'S20+ Madouce 90% geladen = stekker uit'
   alias: 🔌S20+ Madouce 90% geladen = stekker uit
   description: ''
   trigger:
@@ -28,7 +31,7 @@ automation:
     entity_id: switch.3504547724a160162a33_3
     domain: switch
   mode: single
-- id: '1620856017616'
+- id: 'S10+ Bart 90% geladen = stekker uit'
   alias: 🔌S10+ Bart 90% geladen = stekker uit
   description: ''
   trigger:
@@ -48,7 +51,7 @@ automation:
     entity_id: switch.53703774d8f15ba9d6e4
     domain: switch
   mode: single
-- id: '1621196156686'
+- id: "s morgens Bart S10+ nog bijladen"
   alias: 🔌's morgens Bart S10+ nog bijladen
   description: ''
   trigger:
@@ -58,7 +61,7 @@ automation:
   - type: is_battery_level
     condition: device
     device_id: b5d28be91fff8c03aece377f73b28dd2
-    entity_id: sensor.bart_s10_batterijniveau
+    entity_id: sensor.sm_g975f_battery_level
     domain: sensor
     below: 95
   action:
@@ -73,7 +76,7 @@ automation:
     entity_id: switch.53703774d8f15ba9d6e4
     domain: switch
   mode: single
-- id: '1621196550196'
+- id: "'s morgens Madouce S20+ nog bijladen"
   alias: 🔌's morgens Madouce S20+ nog bijladen
   description: ''
   trigger:
@@ -98,7 +101,7 @@ automation:
     entity_id: switch.3504547724a160162a33_3
     domain: switch
   mode: single
-- id: '1621080877622'
+- id: 'Lader terug aanzetten als batterij gsm Madouce laag is (tussen 22:00 en 24:00)'
   alias: 🔌Lader terug aanzetten als batterij gsm Madouce laag is (tussen 22:00 en
     24:00)
   description: ''

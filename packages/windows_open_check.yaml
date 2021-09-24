@@ -1,0 +1,390 @@
+############################ Table of Contents ############################ 
+#
+#  check to OPEN windows
+# 
+###########################################################################
+
+automation:
+
+- id: 'ramen -  check living room (open)'
+  alias: 🪟 ramen - check living room (open)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.gram_water_outside
+  condition:
+  - condition: template
+    value_template: >
+      {{trigger.to_state is not none and
+        trigger.from_state is not none and
+        trigger.to_state.state != trigger.from_state.state}}
+  - condition: numeric_state
+    entity_id: sensor.living_room_temperature
+    above: '17'            
+  - condition: numeric_state
+    entity_id: sensor.living_room_heating
+    below: '0.1'
+  - condition: template
+    value_template: "{{ (states('sensor.living_room_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) < 8 }}"        
+  - condition: or
+    conditions:    
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.gram_water_outside_rising
+            state: 'off'
+          - condition: template
+            value_template: "{{ states('sensor.gram_water_living_room_diff_outside') | float >= 0.4 }}"
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.gram_water_outside_rising
+            state: 'on'
+          - condition: template
+            value_template: "{{ states('sensor.gram_water_living_room_diff_outside') | float > 1 }}"
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.living_room_raam_moet_open
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.living_room_raam_moet_dicht
+  mode: single
+  
+- id: 'ramen -  check kamer Amilya (open)'
+  alias: 🪟 ramen -  check kamer Amilya (open)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.gram_water_outside
+  condition:
+  - condition: template
+    value_template: >
+      {{trigger.to_state is not none and
+        trigger.from_state is not none and
+        trigger.to_state.state != trigger.from_state.state}}
+  - condition: numeric_state
+    entity_id: sensor.kamer_amilya_temperature
+    above: '17'            
+  - condition: numeric_state
+    entity_id: sensor.kamer_amilya_heating
+    below: '0.1'
+  - condition: template
+    value_template: "{{ (states('sensor.kamer_amilya_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) < 7 }}"        
+  - condition: or
+    conditions:    
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.gram_water_outside_rising
+            state: 'off'
+          - condition: template
+            value_template: "{{ states('sensor.gram_water_kamer_amilya_diff_outside') | float >= 0.4 }}"    
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.gram_water_outside_rising
+            state: 'on'
+          - condition: template
+            value_template: "{{ states('sensor.gram_water_kamer_amilya_diff_outside') | float > 1 }}"
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.kamer_amilya_raam_moet_open
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.kamer_amilya_raam_moet_dicht
+  mode: single
+  
+- id: 'ramen -  check veranda (open)'
+  alias: 🪟 ramen -  check veranda (open)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.gram_water_outside
+  condition:
+  - condition: template
+    value_template: >
+      {{trigger.to_state is not none and
+        trigger.from_state is not none and
+        trigger.to_state.state != trigger.from_state.state}}        
+  action:
+  - condition: numeric_state
+    entity_id: sensor.veranda_temperature
+    above: '17'            
+  - condition: numeric_state
+    entity_id: sensor.veranda_heating
+    below: '0.1'
+  - condition: template
+    value_template: "{{ (states('sensor.veranda_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) < 7 }}"
+  - condition: or
+    conditions:
+      # first possible case
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.gram_water_outside_rising
+            state: 'off'
+          - condition: template
+            value_template: "{{ states('sensor.gram_water_veranda_diff_outside') | float >= 0.4 }}"    
+      # second possible case
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.gram_water_outside_rising
+            state: 'on'
+          - condition: template
+            value_template: "{{ states('sensor.gram_veranda_diff_outside') | float > 1 }}"
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.veranda_schuifraam_moet_open
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.veranda_schuifraam_moet_dicht
+  mode: single
+  
+- id: 'ramen -  check berging (open)'
+  alias: 🪟 ramen -  check berging (open)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.gram_water_outside
+  condition:
+  - condition: template
+    value_template: >
+      {{trigger.to_state is not none and
+        trigger.from_state is not none and
+        trigger.to_state.state != trigger.from_state.state}}
+  - condition: numeric_state
+    entity_id: sensor.berging_temperature
+    above: '17'            
+  - condition: numeric_state
+    entity_id: sensor.berging_heating
+    below: '0.1'
+  - condition: template
+    value_template: "{{ (states('sensor.berging_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) < 7 }}"        
+  - condition: or
+    conditions:    
+      # first possible case
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.gram_water_outside_rising
+            state: 'off'
+          - condition: template
+            value_template: "{{ states('sensor.gram_water_berging_diff_outside') | float >= 0.4 }}"
+          - condition: numeric_state
+            entity_id: sensor.berging_temperature
+            above: '16.5'             
+      # second possible case
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.gram_water_outside_rising
+            state: 'on'
+          - condition: template
+            value_template: "{{ states('sensor.gram_berging_diff_outside') | float > 1 }}"
+          - condition: numeric_state
+            entity_id: sensor.berging_temperature
+            above: '16.5'
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.berging_raam_moet_open
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.berging_raam_moet_dicht
+  mode: single
+    
+- id: 'ramen -  check badkamer (open)'
+  alias: 🪟 ramen -  check badkamer (open)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.gram_water_outside
+  condition:
+  - condition: template
+    value_template: >
+      {{trigger.to_state is not none and
+        trigger.from_state is not none and
+        trigger.to_state.state != trigger.from_state.state}}
+  - condition: numeric_state
+    entity_id: sensor.badkamer_temperature
+    above: '17'            
+  - condition: numeric_state
+    entity_id: sensor.badkamer_heating
+    below: '0.1'
+  - condition: template
+    value_template: "{{ (states('sensor.badkamer_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) < 10 }}"
+  - condition: or
+    conditions:    
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.gram_water_outside_rising
+            state: 'off'
+          - condition: template
+            value_template: "{{ states('sensor.gram_water_badkamer_diff_outside') | float >= 0.4 }}"    
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.gram_water_outside_rising
+            state: 'on'
+          - condition: template
+            value_template: "{{ states('sensor.gram_badkamer_diff_outside') | float > 1 }}"
+  action:
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.badkamer_raam_moet_open
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.badkamer_raam_moet_dicht
+  mode: single
+
+
+- id: 'ramen -  check gang (open)'
+  alias: 🪟 ramen -  check gang (open)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.gram_water_outside
+  condition:
+  - condition: template
+    value_template: >
+      {{trigger.to_state is not none and
+        trigger.from_state is not none and
+        trigger.to_state.state != trigger.from_state.state}}
+  - condition: numeric_state
+    entity_id: sensor.gang_temperature
+    above: '17'            
+  - condition: numeric_state
+    entity_id: sensor.gang_heating
+    below: '0.1'
+  - condition: template
+    value_template: "{{ (states('sensor.gang_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) < 7 }}"        
+  - condition: or
+    conditions:    
+      # first possible case
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.gram_water_outside_rising
+            state: 'off'
+          - condition: template
+            value_template: "{{ states('sensor.gram_water_gang_diff_outside') | float >= 0.4 }}"
+          - condition: numeric_state
+            entity_id: sensor.gang_temperature
+            above: '16.5'             
+      # second possible case
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.gram_water_outside_rising
+            state: 'on'
+          - condition: template
+            value_template: "{{ states('sensor.gram_gang_diff_outside') | float > 1 }}"
+          - condition: numeric_state
+            entity_id: sensor.gang_temperature
+            above: '16.5'
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.gang_raam_moet_open
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.gang_raam_moet_dicht
+  mode: single
+
+- id: 'ramen -  check kamer Alunya (open)'
+  alias: 🪟 ramen -  check kamer Alunya (open)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.gram_water_outside
+  condition:
+  - condition: template
+    value_template: >
+      {{trigger.to_state is not none and
+        trigger.from_state is not none and
+        trigger.to_state.state != trigger.from_state.state}}
+  - condition: numeric_state
+    entity_id: sensor.kamer_alunya_temperature
+    above: '17'            
+  - condition: numeric_state
+    entity_id: sensor.kamer_alunya_heating
+    below: '0.1'
+  - condition: template
+    value_template: "{{ (states('sensor.kamer_alunya_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) < 8 }}"        
+  - condition: or
+    conditions:    
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.gram_water_outside_rising
+            state: 'off'
+          - condition: template
+            value_template: "{{ states('sensor.gram_water_kamer_alunya_diff_outside') | float >= 0.4 }}"    
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.gram_water_outside_rising
+            state: 'on'
+          - condition: template
+            value_template: "{{ states('sensor.gram_kamer_alunya_diff_outside') | float > 1 }}"
+  action:
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.kamer_alunya_raam_moet_open
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.kamer_alunya_raam_moet_dicht
+  mode: single
+
+- id: 'ramen -  check master bedroom (open)'
+  alias: 🪟 ramen -  check master bedroom (open)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.gram_water_outside
+  condition:
+  - condition: template
+    value_template: >
+      {{trigger.to_state is not none and
+        trigger.from_state is not none and
+        trigger.to_state.state != trigger.from_state.state}}
+  - condition: numeric_state
+    entity_id: sensor.master_bedroom_temperature
+    above: '16.5'            
+  - condition: numeric_state
+    entity_id: sensor.master_bedroom_heating
+    below: '0.1'
+  - condition: template
+    value_template: "{{ (states('sensor.master_bedroom_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) < 10 }}"      
+  - condition: or
+    conditions:
+      # first possible case: vocht buiten stijgt niet + binnen minstens 0.4 gram vocht meer dan buiten + temp binnen hoger dan 16.5 + temperatuurverschil binnen/buiten minder dan 10°
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.gram_water_outside_rising
+            state: 'off'
+          - condition: template
+            value_template: "{{ states('sensor.gram_water_master_bedroom_diff_outside') | float >= 0.4 }}"    
+      # second possible case: vocht buiten stijgt wel + binnen minstens 1 gram vocht meer dan buiten + temp binnen hoger dan 16.5 + temperatuurverschil binnen/buiten minder dan 10°
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: binary_sensor.gram_water_outside_rising
+            state: 'on'
+          - condition: template
+            value_template: "{{ states('sensor.gram_master_bedroom_diff_outside') | float >= 1 }}"
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.master_bedroom_raam_moet_open
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.master_bedroom_raam_moet_dicht
+  mode: single
+
+

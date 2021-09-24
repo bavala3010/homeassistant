@@ -1,0 +1,155 @@
+automation:
+- id: '1628968597336'
+  alias: 🚀 Pi processor temp >72 °C = melding
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.processor_temperature
+    above: '72'
+    for: 00:10
+  condition: []
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: temperatuur Raspberry Pi CPU is %{{states('sensor.processor_temperature')}}%
+      title: Raspberry PI
+  mode: single
+- id: '1629102977277'
+  alias: 🚀 CPU > 60% = melding
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.processor_use_percent
+    above: '60'
+    for: 00:15
+  condition: []
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}%.
+      title: Raspberry Pi
+  mode: single
+
+- id: '1630139381340'
+  alias: 🚀 system shutdown notification
+  description: Send notification on Home Assistant stop
+  trigger:
+  - platform: homeassistant
+    event: shutdown
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: Home Assistant wordt gestopt.
+  mode: single
+
+- id: '1630139968618'
+  alias: 🚀 system restart notification
+  description: Send notification on Home Assistant start
+  trigger:
+  - platform: homeassistant
+    event: start
+  condition: []
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: Home Assistant is volledig gestart.
+  mode: single
+
+- id: '1620906941892'
+  alias: 🚀Low battery level detection & notification for all battery sensors
+  description: ''
+  use_blueprint:
+    path: sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
+    input:
+      threshold: 10
+      actions:
+      - device_id: b5d28be91fff8c03aece377f73b28dd2
+        domain: mobile_app
+        type: notify
+        title: Batterijen
+        message: Batterijen laag van {{sensors}}
+      day: 6
+      time: '12:00:00'
+- id: toiletteller
+  alias: '⏱ toiletteller: beweging = + 1'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.toilet_motion_sensor_motion
+    to: 'on'
+  condition: []
+  action:
+  - service: counter.increment
+    target:
+      entity_id: counter.toilet_counter
+  mode: single
+- id: 'toiletteller: reset om middernacht'
+  alias: '⏱ toiletteller: reset om middernacht'
+  description: ''
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition: []
+  action:
+  - service: counter.reset
+    target:
+      entity_id: counter.toilet_counter
+  mode: single
+- id: '1623481635053'
+  alias: 🚀Home Assistant update notification
+  description: ''
+  use_blueprint:
+    path: Klumper/update_notification.yaml
+    input:
+      notification_message: Home Assistant {{ newest_version }} is available
+      delay: 0
+      updater: binary_sensor.updater
+      notify_device: b5d28be91fff8c03aece377f73b28dd2
+      is_ios: false
+      notification_title: Upgrade time!
+- id: '1624690710489'
+  alias: 🚀 Database cleanen
+  description: ''
+  trigger:
+  - platform: time
+    at: 09:00
+  condition: []
+  action:
+  - service: recorder.purge
+    data:
+      keep_days: 30
+  mode: single
+- id: '1626947283881'
+  alias: 'fan: slaapkamer >21° = ventilator aan'
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{ states(''sensor.master_bedroom_temperature'') | float > 21
+      }}'
+  condition:
+  - condition: time
+    after: '22:30:00'
+    before: '8:00:00'
+  - condition: state
+    entity_id: person.bart
+    state: home
+  action:
+  - service: fan.turn_on
+    target:
+      entity_id: fan.xiaomi_smart_fan_3c
+    data:
+      percentage: 15
+  mode: single
+- id: '1626947798371'
+  alias: 'fan: slaapkamer <21° = ventilator uit'
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{ states(''sensor.master_bedroom_temperature'') | float < 21
+      }}'
+  condition: []
+  action:
+  - service: fan.turn_off
+    target:
+      entity_id: fan.xiaomi_smart_fan_3c
+  mode: single

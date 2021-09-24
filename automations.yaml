@@ -1,36 +1,3 @@
-- id: '1523171764336'
-  alias: 👀 beweging oprit
-  description: Beweging op oprit = melding op living speaker
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.buitensensor_vooraan_motion
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: template
-    value_template: '{{ as_timestamp(now()) - as_timestamp(states.automation.beweging_oprit.attributes.last_triggered)
-      | int > 120 }}'
-  action:
-  - service: tts.google_say
-    data:
-      entity_id: media_player.living_speaker
-      message: Beweging op oprit!
-  - service: tts.google_say
-    data:
-      entity_id: media_player.veranda_speaker_2
-      message: Beweging op oprit!
-  - wait_template: ''
-    timeout: 00:00:10
-  - service: camera.play_stream
-    data:
-      media_player: media_player.living_speaker
-    target:
-      entity_id: camera.netatmo_eikenbos_oprit
-  - wait_template: ''
-    timeout: 00:01:30
-  - service: media_player.turn_off
-    entity_id: media_player.living_speaker
-  mode: single
 - id: '1622329889344'
   alias: 🛌 Madouce thuis om 22u30 en <15° buiten = matras aan
   description: ''
@@ -69,311 +36,8 @@
       message: TTS
       title: Bart, je bent alleen thuis!
   mode: single
-- id: '1620906941892'
-  alias: 🚀Low battery level detection & notification for all battery sensors
-  description: ''
-  use_blueprint:
-    path: sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
-    input:
-      threshold: 10
-      actions:
-      - device_id: b5d28be91fff8c03aece377f73b28dd2
-        domain: mobile_app
-        type: notify
-        title: Batterijen
-        message: Batterijen laag van {{sensors}}
-      day: 6
-      time: '12:00:00'
-- id: toiletteller
-  alias: '⏱ toiletteller: beweging = + 1'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.toilet_motion_sensor_motion
-    to: 'on'
-  condition: []
-  action:
-  - service: counter.increment
-    target:
-      entity_id: counter.toilet_counter
-  mode: single
-- id: '1623870917990'
-  alias: '⏱ toiletteller: reset om middernacht'
-  description: ''
-  trigger:
-  - platform: time
-    at: 00:00:00
-  condition: []
-  action:
-  - service: counter.reset
-    target:
-      entity_id: counter.toilet_counter
-  mode: single
-- id: '1623481635053'
-  alias: 🚀Home Assistant update notification
-  description: ''
-  use_blueprint:
-    path: Klumper/update_notification.yaml
-    input:
-      notification_message: Home Assistant {{ newest_version }} is available
-      delay: 0
-      updater: binary_sensor.updater
-      notify_device: b5d28be91fff8c03aece377f73b28dd2
-      is_ios: false
-      notification_title: Upgrade time!
-- id: '1624690710489'
-  alias: 🚀 Database cleanen
-  description: ''
-  trigger:
-  - platform: time
-    at: 09:00
-  condition: []
-  action:
-  - service: recorder.purge
-    data:
-      keep_days: 30
-  mode: single
-- id: '1626947283881'
-  alias: 'fan: slaapkamer >21° = ventilator aan'
-  description: ''
-  trigger:
-  - platform: template
-    value_template: '{{ states(''sensor.master_bedroom_temperature'') | float > 21
-      }}'
-  condition:
-  - condition: time
-    after: '22:30:00'
-    before: '8:00:00'
-  - condition: state
-    entity_id: person.bart
-    state: home
-  action:
-  - service: fan.turn_on
-    target:
-      entity_id: fan.xiaomi_smart_fan_3c
-    data:
-      percentage: 15
-  mode: single
-- id: '1626947798371'
-  alias: 'fan: slaapkamer <21° = ventilator uit'
-  description: ''
-  trigger:
-  - platform: template
-    value_template: '{{ states(''sensor.master_bedroom_temperature'') | float < 21
-      }}'
-  condition: []
-  action:
-  - service: fan.turn_off
-    target:
-      entity_id: fan.xiaomi_smart_fan_3c
-  mode: single
-- id: '1585984405489'
-  alias: 💨 Air Quality Index > 8 = purifier on
-  description: ''
-  trigger:
-  - minutes: /5
-    platform: time_pattern
-  condition:
-  - condition: numeric_state
-    entity_id: fan.xiaomi_air_purifier_3h
-    attribute: aqi
-    above: '8'
-  - condition: state
-    entity_id: group.group_gezin
-    state: home
-  - condition: time
-    after: '7:00'
-    before: '23:30'
-  action:
-  - service: fan.set_preset_mode
-    data:
-      entity_id: fan.xiaomi_air_purifier_3h
-      preset_mode: auto
-  mode: single
-- id: '1627132017585'
-  alias: '💨 not home = Air purifier off '
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: group.group_gezin
-    to: not_home
-    for: 00:05:00
-  condition: []
-  action:
-  - service: fan.turn_off
-    target:
-      entity_id: fan.xiaomi_air_purifier_3h
-  mode: single
-- id: '1627745783008'
-  alias: RecycleApp notificaties
-  trigger:
-  - platform: time
-    at: '20:30:00'
-  condition:
-  - condition: not
-    conditions:
-    - condition: state
-      entity_id: sensor.recycleapp_morgen
-      state: Geen
-  action:
-  - service: notify.mobile_app_bart_s10
-    data:
-      title: '{{title}}'
-      message: '{{message}}'
-  - service: notify.mobile_app_madouce_S20
-    data:
-      title: '{{title}}'
-      message: '{{message}}'
-  variables:
-    title: '{% if state_attr(''sensor.recycleapp_gft'', ''Days-until'') == 1 %} Morgen
-      groene bak  {%elif state_attr(''sensor.recycleapp_restafval'', ''Days-until'')
-      == 1 %}  Morgen bruine zak {%elif state_attr(''sensor.recycleapp_pmd'', ''Days-until'')
-      == 1 %} Morgen blauwe zak {%elif state_attr(''sensor.recycleapp_papier'', ''Days-until'')
-      == 1 %} Morgen oud papier {%endif%} '
-    message: '{% if state_attr(''sensor.recycleapp_gft'', ''Days-until'') == 1 %}
-      Zet de groene bak aan straat. {%elif state_attr(''sensor.recycleapp_restafval'',
-      ''Days-until'') == 1 %} Zet de bruine zak aan straat. {%elif state_attr(''sensor.recycleapp_pmd'',
-      ''Days-until'') == 1 %} Zet de blauwe zak aan straat. {%elif state_attr(''sensor.recycleapp_papier'',
-      ''Days-until'') == 1 %} Zet het oud papier aan straat. {%endif%} '
-  mode: single
-- id: '1627749113699'
-  alias: Regen en raam open = melding
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.precip_rate_leuven24_wunderground
-    above: '0'
-  condition:
-  - condition: state
-    entity_id: binary_sensor.amilya_window_sensor
-    state: 'on'
-  action:
-  - service: notify.mobile_app_bart_s10
-    data:
-      message: Het regent en het raam van Amilya staat open.
-      title: Het regent. Doe raam Amilya dicht aub.
-  - service: notify.mobile_app_madouce_s20
-    data:
-      message: Het regent en het raam van Amilya staat open.
-      title: Het regent. Doe raam Amilya dicht aub.
-  mode: single
-- id: '1627754705422'
-  alias: het regent
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.precip_rate_leuven24_wunderground
-    above: '0'
-  condition: []
-  action:
-  - service: notify.mobile_app_bart_s10
-    data:
-      message: Het regent. Zijn de ramen dicht?
-      title: Regen
-      tag: regen
-  - service: notify.mobile_app_madouce_s20
-    data:
-      message: Het regent. Zijn de ramen dicht?
-      title: Regen
-      tag: regen
-  mode: single
-- id: '1628319868217'
-  alias: 💨 Air Quality Index < 8 = purifier off
-  description: ''
-  trigger:
-  - minutes: /5
-    platform: time_pattern
-  condition:
-  - condition: numeric_state
-    entity_id: fan.xiaomi_air_purifier_3h
-    attribute: aqi
-    below: '8'
-  action:
-  - service: fan.turn_off
-    target:
-      entity_id: fan.xiaomi_air_purifier_3h
-  mode: single
-- id: garagepoort staat lang open
-  alias: Garagepoort staat lang open
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.ty18857573dc4f22b78e02
-    from: 'off'
-    to: 'on'
-    for: 00:05:00
-  condition: []
-  action:
-  - service: notify.mobile_app_bart_s10
-    data:
-      title: Garagepoort
-      message: Garagepoort staat al 5 minuten open.
-  - service: notify.mobile_app_madouce_s20
-    data:
-      title: Garagepoort
-      message: Garagepoort staat al 5 minuten open.
-  mode: single
-- id: '1628968597336'
-  alias: 🚀 Pi processor temp >72 °C = melding
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.processor_temperature
-    above: '72'
-    for: 00:10
-  condition: []
-  action:
-  - service: notify.mobile_app_bart_s10
-    data:
-      message: temperatuur Raspberry Pi CPU is %{{states('sensor.processor_temperature')}}%
-      title: Raspberry PI
-  mode: single
-- id: '1629102977277'
-  alias: 🚀 CPU > 60% = melding
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.processor_use_percent
-    above: '60'
-    for: 00:15
-  condition: []
-  action:
-  - service: notify.mobile_app_bart_s10
-    data:
-      message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}%.
-      title: Raspberry Pi
-  mode: single
-- id: '1629324307314'
-  alias: 💨 purifier off @ 23u30
-  description: ''
-  trigger:
-  - platform: time
-    at: '23:30'
-  condition: []
-  action:
-  - service: fan.turn_off
-    target:
-      entity_id: fan.xiaomi_air_purifier_3h
-  mode: single
-- id: '1629798091047'
-  alias: Madouce verlaat huis, check mobiel internet
-  description: ''
-  trigger:
-  - platform: zone
-    entity_id: device_tracker.madouce_s20
-    zone: zone.home
-    event: leave
-  condition:
-  - condition: state
-    entity_id: binary_sensor.madouce_s20_mobiele_data
-    state: 'off'
-  action:
-  - service: notify.mobile_app_bart_s10
-    data:
-      message: Mobiele data telefoon Madouce staat niet aan.
-  mode: single
 - id: '1630089937341'
-  alias: auto niet op slot (nieuwe versie)
+  alias: 🚗 auto niet op slot (nieuwe versie)
   description: auto niet op slot (nieuwe versie)
   trigger:
   - platform: state
@@ -399,41 +63,49 @@
     data:
       message: Auto is niet op slot (ben bijna zeker)
   mode: single
-- id: '1630139381340'
-  alias: 🚀 system shutdown notification
-  description: Send notification on Home Assistant stop
+- id: '1630698207932'
+  alias: Master bedroom deurswitch
+  description: ''
   trigger:
-  - platform: homeassistant
-    event: shutdown
+  - device_id: 4247e8ef769909d83520323811fc6550
+    domain: hue
+    platform: device
+    type: remote_button_short_release
+    subtype: turn_on
+  condition:
+  - condition: sun
+    after: sunset
   action:
-  - service: notify.mobile_app_bart_s10
-    data:
-      message: Home Assistant wordt gestopt.
-  mode: single
-- id: '1630139968618'
-  alias: 🚀 system restart notification
-  description: Send notification on Home Assistant start
-  trigger:
-  - platform: homeassistant
-    event: start
-  condition: []
-  action:
-  - service: notify.mobile_app_bart_s10
-    data:
-      message: Home Assistant is volledig gestart.
-  mode: single
-- id: '1630241023314'
-  alias: middernacht = reset schakelaars
-  description: reset booleans voor openzetten ramen ivm vocht
-  trigger:
-  - platform: time
-    at: 00:00
-  condition: []
-  action:
-  - service: input_boolean.turn_off
+  - service: light.turn_on
     target:
       entity_id:
-      - input_boolean.veranda_schuifraam_moet_open
-      - input_boolean.master_bedroom_raam_moet_open
-      - input_boolean.master_bedroom_humidity_pause2h
+      - light.play_madouce
+      - light.play_bart
+      - light.staande_lamp
+    data:
+      brightness_pct: 75
+  mode: single
+
+- id: '1632427763962'
+  alias: Alunya verwarming aan + raam open = verwarming uit
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.kamer_alunya_heating
+    above: '0'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.kamer_alunya_raam_sensor
+    state: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  action:
+  - service: climate.set_hvac_mode
+    target:
+      entity_id: climate.kamer_alunya
+    data:
+      hvac_mode: auto
   mode: single

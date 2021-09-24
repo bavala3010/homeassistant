@@ -44,6 +44,34 @@ homeassistant:
 # secrets should not be mentioned in this file; it is automatic !
 # secrets: !include secrets.yaml
 
+influxdb:
+  api_version: 2
+  ssl: false
+  host: 192.168.86.101
+  port: 8086
+  token: K2k46Gxxtwl83bqhKJs2M4CsoYECUccjMnxpIcvjqzg64Tkxk-QdF_QHq3IB4rtDHxZEABx3Q74YBZ6oFwHNyQ==
+  organization: 30fed6985f8efca2
+  bucket: home_assistant
+  tags:
+    source: HA
+  tags_attributes:
+    - friendly_name
+  default_measurement: units
+  exclude:
+    entities:
+      - zone.home
+    domains:
+      - persistent_notification
+      - person
+  include:
+    domains:
+      - sensor
+      - binary_sensor
+      - sun
+    entities:
+      - weather.home
+
+
 # needed when using reverse proxy managers (eg. Nginx)
 http:
   use_x_forwarded_for: true
@@ -119,7 +147,7 @@ alarm_control_panel:
     name: home_alarm
     code: !secret alarm_code
     code_arm_required: false
-    arming_time: 30
+    arming_time: 60
     delay_time: 5
     trigger_time: 4
     disarmed:
@@ -142,6 +170,45 @@ utility_meter:
     cycle: monthly
 
 sensor:
+  - platform: thermal_comfort
+    sensors:
+      outside_thermal:
+        friendly_name: outside
+        temperature_sensor: sensor.temp_leuven24_wunderground
+        humidity_sensor: sensor.humidity_leuven24_wunderground
+      living_room_thermal:
+        friendly_name: living room
+        temperature_sensor: sensor.living_room_temperature
+        humidity_sensor: sensor.living_room_humidity
+      kamer_amilya_thermal:
+        friendly_name: kamer Amilya
+        temperature_sensor: sensor.kamer_amilya_temperature
+        humidity_sensor: sensor.kamer_amilya_humidity
+      veranda_thermal:
+        friendly_name: veranda
+        temperature_sensor: sensor.veranda_temperature
+        humidity_sensor: sensor.veranda_humidity
+      berging_thermal:
+        friendly_name: berging
+        temperature_sensor: sensor.berging_temperature
+        humidity_sensor: sensor.berging_humidity
+      gang_thermal:
+        friendly_name: gang
+        temperature_sensor: sensor.gang_temperature
+        humidity_sensor: sensor.gang_humidity
+      badkamer_thermal:
+        friendly_name: badkamer
+        temperature_sensor: sensor.badkamer_temperature
+        humidity_sensor: sensor.badkamer_humidity
+      kamer_alunya_thermal:
+        friendly_name: kamer Alunya
+        temperature_sensor: sensor.kamer_alunya_temperature
+        humidity_sensor: sensor.kamer_alunya_humidity
+      master_bedroom_thermal:
+        friendly_name: master bedroom
+        temperature_sensor: sensor.master_bedroom_temperature
+        humidity_sensor: sensor.master_bedroom_humidity
+
   - platform: template
     sensors:
       xiaomi_air_purifier_air_quality_pm25:
@@ -151,36 +218,151 @@ sensor:
         icon_template: "mdi:weather-fog"
 
   - platform: template
+  # calculation of absolute humidity based on relative humidity and temperature
+  # https://carnotcycle.wordpress.com/2012/08/04/how-to-convert-relative-humidity-to-absolute-humidity/
     sensors:
-      max_humidity_allowed_house:
-       # dauwpunt
-       # https://bmcnoldy.rsmas.miami.edu/Humidity.html
-        friendly_name: Maximum vochtigheidsgraad in huis
+      gram_water_outside:
+        friendly_name: 'gram vocht per m³ buiten'
         device_class: humidity
-        unit_of_measurement: '%'
-        icon_template: mdi:water-percent
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
         value_template: >-
-          {{ (100.0 * ( e ** ((17.625*(states('sensor.temp_leuven24_wunderground')|float))/(243.04+(states('sensor.temp_leuven24_wunderground')|float))) ) / ( e ** ((17.625*(states('sensor.avg_inside_temperature')|float))/(243.04+(states('sensor.avg_inside_temperature')|float))) )) | round(0) }}
+          {{ ((e ** ((17.67 * (states('sensor.temp_leuven24_wunderground')|float)) / (243.5 + (states('sensor.temp_leuven24_wunderground')|float)) ) * 6.112 * (states('sensor.humidity_leuven24_wunderground')|float) * 2.1674 ) / (273.15 + (states('sensor.temp_leuven24_wunderground')|float))) | round(1) }}
 
-      max_humidity_allowed_master_bedroom:
-       # dauwpunt
-       # https://bmcnoldy.rsmas.miami.edu/Humidity.html
-        friendly_name: Maximum vochtigheidsgraad in master bedroom
+      gram_water_living_room:
+        friendly_name: 'gram vocht per m³ in living'
         device_class: humidity
-        unit_of_measurement: '%'
-        icon_template: mdi:water-percent
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
         value_template: >-
-          {{ (100.0 * ( e ** ((17.625*(states('sensor.temp_leuven24_wunderground')|float))/(243.04+(states('sensor.temp_leuven24_wunderground')|float))) ) / ( e ** ((17.625*(states('sensor.master_bedroom_temperature')|float))/(243.04+(states('sensor.master_bedroom_temperature')|float))) )) | round(0) }}
+          {{ ((e ** ((17.67 * (states('sensor.living_room_temperature')|float)) / (243.5 + (states('sensor.living_room_temperature')|float)) ) * 6.112 * (states('sensor.living_room_humidity')|float) * 2.1674 ) / (273.15 + (states('sensor.living_room_temperature')|float))) | round(1) }}
 
-      max_humidity_allowed_badkamer:
-       # dauwpunt
-       # https://bmcnoldy.rsmas.miami.edu/Humidity.html
-        friendly_name: Maximum vochtigheidsgraad in badkamer
+      gram_water_kamer_amilya:
+        friendly_name: 'gram vocht per m³ in kamer Amilya'
         device_class: humidity
-        unit_of_measurement: '%'
-        icon_template: mdi:water-percent
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
         value_template: >-
-          {{ (100.0 * ( e ** ((17.625*(states('sensor.temp_leuven24_wunderground')|float))/(243.04+(states('sensor.temp_leuven24_wunderground')|float))) ) / ( e ** ((17.625*(states('sensor.badkamer_temperature')|float))/(243.04+(states('sensor.badkamer_temperature')|float))) )) | round(0) }}
+          {{ ((e ** ((17.67 * (states('sensor.kamer_amilya_temperature')|float)) / (243.5 + (states('sensor.kamer_amilya_temperature')|float)) ) * 6.112 * (states('sensor.kamer_amilya_humidity')|float) * 2.1674 ) / (273.15 + (states('sensor.kamer_amilya_temperature')|float))) | round(1) }}
+
+      gram_water_veranda:
+        friendly_name: 'gram vocht per m³ in veranda'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >-
+          {{ ((e ** ((17.67 * (states('sensor.veranda_temperature')|float)) / (243.5 + (states('sensor.veranda_temperature')|float)) ) * 6.112 * (states('sensor.veranda_humidity')|float) * 2.1674 ) / (273.15 + (states('sensor.veranda_temperature')|float))) | round(1) }}
+
+      gram_water_berging:
+        friendly_name: 'gram vocht per m³ in berging'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >-
+          {{ ((e ** ((17.67 * (states('sensor.berging_temperature')|float)) / (243.5 + (states('sensor.berging_temperature')|float)) ) * 6.112 * (states('sensor.berging_humidity')|float) * 2.1674 ) / (273.15 + (states('sensor.kamer_amilya_temperature')|float))) | round(1) }}
+
+      gram_water_badkamer:
+        friendly_name: 'gram vocht per m³ in badkamer'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >-
+          {{ ((e ** ((17.67 * (states('sensor.badkamer_temperature')|float)) / (243.5 + (states('sensor.badkamer_temperature')|float)) ) * 6.112 * (states('sensor.badkamer_humidity')|float) * 2.1674 ) / (273.15 + (states('sensor.badkamer_temperature')|float))) | round(1) }}
+
+      gram_water_gang:
+        friendly_name: 'gram vocht per m³ in gang'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >-
+          {{ ((e ** ((17.67 * (states('sensor.gang_temperature')|float)) / (243.5 + (states('sensor.gang_temperature')|float)) ) * 6.112 * (states('sensor.gang_humidity')|float) * 2.1674 ) / (273.15 + (states('sensor.gang_temperature')|float))) | round(1) }}
+
+      gram_water_kamer_alunya:
+        friendly_name: 'gram vocht per m³ in kamer Alunya'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >-
+          {{ ((e ** ((17.67 * (states('sensor.kamer_alunya_temperature')|float)) / (243.5 + (states('sensor.kamer_alunya_temperature')|float)) ) * 6.112 * (states('sensor.kamer_alunya_humidity')|float) * 2.1674 ) / (273.15 + (states('sensor.kamer_alunya_temperature')|float))) | round(1) }}
+
+      gram_water_master_bedroom:
+        friendly_name: 'gram vocht per m³ in master bedroom'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >-
+          {{ ((e ** ((17.67 * (states('sensor.master_bedroom_temperature')|float)) / (243.5 + (states('sensor.master_bedroom_temperature')|float)) ) * 6.112 * (states('sensor.master_bedroom_humidity')|float) * 2.1674 ) / (273.15 + (states('sensor.master_bedroom_temperature')|float))) | round(1) }}
+
+      gram_water_living_room_diff_outside:
+        friendly_name: 'verschil gram vocht per m³ in living room en buiten'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: "{{ ((states('sensor.gram_water_living_room') | float) - (states('sensor.gram_water_outside')|float)) | round(1) }}"
+
+      gram_water_kamer_amilya_diff_outside:
+        friendly_name: 'verschil gram vocht per m³ in kamer Amilya en buiten'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: "{{ ((states('sensor.gram_water_kamer_amilya') | float) - (states('sensor.gram_water_outside')|float)) | round(1) }}"
+
+      gram_water_veranda_diff_outside:
+        friendly_name: 'verschil gram vocht per m³ in veranda en buiten'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: "{{ ((states('sensor.gram_water_veranda') | float) - (states('sensor.gram_water_outside')|float)) | round(1) }}"
+
+      gram_water_berging_diff_outside:
+        friendly_name: 'verschil gram vocht per m³ in berging en buiten'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: "{{ ((states('sensor.gram_water_berging') | float) - (states('sensor.gram_water_outside')|float)) | round(1) }}"
+
+      gram_water_badkamer_diff_outside:
+        friendly_name: 'verschil gram vocht per m³ in badkamer en buiten'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: "{{ ((states('sensor.gram_water_badkamer') | float) - (states('sensor.gram_water_outside')|float)) | round(1) }}"
+
+      gram_water_gang_diff_outside:
+        friendly_name: 'verschil gram vocht per m³ in gang en buiten'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: "{{ ((states('sensor.gram_water_gang') | float) - (states('sensor.gram_water_outside')|float)) | round(1) }}"
+
+      gram_water_kamer_alunya_diff_outside:
+        friendly_name: 'verschil gram vocht per m³ in kamer Alunya en buiten'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: "{{ ((states('sensor.gram_water_kamer_alunya') | float) - (states('sensor.gram_water_outside')|float)) | round(1) }}"
+
+      gram_water_master_bedroom_diff_outside:
+        friendly_name: 'verschil gram vocht per m³ in master bedroom en buiten'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: "{{ ((states('sensor.gram_water_master_bedroom') | float) - (states('sensor.gram_water_outside')|float)) | round(1) }}"
+
+      outside_enthalpy:
+        friendly_name: 'enthalpy buiten'
+        unit_of_measurement: KJ/kg      
+        value_template: "{{ (1.006 * (states('sensor.temp_leuven24_wunderground') | float) ) + ( (states('sensor.outside_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.temp_leuven24_wunderground') | float))) | round (2) }}" 
+
+      veranda_enthalpy:
+        friendly_name: 'enthalpy veranda'
+        unit_of_measurement: KJ/kg      
+        value_template: "{{ (1.006 * (states('sensor.veranda_temperature') | float) ) + ( (states('sensor.veranda_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.veranda_temperature') | float))) | round (2) }}" 
+
+      master_bedroom_enthalpy:
+        friendly_name: 'enthalpy master bedroom'
+        unit_of_measurement: KJ/kg      
+        value_template: "{{ (1.006 * (states('sensor.master_bedroom_temperature') | float) ) + ( (states('sensor.master_bedroom_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.master_bedroom_temperature') | float))) | round (2) }}" 
 
   - platform: powercalc
     entity_id: light.living
@@ -330,22 +512,32 @@ sensor:
     
   - platform: scrape
     resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
+#   resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
     select: "#main-page-content > div > div > div > div:nth-child(2) > div > lib-tile-current-conditions > div > div.module__body > div > div.small-4.columns.text-left.conditions-temp > div.main-temp > lib-display-unit > span > span.wu-value.wu-value-to"
     name: temp_leuven24_wunderground
 #   convert Farenheit to Celcius
     value_template: '{{ ((value | float -32) * (5/9)) |round(1) }}'
-    scan_interval: 600
+    scan_interval: 240
     unit_of_measurement: "°C"
     
   - platform: scrape
     resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
+#   resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
+    select: '<span _ngcontent-app-root-c173="">Offline</span>'
+    name: online_status_leuven24_wunderground
+    scan_interval: 600
+    
+  - platform: scrape
+    resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
+#   resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
     name: humidity_leuven24_wunderground
     select: "#main-page-content > div > div > div > div:nth-child(2) > div > lib-tile-current-conditions > div > div.module__body > div > div.weather__summary > div:nth-child(4) > div > div.weather__text > lib-display-unit > span > span.wu-value.wu-value-to"
-    scan_interval: 300
+    scan_interval: 240
     unit_of_measurement: "%"
 
   - platform: scrape  
     resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
+#   resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
     # hoeveelheid huidige neerslag
     name: precip_rate_leuven24_wunderground
     select: "#main-page-content > div > div > div > div:nth-child(8) > div > lib-tile-precipitation > div > div.module__body > div > div.small-5.columns > div > div:nth-child(2) > lib-display-unit > span > span.wu-value.wu-value-to"
@@ -356,6 +548,7 @@ sensor:
     
   - platform: scrape
     resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
+#   resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
     # hoeveelheid neerslag vandaag
     name: precip_total_leuven24_wunderground
 #   select: "#main-page-content > div > div > div > div:nth-child(2) > div > lib-tile-current-conditions > div > div.module__body > div > div.weather__summary > div:nth-child(5) > div > div.weather__text > lib-display-unit > span > span.wu-value.wu-value-to"
@@ -367,6 +560,7 @@ sensor:
     
   - platform: scrape
     resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
+#   resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
     # UV index
     name: uvindex_leuven24_wunderground
     select: "#main-page-content > div > div > div > div:nth-child(9) > div > lib-tile-uv > div > div.module__body > div > div.small-5.columns > div > div:nth-child(2) > lib-display-unit > span > span.wu-value.wu-value-to"
@@ -500,12 +694,29 @@ binary_sensor:
 
   - platform: trend
     sensors:
+    
+      gram_water_outside_rising:
+        entity_id: sensor.gram_water_outside
+        sample_duration: 3600
+        # 1 sample every second. 1800 seconds = 30 minutes
+        min_gradient: 0.00011      # The gradient is measured in sensor units per second (independent from the duration ?)
+        # If you want to know when the humidity is rising by 0.5 gram per hour, use a gradient of (0.8) / (60 x 60) = 0.000139
+        max_samples: 10
+        
+      gram_water_outside_falling:
+        entity_id: sensor.gram_water_outside
+        sample_duration: 3600
+        # 1 sample every second. 1800 seconds = 30 minutes
+        min_gradient: -0.00011
+        # The gradient is measured in sensor units per second
+        # If you want to know when the humidity is rising by 0.5 gram per hour, use a gradient of (0.8) / (60 x 60) = 0.000139
+        max_samples: 10
+        
       humidity_master_bedroom_rising:
         entity_id: sensor.master_bedroom_humidity
         sample_duration: 3600
         # 1 sample every second. 1800 seconds = 30 minutes
-        min_gradient: 0.00027777777
-
+        min_gradient: 0.0004
         device_class: moisture
         # The gradient is measured in sensor units per second
         # If you want to know when the humidity is rising by 4 % per hour, use a gradient of (4) / (60 x 60) = 0.00111111111
@@ -540,4 +751,5 @@ binary_sensor:
 
 # Enables a map showing the location of tracked devices
 map:
+
 

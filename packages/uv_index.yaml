@@ -89,9 +89,7 @@ automation:
         color: red
         tag: uv_index
         channel: uv_index
-        channel: uv_index
   mode: single
-  
 - id: UV_index_2_3_madouce
   alias: "😎 UV index is 2 of 3 = waarschuwing Madouce"
   description: ''

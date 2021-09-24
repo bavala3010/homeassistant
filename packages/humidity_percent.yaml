@@ -1,0 +1,68 @@
+############################ Table of Contents ############################ 
+# 
+#   Automations
+#     Vocht in huis >75%
+#     Vocht master bedroom -> machine aan
+#
+############################ Automations ################################## 
+
+# dauwpunt
+# Hoger dan 26 °C	Ernstig hoog, zelfs dodelijk voor mensen met astma gerelateerde ziekten	65% en hoger
+# 24–26 °C	Zeer ongemakkelijk, tamelijk benauwend	62%
+# 21–24 °C	Erg vochtig, heel ongemakkelijk	52–60%
+# 18–21 °C	Enigszins ongemakkelijk, voor de meeste mensen is de luchtvochtigheid aan de hoge kant	44–52%
+# 16–18 °C	OK voor de meeste mensen, maar men merkt al dat de luchtvochtigheid aan de hoge kant is	37–46%
+# 13–16 °C	Comfortabel	38–41%
+# 10–12 °C	Zeer comfortabel	31–37%
+# Lager dan 10 °C	Een beetje droog voor sommige mensen
+
+automation:
+- id: "Vocht in huis >75%"
+  alias: "💧 Vocht in huis >75%"
+  description: ''
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.avg_inside_humidity
+      above: '75'
+      for: '00:15'
+  condition:
+    - condition: state
+      entity_id: person.bart
+      state: home
+    - condition: time
+      after: '7:0:0'
+      before: '23:00:00'
+  action:
+    - service: notify.mobile_app_bart_s10
+      data:
+        title: Vocht
+        message: "Vocht % in huis is heel hoog: {{states('sensor.avg_inside_humidity')}}."
+  mode: single
+  
+- id: 'Vocht % master bedroom machine aan'
+  alias: "💧 vocht % master bedroom -> machine aan"
+  description: ''
+  trigger:
+  - platform: time
+    at: '20:30'
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.master_bedroom_humidity
+    above: '75'
+  - condition: numeric_state
+    entity_id: sensor.humidity_leuven24_wunderground
+    above: '75'
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: "Master bedroom vocht is {{states('sensor.master_bedroom_humidity')}}%. Zet eventueel machine aan."
+      title: Zet ontvochtiger in master bedroom.
+      data:
+        color: blue
+        channel: Vocht
+        actions:
+        - action: URI
+          title: Meer info
+          uri: /lovelace/humidity
+  mode: single
+

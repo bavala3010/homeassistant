@@ -1,0 +1,751 @@
+automation:
+
+###################################
+# Close windows notifications
+# Close windows clear notifications
+###################################
+
+#####################################
+# Close windows: send notifications
+#####################################
+
+- id: 'ramen - sluit raam living room (Bart)'
+  alias: 🪟 ramen - sluit raam living room (Bart)
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.living_room_raam_moet_dicht
+    state: 'on'
+  - condition: or
+    conditions:    
+    - condition: state
+      entity_id: binary_sensor.keuken_raam_sensor
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.living_room_oprit_raam_sensor
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.living_room_tuin_raam_sensor
+      state: 'on'            
+  - condition: zone
+    entity_id: person.bart
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: "Vocht living: {{states('sensor.gram_water_living_room')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp living: {{states('sensor.living_room_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      title: Sluit het raam van de living/keuken!
+      data:
+        color: blue
+        channel: Vocht
+        timeout: 3600
+        tag: vocht_living_room
+        actions:
+        - action: living_room_humidity_2h
+          title: stel meldingen 2 uren uit
+        - action: URI
+          title: meer info
+          uri: /lovelace/humidity
+  mode: single
+
+
+- id: 'ramen - sluit raam living room (Madouce)'
+  alias: 🪟 ramen - sluit raam living room (Madouce)
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.living_room_raam_moet_dicht
+    state: 'on'
+  - condition: or
+    conditions:    
+    - condition: state
+      entity_id: binary_sensor.keuken_raam_sensor
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.living_room_oprit_raam_sensor
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.living_room_tuin_raam_sensor
+      state: 'on'
+  - condition: zone
+    entity_id: person.madouce
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_madouce_s20
+    data:
+      message: "Vocht living: {{states('sensor.gram_water_living_room')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp living: {{states('sensor.living_room_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      title: Sluit het raam van de living/keuken!
+      data:
+        color: blue
+        channel: Vocht
+        timeout: 3600
+        tag: vocht_living_room
+        actions:
+        - action: living_room_window_pause
+          title: stel meldingen 2 uren uit
+        - action: URI
+          title: meer info
+          uri: /lovelace/humidity
+  mode: single
+
+
+- id: 'ramen - sluit raam veranda (Bart)'
+  alias: 🪟 ramen - sluit raam veranda (Bart)
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.veranda_schuifraam_moet_dicht
+    state: 'on'
+  - condition: state
+    entity_id: binary_sensor.veranda_schuifraam_sensor
+    state: 'on'
+  - condition: zone
+    entity_id: person.bart
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: "Vocht veranda: {{states('sensor.gram_water_veranda')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp veranda: {{states('sensor.veranda_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      title: Sluit het raam van veranda!
+      data:
+        color: blue
+        channel: Vocht
+        timeout: 3600
+        tag: vocht_veranda
+        actions:
+        - action: veranda_humidity_2h
+          title: stel meldingen 2 uren uit
+        - action: URI
+          title: meer info
+          uri: /lovelace/humidity
+  mode: single
+
+- id: 'ramen - sluit raam veranda (Madouce)'
+  alias: 🪟 ramen - sluit raam veranda (Madouce)
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.veranda_schuifraam_moet_dicht
+    state: 'on'
+  - condition: state
+    entity_id: binary_sensor.veranda_schuifraam_sensor
+    state: 'on'
+  - condition: zone
+    entity_id: person.madouce
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_madouce_s20
+    data:
+      message: "Vocht veranda: {{states('sensor.gram_water_veranda')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp veranda: {{states('sensor.veranda_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      title: Sluit het raam van veranda!
+      data:
+        color: blue
+        channel: Vocht
+        timeout: 3600
+        tag: vocht_veranda
+        actions:
+        - action: veranda_humidity_2h
+          title: stel meldingen 2 uren uit
+        - action: URI
+          title: meer info
+          uri: /lovelace/humidity
+  mode: single
+
+
+- id: 'ramen - sluit raam badkamer (Bart)'
+  alias: 🪟 ramen - sluit raam badkamer (Bart)
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.badkamer_raam_moet_dicht
+    state: 'on'
+  - condition: state
+    entity_id: binary_sensor.badkamer_raam_sensor
+    state: 'on'
+  - condition: zone
+    entity_id: person.bart
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: "Vocht badkamer: {{states('sensor.gram_water_badkamer')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³."
+      title: Sluit het raam van badkamer!
+      data:
+        color: blue
+        channel: Vocht
+        timeout: 3600
+        tag: vocht_badkamer
+        actions:
+        - action: badkamer_humidity_2h
+          title: stel meldingen 2 uren uit
+        - action: URI
+          title: meer info
+          uri: /lovelace/humidity
+  mode: single
+
+- id: 'ramen - sluit raam badkamer (Madouce)'
+  alias: 🪟 ramen - sluit raam badkamer (Madouce)
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.badkamer_raam_moet_dicht
+    state: 'on'
+  - condition: state
+    entity_id: binary_sensor.badkamer_raam_sensor
+    state: 'on'
+  - condition: zone
+    entity_id: person.madouce
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_madouce_s20
+    data:
+      message: "Vocht badkamer: {{states('sensor.gram_water_badkamer')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³."
+      title: Sluit het raam van badkamer!
+      data:
+        color: blue
+        channel: Vocht
+        timeout: 3600
+        tag: vocht_badkamer
+        actions:
+        - action: badkamer_humidity_2h
+          title: stel meldingen 2 uren uit
+        - action: URI
+          title: meer info
+          uri: /lovelace/humidity
+  mode: single
+
+- id: 'ramen - sluit raam berging (Bart)'
+  alias: 🪟 ramen - sluit raam berging (Bart)
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.berging_raam_moet_dicht
+    state: 'on'
+  - condition: state
+    entity_id: binary_sensor.berging_raam_sensor
+    state: 'on'
+  - condition: zone
+    entity_id: person.bart
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: "Vocht berging: {{states('sensor.gram_water_berging')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp berging: {{states('sensor.berging_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      title: Sluit het raam van de berging!
+      data:
+        color: blue
+        channel: Vocht
+        timeout: 3600
+        tag: vocht_berging
+        actions:
+        - action: berging_humidity_2h
+          title: stel meldingen 2 uren uit
+        - action: URI
+          title: meer info
+          uri: /lovelace/humidity
+  mode: single
+
+- id: 'ramen - sluit raam berging (Madouce)'
+  alias: 🪟 ramen - sluit raam berging (Madouce)
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.berging_raam_moet_dicht
+    state: 'on'
+  - condition: state
+    entity_id: binary_sensor.berging_raam_sensor
+    state: 'on'
+  - condition: zone
+    entity_id: person.madouce
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_madouce_s20
+    data:
+      message: "Vocht berging: {{states('sensor.gram_water_berging')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp berging: {{states('sensor.berging_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      title: Sluit het raam van de berging!
+      data:
+        color: blue
+        channel: Vocht
+        timeout: 3600
+        tag: vocht_berging
+        actions:
+        - action: berging_humidity_2h
+          title: stel meldingen 2 uren uit
+        - action: URI
+          title: meer info
+          uri: /lovelace/humidity
+  mode: single
+
+
+- id: 'ramen - sluit raam Alunya (Bart)'
+  alias: '🪟 ramen - sluit raam Alunya (Bart)'
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.kamer_alunya_raam_moet_dicht
+    state: 'on'
+  - condition: or
+    conditions:    
+    - condition: state
+      entity_id: binary_sensor.kamer_alunya_raam_sensor
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.kamer_alunya_schuifraam_sensor
+      state: 'on'      
+  - condition: zone
+    entity_id: person.bart
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: "Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      title: Sluit het raam van Alunya!
+      data:
+        color: blue
+        channel: Vocht
+        timeout: 3600
+        tag: vocht_kamer_alunya
+        actions:
+        - action: kamer_alunya_humidity_2h
+          title: stel meldingen 2 uren uit
+        - action: URI
+          title: meer info
+          uri: /lovelace/humidity
+  mode: single
+
+- id: 'ramen - sluit raam Alunya (Madouce)'
+  alias: '🪟 ramen - sluit raam Alunya (Madouce)'
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.kamer_alunya_raam_moet_dicht
+    state: 'on'
+  - condition: or
+    conditions:    
+    - condition: state
+      entity_id: binary_sensor.kamer_alunya_raam_sensor
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.kamer_alunya_schuifraam_sensor
+      state: 'on'
+  - condition: zone
+    entity_id: person.madouce
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_madouce_s20
+    data:
+      message: "Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      title: Sluit het raam van Alunya!
+      data:
+        color: blue
+        channel: Vocht
+        timeout: 3600
+        tag: vocht_kamer_alunya
+        actions:
+        - action: kamer_alunya_humidity_2h
+          title: stel meldingen 2 uren uit
+        - action: URI
+          title: meer info
+          uri: /lovelace/humidity
+  mode: single
+
+
+- id: 'ramen - sluit raam master bedroom (Bart)'
+  alias: '🪟 ramen - sluit raam master bedroom (Bart)'
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.master_bedroom_raam_moet_dicht
+    state: 'on'
+  - condition: state
+    entity_id: binary_sensor.master_bedroom_raam_sensor
+    state: 'on'
+  - condition: zone
+    entity_id: person.bart
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: "Vocht master bedroom: {{states('sensor.gram_water_master_bedroom')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp master bedroom: {{states('sensor.master_bedroom_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      title: Sluit master bedroom raam!
+      data:
+        color: blue
+        channel: Vocht
+        timeout: 3600
+        tag: vocht_master_bedroom
+        actions:
+        - action: master_bedroom_humidity_2h
+          title: stel meldingen 2 uren uit
+        - action: URI
+          title: meer info
+          uri: /lovelace/humidity
+  mode: single
+
+- id: 'ramen - sluit raam master bedroom (Madouce)'
+  alias: 🪟 ramen - sluit raam master bedroom (Madouce)
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.master_bedroom_raam_moet_dicht
+    state: 'on'
+  - condition: state
+    entity_id: binary_sensor.master_bedroom_raam_sensor
+    state: 'on'
+  - condition: zone
+    entity_id: person.madouce
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_madouce_s20
+    data:
+      message: "Vocht master bedroom: {{states('sensor.gram_water_master_bedroom')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp master bedroom: {{states('sensor.master_bedroom_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      title: Sluit master bedroom raam!
+      data:
+        color: blue
+        channel: Vocht
+        timeout: 3600
+        tag: vocht_master_bedroom
+        actions:
+        - action: master_bedroom_humidity_2h
+          title: stel meldingen 2 uren uit
+        - action: URI
+          title: meer info
+          uri: /lovelace/humidity
+  mode: single
+
+
+############################################
+# Clear notifications when window is closed
+############################################
+
+- id: 'ramen - sluit raam living room - clear notification (Bart)'
+  alias: 🪟 ramen - sluit raam living room - clear notification (Bart)
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.keuken_raam_sensor
+      from: 'on'
+      to: 'off'
+  condition:
+  - condition: state
+    entity_id: input_boolean.living_room_raam_moet_dicht
+    state: 'on'
+  - condition: zone
+    entity_id: person.bart
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_bart_S10
+    data:
+      message: "clear_notification"
+      data:
+        tag: vocht_living_room
+  mode: single
+
+- id: 'ramen - sluit raam living room - clear notification (Madouce)'
+  alias: 🪟 ramen - sluit raam living room - clear notification (Madouce)
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.keuken_raam_sensor
+      from: 'off'
+      to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.living_room_raam_moet_dicht
+    state: 'on'
+  - condition: zone
+    entity_id: person.madouce
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_madouce_s20
+    data:
+      message: "clear_notification"
+      data:
+        tag: vocht_living_room
+  mode: single
+
+- id: 'ramen - sluit raam veranda - clear notification (Bart)'
+  alias: 🪟 ramen - sluit raam veranda - clear notification (Bart)
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.veranda_schuifraam_sensor
+      from: 'on'
+      to: 'off'
+  condition:
+  - condition: state
+    entity_id: input_boolean.veranda_schuifraam_moet_dicht
+    state: 'on'
+  - condition: zone
+    entity_id: person.bart
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_bart_S10
+    data:
+      message: "clear_notification"
+      data:
+        tag: vocht_veranda
+  mode: single
+
+- id: 'ramen - sluit raam veranda - clear notification (Madouce)'
+  alias: 🪟 ramen - sluit raam veranda - clear notification (Madouce)
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.veranda_schuifraam_sensor
+      from: 'on'
+      to: 'off'
+  condition:
+  - condition: state
+    entity_id: input_boolean.veranda_schuifraam_moet_dicht
+    state: 'on'
+  - condition: zone
+    entity_id: person.madouce
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_madouce_s20
+    data:
+      message: "clear_notification"
+      data:
+        tag: vocht_veranda
+  mode: single
+
+- id: 'ramen - sluit raam berging  - clear notification (Bart)'
+  alias: 🪟 ramen - sluit raam berging - clear notification (Bart)
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.berging_raam_sensor
+      from: 'on'
+      to: 'off'
+  condition:
+  - condition: state
+    entity_id: input_boolean.berging_raam_moet_dicht
+    state: 'on'
+  - condition: zone
+    entity_id: person.bart
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_bart_S10
+    data:
+      message: "clear_notification"
+      data:
+        tag: vocht_berging
+  mode: single
+
+- id: 'ramen - sluit raam berging - clear notification (Madouce)'
+  alias: 🪟 ramen - sluit raam berging - clear notification (Madouce)
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.berging_raam_sensor
+      from: 'on'
+      to: 'off'
+  condition:
+  - condition: state
+    entity_id: input_boolean.berging_raam_moet_dicht
+    state: 'on'
+  - condition: zone
+    entity_id: person.madouce
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_madouce_s20
+    data:
+      message: "clear_notification"
+      data:
+        tag: vocht_berging
+  mode: single
+
+- id: 'ramen - sluit raam badkamer  - clear notification (Bart)'
+  alias: 🪟 ramen - sluit raam badkamer - clear notification (Bart)
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.badkamer_raam_sensor
+      from: 'on'
+      to: 'off'
+  condition:
+  - condition: state
+    entity_id: input_boolean.badkamer_raam_moet_dicht
+    state: 'on'
+  - condition: zone
+    entity_id: person.bart
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_bart_S10
+    data:
+      message: "clear_notification"
+      data:
+        tag: vocht_badkamer
+  mode: single
+
+- id: 'ramen - sluit raam badkamer - clear notification (Madouce)'
+  alias: 🪟 ramen - sluit raam badkamer - clear notification (Madouce)
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.badkamer_raam_sensor
+      from: 'on'
+      to: 'off'
+  condition:
+  - condition: state
+    entity_id: input_boolean.badkamer_raam_moet_dicht
+    state: 'on'
+  - condition: zone
+    entity_id: person.madouce
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_madouce_s20
+    data:
+      message: "clear_notification"
+      data:
+        tag: vocht_badkamer
+  mode: single
+
+- id: 'ramen - sluit raam master bedroom  - clear notification (Bart)'
+  alias: 🪟 ramen - sluit raam master bedroom - clear notification (Bart)
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.master_bedroom_raam_sensor
+      from: 'on'
+      to: 'off'
+  condition:
+  - condition: state
+    entity_id: input_boolean.master_bedroom_raam_moet_dicht
+    state: 'on'
+  - condition: zone
+    entity_id: person.bart
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_bart_S10
+    data:
+      message: "clear_notification"
+      data:
+        tag: vocht_master_bedroom
+  mode: single
+
+- id: 'ramen - sluit raam master bedroom - clear notification (Madouce)'
+  alias: 🪟 ramen - sluit raam master bedroom - clear notification (Madouce)
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.master_bedroom_raam_sensor
+      from: 'on'
+      to: 'off'
+  condition:
+  - condition: state
+    entity_id: input_boolean.master_bedroom_raam_moet_dicht
+    state: 'on'
+  - condition: zone
+    entity_id: person.madouce
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.mobile_app_madouce_s20
+    data:
+      message: "clear_notification"
+      data:
+        tag: vocht_master_bedroom
+  mode: single
+

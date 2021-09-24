@@ -1,14 +1,14 @@
 group_gezin:
   name: gezin
   entities:
-#     - device_tracker.bart_samsung_s10_plus
-#     - device_tracker.madouce_samsung_s20
-#     - device_tracker.amilya_iphone_xs
-#     - device_tracker.alunya_samsung_galaxy_a71
-      - person.bart
-      - person.madouce
-      - person.amilya
-      - person.alunya
+    - person.bart
+    - person.madouce
+    - person.amilya
+    - person.alunya
+#   - device_tracker.bart_samsung_s10_plus
+#   - device_tracker.madouce_samsung_s20
+#   - device_tracker.amilya_iphone_xs
+#   - device_tracker.alunya_samsung_galaxy_a71
 
 group_not_bart:
   name: not_bart
@@ -23,25 +23,37 @@ group_kinderen:
     - device_tracker.amilya_iphone_xs
     - device_tracker.alunya_samsung_galaxy_a71
 
-group_speakers:
+group_living_veranda_speakers:
   name: speaker_living_veranda
   entities:
     - media_player.living_speaker
     - media_player.veranda_speaker
+# you can now use group.group_living_veranda_speakers in automations and scripts
+    
+
+group_living_masterbedroom_speakers:
+  name: speaker_living_veranda
+  entities:
+    - media_player.living_speaker
+    - media_player.nestaudio3875
+# you can now use group.group_living_masterbedroom_speakers in automations and scripts
+# but the 2 speakers will not play synchroniously
+# better make a speaker group in the Google Home app: eg: media_player.groep_living_veranda 
 
 group_raam_sensoren:
   name: raam_sensoren
   entities:
     - binary_sensor.ty18857573dc4f22b78e02
-    - binary_sensor.master_bedroom_raam_sensor
     - binary_sensor.amilya_raam_sensor
     - binary_sensor.alunya_raam_sensor
     - binary_sensor.alunya_schuifraam_sensor
-    - binary_sensor.veranda_schuifraam_sensor
-    - binary_sensor.keuken_raam_sensor
-    - binary_sensor.living_oprit_raam_sensor
     - binary_sensor.badkamer_raam_sensor
     - binary_sensor.berging_raam_sensor
+    - binary_sensor.keuken_raam_sensor
+    - binary_sensor.living_oprit_raam_sensor
+    - binary_sensor.living_tuin_raam_sensor
+    - binary_sensor.master_bedroom_raam_sensor
+    - binary_sensor.veranda_schuifraam_sensor
 
 
 # You can't control the entity ID's of notify devices.
@@ -55,3 +67,4 @@ group_raam_sensoren:
 #  name: madouce_phone
 #  services:
 #    - service: mobile_app_madouce_s20
+

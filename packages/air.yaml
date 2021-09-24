@@ -1,0 +1,117 @@
+automation:
+- id: '1585984405489'
+  alias: 💨 Air Quality Index > 8 = purifier on
+  description: ''
+  trigger:
+  - minutes: /5
+    platform: time_pattern
+  condition:
+  - condition: numeric_state
+    entity_id: fan.xiaomi_air_purifier_3h
+    attribute: aqi
+    above: '8'
+  - condition: state
+    entity_id: group.group_gezin
+    state: home
+  - condition: time
+    after: '7:00'
+    before: '23:30'
+  action:
+  - service: fan.set_preset_mode
+    data:
+      entity_id: fan.xiaomi_air_purifier_3h
+      preset_mode: auto
+  mode: single
+- id: '1627132017585'
+  alias: '💨 not home = Air purifier off '
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.group_gezin
+    to: not_home
+    for: 00:05:00
+  condition: []
+  action:
+  - service: fan.turn_off
+    target:
+      entity_id: fan.xiaomi_air_purifier_3h
+  mode: single
+- id: '1627745783008'
+  alias: RecycleApp notificaties
+  trigger:
+  - platform: time
+    at: '20:30:00'
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.recycleapp_morgen
+      state: Geen
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      title: '{{title}}'
+      message: '{{message}}'
+  - service: notify.mobile_app_madouce_S20
+    data:
+      title: '{{title}}'
+      message: '{{message}}'
+  variables:
+    title: '{% if state_attr(''sensor.recycleapp_gft'', ''Days-until'') == 1 %} Morgen
+      groene bak  {%elif state_attr(''sensor.recycleapp_restafval'', ''Days-until'')
+      == 1 %}  Morgen bruine zak {%elif state_attr(''sensor.recycleapp_pmd'', ''Days-until'')
+      == 1 %} Morgen blauwe zak {%elif state_attr(''sensor.recycleapp_papier'', ''Days-until'')
+      == 1 %} Morgen oud papier {%endif%} '
+    message: '{% if state_attr(''sensor.recycleapp_gft'', ''Days-until'') == 1 %}
+      Zet de groene bak aan straat. {%elif state_attr(''sensor.recycleapp_restafval'',
+      ''Days-until'') == 1 %} Zet de bruine zak aan straat. {%elif state_attr(''sensor.recycleapp_pmd'',
+      ''Days-until'') == 1 %} Zet de blauwe zak aan straat. {%elif state_attr(''sensor.recycleapp_papier'',
+      ''Days-until'') == 1 %} Zet het oud papier aan straat. {%endif%} '
+  mode: single
+
+- id: '1628319868217'
+  alias: 💨 Air Quality Index < 8 = purifier off
+  description: ''
+  trigger:
+  - minutes: /5
+    platform: time_pattern
+  condition:
+  - condition: numeric_state
+    entity_id: fan.xiaomi_air_purifier_3h
+    attribute: aqi
+    below: '8'
+  action:
+  - service: fan.turn_off
+    target:
+      entity_id: fan.xiaomi_air_purifier_3h
+  mode: single
+
+- id: '1629324307314'
+  alias: 💨 purifier off @ 23u30
+  description: ''
+  trigger:
+  - platform: time
+    at: '23:30'
+  condition: []
+  action:
+  - service: fan.turn_off
+    target:
+      entity_id: fan.xiaomi_air_purifier_3h
+  mode: single
+- id: '1629798091047'
+  alias: Madouce verlaat huis, check mobiel internet
+  description: ''
+  trigger:
+  - platform: zone
+    entity_id: device_tracker.madouce_s20
+    zone: zone.home
+    event: leave
+  condition:
+  - condition: state
+    entity_id: binary_sensor.madouce_s20_mobiele_data
+    state: 'off'
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: Mobiele data telefoon Madouce staat niet aan.
+  mode: single

@@ -1,0 +1,76 @@
+############################ Table of Contents ############################ 
+# 
+
+automation:
+- id: 'te warm in kamer Amilya - open raam (Bart)'
+  alias: te warm in kamer Amilya - open raam (Bart)
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /60
+  condition:
+  - condition: state
+    entity_id: binary_sensor.kamer_amilya_raam_sensor
+    state: 'off'
+  - condition: template
+    value_template: "{{ states('sensor.kamer_amilya_temperature') | float > 23 }}"
+  - condition: template
+    value_template: "{{ states('sensor.kamer_amilya_temperature') > states('sensor.temp_leuven24_wunderground') }}"
+  - condition: zone
+    entity_id: person.bart
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:00:00'
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: "Temperatuur in kamer Amilya is {{states('sensor.kamer_amilya_temperature')}}°C. Buiten {{states('sensor.temp_leuven24_wunderground')}}°C."
+      title: Open het raam van Amilya!
+      data:
+        color: blue
+        channel: Temperatuur
+        timeout: 3600
+        tag: temp_amilya
+        actions:
+        - action: URI
+          title: meer info
+          uri: /lovelace/temp_detail
+  mode: single
+  
+- id: 'te warm in kamer Amilya - open raam (Madouce)'
+  alias: te warm in kamer Amilya - open raam (Madouce)
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /60
+  condition:
+  - condition: state
+    entity_id: binary_sensor.kamer_amilya_raam_sensor
+    state: 'off'
+  - condition: template
+    value_template: "{{ states('sensor.kamer_amilya_temperature') | float > 23 }}"
+  - condition: template
+    value_template: "{{ states('sensor.kamer_amilya_temperature') > states('sensor.temp_leuven24_wunderground') }}"
+  - condition: zone
+    entity_id: person.madouce
+    zone: zone.home
+  - condition: time
+    after: '7:0:0'
+    before: '23:00:00'
+  action:
+  - service: notify.mobile_app_madouce_s20
+    data:
+      message: "Temperatuur in kamer Amilya is {{states('sensor.kamer_amilya_temperature')}}°C. Buiten {{states('sensor.temp_leuven24_wunderground')}}°C."
+      title: Open het raam van Amilya!
+      data:
+        color: blue
+        channel: Temperatuur
+        timeout: 3600
+        tag: temp_amilya
+        actions:
+        - action: URI
+          title: meer info
+          uri: /lovelace/temp_detail
+  mode: single
+    

@@ -55,7 +55,7 @@ automation:
         entity_id: >
           {% if is_state("input_select.chromecast_radio", "Living") %} media_player.living_speaker
           {% elif is_state("input_select.chromecast_radio", "Veranda") %} media_player.veranda_speaker
-          {% elif is_state("input_select.chromecast_radio", "Living & veranda") %} media_player.veranda_speaker
+          {% elif is_state("input_select.chromecast_radio", "Living & veranda") %} media_player.groep_living_veranda
           {% elif is_state("input_select.chromecast_radio", "Master bedroom") %} media_player.nestaudio3875
           {% endif %}
 #       volume_level: '{{  states.input_number.volume_radio.state  }}'
@@ -70,6 +70,7 @@ script:
         entity_id: >
           {% if is_state("input_select.chromecast_radio", "Living") %} media_player.living_speaker
           {% elif is_state("input_select.chromecast_radio", "Veranda") %} media_player.veranda_speaker
+          {% elif is_state("input_select.chromecast_radio", "Living & veranda") %} media_player.groep_living_veranda
           {% elif is_state("input_select.chromecast_radio", "Master bedroom") %} media_player.nestaudio3875
           {% endif %}
 #       volume_level: '{{  states.input_number.volume_radio.state  }}'
@@ -79,6 +80,7 @@ script:
         entity_id: >
           {% if is_state("input_select.chromecast_radio", "Living") %} media_player.living_speaker
           {% elif is_state("input_select.chromecast_radio", "Veranda") %} media_player.veranda_speaker
+          {% elif is_state("input_select.chromecast_radio", "Living & veranda") %} media_player.groep_living_veranda          
           {% elif is_state("input_select.chromecast_radio", "Master bedroom") %} media_player.nestaudio3875
           {% endif %}
         media_content_id: >

@@ -4,17 +4,20 @@
 #     Amilya niet thuis = licht uit
 #     Alunya niet thuis = licht uit
 #     bij donker living bol inschakelen
-#     Alunya bol uit om 1u en 2u 's nachts
+#     Alunya lichten uit om 1u en 2u 's nachts
 #     Donker, <20° buiten en thuis = licht aan
-# 
+#     Master bedroom deurswitch
+#     TV aan + zon onder = TV strip aan
+#     TV uit = TV strip uit
+
 ############################ Automations ################################## 
 
 automation:
 # Switch ON Ensuite fan at high humidity
 # - id: ensuite_turn_on_fan_at_high_humidity
     
-- id: "Amilya niet thuis = licht uit"
-  alias: 💡 Amilya niet thuis = licht uit
+- id: "Amilya niet thuis = lichten uit"
+  alias: 💡 Amilya niet thuis = lichten uit
   description: ''
   trigger:
   - platform: state
@@ -48,6 +51,7 @@ automation:
     entity_id: light.amilya_strip
     domain: light
   mode: single
+
 - id: "Alunya niet thuis = licht uit"
   alias: 💡Alunya niet thuis = licht uit
   description: ''
@@ -71,23 +75,9 @@ automation:
     entity_id: light.alunya_wasbak
     domain: light
   mode: single
-- id: "bij donker living bol inschakelen"
-  alias: 💡bij donker living bol inschakelen
-  description: ''
-  trigger:
-  - platform: sun
-    event: sunset
-  condition: []
-  action:
-  - type: turn_on
-    device_id: 3623c76590024bf538fcc54a365fc8cc
-    entity_id: light.living_bol
-    domain: light
-    brightness_pct: 10
-    flash: long
-  mode: single
-- id: "Alunya bol uit om 1u en 2u 's nachts"
-  alias: 💡 Alunya bol uit om 1u en 2u 's nachts
+
+- id: "Alunya lichten uit om 1u en 2u 's nachts"
+  alias: 💡 Alunya lichten uit om 1u en 2u 's nachts
   description: ''
   trigger:
   - platform: time
@@ -100,9 +90,18 @@ automation:
     device_id: 698a7cf7cee6d32dda3a430591d0ebe9
     entity_id: light.alunya_bol
     domain: light
+  - type: turn_off
+    device_id: c79c606a18f7c9049409ee7a945f768c
+    entity_id: light.alunya_staande_lamp
+    domain: light
+  - type: turn_off
+    device_id: bc3bf3bec76c984ab510c820d37ea63b
+    entity_id: light.alunya_wasbak
+    domain: light
   mode: single
+
 - id: "Donker, <20° buiten en thuis = licht aan"
-  alias: Donker, <20° buiten en thuis = licht aan
+  alias: 💡 Donker, <20° buiten en thuis = licht aan
   description: ''
   trigger:
   - platform: state
@@ -120,6 +119,45 @@ automation:
     device_id: a0297c6061546a2108b2d33e01ed449d
     entity_id: light.living_links_3
     domain: light
+  mode: single
+
+- id: "bij donker living bol inschakelen"
+  alias: 💡 bij donker living bol inschakelen
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+  condition: []
+  action:
+  - type: turn_on
+    device_id: 3623c76590024bf538fcc54a365fc8cc
+    entity_id: light.living_bol
+    domain: light
+    brightness_pct: 10
+    flash: long
+  mode: single
+
+- id: 'Master bedroom deurswitch'
+  alias: 💡 Master bedroom deurswitch
+  description: ''
+  trigger:
+  - device_id: 4247e8ef769909d83520323811fc6550
+    domain: hue
+    platform: device
+    type: remote_button_short_release
+    subtype: turn_on
+  condition:
+  - condition: sun
+    after: sunset
+  action:
+  - service: light.turn_on
+    target:
+      entity_id:
+      - light.play_madouce
+      - light.play_bart
+      - light.staande_lamp
+    data:
+      brightness_pct: 75
   mode: single
 
 - id: "TV aan + zon onder = TV strip aan"

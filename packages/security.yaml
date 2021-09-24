@@ -4,7 +4,13 @@
 #     Bart, Madouce en/of Alunya komt thuis (zone) = alarm uit
 #     niemand thuis (enkel melding)
 #     iemand thuis (enkel melding)
-
+#     niemand thuis = alarm aanzetten
+#     Iemand komt thuis (wifi) = alarm uitzetten
+#     alarm ingeschakeld aan voordeur
+#     alarm uitgeschakeld aan voordeur
+#     alarm bij beweging
+#     garagepoort staat lang open
+#     beweging op oprit
 
 ############################ Automations ################################## 
 
@@ -55,7 +61,7 @@ automation:
       title: Alarm inschakelen?
       message: Niemand thuis?
       data:
-# attention: these actions still need to be changed!
+  # attention: these actions still need to be changed!
         actions:
         - action: open_garage
           title:  (niet doen) garage openen
@@ -100,7 +106,6 @@ automation:
     title: ''
     message: ⛔ Alarm is automatisch ingeschakeld wegens niemand thuis.
   mode: single
-
 
 - id: "Iemand komt thuis (wifi) = alarm uitzetten"
   alias: '🚨 Iemand komt thuis (wifi) = alarm uitzetten'
@@ -150,15 +155,16 @@ automation:
   - service: media_player.volume_set
     data:
       entity_id: media_player.living_speaker
-      volume_level: 0.8
+      volume_level: 0.7
   - service: tts.google_say
     data:
       entity_id: media_player.living_speaker
       message: "Alarm ingeschakeld!
       {% if is_state('group.group.raam_sensoren', 'off') %} Alle ramen zijn dicht!
-      {% else %} De volgende ramen staan nog open: {{ expand(states.binary_sensor.amilya_raam_sensor, states.binary_sensor.alunya_raam_sensor, states.binary_sensor.alunya_schuifraam_sensor, states.binary_sensor.badkamer_raam_sensor, states.binary_sensor.berging_raam_sensor, states.binary_sensor.keuken_raam_sensor, states.binary_sensor.living_oprit_raam_sensor, states.binary_sensor.living_tuin_raam_sensor, states.binary_sensor.master_bedroom_raam_sensor, states.binary_sensor.veranda_schuifraam_sensor) | selectattr('state','eq','on') | map(attribute='name')| list }}
+      {% else %} De volgende ramen staan nog open: {{ expand(states.binary_sensor.kamer_amilya_raam_sensor, states.binary_sensor.kamer_alunya_raam_sensor, states.binary_sensor.kamer_alunya_schuifraam_sensor, states.binary_sensor.badkamer_raam_sensor, states.binary_sensor.berging_raam_sensor, states.binary_sensor.keuken_raam_sensor, states.binary_sensor.living_oprit_raam_sensor, states.binary_sensor.living_tuin_raam_sensor, states.binary_sensor.master_bedroom_raam_sensor, states.binary_sensor.veranda_schuifraam_sensor) | selectattr('state','eq','on') | map(attribute='name')| list }}
       {% endif %}"
-  - delay: 00:00:20
+  - wait_template: ''
+    timeout: 00:00:02
   - service: media_player.volume_set
     data:
       entity_id: media_player.living_speaker
@@ -212,13 +218,14 @@ automation:
     - binary_sensor.toilet_motion_sensor_motion
     - binary_sensor.terras_motion_sensor
     # raam sensoren
-    - binary_sensor.alunya_raam_sensor
-    - binary_sensor.alunya_schuifraam_sensor
-    - binary_sensor.amilya_raam_sensor
+    - binary_sensor.kamer_alunya_raam_sensor
+    - binary_sensor.kamer_alunya_schuifraam_sensor
+    - binary_sensor.kamer_amilya_raam_sensor
     - binary_sensor.badkamer_raam_sensor
     - binary_sensor.berging_raam_sensor
     - binary_sensor.keuken_raam_sensor
     - binary_sensor.living_oprit_raam_sensor
+    - binary_sensor.living_tuin_raam_sensor
     - binary_sensor.master_bedroom_raam_sensor
     - binary_sensor.veranda_schuifraam_sensor
     from: 'off'
@@ -271,22 +278,99 @@ automation:
       data:
         color: red
         channel: alarm
-#  - service: media_player.volume_set
-#    data:
-#      entity_id: media_player.nestaudio3875
-#      volume_level: 0.8
-#  - service: media_player.play_media
-#    data:
-#      entity_id: media_player.living_speaker
-#      media_content_id: http://192.168.86.101:8123/local/siren.mp3
-#      media_content_type: music
-#  - service: media_player.play_media
-#    data:
-#      entity_id: media_player.nestaudio3875
-#      media_content_id: http://192.168.86.101:8123/local/siren.mp3
-#      media_content_type: music
-#  - service: media_player.volume_set
-#    data:
-#      entity_id: media_player.nestaudio3875
-#      volume_level: 0.8
+ #  - service: media_player.volume_set
+ #    data:
+ #      entity_id: media_player.nestaudio3875
+ #      volume_level: 0.8
+ #  - service: media_player.play_media
+ #    data:
+ #      entity_id: media_player.living_speaker
+ #      media_content_id: http://192.168.86.101:8123/local/siren.mp3
+ #      media_content_type: music
+ #  - service: media_player.play_media
+ #    data:
+ #      entity_id: media_player.nestaudio3875
+ #      media_content_id: http://192.168.86.101:8123/local/siren.mp3
+ #      media_content_type: music
+ #  - service: media_player.volume_set
+ #    data:
+ #      entity_id: media_player.nestaudio3875
+ #      volume_level: 0.8
   mode: queued
+
+- id: "garagepoort staat al 5 minuten open"
+  alias: Garagepoort staat al 5 minuten open
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.ty18857573dc4f22b78e02
+    from: 'off'
+    to: 'on'
+    for: 00:05:00
+  condition: []
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      title: Garagepoort
+      message: Garagepoort staat al 5 minuten open.
+  - service: notify.mobile_app_madouce_s20
+    data:
+      title: Garagepoort
+      message: Garagepoort staat al 5 minuten open.
+  mode: single
+
+- id: "garagepoort staat al 10 minuten open"
+  alias: Garagepoort staat al 10 minuten open
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.ty18857573dc4f22b78e02
+    from: 'off'
+    to: 'on'
+    for: 00:10:00
+  condition: []
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      title: Garagepoort
+      message: Garagepoort staat al 10 minuten open.
+  - service: notify.mobile_app_madouce_s20
+    data:
+      title: Garagepoort
+      message: Garagepoort staat al 10 minuten open.
+  mode: single
+
+
+- id: '1523171664225'
+  alias: 👀 beweging oprit
+  description: Beweging op oprit = melding op living speaker
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.buitensensor_vooraan_motion
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: template
+    value_template: '{{ as_timestamp(now()) - as_timestamp(states.automation.beweging_oprit.attributes.last_triggered)
+      | int > 120 }}'
+  action:
+  - service: tts.google_say
+    data:
+      entity_id: media_player.living_speaker
+      message: Beweging op oprit!
+  - service: tts.google_say
+    data:
+      entity_id: media_player.veranda_speaker_2
+      message: Beweging op oprit!
+  - wait_template: ''
+    timeout: 00:00:10
+  - service: camera.play_stream
+    data:
+      media_player: media_player.living_speaker
+    target:
+      entity_id: camera.netatmo_eikenbos_oprit
+  - wait_template: ''
+    timeout: 00:01:30
+  - service: media_player.turn_off
+    entity_id: media_player.living_speaker
+  mode: single

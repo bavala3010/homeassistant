@@ -6,6 +6,7 @@ auto_status_verversen:
       vin: WAUZZZGE6MB019131
   icon: hass:car
   mode: single
+  
 '1626465721373':
   alias: check als auto echt niet op slot is
   sequence:
@@ -26,3 +27,42 @@ auto_status_verversen:
         actions:
         - action: lock_car
           title: SLUIT AUTO
+
+'1630760370410':
+  alias: smart home info
+  sequence:
+  - service: tts.google_say
+    data:
+      entity_id: group.group_living_masterbedroom_speakers
+      message: '{% if is_state(''lock.audi_e_tron_sportback_55_door_lock_2'', ''unlocked'')
+        %} De auto is niet op slot. {% else %} De auto is op slot. {% endif %}'
+  - wait_template: ''
+    timeout: 00:00:03
+  - service: tts.google_say
+    data:
+      entity_id: group.group_living_masterbedroom_speakers
+      message: De auto is {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%
+        geladen. Dit is voor {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} kilometer. {% if is_state('sensor.audi_e_tron_sportback_55_plug_state', 'connected')
+        %} De laadkabel is verbonden. {%else%} De laadkabel is niet verbonden.
+        {% endif %}
+  - wait_template: ''
+    timeout: 00:00:08
+  - service: tts.google_say
+    data:
+      entity_id: group.group_living_masterbedroom_speakers
+      message: '{% if is_state(''lock.voordeur'', ''unlocked'') %} De voordeur is
+        niet op slot. {% else %} De voordeur is op slot. {% endif %}'
+  - wait_template: ''
+    timeout: 00:00:03
+  - service: tts.google_say
+    data:
+      entity_id: group.group_living_masterbedroom_speakers
+      message: '{% if is_state(''group.group.raam_sensoren'', ''off'') %} Alle ramen
+        zijn dicht! {% else %} De volgende ramen staan nog open: {{ expand(states.binary_sensor.kamer_amilya_raam_sensor,
+        states.binary_sensor.kamer_alunya_raam_sensor, states.binary_sensor.kamer_alunya_schuifraam_sensor,
+        states.binary_sensor.badkamer_raam_sensor, states.binary_sensor.berging_raam_sensor,
+        states.binary_sensor.keuken_raam_sensor, states.binary_sensor.living_oprit_raam_sensor,
+        states.binary_sensor.living_tuin_raam_sensor, states.binary_sensor.master_bedroom_raam_sensor,
+        states.binary_sensor.veranda_schuifraam_sensor) | selectattr(''state'',''eq'',''on'')
+        | map(attribute=''friendly_name'')| list }} {% endif %}'
+  mode: single
