@@ -6,12 +6,14 @@
 
 automation:
 
-- id: 'ramen -  check living room (open)'
+- id: 'ramen - check living room (open)'
   alias: 🪟 ramen - check living room (open)
   description: ''
   trigger:
   - platform: state
     entity_id: sensor.gram_water_outside
+  - platform: state
+    entity_id: sensor.gram_water_living_room    
   condition:
   - condition: template
     value_template: >
@@ -49,14 +51,16 @@ automation:
   - service: input_boolean.turn_off
     target:
       entity_id: input_boolean.living_room_raam_moet_dicht
-  mode: single
+  mode: restart
   
-- id: 'ramen -  check kamer Amilya (open)'
-  alias: 🪟 ramen -  check kamer Amilya (open)
+- id: 'ramen - check kamer Amilya (open)'
+  alias: 🪟 ramen - check kamer Amilya (open)
   description: ''
   trigger:
   - platform: state
     entity_id: sensor.gram_water_outside
+  - platform: state
+    entity_id: sensor.gram_water_kamer_amilya    
   condition:
   - condition: template
     value_template: >
@@ -94,14 +98,16 @@ automation:
   - service: input_boolean.turn_off
     target:
       entity_id: input_boolean.kamer_amilya_raam_moet_dicht
-  mode: single
+  mode: restart
   
-- id: 'ramen -  check veranda (open)'
-  alias: 🪟 ramen -  check veranda (open)
+- id: 'ramen - check veranda (open)'
+  alias: 🪟 ramen - check veranda (open)
   description: ''
   trigger:
   - platform: state
     entity_id: sensor.gram_water_outside
+  - platform: state
+    entity_id: sensor.gram_water_veranda    
   condition:
   - condition: template
     value_template: >
@@ -141,14 +147,16 @@ automation:
   - service: input_boolean.turn_off
     target:
       entity_id: input_boolean.veranda_schuifraam_moet_dicht
-  mode: single
+  mode: restart
   
-- id: 'ramen -  check berging (open)'
-  alias: 🪟 ramen -  check berging (open)
+- id: 'ramen - check berging (open)'
+  alias: 🪟 ramen - check berging (open)
   description: ''
   trigger:
   - platform: state
     entity_id: sensor.gram_water_outside
+  - platform: state
+    entity_id: sensor.gram_water_berging
   condition:
   - condition: template
     value_template: >
@@ -194,14 +202,16 @@ automation:
   - service: input_boolean.turn_off
     target:
       entity_id: input_boolean.berging_raam_moet_dicht
-  mode: single
+  mode: restart
     
-- id: 'ramen -  check badkamer (open)'
-  alias: 🪟 ramen -  check badkamer (open)
+- id: 'ramen - check badkamer (open)'
+  alias: 🪟 ramen - check badkamer (open)
   description: ''
   trigger:
   - platform: state
     entity_id: sensor.gram_water_outside
+  - platform: state
+    entity_id: sensor.gram_water_badkamer
   condition:
   - condition: template
     value_template: >
@@ -239,15 +249,17 @@ automation:
     - service: input_boolean.turn_off
       target:
         entity_id: input_boolean.badkamer_raam_moet_dicht
-  mode: single
+  mode: restart
 
 
-- id: 'ramen -  check gang (open)'
-  alias: 🪟 ramen -  check gang (open)
+- id: 'ramen - check gang (open)'
+  alias: 🪟 ramen - check gang (open)
   description: ''
   trigger:
   - platform: state
     entity_id: sensor.gram_water_outside
+  - platform: state
+    entity_id: sensor.gram_water_gang    
   condition:
   - condition: template
     value_template: >
@@ -293,14 +305,16 @@ automation:
   - service: input_boolean.turn_off
     target:
       entity_id: input_boolean.gang_raam_moet_dicht
-  mode: single
+  mode: restart
 
-- id: 'ramen -  check kamer Alunya (open)'
-  alias: 🪟 ramen -  check kamer Alunya (open)
+- id: 'ramen - check kamer Alunya (open)'
+  alias: 🪟 ramen - check kamer Alunya (open)
   description: ''
   trigger:
   - platform: state
     entity_id: sensor.gram_water_outside
+  - platform: state
+    entity_id: sensor.gram_water_kamer_alunya    
   condition:
   - condition: template
     value_template: >
@@ -338,14 +352,16 @@ automation:
     - service: input_boolean.turn_off
       target:
         entity_id: input_boolean.kamer_alunya_raam_moet_dicht
-  mode: single
+  mode: restart
 
-- id: 'ramen -  check master bedroom (open)'
-  alias: 🪟 ramen -  check master bedroom (open)
+- id: 'ramen - check master bedroom (open)'
+  alias: 🪟 ramen - check master bedroom (open)
   description: ''
   trigger:
   - platform: state
     entity_id: sensor.gram_water_outside
+  - platform: state
+    entity_id: sensor.gram_water_master_bedroom    
   condition:
   - condition: template
     value_template: >
@@ -385,6 +401,6 @@ automation:
   - service: input_boolean.turn_off
     target:
       entity_id: input_boolean.master_bedroom_raam_moet_dicht
-  mode: single
+  mode: restart
 
 

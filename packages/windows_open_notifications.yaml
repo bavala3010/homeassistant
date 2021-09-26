@@ -44,13 +44,13 @@ automation:
   action:
   - service: notify.mobile_app_bart_S10
     data:
-      message: "vocht living: {{states('sensor.gram_water_living_room')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp lving: {{states('sensor.living_room_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      message: "Vocht living: {{states('sensor.gram_water_living_room')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp living: {{states('sensor.living_room_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: Open het raam van de living/keuken!
       data:
         color: blue
         channel: Vocht
         timeout: 3600
-        tag: vocht_living_room
+        tag: window_living_room
         actions:
         - action: living_room_window_pause
           title: stel meldingen 2 uren uit
@@ -92,13 +92,13 @@ automation:
   action:
   - service: notify.mobile_app_madouce_s20
     data:
-      message: "vocht living: {{states('sensor.gram_water_living_room')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp lving: {{states('sensor.living_room_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      message: "Vocht living: {{states('sensor.gram_water_living_room')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp living: {{states('sensor.living_room_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: Open het raam van de living/keuken!
       data:
         color: blue
         channel: Vocht
         timeout: 3600
-        tag: vocht_living_room
+        tag: window_living_room
         actions:
         - action: living_room_window_pause
           title: stel meldingen 2 uren uit
@@ -138,7 +138,7 @@ automation:
         color: blue
         channel: Vocht
         timeout: 3600
-        tag: vocht_kamer_amilya
+        tag: window_kamer_amilya
         actions:
         - action: kamer_amilya_window_pause
           title: stel meldingen 2 uren uit
@@ -178,7 +178,7 @@ automation:
         color: blue
         channel: Vocht
         timeout: 3600
-        tag: vocht_kamer_amilya
+        tag: window_kamer_amilya
         actions:
         - action: kamer_amilya_window_pause
           title: stel meldingen 2 uren uit
@@ -212,13 +212,13 @@ automation:
   action:
   - service: notify.mobile_app_bart_s10
     data:
-      message: "vocht veranda {{states('sensor.gram_water_veranda')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp veranda: {{states('sensor.veranda_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      message: "Vocht veranda {{states('sensor.gram_water_veranda')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp veranda: {{states('sensor.veranda_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: Open het raam van de veranda!
       data:
         color: blue
         channel: Vocht
         timeout: 3600
-        tag: vocht_veranda
+        tag: window_veranda
         actions:
         - action: veranda_window_pause
           title: stel meldingen 2 uren uit
@@ -252,13 +252,13 @@ automation:
   action:
   - service: notify.mobile_app_madouce_s20
     data:
-      message: "vocht veranda {{states('sensor.gram_water_veranda')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp veranda: {{states('sensor.veranda_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      message: "Vocht veranda {{states('sensor.gram_water_veranda')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp veranda: {{states('sensor.veranda_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: Open het raam van de veranda!
       data:
         color: blue
         channel: Vocht
         timeout: 3600
-        tag: vocht_veranda
+        tag: window_veranda
         actions:
         - action: veranda_window_pause
           title: stel meldingen 2 uren uit
@@ -292,13 +292,13 @@ automation:
   action:
   - service: notify.mobile_app_bart_s10
     data:
-      message: "vocht berging {{states('sensor.gram_water_berging')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp berging: {{states('sensor.berging_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      message: "Vocht berging {{states('sensor.gram_water_berging')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp berging: {{states('sensor.berging_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: Open het raam van de berging!
       data:
         color: blue
         channel: Vocht
         timeout: 3600
-        tag: vocht_berging
+        tag: window_berging
         actions:
         - action: berging_window_pause
           title: stel meldingen 2 uren uit
@@ -332,13 +332,13 @@ automation:
   action:
   - service: notify.mobile_app_madouce_s20
     data:
-      message: "vocht berging {{states('sensor.gram_water_berging')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp berging: {{states('sensor.berging_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      message: "Vocht berging {{states('sensor.gram_water_berging')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp berging: {{states('sensor.berging_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: Open het raam van de berging!
       data:
         color: blue
         channel: Vocht
         timeout: 3600
-        tag: vocht_berging
+        tag: window_berging
         actions:
         - action: berging_window_pause
           title: stel meldingen 2 uren uit
@@ -378,7 +378,7 @@ automation:
         color: blue
         channel: Vocht
         timeout: 3600
-        tag: vocht_badkamer
+        tag: window_badkamer
         actions:
         - action: kamer_badkamer_window_pause
           title: stel meldingen 2 uren uit
@@ -418,7 +418,7 @@ automation:
         color: blue
         channel: Vocht
         timeout: 3600
-        tag: vocht_badkamer
+        tag: window_badkamer
         actions:
         - action: kamer_badkamer_window_pause
           title: stel meldingen 2 uren uit
@@ -463,7 +463,7 @@ automation:
         color: blue
         channel: Vocht
         timeout: 3600
-        tag: vocht_kamer_alunya
+        tag: window_kamer_alunya
         actions:
         - action: kamer_alunya_window_pause
           title: stel meldingen 2 uren uit
@@ -505,7 +505,7 @@ automation:
         color: blue
         channel: Vocht
         timeout: 3600
-        tag: vocht_kamer_alunya
+        tag: window_kamer_alunya
         actions:
         - action: kamer_alunya_window_pause
           title: stel meldingen 2 uren uit
@@ -545,7 +545,7 @@ automation:
         color: blue
         channel: Vocht
         timeout: 3600
-        tag: vocht_master_bedroom
+        tag: window_master_bedroom
         actions:
         - action: master_bedroom_window_pause
           title: stel meldingen 2 uren uit
@@ -585,7 +585,7 @@ automation:
         color: blue
         channel: Vocht
         timeout: 3600
-        tag: vocht_master_bedroom
+        tag: window_master_bedroom
         actions:
         - action: master_bedroom_window_pause
           title: stel meldingen 2 uren uit
@@ -605,7 +605,15 @@ automation:
   trigger:
     - platform: state
       entity_id: binary_sensor.keuken_raam_sensor
-      from: 'off'
+#     from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.living_room_oprit_raam_sensor
+#     from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.living_room_tuin_raam_sensor
+#     from: 'off'
       to: 'on'
     - platform: state
       entity_id: input_boolean.living_room_window_pause
@@ -625,7 +633,7 @@ automation:
     data:
       message: "clear_notification"
       data:
-        tag: vocht_living_room
+        tag: window_living_room
   mode: single
 
 - id: 'ramen -  open raam living room - clear notification (Madouce)'
@@ -634,8 +642,16 @@ automation:
   trigger:
     - platform: state
       entity_id: binary_sensor.keuken_raam_sensor
-      from: 'on'
-      to: 'off'
+      from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.living_room_oprit_raam_sensor
+      from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.living_room_tuin_raam_sensor
+      from: 'off'
+      to: 'on'
     - platform: state
       entity_id: input_boolean.living_room_window_pause
       to: 'on'
@@ -654,7 +670,7 @@ automation:
     data:
       message: "clear_notification"
       data:
-        tag: vocht_living_room
+        tag: window_living_room
   mode: single
 
 - id: 'ramen -  open raam kamer Amilya - clear notification (Bart)'
@@ -683,7 +699,7 @@ automation:
     data:
       message: "clear_notification"
       data:
-        tag: vocht_kamer_amilya
+        tag: window_kamer_amilya
   mode: single
 
 - id: 'ramen -  open raam kamer Amilya - clear notification (Madouce)'
@@ -712,7 +728,7 @@ automation:
     data:
       message: "clear_notification"
       data:
-        tag: vocht_kamer_amilya
+        tag: window_kamer_amilya
   mode: single
 
 - id: 'ramen -  open raam veranda - clear notification (Bart)'
@@ -741,7 +757,7 @@ automation:
     data:
       message: "clear_notification"
       data:
-        tag: vocht_veranda
+        tag: window_veranda
   mode: single
 
 - id: 'ramen -  open raam veranda - clear notification (Madouce)'
@@ -770,7 +786,7 @@ automation:
     data:
       message: "clear_notification"
       data:
-        tag: vocht_veranda
+        tag: window_veranda
   mode: single
 
 - id: 'ramen -  open raam berging  - clear notification (Bart)'
@@ -799,7 +815,7 @@ automation:
     data:
       message: "clear_notification"
       data:
-        tag: vocht_berging
+        tag: window_berging
   mode: single
 
 - id: 'ramen -  open raam berging - clear notification (Madouce)'
@@ -828,7 +844,7 @@ automation:
     data:
       message: "clear_notification"
       data:
-        tag: vocht_berging
+        tag: window_berging
   mode: single
 
 - id: 'ramen -  open raam badkamer - clear notification (Bart)'
@@ -857,7 +873,7 @@ automation:
     data:
       message: "clear_notification"
       data:
-        tag: vocht_badkamer
+        tag: window_badkamer
   mode: single
 
 - id: 'ramen -  open raam badkamer - clear notification (Madouce)'
@@ -886,7 +902,7 @@ automation:
     data:
       message: "clear_notification"
       data:
-        tag: vocht_badkamer
+        tag: window_badkamer
   mode: single
 
 
@@ -896,11 +912,15 @@ automation:
   trigger:
     - platform: state
       entity_id: binary_sensor.kamer_alunya_raam_sensor
-      from: 'off'
+#     from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.kamer_alunya_schuifraam_sensor
+#     from: 'off'
       to: 'on'
     - platform: state
       entity_id: input_boolean.kamer_alunya_window_pause
-      to: 'on'                              
+      to: 'on'                                    
   condition:
   - condition: state
     entity_id: input_boolean.kamer_alunya_raam_moet_open
@@ -916,7 +936,7 @@ automation:
     data:
       message: "clear_notification"
       data:
-        tag: vocht_kamer_alunya
+        tag: window_kamer_alunya
   mode: single
 
 - id: 'ramen -  open raam kamer Alunya - clear notification (Madouce)'
@@ -925,7 +945,11 @@ automation:
   trigger:
     - platform: state
       entity_id: binary_sensor.kamer_alunya_raam_sensor
-      from: 'off'
+#     from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.kamer_alunya_schuifraam_sensor
+#     from: 'off'
       to: 'on'
     - platform: state
       entity_id: input_boolean.kamer_alunya_window_pause
@@ -945,7 +969,7 @@ automation:
     data:
       message: "clear_notification"
       data:
-        tag: vocht_kamer_alunya
+        tag: window_kamer_alunya
   mode: single
 
 - id: 'ramen -  open raam master bedroom  - clear notification (Bart)'
@@ -974,7 +998,7 @@ automation:
     data:
       message: "clear_notification"
       data:
-        tag: vocht_master_bedroom
+        tag: window_master_bedroom
   mode: single
 
 - id: 'ramen -  open raam master bedroom - clear notification (Madouce)'
@@ -1003,5 +1027,5 @@ automation:
     data:
       message: "clear_notification"
       data:
-        tag: vocht_master_bedroom
+        tag: window_master_bedroom
   mode: single

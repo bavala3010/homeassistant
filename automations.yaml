@@ -85,8 +85,7 @@
     data:
       brightness_pct: 75
   mode: single
-
-- id: '1632427763962'
+- id: 'Alunya verwarming aan + raam open = verwarming uit'
   alias: Alunya verwarming aan + raam open = verwarming uit
   description: ''
   trigger:
@@ -108,4 +107,34 @@
       entity_id: climate.kamer_alunya
     data:
       hvac_mode: auto
+  mode: single
+  
+- id: '1632520765684'
+  alias: vocht gram in badkamer >14 gram/m³
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.badkamer_thermal_absolutehumidity
+    above: '14'
+  condition: []
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: In badkamer meer dan 14 gram water /m³
+      title: Veel vocht in badkamer
+  mode: single
+
+- id: '1632585842094'
+  alias: vocht gram in badkamer >15 gram/m³
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.badkamer_thermal_absolutehumidity
+    above: '15'
+  condition: []
+  action:
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: In badkamer meer dan 15 gram water /m³
+      title: Heel veel vocht in badkamer.
   mode: single
