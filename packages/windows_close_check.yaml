@@ -74,7 +74,7 @@ automation:
       entity_id: sensor.kamer_amilya_heating
       above: '0'
     - condition: template
-      value_template: "{{ (states('sensor.kamer_amilya_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) >= 7 }}"        
+      value_template: "{{ (states('sensor.kamer_amilya_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) >= 10 }}"
     - condition: template
       value_template: "{{ states('sensor.gram_water_kamer_amilya_diff_outside') | float < 0.4 }}"             
   action:
@@ -179,7 +179,7 @@ automation:
       entity_id: sensor.badkamer_heating
       above: '0'
     - condition: template
-      value_template: "{{ (states('sensor.badkamer_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) >= 7 }}"        
+      value_template: "{{ (states('sensor.badkamer_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) >= 10 }}"        
     - condition: template
       value_template: "{{ states('sensor.gram_water_badkamer_diff_outside') | float < 0.4 }}"             
   action:
@@ -214,7 +214,7 @@ automation:
       entity_id: sensor.gang_heating
       above: '0'
     - condition: template
-      value_template: "{{ (states('sensor.gang_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) >= 7 }}"        
+      value_template: "{{ (states('sensor.gang_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) >= 6 }}"        
     - condition: template
       value_template: "{{ states('sensor.gram_water_gang_diff_outside') | float < 0.4 }}"             
   action:
@@ -250,7 +250,7 @@ automation:
       entity_id: sensor.kamer_alunya_heating
       above: '0'
     - condition: template
-      value_template: "{{ (states('sensor.kamer_alunya_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) >= 7 }}"        
+      value_template: "{{ (states('sensor.kamer_alunya_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) >= 6 }}"        
     - condition: template
       value_template: "{{ states('sensor.gram_water_kamer_alunya_diff_outside') | float < 0.4 }}"             
   action:
@@ -285,7 +285,7 @@ automation:
       entity_id: sensor.master_bedroom_heating
       above: '0'
     - condition: template
-      value_template: "{{ (states('sensor.master_bedroom_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) >= 7 }}"        
+      value_template: "{{ (states('sensor.master_bedroom_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) >= 8 }}"        
     - condition: template
       value_template: "{{ states('sensor.gram_water_master_bedroom_diff_outside') | float < 0.4 }}"             
   action:

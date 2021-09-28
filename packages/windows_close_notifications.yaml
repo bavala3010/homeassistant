@@ -47,7 +47,7 @@ automation:
         timeout: 3600
         tag: window_living_room
         actions:
-        - action: living_roomwindow_pause
+        - action: living_room_window_pause 
           title: stel meldingen 2 uren uit
         - action: URI
           title: meer info
@@ -131,7 +131,7 @@ automation:
         timeout: 3600
         tag: window_veranda
         actions:
-        - action: verandawindow_pause
+        - action: veranda_window_pause
           title: stel meldingen 2 uren uit
         - action: URI
           title: meer info
@@ -168,7 +168,7 @@ automation:
         timeout: 3600
         tag: window_veranda
         actions:
-        - action: verandawindow_pause
+        - action: veranda_window_pause
           title: stel meldingen 2 uren uit
         - action: URI
           title: meer info
@@ -206,7 +206,7 @@ automation:
         timeout: 3600
         tag: window_badkamer
         actions:
-        - action: badkamerwindow_pause
+        - action: badkamer_window_pause 
           title: stel meldingen 2 uren uit
         - action: URI
           title: meer info
@@ -243,7 +243,7 @@ automation:
         timeout: 3600
         tag: window_badkamer
         actions:
-        - action: badkamerwindow_pause
+        - action: badkamer_window_pause 
           title: stel meldingen 2 uren uit
         - action: URI
           title: meer info
@@ -280,7 +280,7 @@ automation:
         timeout: 3600
         tag: window_berging
         actions:
-        - action: bergingwindow_pause
+        - action: berging_window_pause 
           title: stel meldingen 2 uren uit
         - action: URI
           title: meer info
@@ -317,7 +317,7 @@ automation:
         timeout: 3600
         tag: window_berging
         actions:
-        - action: bergingwindow_pause
+        - action: berging_window_pause 
           title: stel meldingen 2 uren uit
         - action: URI
           title: meer info
@@ -360,7 +360,7 @@ automation:
         timeout: 3600
         tag: window_kamer_alunya
         actions:
-        - action: kamer_alunyawindow_pause
+        - action: kamer_alunya_window_pause 
           title: stel meldingen 2 uren uit
         - action: URI
           title: meer info
@@ -402,7 +402,7 @@ automation:
         timeout: 3600
         tag: window_kamer_alunya
         actions:
-        - action: kamer_alunyawindow_pause
+        - action: kamer_alunya_window_pause 
           title: stel meldingen 2 uren uit
         - action: URI
           title: meer info
@@ -440,7 +440,7 @@ automation:
         timeout: 3600
         tag: window_master_bedroom
         actions:
-        - action: master_bedroomwindow_pause
+        - action: master_bedroom_window_pause 
           title: stel meldingen 2 uren uit
         - action: URI
           title: meer info
@@ -477,7 +477,7 @@ automation:
         timeout: 3600
         tag: window_master_bedroom
         actions:
-        - action: master_bedroomwindow_pause
+        - action: master_bedroom_window_pause 
           title: stel meldingen 2 uren uit
         - action: URI
           title: meer info

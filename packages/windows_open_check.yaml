@@ -74,7 +74,7 @@ automation:
     entity_id: sensor.kamer_amilya_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ (states('sensor.kamer_amilya_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) < 7 }}"        
+    value_template: "{{ (states('sensor.kamer_amilya_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) < 10 }}"        
   - condition: or
     conditions:    
       - condition: and
@@ -122,7 +122,7 @@ automation:
     entity_id: sensor.veranda_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ (states('sensor.veranda_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) < 7 }}"
+    value_template: "{{ (states('sensor.veranda_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) < 6 }}"
   - condition: or
     conditions:
       # first possible case
@@ -170,7 +170,7 @@ automation:
     entity_id: sensor.berging_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ (states('sensor.berging_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) < 7 }}"        
+    value_template: "{{ (states('sensor.berging_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) < 6 }}"        
   - condition: or
     conditions:    
       # first possible case
@@ -273,7 +273,7 @@ automation:
     entity_id: sensor.gang_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ (states('sensor.gang_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) < 7 }}"        
+    value_template: "{{ (states('sensor.gang_temperature') | float) - (states('sensor.temp_leuven24_wunderground') | float) < 6 }}"        
   - condition: or
     conditions:    
       # first possible case
