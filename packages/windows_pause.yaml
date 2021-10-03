@@ -7,7 +7,7 @@
 automation:
 
 - id: 'living_room_window_pause'
-  alias: "🪟 living_room_window_pause"
+  alias: "living_room_window_pause"
   trigger:
   - platform: event
     event_type: mobile_app_notification_action
@@ -19,7 +19,7 @@ automation:
       entity_id: input_boolean.living_room_window_pause  
 
 - id: 'kamer_amilya_window_pause'
-  alias: "🪟 kamer_amilya_window_pause"
+  alias: "kamer_amilya_window_pause"
   trigger:
   - platform: event
     event_type: mobile_app_notification_action
@@ -31,7 +31,7 @@ automation:
       entity_id: input_boolean.kamer_amilya_window_pause  
 
 - id: 'veranda_window_pause'
-  alias: "🪟 veranda_window_pause"
+  alias: "veranda_window_pause"
   trigger:
   - platform: event
     event_type: mobile_app_notification_action
@@ -43,7 +43,7 @@ automation:
       entity_id: input_boolean.veranda_window_pause  
 
 - id: 'badkamer_window_pause'
-  alias: "🪟 badkamer_window_pause"
+  alias: "badkamer_window_pause"
   trigger:
   - platform: event
     event_type: mobile_app_notification_action
@@ -55,7 +55,7 @@ automation:
       entity_id: input_boolean.badkamer_window_pause  
 
 - id: 'berging_window_pause'
-  alias: "🪟 berging_window_pause"
+  alias: "berging_window_pause"
   trigger:
   - platform: event
     event_type: mobile_app_notification_action
@@ -67,7 +67,7 @@ automation:
       entity_id: input_boolean.berging_window_pause  
 
 - id: 'kamer_alunya_window_pause'
-  alias: "🪟 kamer_alunya_window_pause"
+  alias: "kamer_alunya_window_pause"
   trigger:
   - platform: event
     event_type: mobile_app_notification_action
@@ -79,7 +79,7 @@ automation:
       entity_id: input_boolean.kamer_alunya_window_pause  
 
 - id: 'master_bedroom_window_pause'
-  alias: "🪟 master_bedroom_window_pause"
+  alias: " master_bedroom_window_pause"
   trigger:
   - platform: event
     event_type: mobile_app_notification_action
@@ -92,7 +92,7 @@ automation:
 
 
 - id: "zet pauze toggle master bedroom naar OFF na 2 uren"  
-  alias: "🪟 zet pauze toggle master bedroom naar OFF na 2 uren"
+  alias: " zet pauze toggle master bedroom naar OFF na 2 uren"
   description: 'zet pauze toggle master bedroom naar OFF na 2 uren'
   mode: single
   trigger:
@@ -107,7 +107,7 @@ automation:
         entity_id: input_boolean.master_bedroom_window_pause
 
 - id: "zet pauze toggle veranda naar OFF na 2 uren"  
-  alias: "🪟 zet pauze toggle veranda naar OFF na 2 uren"
+  alias: " zet pauze toggle veranda naar OFF na 2 uren"
   description: 'zet pauze toggle veranda naar OFF na 2 uren'
   mode: single
   trigger:
@@ -126,7 +126,7 @@ automation:
 #######################################"
 
 - id: "middernacht = reset schakelaars"
-  alias: "🪟 middernacht = reset schakelaars"
+  alias: " middernacht = reset schakelaars"
   description: reset booleans voor openzetten ramen ivm vocht
   trigger:
     - platform: time

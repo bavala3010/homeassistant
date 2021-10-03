@@ -697,20 +697,20 @@ binary_sensor:
     
       gram_water_outside_rising:
         entity_id: sensor.gram_water_outside
-        sample_duration: 3600
-        # 1 sample every second. 1800 seconds = 30 minutes
+        sample_duration: 4800
+        max_samples: 20
+        # 1 sample every second. 1800 seconds = 30 minutes  3600 seconds = 1 hour
         min_gradient: 0.00011      # The gradient is measured in sensor units per second (independent from the duration ?)
-        # If you want to know when the humidity is rising by 0.5 gram per hour, use a gradient of (0.8) / (60 x 60) = 0.000139
-        max_samples: 10
+        # If you want to know when the humidity is rising by 0.5 gram per hour, use a gradient of (0.5) / (60 x 60) = 0.000139
         
       gram_water_outside_falling:
         entity_id: sensor.gram_water_outside
-        sample_duration: 3600
+        sample_duration: 4800
+        max_samples: 20
         # 1 sample every second. 1800 seconds = 30 minutes
         min_gradient: -0.00011
         # The gradient is measured in sensor units per second
-        # If you want to know when the humidity is rising by 0.5 gram per hour, use a gradient of (0.8) / (60 x 60) = 0.000139
-        max_samples: 10
+        # If you want to know when the humidity is rising by 0.5 gram per hour, use a gradient of (0.5) / (60 x 60) = 0.000139
 
       gram_water_master_bedroom_rising:
         entity_id: sensor.gram_water_master_bedroom

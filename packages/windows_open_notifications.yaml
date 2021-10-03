@@ -380,7 +380,7 @@ automation:
         timeout: 3600
         tag: window_badkamer
         actions:
-        - action: kamer_badkamer_window_pause
+        - action: badkamer_window_pause
           title: stel meldingen 2 uren uit
         - action: URI
           title: meer info
@@ -420,7 +420,7 @@ automation:
         timeout: 3600
         tag: window_badkamer
         actions:
-        - action: kamer_badkamer_window_pause
+        - action: badkamer_window_pause
           title: stel meldingen 2 uren uit
         - action: URI
           title: meer info
