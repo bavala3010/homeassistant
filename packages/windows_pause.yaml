@@ -90,23 +90,41 @@ automation:
     target:
       entity_id: input_boolean.master_bedroom_window_pause  
 
+#######################################
+###  reset pauze toggles after 2 hours
+#######################################
 
-- id: "zet pauze toggle master bedroom naar OFF na 2 uren"  
-  alias: " zet pauze toggle master bedroom naar OFF na 2 uren"
-  description: 'zet pauze toggle master bedroom naar OFF na 2 uren'
+- id: "zet pauze toggle living room naar OFF na 2 uren"  
+  alias: " zet pauze toggle living room naar OFF na 2 uren"
+  description: 'zet pauze toggle living room naar OFF na 2 uren'
   mode: single
   trigger:
     - platform: state
-      entity_id: input_boolean.master_bedroom_window_pause
+      entity_id: input_boolean.living_room_window_pause
       to: 'on'
   condition: []
   action:
     - wait_template: '2:00:00'
     - service: input_boolean.turn_off
       target:
-        entity_id: input_boolean.master_bedroom_window_pause
+        entity_id: input_boolean.living_room_window_pause
 
-- id: "zet pauze toggle veranda naar OFF na 2 uren"  
+- id: "zet pauze toggle kamer Amilya naar OFF na 2 uren"
+  alias: " zet pauze toggle kamer Amilya naar OFF na 2 uren"
+  description: 'zet pauze toggle kamer Amilya naar OFF na 2 uren'
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: input_boolean.kamer_amilya_window_pause
+      to: 'on'
+  condition: []
+  action:
+    - wait_template: '2:00:00'
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.kamer_amilya_window_pause
+
+- id: "zet pauze toggle veranda naar OFF na 2 uren"
   alias: " zet pauze toggle veranda naar OFF na 2 uren"
   description: 'zet pauze toggle veranda naar OFF na 2 uren'
   mode: single
@@ -121,9 +139,72 @@ automation:
       target:
         entity_id: input_boolean.veranda_window_pause
 
-#######################################"
-###  pauze van de andere kamers nog toevoegen
-#######################################"
+- id: "zet pauze toggle berging naar OFF na 2 uren"
+  alias: " zet pauze toggle berging naar OFF na 2 uren"
+  description: 'zet pauze toggle berging naar OFF na 2 uren'
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: input_boolean.berging_window_pause
+      to: 'on'
+  condition: []
+  action:
+    - wait_template: '2:00:00'
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.berging_window_pause
+
+- id: "zet pauze toggle badkamer naar OFF na 2 uren"
+  alias: " zet pauze toggle badkamer naar OFF na 2 uren"
+  description: 'zet pauze toggle badkamer naar OFF na 2 uren'
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: input_boolean.badkamer_window_pause
+      to: 'on'
+  condition: []
+  action:
+    - wait_template: '2:00:00'
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.badkamer_window_pause
+
+        
+- id: "zet pauze toggle kamer Alunya naar OFF na 2 uren"
+  alias: " zet pauze toggle kamer Alunya naar OFF na 2 uren"
+  description: 'zet pauze toggle kamer Alunya naar OFF na 2 uren'
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: input_boolean.kamer_alunya_window_pause
+      to: 'on'
+  condition: []
+  action:
+    - wait_template: '2:00:00'
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.kamer_alunya_window_pause
+
+- id: "zet pauze toggle master bedroom naar OFF na 2 uren"
+  alias: " zet pauze toggle master bedroom naar OFF na 2 uren"
+  description: 'zet pauze toggle master bedroom naar OFF na 2 uren'
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: input_boolean.master_bedroom_window_pause
+      to: 'on'
+  condition: []
+  action:
+    - wait_template: '2:00:00'
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.master_bedroom_window_pause
+
+
+#######################################
+###  reset pauze toggles after 2 hours
+#######################################
+
 
 - id: "middernacht = reset schakelaars"
   alias: " middernacht = reset schakelaars"

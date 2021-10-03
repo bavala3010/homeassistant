@@ -35,7 +35,7 @@ automation:
       hvac_mode: auto
   mode: single
 
-- id: '1632427763962'
+- id: 'Alunya verwarming aan + raam open = verwarming automatisch'
   alias: Alunya verwarming aan + raam open = verwarming automatisch
   description: ''
   trigger:
@@ -59,7 +59,7 @@ automation:
       hvac_mode: auto
   mode: single
 
-- id: '1632427763962'
+- id: 'Amilya verwarming aan + raam open = verwarming automatisch'
   alias: Amilya verwarming aan + raam open = verwarming automatisch
   description: ''
   trigger:
