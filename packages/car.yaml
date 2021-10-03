@@ -41,14 +41,14 @@ automation:
     entity_id: sensor.audi_e_tron_sportback_55_plug_state
     state: disconnected
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       title: Auto laden?
       message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
       data:
         color: green
         tag: auto_laden
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       title: Auto laden?
       message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
@@ -78,14 +78,14 @@ automation:
     entity_id: sensor.audi_e_tron_sportback_55_plug_state
     state: disconnected
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       title: Auto laden voor het weekend?
       message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
       data:
         color: green
         tag: auto_laden
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       title: Auto laden voor het weekend?
       message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
@@ -103,14 +103,14 @@ automation:
     to: connected
   condition:
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: 🚙 Autolader is verbonden.
       data:
         color: green
         tag: auto_laden
         timeout: 300
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       message: 🚙 Autolader is verbonden.
       data:
@@ -128,7 +128,7 @@ automation:
     to: charging
   condition: []
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: 🚙 Auto is aan het laden. Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%.
         Nog {{states('sensor.audi_e_tron_sportback_55_remaining_charge_time')}} laden.
@@ -136,7 +136,7 @@ automation:
         color: green
         tag: auto_laden
         timeout: 300
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       message: 🚙 Auto is aan het laden. Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%.
         Nog {{states('sensor.audi_e_tron_sportback_55_remaining_charge_time')}} laden.
@@ -154,14 +154,14 @@ automation:
     to: completed
   condition: []
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%. {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
       data:
         color: green
         tag: auto_laden
         timeout: 43200
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%. {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
       data:
@@ -183,7 +183,7 @@ automation:
     entity_id: lock.audi_e_tron_sportback_55_door_lock_2
     state: unlocked
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       title: Auto niet op slot!
       message: 🚙 Er wordt nu geprobeerd om de auto te sluiten.
@@ -194,7 +194,7 @@ automation:
   - service: lock.lock
     target:
       entity_id: lock.audi_e_tron_sportback_55_door_lock_2
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       title: Auto niet op slot!
       message: 🚙 Er wordt nu geprobeerd om de auto te sluiten.
@@ -229,7 +229,7 @@ automation:
     to: locked
   condition: []
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: 🚙 Auto is op slot!
       data:
@@ -237,7 +237,7 @@ automation:
         tag: slot_auto
         timeout: 420
         color: red
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       message: 🚙 Auto is op slot!
       data:
@@ -259,7 +259,7 @@ automation:
     state: unlocked
     for: 00:10:00
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: 🚙 Auto niet op slot! (veeg omlaag voor acties)
       data:
@@ -269,7 +269,7 @@ automation:
         actions:
         - action: lock_car
           title: SLUIT AUTO
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       message: 🚙 Auto niet op slot! (veeg omlaag voor acties)
       data:

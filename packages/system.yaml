@@ -9,7 +9,7 @@ automation:
     for: 00:10
   condition: []
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: temperatuur Raspberry Pi CPU is %{{states('sensor.processor_temperature')}}%
       title: Raspberry PI
@@ -24,7 +24,7 @@ automation:
     for: 00:15
   condition: []
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}%.
       title: Raspberry Pi
@@ -37,7 +37,7 @@ automation:
   - platform: homeassistant
     event: shutdown
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: Home Assistant wordt gestopt.
   mode: single
@@ -50,7 +50,7 @@ automation:
     event: start
   condition: []
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: Home Assistant is volledig gestart.
   mode: single

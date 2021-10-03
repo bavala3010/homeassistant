@@ -1,0 +1,15 @@
+#  enthalpy formula
+#  h = 1006 * T + H * (2501 + 1.84 * T)
+#  where T = air temperature in celcius
+#  where H = air mass 
+#
+#  specific enthalpy of dry air and the specific enthalpy of  the water vapor in the air.
+
+enthalpy_outside in KJ/kg
+value_template: "{{ (1.006 * (states('sensor.temp_leuven24_wunderground') | float) ) + ( (states('sensor.outside_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.temp_leuven24_wunderground') | float))) }}" 
+
+enthalpy_veranda in KJ/kg
+value_template: "{{ (1.006 * (states('sensor.veranda_temperature') | float) ) + ( (states('sensor.veranda_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.veranda_temperature') | float))) }}" 
+
+enthalpy_master_bedroom in KJ/kg
+value_template: "{{ (1.006 * (states('sensor.master_bedroom_temperature') | float) ) + ( (states('sensor.master_bedroom_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.master_bedroom_temperature') | float))) }}" 

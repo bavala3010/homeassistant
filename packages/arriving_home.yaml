@@ -20,13 +20,13 @@ automation:
     zone: zone.home
   condition: []
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: TTS
       title: "Welkom thuis Bart! De auto batterij is {{states('sensor.audi_e_tron_sportback_55_state_of_charge') | round (0)}}%."
       data:
         channel: alarm_stream
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: Welkom thuis! (veeg omlaag voor acties)
       data:
@@ -48,13 +48,13 @@ automation:
     zone: zone.home
   condition: []
   action:
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       message: TTS
       title: "Welkom thuis Madouce! De auto batterij is {{states('sensor.audi_e_tron_sportback_55_state_of_charge') | round (0)}}%."
       data:
         channel: alarm_stream
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       message: Welkom thuis! (veeg omlaag voor acties)
       data:

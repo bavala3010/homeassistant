@@ -23,7 +23,7 @@ automation:
     after: '7:0:0'
     before: '23:00:00'
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: "Temperatuur in kamer Amilya is {{states('sensor.kamer_amilya_temperature')}}°C. Buiten {{states('sensor.temp_leuven24_wunderground')}}°C."
       title: Open het raam van Amilya!
@@ -59,7 +59,7 @@ automation:
     after: '7:0:0'
     before: '23:00:00'
   action:
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       message: "Temperatuur in kamer Amilya is {{states('sensor.kamer_amilya_temperature')}}°C. Buiten {{states('sensor.temp_leuven24_wunderground')}}°C."
       title: Open het raam van Amilya!

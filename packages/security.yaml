@@ -56,7 +56,7 @@ automation:
     for: 00:04:00
   condition: []
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       title: Alarm inschakelen?
       message: Niemand thuis?
@@ -124,7 +124,7 @@ automation:
       entity_id: alarm_control_panel.home_alarm
     data:
       code: !secret alarm_code
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     title: ''
     message: '✅  Alarm is automatisch uitgeschakeld door thuiskomst.'
   mode: single
@@ -137,7 +137,7 @@ automation:
     tag_id: !secret tag_voordeur_arm_alarm
   condition: []
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: ⛔ Alarm ingeschakeld aan voordeur.
       title: ''
@@ -252,7 +252,7 @@ automation:
     to: triggered
   condition: []
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: TTS
       title: Alarm in Eikenboslaan!
@@ -264,14 +264,14 @@ automation:
           uri: /lovelace/alarm
         vibrationPattern: 10, 10, 10, 10, 10, 10, 10
         channel: alarm
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: 'Alarm in Eikenbos: beweging aan {{ states(''input_text.trigger_source'')}}'
       title: '🚨 Alarm!'
       data:
         color: red
         channel: alarm
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       message: 'Alarm in Eikenbos: beweging aan {{ states(''input_text.trigger_source'')}}'
       title: '🚨 Alarm!'
@@ -309,11 +309,11 @@ automation:
     for: 00:05:00
   condition: []
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       title: Garagepoort
       message: Garagepoort staat al 5 minuten open.
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       title: Garagepoort
       message: Garagepoort staat al 5 minuten open.
@@ -330,11 +330,11 @@ automation:
     for: 00:10:00
   condition: []
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       title: Garagepoort
       message: Garagepoort staat al 10 minuten open.
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       title: Garagepoort
       message: Garagepoort staat al 10 minuten open.

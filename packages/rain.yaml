@@ -8,12 +8,12 @@ automation:
     above: '0'
   condition: []
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: Het regent. Zijn de ramen dicht?
       title: Regen
       tag: regen
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       message: Het regent. Zijn de ramen dicht?
       title: Regen
@@ -29,7 +29,7 @@ automation:
     from: '0'
   condition: []
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: Het gaat regenen over een kwartier. 
   mode: single
@@ -46,11 +46,11 @@ automation:
     entity_id: binary_sensor.kamer_amilya_window_sensor
     state: 'on'
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: Het regent en het raam van Amilya staat open.
       title: Het regent. Doe raam Amilya dicht aub.
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       message: Het regent en het raam van Amilya staat open.
       title: Het regent. Doe raam Amilya dicht aub.

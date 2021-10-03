@@ -48,7 +48,7 @@ automation:
       entity_id: sensor.recycleapp_morgen
       state: Geen
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       title: '{{title}}'
       message: '{{message}}'
@@ -111,7 +111,7 @@ automation:
     entity_id: binary_sensor.madouce_s20_mobiele_data
     state: 'off'
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: Mobiele data telefoon Madouce staat niet aan.
   mode: single

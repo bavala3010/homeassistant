@@ -31,7 +31,7 @@
     entity_id: person.bart
     state: home
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: TTS
       title: Bart, je bent alleen thuis!
@@ -59,7 +59,7 @@
       seconds: 0
       milliseconds: 0
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: 'Auto is (bijna zeker) niet op slot '
   mode: single
@@ -117,7 +117,7 @@
     above: '14'
   condition: []
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: In badkamer meer dan 14 gram water /m³
       title: Veel vocht in badkamer
@@ -131,7 +131,7 @@
     above: '15'
   condition: []
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: In badkamer meer dan 15 gram water /m³
       title: Heel veel vocht in badkamer.
@@ -150,7 +150,7 @@
     above: '1.5'
   condition: []
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: Licht in garage brandt al langer dan 5 minuten.
       title: Licht in garage

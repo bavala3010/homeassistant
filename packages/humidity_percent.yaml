@@ -33,7 +33,7 @@ automation:
       after: '7:0:0'
       before: '23:00:00'
   action:
-    - service: notify.mobile_app_bart_s10
+    - service: notify.bart_phone
       data:
         title: Vocht
         message: "Vocht % in huis is heel hoog: {{states('sensor.avg_inside_humidity')}}."
@@ -53,7 +53,7 @@ automation:
     entity_id: sensor.humidity_leuven24_wunderground
     above: '75'
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: "Master bedroom vocht is {{states('sensor.master_bedroom_humidity')}}%. Zet eventueel machine aan."
       title: Zet ontvochtiger in master bedroom.

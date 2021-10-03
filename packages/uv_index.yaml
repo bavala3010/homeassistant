@@ -29,7 +29,7 @@ automation:
     entity_id: person.bart
     state: home
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       title: Zon & gezondheid
       message: "UV-index is hoog: {{states('sensor.uvindex_leuven24_wunderground')}}. Huid verbrandt langzaam."
@@ -55,7 +55,7 @@ automation:
     entity_id: person.bart
     state: home
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       title: "Zon & gezondheid: waarschuwing"
       message: "UV-index is zeer hoog: {{states('sensor.uvindex_leuven24_wunderground')}}. Huid verbrandt gemakkelijk."
@@ -81,7 +81,7 @@ automation:
     entity_id: person.bart
     state: home
   action:
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       title: "Zon & gezondheid: gevaar"
       message: "UV-index is extreem hoog: {{states('sensor.uvindex_leuven24_wunderground')}}. Huid verbrandt zeer snel."
@@ -107,7 +107,7 @@ automation:
     entity_id: person.madouce
     state: home
   action:
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       title: Zon & gezondheid
       message: "UV-index is hoog: {{states('sensor.uvindex_leuven24_wunderground')}}. Huid verbrandt langzaam."
@@ -133,7 +133,7 @@ automation:
     entity_id: person.madouce
     state: home
   action:
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       title: "Zon & gezondheid: waarschuwing"
       message: "UV-index is zeer hoog: {{states('sensor.uvindex_leuven24_wunderground')}}. Huid verbrandt gemakkelijk."
@@ -159,7 +159,7 @@ automation:
     entity_id: person.madouce
     state: home
   action:
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       title: "Zon & gezondheid: gevaar"
       message: "UV-index is extreem hoog: {{states('sensor.uvindex_leuven24_wunderground')}}. Huid verbrandt zeer snel."

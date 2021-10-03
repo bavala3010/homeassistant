@@ -21,7 +21,7 @@ automation:
   condition: []
   action:
   - scene: scene.v5bab2lu7dc9oexz
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: 'Bart scant tag garagepoort binnen.'
       title: 'Garagepoort'
@@ -40,7 +40,7 @@ automation:
   condition: []
   action:
   - scene: scene.v5bab2lu7dc9oexz
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: 'Madouce scant tag garagepoort binnen.'
       title: 'Garagepoort'
@@ -59,14 +59,14 @@ automation:
   condition: []
   action:
   - scene: scene.v5bab2lu7dc9oexz
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: 'Alunya scant tag garagepoort binnen.'
       title: 'Garagepoort'
       data:
         color: "#FFA500"
         channel: home_access
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       message: 'Alunya scant tag garagepoort binnen.'
       title: 'Garagepoort'
@@ -89,14 +89,14 @@ automation:
       entity_id: media_player.living_speaker
       message: Bart scant garagepoort.
   - scene: scene.v5bab2lu7dc9oexz
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: 'Bart scant garagepoorttag buiten.'
       title: 'Garagepoort'
       data:
         color: "#FFA500"
         channel: home_access
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       message: 'Bart scant garagepoorttag buiten.'
       title: 'Garagepoort'
@@ -119,7 +119,7 @@ automation:
       entity_id: media_player.living_speaker
       message: Madouce scant garagepoort.
   - scene: scene.v5bab2lu7dc9oexz
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: 'Madouce scant garagepoorttag buiten.'
       title: 'Garagepoort'
@@ -142,14 +142,14 @@ automation:
       entity_id: media_player.living_speaker
       message: Alunya scant garagepoort.
   - scene: scene.v5bab2lu7dc9oexz
-  - service: notify.mobile_app_bart_s10
+  - service: notify.bart_phone
     data:
       message: 'Alunya scant garagepoorttag buiten.'
       title: 'Garagepoort'
       data:
         color: "#FFA500"
         channel: home_access
-  - service: notify.mobile_app_madouce_s20
+  - service: notify.madouce_phone
     data:
       message: 'Alunya scant garagepoorttag buiten.'
       title: 'Garagepoort'

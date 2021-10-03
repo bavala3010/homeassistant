@@ -94,6 +94,7 @@ recorder:
       - sensor.date
       - sensor.time
       - sensor.last_boot
+      - sensor.low_battery
       - sun.sun
       - sensor.processor_use
       - sensor.disk_use_percent
@@ -109,6 +110,7 @@ recorder:
       - media_player
       - updater
       - persistent_notification
+      - script
       - sun
       - switch
       - weather
@@ -761,3 +763,19 @@ binary_sensor:
 map:
 
 
+notify:
+  - name: bart_phone
+    platform: group
+    services:
+      - service: mobile_app_bart_s10
+
+  - name: madouce_phone
+    platform: group
+    services:
+      - service: mobile_app_madouce_s20
+
+  - name: alanya_phone
+    platform: group
+    services:
+      - service: mobile_app_sm_a715f
+      
