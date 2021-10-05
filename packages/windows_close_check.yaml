@@ -10,8 +10,8 @@
 
 automation:
 
-- id: 'ramen - check living room (sluiten)'
-  alias: 🪟 ramen - check living room (sluiten)
+- id: 'ramen - check living room (moet dicht)'
+  alias: 🪟 ramen - check living room (moet dicht)
   description: ''
   trigger:
   - platform: state
@@ -53,8 +53,8 @@ automation:
       entity_id: input_boolean.living_room_raam_moet_open      
   mode: restart
 
-- id: 'ramen - check kamer Amilya (sluiten)'
-  alias: 🪟 ramen - check kamer Amilya (sluiten)
+- id: 'ramen - check kamer Amilya (moet dicht)'
+  alias: 🪟 ramen - check kamer Amilya (moet dicht)
   description: ''
   trigger:
   - platform: state
@@ -90,8 +90,8 @@ automation:
       entity_id: input_boolean.kamer_amilya_raam_moet_open
   mode: restart
 
-- id: 'ramen - check veranda (sluiten)'
-  alias: 🪟 ramen - check veranda (sluiten)
+- id: 'ramen - check veranda (moet dicht)'
+  alias: 🪟 ramen - check veranda (moet dicht)
   description: ''
   trigger:
   - platform: state
@@ -127,8 +127,8 @@ automation:
       entity_id: input_boolean.veranda_schuifraam_moet_open
   mode: restart
 
-- id: 'ramen - check berging (sluiten)'
-  alias: 🪟 ramen - check berging (sluiten)
+- id: 'ramen - check berging (moet dicht)'
+  alias: 🪟 ramen - check berging (moet dicht)
   description: ''
   trigger:
   - platform: state
@@ -164,8 +164,8 @@ automation:
       entity_id: input_boolean.berging_raam_moet_open
   mode: restart
 
-- id: 'ramen - check badkamer (sluiten)'
-  alias: 🪟 ramen - check badkamer (sluiten)
+- id: 'ramen - check badkamer (moet dicht)'
+  alias: 🪟 ramen - check badkamer (moet dicht)
   description: ''
   trigger:
   - platform: state
@@ -201,8 +201,8 @@ automation:
       entity_id: input_boolean.badkamer_raam_moet_open
   mode: restart
 
-- id: 'ramen - check gang (sluiten)'
-  alias: 🪟 ramen - check gang (sluiten)
+- id: 'ramen - check gang (moet dicht)'
+  alias: 🪟 ramen - check gang (moet dicht)
   description: ''
   trigger:
   - platform: state
@@ -239,8 +239,8 @@ automation:
   mode: restart
 
 
-- id: 'ramen - check kamer Alunya (sluiten)'
-  alias: 🪟 ramen - check kamer Alunya (sluiten)
+- id: 'ramen - check kamer Alunya (moet dicht)'
+  alias: 🪟 ramen - check kamer Alunya (moet dicht)
   description: ''
   trigger:
   - platform: state
@@ -276,8 +276,8 @@ automation:
       entity_id: input_boolean.kamer_alunya_raam_moet_open
   mode: restart
 
-- id: 'ramen - check master bedroom (sluiten)'
-  alias: 🪟 ramen - check master bedroom (sluiten)
+- id: 'ramen - check master bedroom (moet dicht)'
+  alias: 🪟 ramen - check master bedroom (moet dicht)
   description: ''
   trigger:
   - platform: state
