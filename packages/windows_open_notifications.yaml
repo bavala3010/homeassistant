@@ -11,8 +11,8 @@ automation:
 # Open windows: notifications
 ###################################
 
-- id: 'ramen -  open raam living room (Bart)'
-  alias: 🪟 ramen -  open raam living room (Bart)
+- id: 'ramen -  open raam living room (Bart en Madouce)'
+  alias: 🪟 ramen -  open raam living room (Bart en Madouce)
   description: ''
   trigger:
   - platform: time_pattern
@@ -35,80 +35,23 @@ automation:
   - condition: state
     entity_id: input_boolean.living_room_window_pause
     state: 'off'
-  - condition: zone
-    entity_id: person.bart
-    zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
-  - service: notify.bart_phone
-    data:
+  - service: script.notify_bart_windows
+    data_template:
       message: "Vocht living: {{states('sensor.gram_water_living_room')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp living: {{states('sensor.living_room_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
-      title: Open het raam van de living/keuken!
-      data:
-        color: blue
-        channel: Vocht
-        timeout: 3600
-        tag: window_living_room
-        actions:
-        - action: living_room_window_pause
-          title: stel meldingen 2 uren uit
-        - action: URI
-          title: meer info
-          uri: /lovelace/humidity
+      title: "Open het raam van de living/keuken!"
+      tag: "window_living_room"
+      action_window_pause: "living_room_window_pause"
+  - service: script.notify_madouce_windows
+    data_template:
+      message: "Vocht living: {{states('sensor.gram_water_living_room')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp living: {{states('sensor.living_room_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      title: "Open het raam van de living/keuken!"
+      tag: "window_living_room"
+      action_window_pause: "living_room_window_pause"
   mode: single
 
-- id: 'ramen -  open raam living room (Madouce)'
-  alias: 🪟 ramen -  open raam living room (Madouce)
-  description: ''
-  trigger:
-  - platform: time_pattern
-    minutes: /15
-  condition:
-  - condition: state
-    entity_id: input_boolean.living_room_raam_moet_open
-    state: 'on'
-  - condition: and
-    conditions:    
-    - condition: state
-      entity_id: binary_sensor.keuken_raam_sensor
-      state: 'off'
-    - condition: state
-      entity_id: binary_sensor.living_room_oprit_raam_sensor
-      state: 'off'
-    - condition: state
-      entity_id: binary_sensor.living_room_tuin_raam_sensor
-      state: 'off'            
-  - condition: state
-    entity_id: input_boolean.living_room_window_pause
-    state: 'off'
-  - condition: zone
-    entity_id: person.madouce
-    zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
-  action:
-  - service: notify.madouce_phone
-    data:
-      message: "Vocht living: {{states('sensor.gram_water_living_room')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp living: {{states('sensor.living_room_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
-      title: Open het raam van de living/keuken!
-      data:
-        color: blue
-        channel: Vocht
-        timeout: 3600
-        tag: window_living_room
-        actions:
-        - action: living_room_window_pause
-          title: stel meldingen 2 uren uit
-        - action: URI
-          title: meer info
-          uri: /lovelace/humidity
-  mode: single
-
-- id: 'ramen -  open raam kamer Amilya (Bart)'
-  alias: 🪟 ramen -  open raam kamer Amilya (Bart)
+- id: 'ramen -  open raam kamer Amilya (Bart en Madouce)'
+  alias: 🪟 ramen -  open raam kamer Amilya (Bart en Madouce)
   description: ''
   trigger:
   - platform: time_pattern
@@ -126,69 +69,23 @@ automation:
   - condition: zone
     entity_id: person.bart
     zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
-  - service: notify.bart_phone
-    data:
+  - service: script.notify_bart_windows
+    data_template:
       message: "Vocht kamer Amilya: {{states('sensor.gram_water_kamer_amilya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp kamer Amilya: {{states('sensor.kamer_amilya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
-      title: Open het raam van Amilya!
-      data:
-        color: blue
-        channel: Vocht
-        timeout: 3600
-        tag: window_kamer_amilya
-        actions:
-        - action: kamer_amilya_window_pause
-          title: stel meldingen 2 uren uit
-        - action: URI
-          title: meer info
-          uri: /lovelace/humidity
+      title: "Open het raam van Amilya!"
+      tag: "window_kamer_amilya"
+      action_window_pause: "kamer_amilya_window_pause"
+  - service: script.notify_madouce_windows
+    data_template:
+      message: "Vocht kamer Amilya: {{states('sensor.gram_water_kamer_amilya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp kamer Amilya: {{states('sensor.kamer_amilya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      title: "Open het raam van Amilya!"
+      tag: "window_kamer_amilya"
+      action_window_pause: "kamer_amilya_window_pause"
   mode: single
 
-- id: 'ramen -  open raam kamer Amilya (Madouce)'
-  alias: 🪟 ramen -  open raam kamer Amilya (Madouce)
-  description: ''
-  trigger:
-  - platform: time_pattern
-    minutes: /15
-  condition:
-  - condition: state
-    entity_id: input_boolean.kamer_amilya_raam_moet_open
-    state: 'on'
-  - condition: state
-    entity_id: binary_sensor.kamer_amilya_raam_sensor
-    state: 'off'
-  - condition: state
-    entity_id: input_boolean.kamer_amilya_window_pause
-    state: 'off'
-  - condition: zone
-    entity_id: person.madouce
-    zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
-  action:
-  - service: notify.madouce_phone
-    data:
-      message: "Vocht kamer Amilya: {{states('sensor.gram_water_kamer_amilya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp kamer Amilya: {{states('sensor.kamer_amilya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
-      title: Open het raam van Amilya!
-      data:
-        color: blue
-        channel: Vocht
-        timeout: 3600
-        tag: window_kamer_amilya
-        actions:
-        - action: kamer_amilya_window_pause
-          title: stel meldingen 2 uren uit
-        - action: URI
-          title: meer info
-          uri: /lovelace/humidity
-  mode: single
-
-- id: 'ramen -  open raam veranda (Bart)'
-  alias: 🪟 ramen -  open raam veranda (Bart)
+- id: 'ramen -  open raam veranda (Bart en Madouce)'
+  alias: 🪟 ramen -  open raam veranda (Bart en Madouce)
   description: ''
   trigger:
   - platform: time_pattern
@@ -202,73 +99,24 @@ automation:
     state: 'off'
   - condition: state
     entity_id: input_boolean.veranda_window_pause
-    state: 'off'        
-  - condition: zone
-    entity_id: person.bart
-    zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
-  action:
-  - service: notify.bart_phone
-    data:
-      message: "Vocht veranda {{states('sensor.gram_water_veranda')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp veranda: {{states('sensor.veranda_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
-      title: Open het raam van de veranda!
-      data:
-        color: blue
-        channel: Vocht
-        timeout: 3600
-        tag: window_veranda
-        actions:
-        - action: veranda_window_pause
-          title: stel meldingen 2 uren uit
-        - action: URI
-          title: meer info
-          uri: /lovelace/humidity
-  mode: single
-
-- id: 'ramen -  open raam veranda (Madouce)'
-  alias: 🪟 ramen -  open raam veranda (Madouce)
-  description: ''
-  trigger:
-  - platform: time_pattern
-    minutes: /15
-  condition:
-  - condition: state
-    entity_id: input_boolean.veranda_schuifraam_moet_open
-    state: 'on'
-  - condition: state
-    entity_id: binary_sensor.veranda_schuifraam_sensor
     state: 'off'
-  - condition: state
-    entity_id: input_boolean.veranda_window_pause
-    state: 'off'    
-  - condition: zone
-    entity_id: person.madouce
-    zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
-  - service: notify.madouce_phone
-    data:
+  - service: script.notify_bart_windows
+    data_template:
       message: "Vocht veranda {{states('sensor.gram_water_veranda')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp veranda: {{states('sensor.veranda_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
-      title: Open het raam van de veranda!
-      data:
-        color: blue
-        channel: Vocht
-        timeout: 3600
-        tag: window_veranda
-        actions:
-        - action: veranda_window_pause
-          title: stel meldingen 2 uren uit
-        - action: URI
-          title: meer info
-          uri: /lovelace/humidity
+      title: "Open het raam van de veranda!"
+      tag: "window_veranda"
+      action_window_pause: "veranda_window_pause"
+  - service: script.notify_madouce_windows
+    data_template:
+      message: "Vocht veranda {{states('sensor.gram_water_veranda')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp veranda: {{states('sensor.veranda_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      title: "Open het raam van de veranda!"
+      tag: "window_veranda"
+      action_window_pause: "veranda_window_pause"
   mode: single
 
-- id: 'ramen -  open raam berging (Bart)'
-  alias: 🪟 ramen -  open raam berging (Bart)
+- id: 'ramen -  open raam berging (Bart en Madouce)'
+  alias: 🪟 ramen -  open raam berging (Bart en Madouce)
   description: ''
   trigger:
   - platform: time_pattern
@@ -283,72 +131,24 @@ automation:
   - condition: state
     entity_id: input_boolean.berging_window_pause
     state: 'off'    
-  - condition: zone
-    entity_id: person.bart
-    zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
-  - service: notify.bart_phone
-    data:
+  - service: script.notify_bart_windows
+    data_template:
       message: "Vocht berging {{states('sensor.gram_water_berging')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp berging: {{states('sensor.berging_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
-      title: Open het raam van de berging!
-      data:
-        color: blue
-        channel: Vocht
-        timeout: 3600
-        tag: window_berging
-        actions:
-        - action: berging_window_pause
-          title: stel meldingen 2 uren uit
-        - action: URI
-          title: meer info
-          uri: /lovelace/humidity
+      title: "Open het raam van de berging!"
+      tag: "window_berging"
+      action_window_pause: "berging_window_pause"
+  - service: script.notify_madouce_windows
+    data_template:
+      message: "Vocht berging {{states('sensor.gram_water_berging')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp berging: {{states('sensor.berging_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      title: "Open het raam van de berging!"
+      tag: "window_berging"
+      action_window_pause: "berging_window_pause"
   mode: single
 
-- id: 'ramen -  open raam berging (Madouce)'
-  alias: 🪟 ramen -  open raam berging (Madouce)
-  description: ''
-  trigger:
-  - platform: time_pattern
-    minutes: /15
-  condition:
-  - condition: state
-    entity_id: input_boolean.berging_raam_moet_open
-    state: 'on'
-  - condition: state
-    entity_id: binary_sensor.berging_raam_sensor
-    state: 'off'
-  - condition: state
-    entity_id: input_boolean.berging_window_pause
-    state: 'off'    
-  - condition: zone
-    entity_id: person.madouce
-    zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
-  action:
-  - service: notify.madouce_phone
-    data:
-      message: "Vocht berging {{states('sensor.gram_water_berging')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp berging: {{states('sensor.berging_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
-      title: Open het raam van de berging!
-      data:
-        color: blue
-        channel: Vocht
-        timeout: 3600
-        tag: window_berging
-        actions:
-        - action: berging_window_pause
-          title: stel meldingen 2 uren uit
-        - action: URI
-          title: meer info
-          uri: /lovelace/humidity
-  mode: single
-  
-- id: 'ramen -  open raam badkamer (Bart)'
-  alias: 🪟 ramen -  open raam badkamer (Bart)
+
+- id: 'ramen -  open raam badkamer (Bart en Madouce)'
+  alias: 🪟 ramen -  open raam badkamer (Bart en Madouce)
   description: ''
   trigger:
   - platform: time_pattern
@@ -363,72 +163,23 @@ automation:
   - condition: state
     entity_id: input_boolean.badkamer_window_pause
     state: 'off'
-  - condition: zone
-    entity_id: person.bart
-    zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
-  - service: notify.bart_phone
-    data:
+  - service: script.notify_bart_windows
+    data_template:
       message: "Vocht badkamer: {{states('sensor.gram_water_badkamer')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp badkamer: {{states('sensor.badkamer_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
-      title: Open het raam van de badkamer!
-      data:
-        color: blue
-        channel: Vocht
-        timeout: 3600
-        tag: window_badkamer
-        actions:
-        - action: badkamer_window_pause
-          title: stel meldingen 2 uren uit
-        - action: URI
-          title: meer info
-          uri: /lovelace/humidity
+      title: "Open het raam van de badkamer!"
+      tag: "window_badkamer"
+      action_window_pause: "badkamer_window_pause"
+  - service: script.notify_madouce_windows
+    data_template:
+      message: "Vocht badkamer: {{states('sensor.gram_water_badkamer')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp badkamer: {{states('sensor.badkamer_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      title: "Open het raam van de badkamer!"
+      tag: "window_badkamer"
+      action_window_pause: "badkamer_window_pause"
   mode: single
 
-- id: 'ramen -  open raam badkamer (Madouce)'
-  alias: 🪟 ramen -  open raam badkamer (Madouce)
-  description: ''
-  trigger:
-  - platform: time_pattern
-    minutes: /15
-  condition:
-  - condition: state
-    entity_id: input_boolean.badkamer_raam_moet_open
-    state: 'on'
-  - condition: state
-    entity_id: binary_sensor.badkamer_raam_sensor
-    state: 'off'
-  - condition: state
-    entity_id: input_boolean.badkamer_window_pause
-    state: 'off'
-  - condition: zone
-    entity_id: person.madouce
-    zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
-  action:
-  - service: notify.madouce_phone
-    data:
-      message: "Vocht badkamer: {{states('sensor.gram_water_badkamer')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp badkamer: {{states('sensor.badkamer_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
-      title: Open het raam van de badkamer!
-      data:
-        color: blue
-        channel: Vocht
-        timeout: 3600
-        tag: window_badkamer
-        actions:
-        - action: badkamer_window_pause
-          title: stel meldingen 2 uren uit
-        - action: URI
-          title: meer info
-          uri: /lovelace/humidity
-  mode: single
-
-- id: 'ramen -  open raam kamer Alunya (Bart)'
-  alias: 🪟 ramen -  open raam kamer Alunya (Bart)
+- id: 'ramen -  open raam kamer Alunya (Bart en Madouce)'
+  alias: 🪟 ramen -  open raam kamer Alunya (Bart en Madouce)
   description: ''
   trigger:
   - platform: time_pattern
@@ -448,74 +199,23 @@ automation:
   - condition: state
     entity_id: input_boolean.kamer_alunya_window_pause
     state: 'off'
-  - condition: zone
-    entity_id: person.bart
-    zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
-  - service: notify.bart_phone
-    data:
+  - service: script.notify_bart_windows
+    data_template:
       message: "Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
-      title: Open het raam van Alunya!
-      data:
-        color: blue
-        channel: Vocht
-        timeout: 3600
-        tag: window_kamer_alunya
-        actions:
-        - action: kamer_alunya_window_pause
-          title: stel meldingen 2 uren uit
-        - action: URI
-          title: meer info
-          uri: /lovelace/humidity
+      title: "Open het raam van Alunya!"
+      tag: "window_kamer_alunya"
+      action_window_pause: "kamer_alunya_window_pause"
+  - service: script.notify_madouce_windows
+    data_template:
+      message: "Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      title: "Open het raam van Alunya!"
+      tag: "window_kamer_alunya"
+      action_window_pause: "kamer_alunya_window_pause"
   mode: single
 
-- id: 'ramen -  open raam kamer Alunya (Madouce)'
-  alias: 🪟 ramen -  open raam kamer Alunya (Madouce)
-  description: ''
-  trigger:
-  - platform: time_pattern
-    minutes: /15
-  condition:
-  - condition: state
-    entity_id: input_boolean.kamer_alunya_raam_moet_open
-    state: 'on'
-  - condition: and
-    conditions:    
-    - condition: state
-      entity_id: binary_sensor.kamer_alunya_raam_sensor
-      state: 'off'
-    - condition: state
-      entity_id: binary_sensor.kamer_alunya_schuifraam_sensor
-      state: 'off'
-  - condition: zone
-    entity_id: person.madouce
-    zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
-  action:
-  - service: notify.madouce_phone
-    data:
-      message: "Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
-      title: Open het raam van Alunya's kamer!
-      data:
-        color: blue
-        channel: Vocht
-        timeout: 3600
-        tag: window_kamer_alunya
-        actions:
-        - action: kamer_alunya_window_pause
-          title: stel meldingen 2 uren uit
-        - action: URI
-          title: meer info
-          uri: /lovelace/humidity
-  mode: single
-
-- id: 'ramen -  open raam master bedroom (Bart)'
-  alias: 🪟 ramen -  open raam master bedroom (Bart)
+- id: 'ramen -  open raam master bedroom (Bart en Madouce)'
+  alias: 🪟 ramen -  open raam master bedroom (Bart en Madouce)
   description: ''
   trigger:
   - platform: time_pattern
@@ -530,68 +230,19 @@ automation:
   - condition: state
     entity_id: input_boolean.master_bedroom_window_pause
     state: 'off'
-  - condition: zone
-    entity_id: person.bart
-    zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
-  - service: notify.bart_phone
-    data:
+  - service: script.notify_bart_windows
+    data_template:
       message: "Vocht master bedroom: {{states('sensor.gram_water_master_bedroom')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp master bedroom: {{states('sensor.master_bedroom_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: Open het raam van de master bedroom!
-      data:
-        color: blue
-        channel: Vocht
-        timeout: 3600
-        tag: window_master_bedroom
-        actions:
-        - action: master_bedroom_window_pause
-          title: stel meldingen 2 uren uit
-        - action: URI
-          title: meer info
-          uri: /lovelace/humidity
-  mode: single
-
-- id: 'ramen -  open raam master bedroom (Madouce)'
-  alias: 🪟 ramen -  open raam master bedroom (Madouce)
-  description: ''
-  trigger:
-  - platform: time_pattern
-    minutes: /15
-  condition:
-  - condition: state
-    entity_id: input_boolean.master_bedroom_raam_moet_open
-    state: 'on'
-  - condition: state
-    entity_id: binary_sensor.master_bedroom_raam_sensor
-    state: 'off'
-  - condition: state
-    entity_id: input_boolean.master_bedroom_window_pause
-    state: 'off'
-  - condition: zone
-    entity_id: person.madouce
-    zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
-  action:
-  - service: notify.madouce_phone
-    data:
+      tag: "window_master_bedroom"
+      action_window_pause: "master_bedroom_window_pause"
+  - service: script.notify_madouce_windows
+    data_template:
       message: "Vocht master bedroom: {{states('sensor.gram_water_master_bedroom')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp master bedroom: {{states('sensor.master_bedroom_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: Open het raam van de master bedroom!
-      data:
-        color: blue
-        channel: Vocht
-        timeout: 3600
-        tag: window_master_bedroom
-        actions:
-        - action: master_bedroom_window_pause
-          title: stel meldingen 2 uren uit
-        - action: URI
-          title: meer info
-          uri: /lovelace/humidity
+      tag: "window_master_bedroom"
+      action_window_pause: "master_bedroom_window_pause"
   mode: single
 
 
@@ -599,8 +250,8 @@ automation:
 # Clear notifications when window is opened
 ############################################
 
-- id: 'ramen -  open raam living room - clear notification (Bart)'
-  alias: 🪟 ramen -  open raam living room - clear notification (Bart)
+- id: 'ramen -  open raam living room - clear notification (Bart en Madouce)'
+  alias: 🪟 ramen -  open raam living room - clear notification (Bart en Madouce)
   description: ''
   trigger:
     - platform: state
@@ -622,9 +273,6 @@ automation:
   - condition: state
     entity_id: input_boolean.living_room_raam_moet_open
     state: 'on'
-  - condition: zone
-    entity_id: person.bart
-    zone: zone.home
   - condition: time
     after: '7:0:0'
     before: '23:30:00'
@@ -634,38 +282,6 @@ automation:
       message: "clear_notification"
       data:
         tag: window_living_room
-  mode: single
-
-- id: 'ramen -  open raam living room - clear notification (Madouce)'
-  alias: 🪟 ramen -  open raam living room - clear notification (Madouce)
-  description: ''
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.keuken_raam_sensor
-      from: 'off'
-      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.living_room_oprit_raam_sensor
-      from: 'off'
-      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.living_room_tuin_raam_sensor
-      from: 'off'
-      to: 'on'
-    - platform: state
-      entity_id: input_boolean.living_room_window_pause
-      to: 'on'
-  condition:
-  - condition: state
-    entity_id: input_boolean.living_room_raam_moet_open
-    state: 'on'
-  - condition: zone
-    entity_id: person.madouce
-    zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
-  action:
   - service: notify.madouce_phone
     data:
       message: "clear_notification"
@@ -673,8 +289,8 @@ automation:
         tag: window_living_room
   mode: single
 
-- id: 'ramen -  open raam kamer Amilya - clear notification (Bart)'
-  alias: 🪟 ramen -  open raam kamer Amilya - clear notification (Bart)
+- id: 'ramen -  open raam kamer Amilya - clear notification (Bart en Madouce)'
+  alias: 🪟 ramen -  open raam kamer Amilya - clear notification (Bart en Madouce)
   description: ''
   trigger:
     - platform: state
@@ -688,9 +304,6 @@ automation:
   - condition: state
     entity_id: input_boolean.kamer_amilya_raam_moet_open
     state: 'on'
-  - condition: zone
-    entity_id: person.bart
-    zone: zone.home
   - condition: time
     after: '7:0:0'
     before: '23:30:00'
@@ -700,30 +313,6 @@ automation:
       message: "clear_notification"
       data:
         tag: window_kamer_amilya
-  mode: single
-
-- id: 'ramen -  open raam kamer Amilya - clear notification (Madouce)'
-  alias: 🪟 ramen -  open raam kamer Amilya - clear notification (Madouce)
-  description: ''
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.kamer_amilya_raam_sensor
-      from: 'off'
-      to: 'on'
-    - platform: state
-      entity_id: input_boolean.kamer_amilya_window_pause
-      to: 'on'                        
-  condition:
-  - condition: state
-    entity_id: input_boolean.kamer_amilya_raam_moet_open
-    state: 'on'
-  - condition: zone
-    entity_id: person.madouce
-    zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
-  action:
   - service: notify.madouce_phone
     data:
       message: "clear_notification"
@@ -731,8 +320,8 @@ automation:
         tag: window_kamer_amilya
   mode: single
 
-- id: 'ramen -  open raam veranda - clear notification (Bart)'
-  alias: 🪟 ramen -  open raam veranda - clear notification (Bart)
+- id: 'ramen -  open raam veranda - clear notification (Bart en Madouce)'
+  alias: 🪟 ramen -  open raam veranda - clear notification (Bart en Madouce)
   description: ''
   trigger:
     - platform: state
@@ -746,9 +335,6 @@ automation:
   - condition: state
     entity_id: input_boolean.veranda_schuifraam_moet_open
     state: 'on'
-  - condition: zone
-    entity_id: person.bart
-    zone: zone.home
   - condition: time
     after: '7:0:0'
     before: '23:30:00'
@@ -758,30 +344,6 @@ automation:
       message: "clear_notification"
       data:
         tag: window_veranda
-  mode: single
-
-- id: 'ramen -  open raam veranda - clear notification (Madouce)'
-  alias: 🪟 ramen -  open raam veranda - clear notification (Madouce)
-  description: ''
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.veranda_schuifraam_sensor
-      from: 'off'
-      to: 'on'
-    - platform: state
-      entity_id: input_boolean.veranda_window_pause
-      to: 'on'                              
-  condition:
-  - condition: state
-    entity_id: input_boolean.veranda_schuifraam_moet_open
-    state: 'on'
-  - condition: zone
-    entity_id: person.madouce
-    zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
-  action:
   - service: notify.madouce_phone
     data:
       message: "clear_notification"
@@ -789,8 +351,8 @@ automation:
         tag: window_veranda
   mode: single
 
-- id: 'ramen -  open raam berging  - clear notification (Bart)'
-  alias: 🪟 ramen -  open raam berging - clear notification (Bart)
+- id: 'ramen -  open raam berging  - clear notification (Bart en Madouce)'
+  alias: 🪟 ramen -  open raam berging - clear notification (Bart en Madouce)
   description: ''
   trigger:
     - platform: state
@@ -804,9 +366,6 @@ automation:
   - condition: state
     entity_id: input_boolean.berging_raam_moet_open
     state: 'on'
-  - condition: zone
-    entity_id: person.bart
-    zone: zone.home
   - condition: time
     after: '7:0:0'
     before: '23:30:00'
@@ -816,30 +375,6 @@ automation:
       message: "clear_notification"
       data:
         tag: window_berging
-  mode: single
-
-- id: 'ramen -  open raam berging - clear notification (Madouce)'
-  alias: 🪟 ramen -  open raam berging - clear notification (Madouce)
-  description: ''
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.berging_raam_sensor
-      from: 'off'
-      to: 'on'
-    - platform: state
-      entity_id: input_boolean.berging_window_pause
-      to: 'on'      
-  condition:
-  - condition: state
-    entity_id: input_boolean.berging_raam_moet_open
-    state: 'on'
-  - condition: zone
-    entity_id: person.madouce
-    zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
-  action:
   - service: notify.madouce_phone
     data:
       message: "clear_notification"
@@ -847,8 +382,8 @@ automation:
         tag: window_berging
   mode: single
 
-- id: 'ramen -  open raam badkamer - clear notification (Bart)'
-  alias: 🪟 ramen -  open raam badkamer - clear notification (Bart)
+- id: 'ramen -  open raam badkamer - clear notification (Bart en Madouce)'
+  alias: 🪟 ramen -  open raam badkamer - clear notification (Bart en Madouce)
   description: ''
   trigger:
     - platform: state
@@ -862,9 +397,6 @@ automation:
   - condition: state
     entity_id: input_boolean.badkamer_raam_moet_open
     state: 'on'
-  - condition: zone
-    entity_id: person.bart
-    zone: zone.home
   - condition: time
     after: '7:0:0'
     before: '23:30:00'
@@ -874,30 +406,6 @@ automation:
       message: "clear_notification"
       data:
         tag: window_badkamer
-  mode: single
-
-- id: 'ramen -  open raam badkamer - clear notification (Madouce)'
-  alias: 🪟 ramen -  open raam badkamer - clear notification (Madouce)
-  description: ''
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.badkamer_raam_sensor
-      from: 'off'
-      to: 'on'
-    - platform: state
-      entity_id: input_boolean.badkamer_window_pause
-      to: 'on'                              
-  condition:
-  - condition: state
-    entity_id: input_boolean.badkamer_raam_moet_open
-    state: 'on'
-  - condition: zone
-    entity_id: person.madouce
-    zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
-  action:
   - service: notify.madouce_phone
     data:
       message: "clear_notification"
@@ -905,9 +413,8 @@ automation:
         tag: window_badkamer
   mode: single
 
-
-- id: 'ramen -  open raam kamer Alunya - clear notification (Bart)'
-  alias: 🪟 ramen -  open raam kamer Alunya - clear notification (Bart)
+- id: 'ramen -  open raam kamer Alunya - clear notification (Bart en Madouce)'
+  alias: 🪟 ramen -  open raam kamer Alunya - clear notification (Bart en Madouce)
   description: ''
   trigger:
     - platform: state
@@ -925,9 +432,6 @@ automation:
   - condition: state
     entity_id: input_boolean.kamer_alunya_raam_moet_open
     state: 'on'
-  - condition: zone
-    entity_id: person.bart
-    zone: zone.home
   - condition: time
     after: '7:0:0'
     before: '23:30:00'
@@ -937,34 +441,6 @@ automation:
       message: "clear_notification"
       data:
         tag: window_kamer_alunya
-  mode: single
-
-- id: 'ramen -  open raam kamer Alunya - clear notification (Madouce)'
-  alias: 🪟 ramen -  open raam kamer Alunya - clear notification (Madouce)
-  description: ''
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.kamer_alunya_raam_sensor
-#     from: 'off'
-      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.kamer_alunya_schuifraam_sensor
-#     from: 'off'
-      to: 'on'
-    - platform: state
-      entity_id: input_boolean.kamer_alunya_window_pause
-      to: 'on'                                    
-  condition:
-  - condition: state
-    entity_id: input_boolean.kamer_alunya_raam_moet_open
-    state: 'on'
-  - condition: zone
-    entity_id: person.madouce
-    zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
-  action:
   - service: notify.madouce_phone
     data:
       message: "clear_notification"
@@ -972,8 +448,8 @@ automation:
         tag: window_kamer_alunya
   mode: single
 
-- id: 'ramen -  open raam master bedroom  - clear notification (Bart)'
-  alias: 🪟 ramen -  open raam master bedroom - clear notification (Bart)
+- id: 'ramen -  open raam master bedroom  - clear notification (Bart en Madouce)'
+  alias: 🪟 ramen -  open raam master bedroom - clear notification (Bart en Madouce)
   description: ''
   trigger:
     - platform: state
@@ -987,9 +463,6 @@ automation:
   - condition: state
     entity_id: input_boolean.master_bedroom_raam_moet_open
     state: 'on'
-  - condition: zone
-    entity_id: person.bart
-    zone: zone.home
   - condition: time
     after: '7:0:0'
     before: '23:30:00'
@@ -999,30 +472,6 @@ automation:
       message: "clear_notification"
       data:
         tag: window_master_bedroom
-  mode: single
-
-- id: 'ramen -  open raam master bedroom - clear notification (Madouce)'
-  alias: 🪟 ramen -  open raam master bedroom - clear notification (Madouce)
-  description: ''
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.master_bedroom_raam_sensor
-      from: 'off'
-      to: 'on'
-    - platform: state
-      entity_id: input_boolean.master_bedroom_window_pause
-      to: 'on'                                          
-  condition:
-  - condition: state
-    entity_id: input_boolean.master_bedroom_raam_moet_open
-    state: 'on'
-  - condition: zone
-    entity_id: person.madouce
-    zone: zone.home
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
-  action:
   - service: notify.madouce_phone
     data:
       message: "clear_notification"
