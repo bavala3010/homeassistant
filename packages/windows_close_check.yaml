@@ -37,7 +37,7 @@ automation:
     - condition: template
       value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float) < 15 }}"
     - condition: template
-      value_template: "{{ states('sensor.gram_water_living_room_diff_outside') | float < 0.4 }}"
+      value_template: "{{ states('sensor.gram_water_living_room_diff_outside') | float < 0.5 }}"
 #    - condition: and      
 #      conditions:
 #        - condition: time
@@ -80,7 +80,7 @@ automation:
     - condition: template
       value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float) < 15 }}"
     - condition: template
-      value_template: "{{ states('sensor.gram_water_kamer_amilya_diff_outside') | float < 0.4 }}"             
+      value_template: "{{ states('sensor.gram_water_kamer_amilya_diff_outside') | float < 0.5 }}"             
   action:
   - service: input_boolean.turn_on
     target:
@@ -117,7 +117,7 @@ automation:
     - condition: template
       value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float) < 16 }}"
     - condition: template
-      value_template: "{{ states('sensor.gram_water_veranda_diff_outside') | float < 0.4 }}"             
+      value_template: "{{ states('sensor.gram_water_veranda_diff_outside') | float < 0.5 }}"             
   action:
   - service: input_boolean.turn_on
     target:
@@ -154,7 +154,7 @@ automation:
     - condition: template
       value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float) < 16 }}"
     - condition: template
-      value_template: "{{ states('sensor.gram_water_berging_diff_outside') | float < 0.4 }}"             
+      value_template: "{{ states('sensor.gram_water_berging_diff_outside') | float < 0.5 }}"             
   action:
   - service: input_boolean.turn_on
     target:
@@ -191,7 +191,7 @@ automation:
     - condition: template
       value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float) < 10 }}"
     - condition: template
-      value_template: "{{ states('sensor.gram_water_badkamer_diff_outside') | float < 0.4 }}"             
+      value_template: "{{ states('sensor.gram_water_badkamer_diff_outside') | float < 0.5 }}"             
   action:
   - service: input_boolean.turn_on
     target:
@@ -228,7 +228,7 @@ automation:
     - condition: template
       value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float) < 16 }}"    
     - condition: template
-      value_template: "{{ states('sensor.gram_water_gang_diff_outside') | float < 0.4 }}"             
+      value_template: "{{ states('sensor.gram_water_gang_diff_outside') | float < 0.5 }}"  
   action:
   - service: input_boolean.turn_on
     target:
@@ -266,7 +266,7 @@ automation:
     - condition: template
       value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float) < 15 }}"        
     - condition: template
-      value_template: "{{ states('sensor.gram_water_kamer_alunya_diff_outside') | float < 0.4 }}"             
+      value_template: "{{ states('sensor.gram_water_kamer_alunya_diff_outside') | float < 0.5 }}"
   action:
   - service: input_boolean.turn_on
     target:
@@ -303,7 +303,7 @@ automation:
     - condition: template
       value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float) < 12 }}"
     - condition: template
-      value_template: "{{ states('sensor.gram_water_master_bedroom_diff_outside') | float < 0.4 }}"             
+      value_template: "{{ states('sensor.gram_water_master_bedroom_diff_outside') | float < 0.5 }}"             
   action:
   - service: input_boolean.turn_on
     target:

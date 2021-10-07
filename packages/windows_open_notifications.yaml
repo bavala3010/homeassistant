@@ -42,12 +42,14 @@ automation:
       title: "Open het raam van de living/keuken!"
       tag: "window_living_room"
       action_window_pause: "living_room_window_pause"
+      reason: "{% if (states('sensor.gram_water_living_room_diff_outside') | float >= 0.5 %} Te vochtig binnen. {% endif %}"
   - service: script.notify_madouce_windows
     data_template:
       message: "Vocht living: {{states('sensor.gram_water_living_room')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp living: {{states('sensor.living_room_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: "Open het raam van de living/keuken!"
       tag: "window_living_room"
       action_window_pause: "living_room_window_pause"
+      reason: "{% if (states('sensor.gram_water_living_room_diff_outside') | float >= 0.5 %} Te vochtig binnen. {% endif %}"
   mode: single
 
 - id: 'ramen -  open raam kamer Amilya (Bart en Madouce)'
@@ -76,12 +78,14 @@ automation:
       title: "Open het raam van Amilya!"
       tag: "window_kamer_amilya"
       action_window_pause: "kamer_amilya_window_pause"
+      reason: "{% if (states('sensor.gram_water_kamer_amilya_diff_outside') | float >= 0.5 %} Te vochtig binnen. {% endif %}"
   - service: script.notify_madouce_windows
     data_template:
       message: "Vocht kamer Amilya: {{states('sensor.gram_water_kamer_amilya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp kamer Amilya: {{states('sensor.kamer_amilya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: "Open het raam van Amilya!"
       tag: "window_kamer_amilya"
       action_window_pause: "kamer_amilya_window_pause"
+      reason: "{% if (states('sensor.gram_water_kamer_amilya_diff_outside') | float >= 0.5 %} Te vochtig binnen. {% endif %}"
   mode: single
 
 - id: 'ramen -  open raam veranda (Bart en Madouce)'
@@ -107,12 +111,14 @@ automation:
       title: "Open het raam van de veranda!"
       tag: "window_veranda"
       action_window_pause: "veranda_window_pause"
+      reason: "{% if (states('sensor.gram_water_veranda_diff_outside') | float >= 0.5 %} Te vochtig binnen. {% endif %}"
   - service: script.notify_madouce_windows
     data_template:
       message: "Vocht veranda {{states('sensor.gram_water_veranda')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp veranda: {{states('sensor.veranda_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: "Open het raam van de veranda!"
       tag: "window_veranda"
       action_window_pause: "veranda_window_pause"
+      reason: "{% if (states('sensor.gram_water_veranda_diff_outside') | float >= 0.5 %} Te vochtig binnen. {% endif %}"
   mode: single
 
 - id: 'ramen -  open raam berging (Bart en Madouce)'
@@ -138,12 +144,14 @@ automation:
       title: "Open het raam van de berging!"
       tag: "window_berging"
       action_window_pause: "berging_window_pause"
+      reason: "{% if (states('sensor.gram_water_berging_diff_outside') | float >= 0.5 %} Te vochtig binnen. {% endif %}"
   - service: script.notify_madouce_windows
     data_template:
       message: "Vocht berging {{states('sensor.gram_water_berging')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp berging: {{states('sensor.berging_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: "Open het raam van de berging!"
       tag: "window_berging"
       action_window_pause: "berging_window_pause"
+      reason: "{% if (states('sensor.gram_water_berging_diff_outside') | float >= 0.5 %} Te vochtig binnen. {% endif %}"
   mode: single
 
 
@@ -170,12 +178,14 @@ automation:
       title: "Open het raam van de badkamer!"
       tag: "window_badkamer"
       action_window_pause: "badkamer_window_pause"
+      reason: "{% if (states('sensor.gram_water_badkamer_diff_outside') | float >= 0.5 %} Te vochtig binnen. {% endif %}"
   - service: script.notify_madouce_windows
     data_template:
       message: "Vocht badkamer: {{states('sensor.gram_water_badkamer')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp badkamer: {{states('sensor.badkamer_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: "Open het raam van de badkamer!"
       tag: "window_badkamer"
       action_window_pause: "badkamer_window_pause"
+      reason: "{% if (states('sensor.gram_water_badkamer_diff_outside') | float >= 0.5 %} Te vochtig binnen. {% endif %}"
   mode: single
 
 - id: 'ramen -  open raam kamer Alunya (Bart en Madouce)'
@@ -206,12 +216,14 @@ automation:
       title: "Open het raam van Alunya!"
       tag: "window_kamer_alunya"
       action_window_pause: "kamer_alunya_window_pause"
+      reason: "{% if (states('sensor.gram_water_kamer_alunya_diff_outside') | float >= 0.5 %} Te vochtig binnen. {% endif %}"
   - service: script.notify_madouce_windows
     data_template:
       message: "Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: "Open het raam van Alunya!"
       tag: "window_kamer_alunya"
       action_window_pause: "kamer_alunya_window_pause"
+      reason: "{% if (states('sensor.gram_water_kamer_alunya_diff_outside') | float >= 0.5 %} Te vochtig binnen. {% endif %}"
   mode: single
 
 - id: 'ramen -  open raam master bedroom (Bart en Madouce)'
@@ -237,12 +249,14 @@ automation:
       title: Open het raam van de master bedroom!
       tag: "window_master_bedroom"
       action_window_pause: "master_bedroom_window_pause"
+      reason: "{% if (states('sensor.gram_water_master_bedroom_diff_outside') | float >= 0.5 %} Te vochtig binnen. {% endif %}"
   - service: script.notify_madouce_windows
     data_template:
       message: "Vocht master bedroom: {{states('sensor.gram_water_master_bedroom')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp master bedroom: {{states('sensor.master_bedroom_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: Open het raam van de master bedroom!
       tag: "window_master_bedroom"
       action_window_pause: "master_bedroom_window_pause"
+      reason: "{% if (states('sensor.gram_water_master_bedroom_diff_outside') | float >= 0.5 %} Te vochtig binnen. {% endif %}"
   mode: single
 
 

@@ -78,7 +78,7 @@ auto_status_verversen:
       zone: zone.home
     - service: notify.bart_phone
       data_template:
-        title: " {{ title }}"
+        title: " {{ title }} {{ reason }}"
         message: "{{ message }}"
         data:
           color: blue
@@ -104,7 +104,7 @@ auto_status_verversen:
       zone: zone.home
     - service: notify.madouce_phone
       data_template:
-        title: " {{ title }}"
+        title: " {{ title }} {{ reason }}"
         message: "{{ message }}"
         data:
           color: blue

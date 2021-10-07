@@ -3,6 +3,7 @@ default_config:
 
 # useful links
 # https://pictogrammers.github.io/@mdi/font/5.3.45/
+# https://materialdesignicons.com/
 # https://emojidb.org/
 # https://www.zapsplat.com/sound-effect-category/sirens-and-alarms/
 # https://www.uuidgenerator.net/
@@ -172,6 +173,9 @@ utility_meter:
     cycle: monthly
 
 sensor:
+  - platform: version
+  # The version sensor platform can display the current Home Assistant versions.
+  
   - platform: thermal_comfort
     sensors:
       outside_thermal:
