@@ -61,7 +61,7 @@ automation:
   - service: script.notify_madouce_windows
     data_template:
       message: "Vocht living: {{states('sensor.gram_water_living_room')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp living: {{states('sensor.living_room_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
-      title: "Sluit raam vanliving/keuken!"
+      title: "Sluit raam van living/keuken!"
       tag: "window_living_room"
       action_window_pause: "living_room_window_pause"
       reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 16 %} Te koud buiten. {% endif %}"
@@ -283,18 +283,22 @@ automation:
   id: '14873cee-f737-4de1-9f0c-7e3ee45cea02'
   description: ''
   trigger:
-    - platform: state
-      entity_id: binary_sensor.keuken_raam_sensor
-      from: 'on'
-      to: 'off'
-    - platform: state
-      entity_id: binary_sensor.living_room_oprit_raam_sensor
-      from: 'on'
-      to: 'off'
-    - platform: state
-      entity_id: binary_sensor.living_room_tuin_raam_sensor
-      from: 'on'
-      to: 'off'
+  - platform: state
+    entity_id: binary_sensor.keuken_raam_sensor
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: binary_sensor.living_room_oprit_raam_sensor
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: binary_sensor.living_room_tuin_raam_sensor
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: input_boolean.living_room_window_pause
+    from: 'off'
+    to: 'on'
   condition:
   - condition: state
     entity_id: input_boolean.living_room_raam_moet_dicht
@@ -319,14 +323,18 @@ automation:
   id: '641488e0-5315-4a14-98c1-91a58c2541f3'
   description: ''
   trigger:
-    - platform: state
-      entity_id: binary_sensor.kamer_amilya_raam_sensor
-      from: 'on'
-      to: 'off'
-    - platform: state
-      entity_id: binary_sensor.kamer_amilya_schuifraam_sensor
-      from: 'on'
-      to: 'off'
+  - platform: state
+    entity_id: binary_sensor.kamer_amilya_raam_sensor
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: binary_sensor.kamer_amilya_schuifraam_sensor
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: input_boolean.kamer_amilya_window_pause
+    from: 'off'
+    to: 'on'    
   condition:
   - condition: state
     entity_id: input_boolean.kamer_amilya_raam_moet_dicht
@@ -351,10 +359,14 @@ automation:
   id: '2edf5074-c13e-41c1-be2e-056f14dc22bc' 
   description: ''
   trigger:
-    - platform: state
-      entity_id: binary_sensor.veranda_schuifraam_sensor
-      from: 'on'
-      to: 'off'
+  - platform: state
+    entity_id: binary_sensor.veranda_schuifraam_sensor
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: input_boolean.veranda_window_pause
+    from: 'off'
+    to: 'on'
   condition:
   - condition: state
     entity_id: input_boolean.veranda_schuifraam_moet_dicht
@@ -379,10 +391,14 @@ automation:
   id: 'ac82b1aa-20a8-4b50-b528-d3565aaac616'
   description: ''
   trigger:
-    - platform: state
-      entity_id: binary_sensor.berging_raam_sensor
-      from: 'on'
-      to: 'off'
+  - platform: state
+    entity_id: binary_sensor.berging_raam_sensor
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: input_boolean.berging_window_pause
+    from: 'off'
+    to: 'on'
   condition:
   - condition: state
     entity_id: input_boolean.berging_raam_moet_dicht
@@ -407,10 +423,14 @@ automation:
   id: '8b2d90de-b450-4150-a9f3-0851eb39c3a6'
   description: ''
   trigger:
-    - platform: state
-      entity_id: binary_sensor.badkamer_raam_sensor
-      from: 'on'
-      to: 'off'
+  - platform: state
+    entity_id: binary_sensor.badkamer_raam_sensor
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: input_boolean.badkamer_window_pause
+    from: 'off'
+    to: 'on'    
   condition:
   - condition: state
     entity_id: input_boolean.badkamer_raam_moet_dicht
@@ -435,14 +455,18 @@ automation:
   id: '301ebb17-90c6-4d29-a5f4-5a4a3e757bb8'
   description: ''
   trigger:
-    - platform: state
-      entity_id: binary_sensor.kamer_alunya_raam_sensor
-      from: 'on'
-      to: 'off'
-    - platform: state
-      entity_id: binary_sensor.kamer_alunya_schuifraam_sensor
-      from: 'on'
-      to: 'off'
+  - platform: state
+    entity_id: binary_sensor.kamer_alunya_raam_sensor
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: binary_sensor.kamer_alunya_schuifraam_sensor
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: input_boolean.kamer_alunya_window_pause
+    from: 'off'
+    to: 'on'    
   condition:
   - condition: state
     entity_id: input_boolean.kamer_alunya_raam_moet_dicht
@@ -467,10 +491,14 @@ automation:
   id: 'ce55bb82-1faf-4867-84ee-e0bf45b5b4cc'
   description: ''
   trigger:
-    - platform: state
-      entity_id: binary_sensor.master_bedroom_raam_sensor
-      from: 'on'
-      to: 'off'
+  - platform: state
+    entity_id: binary_sensor.master_bedroom_raam_sensor
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: input_boolean.master_bedroom_window_pause
+    from: 'off'
+    to: 'on'    
   condition:
   - condition: state
     entity_id: input_boolean.master_bedroom_raam_moet_dicht
