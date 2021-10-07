@@ -155,18 +155,3 @@
       message: Licht in garage brandt al langer dan 5 minuten.
       title: Licht in garage
   mode: single
-- id: '1633629679526'
-  alias: 🪟 ramen - open raam living room (Bart en Madouce)
-  description: ''
-  trigger:
-  - platform: time_pattern
-    minutes: /15
-  action:
-  - service: script.notify_bart_windows
-    data_template:
-      message: vochtig
-      title: Open het raam van de living/keuken!
-      tag: window_living_room
-      action_window_pause: living_room_window_pause
-      reason: vochtig
-  mode: single

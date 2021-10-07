@@ -6,8 +6,8 @@
 
 automation:
 
-- id: '9c9dc01b-190a-43f3-9936-12bca9a1d46c'
-  alias: "living_room_window_pause"
+- alias: "living_room_window_pause"
+  id: '9c9dc01b-190a-43f3-9936-12bca9a1d46c'
   trigger:
   - platform: event
     event_type: mobile_app_notification_action
@@ -18,8 +18,8 @@ automation:
     target:
       entity_id: input_boolean.living_room_window_pause  
 
-- id: 'kamer_amilya_window_pause'
-  alias: "kamer_amilya_window_pause"
+- alias: "kamer_amilya_window_pause"
+  id: '4bf3e2f8-5340-4dad-b31a-837d9b4b7789'
   trigger:
   - platform: event
     event_type: mobile_app_notification_action
@@ -30,8 +30,8 @@ automation:
     target:
       entity_id: input_boolean.kamer_amilya_window_pause  
 
-- id: 'veranda_window_pause'
-  alias: "veranda_window_pause"
+- alias: "veranda_window_pause"
+  id: 'dd1996ee-359e-4927-b7d5-037a6dbdf5a6'
   trigger:
   - platform: event
     event_type: mobile_app_notification_action
@@ -42,8 +42,8 @@ automation:
     target:
       entity_id: input_boolean.veranda_window_pause  
 
-- id: 'badkamer_window_pause'
-  alias: "badkamer_window_pause"
+- alias: "badkamer_window_pause"
+  id: '5b8237b5-590a-41a2-b4be-c00060ff6913'
   trigger:
   - platform: event
     event_type: mobile_app_notification_action
@@ -54,8 +54,8 @@ automation:
     target:
       entity_id: input_boolean.badkamer_window_pause  
 
-- id: 'berging_window_pause'
-  alias: "berging_window_pause"
+- alias: "berging_window_pause"
+  id: '55246dce-ea35-468e-826a-d4ad661e245c'
   trigger:
   - platform: event
     event_type: mobile_app_notification_action
@@ -66,8 +66,8 @@ automation:
     target:
       entity_id: input_boolean.berging_window_pause  
 
-- id: 'kamer_alunya_window_pause'
-  alias: "kamer_alunya_window_pause"
+- alias: "kamer_alunya_window_pause"
+  id: '7d193363-c417-41cc-8efd-de8773243924'
   trigger:
   - platform: event
     event_type: mobile_app_notification_action
@@ -78,8 +78,8 @@ automation:
     target:
       entity_id: input_boolean.kamer_alunya_window_pause  
 
-- id: 'master_bedroom_window_pause'
-  alias: "master_bedroom_window_pause"
+- alias: "master_bedroom_window_pause"
+  id: 'fd21e621-1f88-4a4f-99a9-1a2a9b4d62e0'
   trigger:
   - platform: event
     event_type: mobile_app_notification_action
@@ -169,7 +169,6 @@ automation:
       target:
         entity_id: input_boolean.badkamer_window_pause
 
-        
 - id: '9619c280-f961-497e-bfad-548d006518f2'
   alias: " zet pauze toggle kamer Alunya naar OFF na 2 uren"
   description: 'zet pauze toggle kamer Alunya naar OFF na 2 uren'
@@ -204,7 +203,6 @@ automation:
 #######################################
 ###  reset pauze toggles at midnight
 #######################################
-
 
 - id: '57a9ca46-e2ec-4185-8ca2-a5d5e24698dc'
   alias: "middernacht = reset schakelaars"
