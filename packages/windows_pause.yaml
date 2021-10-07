@@ -6,7 +6,7 @@
 
 automation:
 
-- id: 'living_room_window_pause'
+- id: '9c9dc01b-190a-43f3-9936-12bca9a1d46c'
   alias: "living_room_window_pause"
   trigger:
   - platform: event
@@ -94,7 +94,7 @@ automation:
 ###  reset pauze toggles after 2 hours
 #######################################
 
-- id: "zet pauze toggle living room naar OFF na 2 uren"  
+- id: '31ce80e7-4e3d-4c27-957b-0dba521e38ae'
   alias: " zet pauze toggle living room naar OFF na 2 uren"
   description: 'zet pauze toggle living room naar OFF na 2 uren'
   mode: single
@@ -109,7 +109,7 @@ automation:
       target:
         entity_id: input_boolean.living_room_window_pause
 
-- id: "zet pauze toggle kamer Amilya naar OFF na 2 uren"
+- id: '7f24f3b5-8b87-49ef-aa5e-74d329f5f0f4'
   alias: " zet pauze toggle kamer Amilya naar OFF na 2 uren"
   description: 'zet pauze toggle kamer Amilya naar OFF na 2 uren'
   mode: single
@@ -124,7 +124,7 @@ automation:
       target:
         entity_id: input_boolean.kamer_amilya_window_pause
 
-- id: "zet pauze toggle veranda naar OFF na 2 uren"
+- id: '0892810f-dd42-44a8-8a4b-acfca3c43fcf'
   alias: " zet pauze toggle veranda naar OFF na 2 uren"
   description: 'zet pauze toggle veranda naar OFF na 2 uren'
   mode: single
@@ -139,7 +139,7 @@ automation:
       target:
         entity_id: input_boolean.veranda_window_pause
 
-- id: "zet pauze toggle berging naar OFF na 2 uren"
+- id: '0d0a3b38-87ff-42fb-9c69-e747e67310a4'
   alias: " zet pauze toggle berging naar OFF na 2 uren"
   description: 'zet pauze toggle berging naar OFF na 2 uren'
   mode: single
@@ -154,7 +154,7 @@ automation:
       target:
         entity_id: input_boolean.berging_window_pause
 
-- id: "zet pauze toggle badkamer naar OFF na 2 uren"
+- id: '96d0ee52-a072-48bb-bf3c-190678f64c90'
   alias: " zet pauze toggle badkamer naar OFF na 2 uren"
   description: 'zet pauze toggle badkamer naar OFF na 2 uren'
   mode: single
@@ -170,7 +170,7 @@ automation:
         entity_id: input_boolean.badkamer_window_pause
 
         
-- id: "zet pauze toggle kamer Alunya naar OFF na 2 uren"
+- id: '9619c280-f961-497e-bfad-548d006518f2'
   alias: " zet pauze toggle kamer Alunya naar OFF na 2 uren"
   description: 'zet pauze toggle kamer Alunya naar OFF na 2 uren'
   mode: single
@@ -185,7 +185,7 @@ automation:
       target:
         entity_id: input_boolean.kamer_alunya_window_pause
 
-- id: "zet pauze toggle master bedroom naar OFF na 2 uren"
+- id: '0eff8c7d-9bb8-4cf7-8c35-bc05caf02a49'
   alias: " zet pauze toggle master bedroom naar OFF na 2 uren"
   description: 'zet pauze toggle master bedroom naar OFF na 2 uren'
   mode: single
@@ -202,12 +202,12 @@ automation:
 
 
 #######################################
-###  reset pauze toggles after 2 hours
+###  reset pauze toggles at midnight
 #######################################
 
 
-- id: "middernacht = reset schakelaars"
-  alias: " middernacht = reset schakelaars"
+- id: '57a9ca46-e2ec-4185-8ca2-a5d5e24698dc'
+  alias: "middernacht = reset schakelaars"
   description: reset booleans voor openzetten ramen ivm vocht
   trigger:
     - platform: time

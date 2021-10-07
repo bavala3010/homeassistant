@@ -1,18 +1,33 @@
 ############################ Table of Contents ############################ 
 #
 #     Open windows notifications
+#  🪟 ramen - open raam living room (Bart en Madouce)
+#  🪟 ramen - open raam kamer Amilya (Bart en Madouce)
+#  🪟 ramen - open raam veranda (Bart en Madouce)
+#  🪟 ramen - open raam berging (Bart en Madouce)
+#  🪟 ramen - open raam badkamer (Bart en Madouce)
+#  🪟 ramen - open raam kamer Alunya (Bart en Madouce)
+#  🪟 ramen - open raam master bedroom (Bart en Madouce)
+#
 #     Open windows clear notifications
+#  🪟 ramen - open raam living room - clear notification (Bart en Madouce)
+#  🪟 ramen - open raam kamer Amilya - clear notification (Bart en Madouce)
+#  🪟 ramen - open raam veranda - clear notification (Bart en Madouce)
+#  🪟 ramen - open raam berging - clear notification (Bart en Madouce)
+#  🪟 ramen - open raam badkamer - clear notification (Bart en Madouce)
+#  🪟 ramen - open raam kamer Alunya - clear notification (Bart en Madouce)
+#  🪟 ramen - open raam master bedroom - clear notification (Bart en Madouce)
 #
 ###########################################################################
 
 automation:
 
-###################################
+############################################
 # Open windows: notifications
-###################################
+############################################
 
-- id: '095d6529-f4e6-44df-b25d-2548de7f5958'
-  alias: 🪟 ramen - open raam living room (Bart en Madouce)
+- alias: 🪟 ramen - open raam living room (Bart en Madouce)
+  id: '095d6529-f4e6-44df-b25d-2548de7f5958'
   description: ''
   trigger:
   - platform: time_pattern
@@ -52,8 +67,8 @@ automation:
       reason: "{% if (states('sensor.gram_water_living_room_diff_outside') | float) >= 0.5 %} Te vochtig binnen. {% endif %}"
   mode: single
 
-- id: '5e940ddb-56ad-4f8a-b9c5-4fd24b0138c2'
-  alias: 🪟 ramen - open raam kamer Amilya (Bart en Madouce)
+- alias: 🪟 ramen - open raam kamer Amilya (Bart en Madouce)
+  id: '5e940ddb-56ad-4f8a-b9c5-4fd24b0138c2'
   description: ''
   trigger:
   - platform: time_pattern
@@ -88,8 +103,8 @@ automation:
       reason: "{% if (states('sensor.gram_water_kamer_amilya_diff_outside') | float) >= 0.5 %} Te vochtig binnen. {% endif %}"
   mode: single
 
-- id: '16b26e4a-ba87-4a26-a72d-310f70e4e5b2'
-  alias: 🪟 ramen - open raam veranda (Bart en Madouce)
+- alias: 🪟 ramen - open raam veranda (Bart en Madouce)
+  id: '16b26e4a-ba87-4a26-a72d-310f70e4e5b2'
   description: ''
   trigger:
   - platform: time_pattern
@@ -121,8 +136,8 @@ automation:
       reason: "{% if (states('sensor.gram_water_veranda_diff_outside') | float) >= 0.5 %} Te vochtig binnen. {% endif %}"
   mode: single
 
-- id: '58397619-e77f-44d8-9e1a-fb0a9e6eae22'
-  alias: 🪟 ramen - open raam berging (Bart en Madouce)
+- alias: 🪟 ramen - open raam berging (Bart en Madouce)
+  id: '58397619-e77f-44d8-9e1a-fb0a9e6eae22'
   description: ''
   trigger:
   - platform: time_pattern
@@ -154,9 +169,8 @@ automation:
       reason: "{% if (states('sensor.gram_water_berging_diff_outside') | float) >= 0.5 %} Te vochtig binnen. {% endif %}"
   mode: single
 
-
-- id: '4739d887-11b6-49c9-8086-6c4bd142b6b0'
-  alias: 🪟 ramen - open raam badkamer (Bart en Madouce)
+- alias: 🪟 ramen - open raam badkamer (Bart en Madouce)
+  id: '4739d887-11b6-49c9-8086-6c4bd142b6b0'
   description: ''
   trigger:
   - platform: time_pattern
@@ -188,8 +202,8 @@ automation:
       reason: "{% if (states('sensor.gram_water_badkamer_diff_outside') | float) >= 0.5 %} Te vochtig binnen. {% endif %}"
   mode: single
 
-- id: '73c4f6ed-f3ff-4180-86b8-bebb95b89b6d'
-  alias: 🪟 ramen - open raam kamer Alunya (Bart en Madouce)
+- alias: 🪟 ramen - open raam kamer Alunya (Bart en Madouce)
+  id: '73c4f6ed-f3ff-4180-86b8-bebb95b89b6d'
   description: ''
   trigger:
   - platform: time_pattern
@@ -226,8 +240,8 @@ automation:
       reason: "{% if (states('sensor.gram_water_kamer_alunya_diff_outside') | float) >= 0.5 %} Te vochtig binnen. {% endif %}"
   mode: single
 
-- id: '64c1f037-4152-4380-b341-9aef8df8fcf0'
-  alias: 🪟 ramen - open raam master bedroom (Bart en Madouce)
+- alias: 🪟 ramen - open raam master bedroom (Bart en Madouce)
+  id: '64c1f037-4152-4380-b341-9aef8df8fcf0'
   description: ''
   trigger:
   - platform: time_pattern
@@ -264,21 +278,21 @@ automation:
 # Clear notifications when window is opened
 ############################################
 
-- id: 'cd3425f6-6c8b-4e1b-93dc-1721d6db07ee'
-  alias: 🪟 ramen - open raam living room - clear notification (Bart en Madouce)
+- alias: 🪟 ramen - open raam living room - clear notification (Bart en Madouce)
+  id: 'cd3425f6-6c8b-4e1b-93dc-1721d6db07ee'
   description: ''
   trigger:
     - platform: state
       entity_id: binary_sensor.keuken_raam_sensor
-#     from: 'off'
+ #   from: 'off'
       to: 'on'
     - platform: state
       entity_id: binary_sensor.living_room_oprit_raam_sensor
-#     from: 'off'
+ #   from: 'off'
       to: 'on'
     - platform: state
       entity_id: binary_sensor.living_room_tuin_raam_sensor
-#     from: 'off'
+ #   from: 'off'
       to: 'on'
     - platform: state
       entity_id: input_boolean.living_room_window_pause
@@ -303,8 +317,8 @@ automation:
         tag: window_living_room
   mode: single
 
-- id: '4f5f9a4c-76b7-4336-af97-cc93eab67acd'
-  alias: 🪟 ramen - open raam kamer Amilya - clear notification (Bart en Madouce)
+- alias: 🪟 ramen - open raam kamer Amilya - clear notification (Bart en Madouce)
+  id: '4f5f9a4c-76b7-4336-af97-cc93eab67acd'
   description: ''
   trigger:
     - platform: state
@@ -334,8 +348,8 @@ automation:
         tag: window_kamer_amilya
   mode: single
 
-- id: '09a07555-51ac-4ce2-b365-fbbd81b55298'
-  alias: 🪟 ramen - open raam veranda - clear notification (Bart en Madouce)
+- alias: 🪟 ramen - open raam veranda - clear notification (Bart en Madouce)
+  id: '09a07555-51ac-4ce2-b365-fbbd81b55298'
   description: ''
   trigger:
     - platform: state
@@ -365,8 +379,8 @@ automation:
         tag: window_veranda
   mode: single
 
-- id: '133107e0-eaad-4ddf-9645-df489dc212c7'
-  alias: 🪟 ramen - open raam berging - clear notification (Bart en Madouce)
+- alias: 🪟 ramen - open raam berging - clear notification (Bart en Madouce)
+  id: '133107e0-eaad-4ddf-9645-df489dc212c7'
   description: ''
   trigger:
     - platform: state
@@ -396,8 +410,8 @@ automation:
         tag: window_berging
   mode: single
 
-- id: '27f63745-eb58-410d-b416-b7e6ccb7387c'
-  alias: 🪟 ramen - open raam badkamer - clear notification (Bart en Madouce)
+- alias: 🪟 ramen - open raam badkamer - clear notification (Bart en Madouce)
+  id: '27f63745-eb58-410d-b416-b7e6ccb7387c'
   description: ''
   trigger:
     - platform: state
@@ -427,17 +441,17 @@ automation:
         tag: window_badkamer
   mode: single
 
-- id: 'bd75a6c7-039b-4e5d-8c84-12459bfab11a'
-  alias: 🪟 ramen - open raam kamer Alunya - clear notification (Bart en Madouce)
+- alias: 🪟 ramen - open raam kamer Alunya - clear notification (Bart en Madouce)
+  id: 'bd75a6c7-039b-4e5d-8c84-12459bfab11a'
   description: ''
   trigger:
     - platform: state
       entity_id: binary_sensor.kamer_alunya_raam_sensor
-#     from: 'off'
+ #    from: 'off'
       to: 'on'
     - platform: state
       entity_id: binary_sensor.kamer_alunya_schuifraam_sensor
-#     from: 'off'
+ #    from: 'off'
       to: 'on'
     - platform: state
       entity_id: input_boolean.kamer_alunya_window_pause
@@ -462,8 +476,8 @@ automation:
         tag: window_kamer_alunya
   mode: single
 
-- id: '55bd62eb-9d04-44a0-b008-6ccb53531c29'
-  alias: 🪟 ramen - open raam master bedroom - clear notification (Bart en Madouce)
+- alias: 🪟 ramen - open raam master bedroom - clear notification (Bart en Madouce)
+  id: '55bd62eb-9d04-44a0-b008-6ccb53531c29'
   description: ''
   trigger:
     - platform: state

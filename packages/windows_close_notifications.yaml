@@ -1,6 +1,5 @@
-automation:
-
-###################################
+############################ Table of Contents ############################ 
+#
 # Close windows notifications
 #   🪟 ramen - sluit raam living room (Bart en Madouce)
 #   🪟 ramen - sluit raam Amilya (Bart en Madouce)
@@ -19,11 +18,13 @@ automation:
 #  🪟 ramen - sluit raam kamer Alunya - clear notification (Bart en Madouce)
 #  🪟 ramen - sluit raam master bedroom - clear notification (Bart en Madouce)
 # 
-###################################
+#############################################################################
 
-#####################################
+automation:
+
+############################################
 # Close windows: send notifications
-#####################################
+############################################
 
 - alias: 🪟 ramen - sluit raam living room (Bart en Madouce)
   id: 'cec1c79b-5c6a-46a3-a3c7-5f981f7e18b3'
@@ -76,14 +77,12 @@ automation:
   - condition: state
     entity_id: input_boolean.kamer_amilya_raam_moet_dicht
     state: 'on'
-  - condition: or
-    conditions:    
-    - condition: state
-      entity_id: binary_sensor.kamer_amilya_raam_sensor
-      state: 'on'
-    - condition: state
-      entity_id: input_boolean.kamer_amilya_window_pause
-      state: 'off'
+  - condition: state
+    entity_id: binary_sensor.kamer_amilya_raam_sensor
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.kamer_amilya_window_pause
+    state: 'off'
   action:
   - service: script.notify_bart_windows
     data_template:
