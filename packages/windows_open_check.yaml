@@ -219,7 +219,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.temp_leuven24_wunderground    
+    entity_id: sensor.temp_leuven24_wunderground
   - platform: state
     entity_id: sensor.gram_water_badkamer
   condition:
