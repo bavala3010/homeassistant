@@ -2,15 +2,31 @@ automation:
 
 ###################################
 # Close windows notifications
+#   🪟 ramen - sluit raam living room (Bart en Madouce)
+#   🪟 ramen - sluit raam Amilya (Bart en Madouce)
+#   🪟 ramen - sluit raam veranda (Bart en Madouce)
+#   🪟 ramen - sluit raam berging (Bart en Madouce)
+#   🪟 ramen - sluit raam badkamer (Bart en Madouce)
+#   🪟 ramen - sluit raam Alunya (Bart en Madouce)
+#   🪟 ramen - sluit raam master bedroom (Bart en Madouce)
+#
 # Close windows clear notifications
+#  🪟 ramen - sluit raam living room - clear notification (Bart en Madouce)
+#  🪟 ramen - sluit raam kamer Amilya - clear notification (Bart en Madouce)
+#  🪟 ramen - sluit raam veranda - clear notification (Bart en Madouce)
+#  🪟 ramen - sluit raam berging - clear notification (Bart en Madouce)
+#  🪟 ramen - sluit raam badkamer - clear notification (Bart en Madouce)
+#  🪟 ramen - sluit raam kamer Alunya - clear notification (Bart en Madouce)
+#  🪟 ramen - sluit raam master bedroom - clear notification (Bart en Madouce)
+# 
 ###################################
 
 #####################################
 # Close windows: send notifications
 #####################################
 
-- id: 'cec1c79b-5c6a-46a3-a3c7-5f981f7e18b3'
-  alias: 🪟 ramen - sluit raam living room (Bart en Madouce)
+- alias: 🪟 ramen - sluit raam living room (Bart en Madouce)
+  id: 'cec1c79b-5c6a-46a3-a3c7-5f981f7e18b3'
   description: ''
   trigger:
   - platform: time_pattern
@@ -50,8 +66,8 @@ automation:
       reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 16 %} Te koud buiten. {% endif %}"
   mode: single
 
-- id: '47662219-10c5-4e7f-b319-e181eab91282'
-  alias: '🪟 ramen - sluit raam Amilya (Bart en Madouce)'
+- alias: 🪟 ramen - sluit raam Amilya (Bart en Madouce)
+  id: '47662219-10c5-4e7f-b319-e181eab91282'
   description: ''
   trigger:
   - platform: time_pattern
@@ -85,8 +101,8 @@ automation:
       reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 16 %} Te koud buiten. {% endif %}"
   mode: single
 
-- id: '4c471c95-d235-4d41-bd08-490de91230df'
-  alias: 🪟 ramen - sluit raam veranda (Bart en Madouce)
+- alias: 🪟 ramen - sluit raam veranda (Bart en Madouce)
+  id: '4c471c95-d235-4d41-bd08-490de91230df'
   description: ''
   trigger:
   - platform: time_pattern
@@ -118,8 +134,8 @@ automation:
       reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 16 %} Te koud buiten. {% endif %}"
   mode: single
 
-- id: 'b82e4252-8dae-4a6e-9a48-8ace11815aa1'
-  alias: 🪟 ramen - sluit raam berging (Bart en Madouce)
+- alias: 🪟 ramen - sluit raam berging (Bart en Madouce)
+  id: 'b82e4252-8dae-4a6e-9a48-8ace11815aa1'
   description: ''
   trigger:
   - platform: time_pattern
@@ -151,8 +167,8 @@ automation:
       reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 16 %} Te koud buiten. {% endif %}"
   mode: single
 
-- id: 'b99dc88d-4bd9-486e-9a87-48bd09bcbd71'
-  alias: 🪟 ramen - sluit raam badkamer (Bart en Madouce)
+- alias: 🪟 ramen - sluit raam badkamer (Bart en Madouce)
+  id: 'b99dc88d-4bd9-486e-9a87-48bd09bcbd71'
   description: ''
   trigger:
   - platform: time_pattern
@@ -184,8 +200,8 @@ automation:
       reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 12 %} Te koud buiten.{% elif states('sensor.gram_water_badkamer_diff_outside') | float < 0.5 %} Te vochtig buiten.{% endif %}"
   mode: single
 
-- id: '2cc50202-cd87-49d9-ad25-21627a175597'
-  alias: '🪟 ramen - sluit raam Alunya (Bart en Madouce)'
+- alias: 🪟 ramen - sluit raam Alunya (Bart en Madouce)
+  id: '2cc50202-cd87-49d9-ad25-21627a175597'
   description: ''
   trigger:
   - platform: time_pattern
@@ -222,7 +238,7 @@ automation:
       reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 15 %} Te koud buiten. {% endif %}"
   mode: single
 
-- alias: '🪟 ramen - sluit raam master bedroom (Bart en Madouce)'
+- alias: 🪟 ramen - sluit raam master bedroom (Bart en Madouce)
   id: '4d1ffcc7-f0a3-40b8-8040-a2a8a3d3c8d4'
   description: ''
   trigger:
@@ -300,6 +316,38 @@ automation:
         tag: window_living_room
   mode: single
 
+- alias: 🪟 ramen - sluit raam kamer Amilya - clear notification (Bart en Madouce)
+  id: '641488e0-5315-4a14-98c1-91a58c2541f3'
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.kamer_amilya_raam_sensor
+      from: 'on'
+      to: 'off'
+    - platform: state
+      entity_id: binary_sensor.kamer_amilya_schuifraam_sensor
+      from: 'on'
+      to: 'off'
+  condition:
+  - condition: state
+    entity_id: input_boolean.kamer_amilya_raam_moet_dicht
+    state: 'on'
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_kamer_amilya
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_kamer_amilya
+  mode: single
+
 - alias: 🪟 ramen - sluit raam veranda - clear notification (Bart en Madouce)
   id: '2edf5074-c13e-41c1-be2e-056f14dc22bc' 
   description: ''
@@ -329,7 +377,7 @@ automation:
   mode: single
 
 - alias: 🪟 ramen - sluit raam berging - clear notification (Bart en Madouce)
-- id: 'ac82b1aa-20a8-4b50-b528-d3565aaac616'
+  id: 'ac82b1aa-20a8-4b50-b528-d3565aaac616'
   description: ''
   trigger:
     - platform: state
@@ -355,11 +403,6 @@ automation:
       data:
         tag: window_berging
   mode: single
-
-
-######################
-### nog aan te passen hieronder
-#######################
 
 - alias: 🪟 ramen - sluit raam badkamer - clear notification (Bart en Madouce)
   id: '8b2d90de-b450-4150-a9f3-0851eb39c3a6'
@@ -389,17 +432,17 @@ automation:
         tag: window_badkamer
   mode: single
 
-- id: 'ramen - sluit raam kamer Alunya - clear notification (Bart en Madouce)'
-  alias: 🪟 ramen - sluit raam kamer Alunya - clear notification (Bart en Madouce)
+- alias: 🪟 ramen - sluit raam kamer Alunya - clear notification (Bart en Madouce)
+  id: '301ebb17-90c6-4d29-a5f4-5a4a3e757bb8'
   description: ''
   trigger:
     - platform: state
       entity_id: binary_sensor.kamer_alunya_raam_sensor
-#     from: 'on'
+      from: 'on'
       to: 'off'
     - platform: state
       entity_id: binary_sensor.kamer_alunya_schuifraam_sensor
-#     from: 'on'
+      from: 'on'
       to: 'off'
   condition:
   - condition: state
@@ -421,8 +464,8 @@ automation:
         tag: window_kamer_alunya
   mode: single
 
-- id: 'ramen - sluit raam master bedroom  - clear notification (Bart en Madouce)'
-  alias: 🪟 ramen - sluit raam master bedroom - clear notification (Bart en Madouce)
+- alias: 🪟 ramen - sluit raam master bedroom - clear notification (Bart en Madouce)
+  id: 'ce55bb82-1faf-4867-84ee-e0bf45b5b4cc'
   description: ''
   trigger:
     - platform: state
