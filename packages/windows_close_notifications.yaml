@@ -2,11 +2,11 @@
 #
 # Close windows notifications
 #   🪟 ramen - sluit raam living room (Bart en Madouce)
-#   🪟 ramen - sluit raam Amilya (Bart en Madouce)
+#   🪟 ramen - sluit raam kamer Amilya (Bart en Madouce)
 #   🪟 ramen - sluit raam veranda (Bart en Madouce)
 #   🪟 ramen - sluit raam berging (Bart en Madouce)
 #   🪟 ramen - sluit raam badkamer (Bart en Madouce)
-#   🪟 ramen - sluit raam Alunya (Bart en Madouce)
+#   🪟 ramen - sluit raam kamer Alunya (Bart en Madouce)
 #   🪟 ramen - sluit raam master bedroom (Bart en Madouce)
 #
 # Close windows clear notifications
@@ -67,7 +67,7 @@ automation:
       reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 16 %} Te koud buiten. {% endif %}"
   mode: single
 
-- alias: 🪟 ramen - sluit raam Amilya (Bart en Madouce)
+- alias: 🪟 ramen - sluit raam kamer Amilya (Bart en Madouce)
   id: '47662219-10c5-4e7f-b319-e181eab91282'
   description: ''
   trigger:
@@ -199,7 +199,7 @@ automation:
       reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 12 %} Te koud buiten.{% elif states('sensor.gram_water_badkamer_diff_outside') | float < 0.5 %} Te vochtig buiten.{% endif %}"
   mode: single
 
-- alias: 🪟 ramen - sluit raam Alunya (Bart en Madouce)
+- alias: 🪟 ramen - sluit raam kamer Alunya (Bart en Madouce)
   id: '2cc50202-cd87-49d9-ad25-21627a175597'
   description: ''
   trigger:

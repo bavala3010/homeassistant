@@ -11,8 +11,8 @@
 ############################ Automations ################################## 
 
 automation:
-- id: '1622791895306'
-  alias: 🔐 garagepoorttag binnen gescand door Bart
+- alias: 🔐 garagepoorttag binnen gescand door Bart
+  id: '67a89219-5e5a-4862-b4a2-55f6013be43e'
   description: ''
   trigger:
   - platform: tag
@@ -20,7 +20,7 @@ automation:
     device_id: !secret id_nfc_bart
   condition: []
   action:
-  - scene: scene.v5bab2lu7dc9oexz
+  - scene: scene.garagepoort_open
   - service: notify.bart_phone
     data:
       message: 'Bart scant tag garagepoort binnen.'
@@ -30,8 +30,8 @@ automation:
         channel: home_access
   mode: single
   
-- id: '1622794616704'
-  alias: 🔐 garagepoorttag binnen gescand door Madouce
+- alias: 🔐 garagepoorttag binnen gescand door Madouce
+  id: '7c52e27f-3e9c-45a2-b434-e4bec52d9b32'
   description: ''
   trigger:
   - platform: tag
@@ -39,7 +39,7 @@ automation:
     device_id: !secret id_nfc_madouce
   condition: []
   action:
-  - scene: scene.v5bab2lu7dc9oexz
+  - scene: scene.garagepoort_open
   - service: notify.bart_phone
     data:
       message: 'Madouce scant tag garagepoort binnen.'
@@ -49,8 +49,8 @@ automation:
         channel: home_access
   mode: single
   
-- id: '1622794712207'
-  alias: 🔐 garagepoorttag binnen gescand door Alunya
+- alias: 🔐 garagepoorttag binnen gescand door Alunya
+  id: 'c51e85a1-d8bd-4f82-a919-0138a1e68861'
   description: ''
   trigger:
   - platform: tag
@@ -58,7 +58,7 @@ automation:
     device_id: !secret id_nfc_alunya
   condition: []
   action:
-  - scene: scene.v5bab2lu7dc9oexz
+  - scene: scene.garagepoort_open
   - service: notify.bart_phone
     data:
       message: 'Alunya scant tag garagepoort binnen.'
@@ -75,13 +75,13 @@ automation:
         channel: home_access
   mode: single
   
-- id: '1621967805692'
-  alias: 🔐 garagepoorttag buiten gescand door Bart
+- alias: 🔐 garagepoorttag buiten gescand door Bart
+  id: '15550e2d-9a16-4d69-9342-c753548c534b'
   description: ''
   trigger:
   - platform: tag
     tag_id: !secret id_tag_garagepoort_buiten
-    device_id: 10cfa6b79c0abd76
+    device_id: scene.garagepoort_open
   condition: []
   action:
   - service: tts.google_say
@@ -105,8 +105,8 @@ automation:
         channel: home_access
   mode: single
 
-- id: '1621966250598'
-  alias: 🔐 garagepoorttag buiten gescand door Madouce
+- alias: 🔐 garagepoorttag buiten gescand door Madouce
+  id: '43cd43bd-9577-4e30-b825-61ea11e9ee7c'
   description: ''
   trigger:
   - platform: tag
@@ -118,7 +118,7 @@ automation:
     data:
       entity_id: media_player.living_speaker
       message: Madouce scant garagepoort.
-  - scene: scene.v5bab2lu7dc9oexz
+  - scene: scene.garagepoort_open
   - service: notify.bart_phone
     data:
       message: 'Madouce scant garagepoorttag buiten.'
@@ -128,8 +128,8 @@ automation:
         channel: home_access
   mode: single
   
-- id: '1621967888435'
-  alias: 🔐 garagepoorttag buiten gescand door Alunya
+- alias: 🔐 garagepoorttag buiten gescand door Alunya
+  id: 'd8fb82a1-a0d5-4b2f-a5d1-cce5fe4cf004'
   description: ''
   trigger:
   - platform: tag
@@ -141,7 +141,7 @@ automation:
     data:
       entity_id: media_player.living_speaker
       message: Alunya scant garagepoort.
-  - scene: scene.v5bab2lu7dc9oexz
+  - scene: scene.garagepoort_open
   - service: notify.bart_phone
     data:
       message: 'Alunya scant garagepoorttag buiten.'
@@ -158,8 +158,8 @@ automation:
         channel: home_access
   mode: single
   
-- id: 'Tag gescand controle voor nacht'
-  alias: Tag gescand controle voor nacht
+- alias: Tag gescand controle voor nacht
+  id: '2484b046-5083-487b-b5e5-d040d486cf09'
   description: ''
   trigger:
   - platform: tag

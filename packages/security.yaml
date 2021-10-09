@@ -15,8 +15,9 @@
 ############################ Automations ################################## 
 
 automation:
-- id: "Bart, Madouce en/of Alunya komt thuis (zone) = alarm uit"
-  alias: 🚨 Bart, Madouce en/of Alunya komt thuis (zone) = alarm uit
+
+- alias: 🚨 Bart, Madouce en/of Alunya komt thuis (zone) = alarm uit
+  id: '8bc11499-60b0-4b90-9c5b-e36dcd5d03fc'
   description: ''
   trigger:
   - platform: state
@@ -45,8 +46,8 @@ automation:
       code: !secret alarm_code
   mode: single
 
-- id: "niemand thuis (enkel melding)"
-  alias: ✅ niemand thuis (enkel melding)
+- alias: ✅ niemand thuis (enkel melding)
+  id: '90221f2b-959a-49f3-804a-1e9d132974e5'
   description: ''
   trigger:
   - platform: state
@@ -69,8 +70,8 @@ automation:
           title: Niets doen
   mode: single
   
-- id: "iemand thuis (enkel melding)"
-  alias: ✅ iemand thuis (enkel melding)
+- alias: ✅ iemand thuis (enkel melding)
+  id: '372ae553-7313-4eb2-a141-460600c9bcb4'
   description: ''
   trigger:
   - platform: state
@@ -85,8 +86,8 @@ automation:
     message: Bart, er is nu wel iemand thuis.
   mode: single
   
-- id: "niemand thuis = alarm aanzetten"
-  alias: 🚨 niemand thuis = alarm aanzetten
+- alias: 🚨 niemand thuis = alarm aanzetten
+  id: 'cb9d8480-c66e-4ac0-b722-913bd664b8c3'
   description: ''
   trigger:
   - platform: state
@@ -107,8 +108,8 @@ automation:
     message: ⛔ Alarm is automatisch ingeschakeld wegens niemand thuis.
   mode: single
 
-- id: "Iemand komt thuis (wifi) = alarm uitzetten"
-  alias: '🚨 Iemand komt thuis (wifi) = alarm uitzetten'
+- alias: 🚨 Iemand komt thuis (wifi) = alarm uitzetten
+  id: 'a3d26d6d-6b16-4b0e-801c-d43529db280b'
   description: ''
   trigger:
   - platform: state
@@ -129,8 +130,8 @@ automation:
     message: '✅  Alarm is automatisch uitgeschakeld door thuiskomst.'
   mode: single
 
-- id: "alarm ingeschakeld aan voordeur"
-  alias: 🚨 alarm ingeschakeld aan voordeur
+- alias: 🚨 alarm ingeschakeld aan voordeur
+  id: '1acceb9a-ca45-49b3-ab22-166314aa9cf0'
   description: OK
   trigger:
   - platform: tag
@@ -171,8 +172,8 @@ automation:
       volume_level: 0.4
   mode: queued
 
-- id: "alarm uitgeschakeld aan voordeur"
-  alias: 🚨 alarm uitgeschakeld aan voordeur
+- alias: 🚨 alarm uitgeschakeld aan voordeur
+  id: 'dc004044-06a8-4ad2-acb8-cafe5f617d1f'
   description: OK
   trigger:
   - platform: tag
@@ -204,8 +205,8 @@ automation:
       volume_level: 0.4
   mode: single
   
-- id: "alarm bij beweging"
-  alias: 🚨 alarm bij beweging
+- alias: 🚨 alarm bij beweging
+  id: 'f4cc29aa-ef63-411b-a755-343f97a9b721'
   description: NOK
   trigger:
   - platform: state
@@ -243,8 +244,8 @@ automation:
     entity_id: alarm_control_panel.home_alarm
   mode: single
 
-- id: "melding bij alarm trigger"
-  alias: 🚨 melding bij alarm trigger
+- alias: 🚨 melding bij alarm trigger
+  id: '5fef4d2e-d1e1-4247-9c1f-0cb97130c86e'
   description: NOK
   trigger:
   - platform: state
@@ -278,28 +279,28 @@ automation:
       data:
         color: red
         channel: alarm
- #  - service: media_player.volume_set
- #    data:
- #      entity_id: media_player.nestaudio3875
- #      volume_level: 0.8
- #  - service: media_player.play_media
- #    data:
- #      entity_id: media_player.living_speaker
- #      media_content_id: http://192.168.86.101:8123/local/siren.mp3
- #      media_content_type: music
- #  - service: media_player.play_media
- #    data:
- #      entity_id: media_player.nestaudio3875
- #      media_content_id: http://192.168.86.101:8123/local/siren.mp3
- #      media_content_type: music
- #  - service: media_player.volume_set
- #    data:
- #      entity_id: media_player.nestaudio3875
- #      volume_level: 0.8
+  #  - service: media_player.volume_set
+  #    data:
+  #      entity_id: media_player.nestaudio3875
+  #      volume_level: 0.8
+  #  - service: media_player.play_media
+  #    data:
+  #      entity_id: media_player.living_speaker
+  #      media_content_id: http://192.168.86.101:8123/local/siren.mp3
+  #      media_content_type: music
+  #  - service: media_player.play_media
+  #    data:
+  #      entity_id: media_player.nestaudio3875
+  #      media_content_id: http://192.168.86.101:8123/local/siren.mp3
+  #      media_content_type: music
+  #  - service: media_player.volume_set
+  #    data:
+  #      entity_id: media_player.nestaudio3875
+  #      volume_level: 0.8
   mode: queued
 
-- id: "garagepoort staat al 5 minuten open"
-  alias: Garagepoort staat al 5 minuten open
+- alias: Garagepoort staat al 5 minuten open
+  id: '2afaab2f-0aee-4dea-a340-be690d593fca'
   description: ''
   trigger:
   - platform: state
@@ -319,8 +320,8 @@ automation:
       message: Garagepoort staat al 5 minuten open.
   mode: single
 
-- id: "garagepoort staat al 10 minuten open"
-  alias: Garagepoort staat al 10 minuten open
+- alias: Garagepoort staat al 10 minuten open
+  id: 'ad995e4e-10e6-45e9-9603-32d3b0afd0be'
   description: ''
   trigger:
   - platform: state
@@ -340,9 +341,8 @@ automation:
       message: Garagepoort staat al 10 minuten open.
   mode: single
 
-
-- id: '1523171664225'
-  alias: 👀 beweging oprit
+- alias: 👀 beweging oprit
+  id: 'c9b40a57-f31d-424f-80fb-c2a8c25c4d21'
   description: Beweging op oprit = melding op living speaker
   trigger:
   - platform: state
@@ -351,8 +351,7 @@ automation:
     to: 'on'
   condition:
   - condition: template
-    value_template: '{{ as_timestamp(now()) - as_timestamp(states.automation.beweging_oprit.attributes.last_triggered)
-      | int > 120 }}'
+    value_template: '{{ as_timestamp(now()) - as_timestamp(states.automation.beweging_oprit.attributes.last_triggered) | int > 120 }}'
   action:
   - service: tts.google_say
     data:

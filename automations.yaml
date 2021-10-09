@@ -1,5 +1,5 @@
-- id: '1622329889344'
-  alias: 🛌 Madouce thuis om 22u30 en <15° buiten = matras aan
+- alias: 🛌 Madouce thuis om 22u30 en <15° buiten = matras aan
+  id: 'a91e9cb6-dd44-48f1-91b8-81083453fa4f'
   description: ''
   trigger:
   - platform: time
@@ -17,8 +17,9 @@
     entity_id: switch.3504547724a160162a33_4
     domain: switch
   mode: single
-- id: Bart is alleen thuis
-  alias: 🏡 Bart is alleen thuis
+
+- alias: 🏡 Bart is alleen thuis
+  id: '02b63f41-9ea3-48eb-97aa-242a618f3400'
   description: ''
   trigger:
   - platform: state
@@ -36,8 +37,9 @@
       message: TTS
       title: Bart, je bent alleen thuis!
   mode: single
-- id: '1630089937341'
-  alias: 🚗 auto niet op slot (nieuwe versie)
+
+- alias: 🚗 auto niet op slot (nieuwe versie)
+  id: '319021c7-eb5c-461d-ba15-e54bb53d7465'
   description: auto niet op slot (nieuwe versie)
   trigger:
   - platform: state
@@ -63,8 +65,9 @@
     data:
       message: 'Auto is (bijna zeker) niet op slot '
   mode: single
-- id: '1630698207932'
-  alias: Master bedroom deurswitch
+  
+- alias: Master bedroom deurswitch
+  id: '92ecb95d-95b8-4708-be7e-9ca5181137ac'
   description: ''
   trigger:
   - device_id: 4247e8ef769909d83520323811fc6550
@@ -85,8 +88,9 @@
     data:
       brightness_pct: 75
   mode: single
-- id: Alunya verwarming aan + raam open = verwarming uit
-  alias: Alunya verwarming aan + raam open = verwarming uit
+  
+- alias: Alunya verwarming aan + raam open = verwarming uit
+  id: 'd8aac60f-a5fe-4a41-9ca4-0e2075e0c530'
   description: ''
   trigger:
   - platform: numeric_state
@@ -96,11 +100,6 @@
   - condition: state
     entity_id: binary_sensor.kamer_alunya_raam_sensor
     state: 'on'
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 0
-      milliseconds: 0
   action:
   - service: climate.set_hvac_mode
     target:
@@ -108,8 +107,9 @@
     data:
       hvac_mode: auto
   mode: single
-- id: '1632520765684'
-  alias: vocht gram in badkamer >14 gram/m³
+
+- alias: vocht gram in badkamer >14 gram/m³
+  id: '8358a61f-74f1-4045-ba75-563bbca3b4e3'
   description: ''
   trigger:
   - platform: numeric_state
@@ -122,8 +122,9 @@
       message: In badkamer meer dan 14 gram water /m³
       title: Veel vocht in badkamer
   mode: single
-- id: '1632585842094'
-  alias: vocht gram in badkamer >15 gram/m³
+
+- alias: vocht gram in badkamer >15 gram/m³
+  id: 'fab77066-9288-450b-9495-4e7a811ff9be'
   description: ''
   trigger:
   - platform: numeric_state
@@ -136,8 +137,9 @@
       message: In badkamer meer dan 15 gram water /m³
       title: Heel veel vocht in badkamer.
   mode: single
-- id: '1632820429965'
-  alias: Licht in garage aan > 5 min
+
+- alias: Licht in garage aan > 5 min
+  id: 'e66f0240-309e-48ed-83e3-6c6929585303'
   description: ''
   trigger:
   - platform: numeric_state

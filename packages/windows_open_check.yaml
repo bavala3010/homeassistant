@@ -1,13 +1,19 @@
 ############################ Table of Contents ############################ 
 #
 #  check to OPEN windows
-# 
+#  🪟 ramen - check living room (moet open)
+#  🪟 ramen - check kamer Amilya (moet open)
+#  🪟 ramen - check veranda (moet open)
+#  🪟 ramen - check berging (moet open)
+#  🪟 ramen - check badkamer (moet open)
+#  🪟 ramen - check kamer Alunya (moet open)
+#  🪟 ramen - check master bedroom (moet open)
 ###########################################################################
 
 automation:
 
-- id: 'ramen - check living room (moet open)'
-  alias: 🪟 ramen - check living room (moet open)
+- alias: 🪟 ramen - check living room (moet open)
+  id: '856ea331-ad65-41ec-bb62-5eaceb73c301'
   description: ''
   trigger:
   - platform: state
@@ -55,8 +61,8 @@ automation:
       entity_id: input_boolean.living_room_raam_moet_dicht
   mode: restart
   
-- id: 'ramen - check kamer Amilya (moet open)'
-  alias: 🪟 ramen - check kamer Amilya (moet open)
+- alias: 🪟 ramen - check kamer Amilya (moet open)
+  id: '3414d5d8-c840-41ab-b004-700750416ec6'
   description: ''
   trigger:
   - platform: state
@@ -104,8 +110,8 @@ automation:
       entity_id: input_boolean.kamer_amilya_raam_moet_dicht
   mode: restart
   
-- id: 'ramen - check veranda (moet open)'
-  alias: 🪟 ramen - check veranda (moet open)
+- alias: 🪟 ramen - check veranda (moet open)
+  id: 'fe0b3210-40d0-4983-9da8-ef6aa9b43efe'
   description: ''
   trigger:
   - platform: state
@@ -155,8 +161,8 @@ automation:
       entity_id: input_boolean.veranda_schuifraam_moet_dicht
   mode: restart
   
-- id: 'ramen - check berging (moet open)'
-  alias: 🪟 ramen - check berging (moet open)
+- alias: 🪟 ramen - check berging (moet open)
+  id: '02c51189-81d3-42ba-9739-be889c5916a0'
   description: ''
   trigger:
   - platform: state
@@ -212,8 +218,8 @@ automation:
       entity_id: input_boolean.berging_raam_moet_dicht
   mode: restart
     
-- id: 'ramen - check badkamer (moet open)'
-  alias: 🪟 ramen - check badkamer (moet open)
+- alias: 🪟 ramen - check badkamer (moet open)
+  id: '150c22d0-196a-4694-a789-0598f49808f3'
   description: ''
   trigger:
   - platform: state
@@ -261,9 +267,8 @@ automation:
         entity_id: input_boolean.badkamer_raam_moet_dicht
   mode: restart
 
-
-- id: 'ramen - check gang (moet open)'
-  alias: 🪟 ramen - check gang (moet open)
+- alias: 🪟 ramen - check gang (moet open)
+  id: '9258966d-c945-4e75-b772-d733c55ac44c'
   description: ''
   trigger:
   - platform: state
@@ -319,8 +324,8 @@ automation:
       entity_id: input_boolean.gang_raam_moet_dicht
   mode: restart
 
-- id: 'ramen - check kamer Alunya (moet open)'
-  alias: 🪟 ramen - check kamer Alunya (moet open)
+- alias: 🪟 ramen - check kamer Alunya (moet open)
+  id: 'd75da9b2-9b9a-4700-bd21-85b034add09f'
   description: ''
   trigger:
   - platform: state
@@ -368,8 +373,8 @@ automation:
         entity_id: input_boolean.kamer_alunya_raam_moet_dicht
   mode: restart
 
-- id: 'ramen - check master bedroom (moet open)'
-  alias: 🪟 ramen - check master bedroom (moet open)
+- alias: 🪟 ramen - check master bedroom (moet open)
+  id: 'f3afd520-1f73-439d-990f-cedc77a0ba10'
   description: ''
   trigger:
   - platform: state
@@ -418,5 +423,3 @@ automation:
     target:
       entity_id: input_boolean.master_bedroom_raam_moet_dicht
   mode: restart
-
-

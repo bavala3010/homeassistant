@@ -1,7 +1,7 @@
 automation:
 
-- id: "Amilya niet thuis = verwarming op automatisch"
-  alias: Amilya niet thuis = verwarming op automatisch
+- alias: Amilya niet thuis = verwarming op automatisch
+  id: 'ba1642db-f360-46ab-8c44-3fd16cc20751'
   description: ''
   trigger:
   - platform: state
@@ -18,8 +18,8 @@ automation:
       hvac_mode: auto
   mode: single
 
-- id: "Alunya niet thuis = verwarming op automatisch"
-  alias: Alunya niet thuis = verwarming op automatisch
+- alias: Alunya niet thuis = verwarming op automatisch
+  id: '14de18f4-ecec-446f-baba-399c0eaf0d9f'
   description: ''
   trigger:
   - platform: state
@@ -35,8 +35,8 @@ automation:
       hvac_mode: auto
   mode: single
 
-- id: 'Alunya verwarming aan + raam open = verwarming automatisch'
-  alias: Alunya verwarming aan + raam open = verwarming automatisch
+- alias: Alunya verwarming aan + raam open = verwarming automatisch
+  id: '8249d33e-5737-46b7-9558-46a804c419f2'
   description: ''
   trigger:
   - platform: numeric_state
@@ -59,8 +59,8 @@ automation:
       hvac_mode: auto
   mode: single
 
-- id: 'Amilya verwarming aan + raam open = verwarming automatisch'
-  alias: Amilya verwarming aan + raam open = verwarming automatisch
+- alias: Amilya verwarming aan + raam open = verwarming automatisch
+  id: 'ccc11c3d-1926-4e42-81f5-38929a09644b'
   description: ''
   trigger:
   - platform: numeric_state
