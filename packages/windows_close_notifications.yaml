@@ -263,7 +263,7 @@ automation:
       reason: >-
         {% if (states('sensor.temp_leuven24_wunderground') | float) < 12 %} Te koud buiten.
         {% elif states('sensor.gram_water_master_bedroom_diff_outside') | float < 0.5 %} Te vochtig buiten.
-        {% elif states('sensor.master_bedroom_temperature') < 16.5 %} Wordt te koud binnen.
+        {% elif states('sensor.master_bedroom_temperature') | float < 16.5 %} Wordt te koud binnen.
         {% endif %}
   - service: script.notify_madouce_windows
     data_template:
@@ -271,7 +271,11 @@ automation:
       title: "Sluit master bedroom raam!"
       tag: "window_master_bedroom"
       action_window_pause: "master_bedroom_window_pause"
-      reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 12 %} Te koud buiten.{% elif states('sensor.gram_water_master_bedroom_diff_outside') | float < 0.5 %} Te vochtig buiten.{% endif %}"
+      reason: >-
+        {% if (states('sensor.temp_leuven24_wunderground') | float) < 12 %} Te koud buiten.
+        {% elif states('sensor.gram_water_master_bedroom_diff_outside') | float < 0.5 %} Te vochtig buiten.
+        {% elif states('sensor.master_bedroom_temperature') | float < 16.5 %} Wordt te koud binnen.
+        {% endif %}
   mode: single
 
 

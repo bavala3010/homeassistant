@@ -7,7 +7,7 @@ auto_status_verversen:
   icon: hass:car
   mode: single
   
-'1626465721373':
+'check_auto_op_slot':
   alias: check als auto echt niet op slot is
   sequence:
   - service: audiconnect.refresh_data
@@ -28,7 +28,7 @@ auto_status_verversen:
         - action: lock_car
           title: SLUIT AUTO
 
-'1630760370410':
+'smart_home_info':
   alias: smart home info
   sequence:
   - service: tts.google_say
@@ -118,3 +118,22 @@ auto_status_verversen:
             title: meer info
             uri: /lovelace/humidity
   mode: parallel
+  
+'master_bedroom_tv_light_ambience':
+  alias: master_bedroom_tv_light_ambience
+  sequence:
+    - service: light.turn_off
+      target:
+        entity_id: light.staande_lamp
+    - service: light.turn_on
+      target:
+        entity_id: light.play_bart
+      data:
+        brightness: 130
+        rgb_color: [255,0,0]
+    - service: light.turn_on
+      target:
+        entity_id: light.play_madouce
+      data:
+        brightness: 130
+        rgb_color: [255,0,0]

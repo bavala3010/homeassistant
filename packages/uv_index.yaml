@@ -12,8 +12,9 @@
 ############################ Automations ################################## 
 
 automation:
-- id: UV_index_2_3_bart
-  alias: "😎 UV index is 2 of 3 = waarschuwing Bart"
+
+- alias: "😎 UV index is 2 of 3 = waarschuwing Bart"
+  id: '119b14e0-0b5e-4d5c-ab73-757ed1095b40'
   description: ''
   trigger:
   - platform: state
@@ -38,8 +39,9 @@ automation:
         tag: uv_index
         channel: uv_index
   mode: single
-- id: UV_index_4_5_bart
-  alias: "😎 UV index is 4 of 5 = waarschuwing Bart"
+
+- alias: "😎 UV index is 4 of 5 = waarschuwing Bart"
+  id: '266afd3d-8a25-4be5-8f3f-25462882babd'
   description: ''
   trigger:
   - platform: state
@@ -64,8 +66,9 @@ automation:
         tag: uv_index
         channel: uv_index
   mode: single
-- id: UV_index_6_7_bart
-  alias: "😎 UV index is 6 of 7 = waarschuwing Bart"
+
+- alias: "😎 UV index is 6 of 7 = waarschuwing Bart"
+  id: 'f1a05abf-73ba-45e6-b692-07cc83b2f692'
   description: ''
   trigger:
   - platform: state
@@ -90,8 +93,9 @@ automation:
         tag: uv_index
         channel: uv_index
   mode: single
-- id: UV_index_2_3_madouce
-  alias: "😎 UV index is 2 of 3 = waarschuwing Madouce"
+
+- alias: "😎 UV index is 2 of 3 = waarschuwing Madouce"
+  id: '84abc4ac-740c-4fcf-a3d2-0ae1e161a5fa'
   description: ''
   trigger:
   - platform: state
@@ -116,8 +120,9 @@ automation:
         tag: uv_index
         channel: uv_index
   mode: single
-- id: UV_index_4_5_madouce
-  alias: "😎 UV index is 4 of 5 = waarschuwing Madouce"
+
+- alias: "😎 UV index is 4 of 5 = waarschuwing Madouce"
+  id: 'ff7aa798-78d6-4911-9c41-903085b30ce2'
   description: ''
   trigger:
   - platform: state
@@ -142,8 +147,9 @@ automation:
         tag: uv_index
         channel: uv_index
   mode: single
-- id: UV_index_6_7_madouce
-  alias: "😎 UV index is 6 of 7 = waarschuwing Madouce"
+
+- alias: "😎 UV index is 6 of 7 = waarschuwing Madouce"
+  id: '587fc24a-1dde-4cec-8d00-18cb593abb99'
   description: ''
   trigger:
   - platform: state

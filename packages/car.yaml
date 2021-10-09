@@ -15,10 +15,8 @@
 
 automation:
 
-### auto laden
-
-- id: '1622708363419'
-  alias: 🚗 batterij laag en niet verbonden (week)
+- alias: 🚗 batterij laag en niet verbonden (week)
+  id: '1622708363419'
   description: ''
   trigger:
   - platform: time
@@ -57,8 +55,8 @@ automation:
         tag: auto_laden
   mode: single
 
-- id: '1625819980111'
-  alias: 🚗 batterij laag en niet verbonden (weekend)
+- alias: 🚗 batterij laag en niet verbonden (weekend)
+  id: '1625819980111'
   description: ''
   trigger:
   - platform: time
@@ -94,8 +92,8 @@ automation:
         tag: auto_laden
   mode: single
 
-- id: '1626274710956'
-  alias: 🚗 autolader is verbonden
+- alias: 🚗 autolader is verbonden
+  id: '1626274710956'
   description: ''
   trigger:
   - platform: state
@@ -119,8 +117,8 @@ automation:
         timeout: 300
   mode: single
 
-- id: '1626506978554'
-  alias: 🚗 auto laadt = melding
+- alias: 🚗 auto laadt = melding
+  id: '1626506978554'
   description: ''
   trigger:
   - platform: state
@@ -145,8 +143,9 @@ automation:
         tag: auto_laden
         timeout: 300
   mode: single
-- id: '1626508135498'
-  alias: 🚗 auto gedaan met laden = melding
+
+- alias: 🚗 auto gedaan met laden = melding
+  id: '1626508135498'
   description: ''
   trigger:
   - platform: state
@@ -170,10 +169,8 @@ automation:
         timeout: 43200
   mode: single
 
-### auto op slot
-
-- id: '1523708463420'
-  alias: 🚗 Auto 's avonds op slot?
+- alias: 🚗 Auto 's avonds op slot?
+  id: '1523708463420'
   description: Stuur een bericht als auto om 22u30 nog open is.
   trigger:
   - platform: time
@@ -207,8 +204,8 @@ automation:
       entity_id: lock.audi_e_tron_sportback_55_door_lock_2
   mode: single
 
-- id: '1626251778020'
-  alias: auto sluiten
+- alias: auto sluiten
+  id: '1626251778020'
   trigger:
   - platform: event
     event_type: mobile_app_notification_action
@@ -220,8 +217,8 @@ automation:
       entity_id: lock.audi_e_tron_sportback_55_door_lock_2
   mode: single
 
-- id: '1626270837776'
-  alias: 🚗 auto op slot = melding wissen
+- alias: 🚗 auto op slot = melding wissen
+  id: '1626270837776'
   description: ''
   trigger:
   - platform: state
@@ -247,8 +244,8 @@ automation:
         color: red
   mode: single
 
-- id: '1625937939249'
-  alias: 🚗 Auto 10 min. niet op slot = melding
+- alias: 🚗 Auto 10 min. niet op slot = melding
+  id: '1625937939249'
   description: ''
   trigger:
   - platform: time_pattern

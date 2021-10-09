@@ -1,204 +1,39 @@
-2021-10-09 11:24:49 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration average which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-10-09 11:24:49 WARNING (SyncWorker_1) [homeassistant.loader] We found a custom integration xiaomi_miio_airpurifier which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-10-09 11:24:49 WARNING (SyncWorker_3) [homeassistant.loader] We found a custom integration powercalc which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-10-09 11:24:49 WARNING (SyncWorker_2) [homeassistant.loader] We found a custom integration audiconnect which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-10-09 11:24:49 WARNING (SyncWorker_5) [homeassistant.loader] We found a custom integration hacs which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-10-09 11:24:49 WARNING (SyncWorker_1) [homeassistant.loader] We found a custom integration localtuya which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-10-09 11:24:49 WARNING (SyncWorker_4) [homeassistant.loader] We found a custom integration monitor_docker which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-10-09 11:24:49 WARNING (SyncWorker_2) [homeassistant.loader] We found a custom integration huesyncbox which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-10-09 11:24:49 WARNING (SyncWorker_5) [homeassistant.loader] We found a custom integration shelly which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-10-09 11:24:49 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration googlewifi which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-10-09 11:24:49 WARNING (SyncWorker_8) [homeassistant.loader] We found a custom integration xiaomi_miot which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-10-09 11:24:49 WARNING (SyncWorker_9) [homeassistant.loader] We found a custom integration anniversaries which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-10-09 11:24:49 WARNING (SyncWorker_3) [homeassistant.loader] We found a custom integration thermal_comfort which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-10-09 11:24:49 WARNING (SyncWorker_4) [homeassistant.loader] We found a custom integration deepstack_face which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-10-09 11:24:49 WARNING (SyncWorker_6) [homeassistant.loader] We found a custom integration xiaomi_miio_fan which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-10-09 11:24:49 WARNING (SyncWorker_1) [homeassistant.loader] We found a custom integration ytube_music_player which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-10-09 11:24:49 WARNING (SyncWorker_2) [homeassistant.loader] We found a custom integration google_home which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-10-09 11:24:49 WARNING (SyncWorker_7) [homeassistant.loader] We found a custom integration buienalarm which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-10-09 11:24:49 WARNING (SyncWorker_5) [homeassistant.loader] We found a custom integration afvalbeheer which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-10-09 11:24:56 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: required key not provided @ data['action'][4]['domain']. Got None. (See ?, line ?). 
-2021-10-09 11:24:56 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: [title] is an invalid option for [automation]. Check: automation->action->1->title. (See ?, line ?). 
-2021-10-09 11:24:57 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: must be a value between 0 and 59 for dictionary value @ data['minutes']. Got None. (See ?, line ?). 
-2021-10-09 11:24:57 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: must be a value between 0 and 59 for dictionary value @ data['minutes']. Got None. (See ?, line ?). 
-2021-10-09 11:25:01 WARNING (MainThread) [homeassistant.components.fan] Platform xiaomi_miio_fan not ready yet: Unable to discover the device 192.168.86.28; Retrying in background in 30 seconds
-2021-10-09 11:25:01 WARNING (MainThread) [homeassistant.components.fan] Platform xiaomi_miio_fan not ready yet: Unable to discover the device 192.168.86.29; Retrying in background in 30 seconds
-2021-10-09 11:25:04 WARNING (MainThread) [homeassistant.setup] Setup of input_number is taking over 10 seconds.
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 14 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 15 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 16 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 16 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 10 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 16 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 15 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 12 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 14 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 15 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 16 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 16 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 10 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 16 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 15 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 12 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.config_entries] Config entry '192.168.86.83' for synology_dsm integration not ready yet: ConnectionError = <urllib3.connection.HTTPSConnection object at 0xffff78d1b970>: Failed to establish a new connection: [Errno 113] Host is unreachable; Retrying in background
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 14 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 15 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 16 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 16 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 10 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 16 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 15 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 12 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 14 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 15 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 16 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 16 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 10 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 16 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 15 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:05 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{% if states('sensor.temp_leuven24_wunderground') | float < 12 %}
-   ideaal ❄
-{% else %}
-  ideaal
-{% endif %}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:09 WARNING (SyncWorker_10) [buienalarm.pybuienalarm] Error fetching data safely: 502 Server Error: Bad Gateway for url: https://cdn-secure.buienalarm.nl/api/3.4/forecast.php?lat=50.878800118427755&lon=4.749415398691782&region=nl&unit=mm%2Fu
-2021-10-09 11:25:09 WARNING (MainThread) [homeassistant.components.light] Platform netatmo not ready yet: None; Retrying in background in 30 seconds
-2021-10-09 11:25:09 WARNING (MainThread) [homeassistant.components.hue.light] Please check for software updates of the douche bulb in the Philips Hue App.
-2021-10-09 11:25:09 WARNING (MainThread) [homeassistant.components.hue.light] Please check for software updates of the wasbak rechts bulb in the Philips Hue App.
-2021-10-09 11:25:09 WARNING (MainThread) [homeassistant.components.hue.light] Please check for software updates of the bad bulb in the Philips Hue App.
-2021-10-09 11:25:09 WARNING (MainThread) [homeassistant.components.hue.light] Please check for software updates of the Amilya plafond 2 bulb in the Philips Hue App.
-2021-10-09 11:25:09 WARNING (MainThread) [homeassistant.components.hue.light] Please check for software updates of the Amilya plafond 1 bulb in the Philips Hue App.
-2021-10-09 11:25:10 WARNING (MainThread) [homeassistant.components.select] Platform netatmo not ready yet: None; Retrying in background in 30 seconds
-2021-10-09 11:25:10 ERROR (MainThread) [homeassistant.components.hue.sensor_base] Timeout fetching sensor data
-2021-10-09 11:25:11 ERROR (SyncWorker_0) [glocaltokens.client] [Device - Nest Wifi router(id=2f2a9d15-0ae2-4ffe-b6c1-2ef24c742b8a)] local_auth_token must follow the correct format
-2021-10-09 11:25:11 ERROR (SyncWorker_0) [glocaltokens.client] [Device - Nest Wifi router(id=e1e5a8d5-d21f-444d-95a9-c76d78c9bc79)] local_auth_token must follow the correct format
-2021-10-09 11:25:11 ERROR (SyncWorker_0) [glocaltokens.client] [Device - Nest Wifi router(id=ea3de37c-ca74-4689-8171-1681b2f4f924)] local_auth_token must follow the correct format
-2021-10-09 11:25:11 WARNING (MainThread) [homeassistant.components.sensor] Platform netatmo not ready yet: None; Retrying in background in 30 seconds
-2021-10-09 11:25:12 ERROR (MainThread) [homeassistant.components.sensor] scrape: Error on device update!
+2021-10-09 14:34:23 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration xiaomi_miio_airpurifier which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-09 14:34:23 WARNING (SyncWorker_2) [homeassistant.loader] We found a custom integration average which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-09 14:34:23 WARNING (SyncWorker_1) [homeassistant.loader] We found a custom integration powercalc which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-09 14:34:23 WARNING (SyncWorker_3) [homeassistant.loader] We found a custom integration audiconnect which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-09 14:34:23 WARNING (SyncWorker_4) [homeassistant.loader] We found a custom integration monitor_docker which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-09 14:34:23 WARNING (SyncWorker_5) [homeassistant.loader] We found a custom integration hacs which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-09 14:34:23 WARNING (SyncWorker_4) [homeassistant.loader] We found a custom integration shelly which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-09 14:34:23 WARNING (SyncWorker_6) [homeassistant.loader] We found a custom integration localtuya which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-09 14:34:23 WARNING (SyncWorker_7) [homeassistant.loader] We found a custom integration huesyncbox which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-09 14:34:23 WARNING (SyncWorker_4) [homeassistant.loader] We found a custom integration thermal_comfort which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-09 14:34:23 WARNING (SyncWorker_8) [homeassistant.loader] We found a custom integration buienalarm which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-09 14:34:23 WARNING (SyncWorker_9) [homeassistant.loader] We found a custom integration anniversaries which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-09 14:34:23 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration googlewifi which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-09 14:34:23 WARNING (SyncWorker_2) [homeassistant.loader] We found a custom integration ytube_music_player which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-09 14:34:23 WARNING (SyncWorker_3) [homeassistant.loader] We found a custom integration xiaomi_miio_fan which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-09 14:34:23 WARNING (SyncWorker_6) [homeassistant.loader] We found a custom integration deepstack_face which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-09 14:34:23 WARNING (SyncWorker_10) [homeassistant.loader] We found a custom integration google_home which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-09 14:34:23 WARNING (SyncWorker_5) [homeassistant.loader] We found a custom integration xiaomi_miot which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-09 14:34:23 WARNING (SyncWorker_7) [homeassistant.loader] We found a custom integration afvalbeheer which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-10-09 14:34:31 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: required key not provided @ data['action'][4]['domain']. Got None. (See ?, line ?). 
+2021-10-09 14:34:31 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: [title] is an invalid option for [automation]. Check: automation->action->1->title. (See ?, line ?). 
+2021-10-09 14:34:31 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: must be a value between 0 and 59 for dictionary value @ data['minutes']. Got None. (See ?, line ?). 
+2021-10-09 14:34:31 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: must be a value between 0 and 59 for dictionary value @ data['minutes']. Got None. (See ?, line ?). 
+2021-10-09 14:34:36 WARNING (MainThread) [homeassistant.components.fan] Platform xiaomi_miio_fan not ready yet: Unable to discover the device 192.168.86.29; Retrying in background in 30 seconds
+2021-10-09 14:34:36 WARNING (MainThread) [homeassistant.components.fan] Platform xiaomi_miio_fan not ready yet: Unable to discover the device 192.168.86.28; Retrying in background in 30 seconds
+2021-10-09 14:34:38 WARNING (MainThread) [homeassistant.setup] Setup of input_number is taking over 10 seconds.
+2021-10-09 14:34:39 WARNING (MainThread) [homeassistant.config_entries] Config entry '192.168.86.83' for synology_dsm integration not ready yet: ConnectionError = <urllib3.connection.HTTPSConnection object at 0xffff8b2c4700>: Failed to establish a new connection: [Errno 113] Host is unreachable; Retrying in background
+2021-10-09 14:34:40 WARNING (MainThread) [homeassistant.components.light] Platform netatmo not ready yet: None; Retrying in background in 30 seconds
+2021-10-09 14:34:41 WARNING (MainThread) [homeassistant.components.select] Platform netatmo not ready yet: None; Retrying in background in 30 seconds
+2021-10-09 14:34:41 WARNING (MainThread) [homeassistant.components.hue.light] Please check for software updates of the douche bulb in the Philips Hue App.
+2021-10-09 14:34:41 WARNING (MainThread) [homeassistant.components.hue.light] Please check for software updates of the wasbak rechts bulb in the Philips Hue App.
+2021-10-09 14:34:41 WARNING (MainThread) [homeassistant.components.hue.light] Please check for software updates of the bad bulb in the Philips Hue App.
+2021-10-09 14:34:41 WARNING (MainThread) [homeassistant.components.hue.light] Please check for software updates of the Amilya plafond 2 bulb in the Philips Hue App.
+2021-10-09 14:34:41 WARNING (MainThread) [homeassistant.components.hue.light] Please check for software updates of the Amilya plafond 1 bulb in the Philips Hue App.
+2021-10-09 14:34:42 WARNING (MainThread) [homeassistant.components.sensor] Platform netatmo not ready yet: None; Retrying in background in 30 seconds
+2021-10-09 14:34:44 ERROR (MainThread) [homeassistant.components.sensor] scrape: Error on device update!
 Traceback (most recent call last):
   File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 431, in _async_add_entity
     await entity.async_device_update(warning=False)
@@ -230,10 +65,7 @@ soupsieve.util.SelectorSyntaxError: Invalid character '<' position 0
   line 1:
 <span _ngcontent-app-root-c173="">Offline</span>
 ^
-2021-10-09 11:25:15 WARNING (MainThread) [homeassistant.config_entries] Config entry 'OnHub' for upnp integration not ready yet; Retrying in background
-2021-10-09 11:25:15 WARNING (MainThread) [homeassistant.components.sensor] Setup of sensor platform scrape is taking over 10 seconds.
-2021-10-09 11:25:15 WARNING (MainThread) [homeassistant.components.sensor] Setup of sensor platform scrape is taking over 10 seconds.
-2021-10-09 11:25:15 ERROR (MainThread) [homeassistant.components.camera] Error while setting up netatmo platform for camera
+2021-10-09 14:34:48 ERROR (MainThread) [homeassistant.components.camera] Error while setting up netatmo platform for camera
 Traceback (most recent call last):
   File "/usr/local/lib/python3.9/site-packages/aiohttp/connector.py", line 969, in _wrap_create_connection
     return await self._loop.create_connection(*args, **kwargs)  # type: ignore  # noqa
@@ -285,75 +117,182 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.9/site-packages/aiohttp/connector.py", line 975, in _wrap_create_connection
     raise client_error(req.connection_key, exc) from exc
 aiohttp.client_exceptions.ClientConnectorError: Cannot connect to host 169.254.113.236:80 ssl:default [Connect call failed ('169.254.113.236', 80)]
-2021-10-09 11:25:24 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.tv_living_on_today') | float * 0.085 | round(3) }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:24 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.tv_living_on_today') | float * 0.085 | round(3) }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:24 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.master_bedroom_TV_on_today') | float * 0.063 | round(3) }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:24 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.master_bedroom_TV_on_today') | float * 0.063 | round(3) }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:25:33 WARNING (MainThread) [homeassistant.components.media_player] Updating huesyncbox media_player took longer than the scheduled update interval 0:00:02
-2021-10-09 11:25:33 WARNING (MainThread) [homeassistant.components.websocket_api.http.connection] [281472706768608] Disconnected: Did not receive auth message within 10 seconds
-2021-10-09 11:25:38 ERROR (MainThread) [homeassistant.components.hue.sensor_base] Timeout fetching sensor data
-2021-10-09 11:25:38 ERROR (MainThread) [homeassistant.components.hue.light] Timeout fetching group data
-2021-10-09 11:25:40 ERROR (MainThread) [homeassistant.components.mobile_app.notify] Timeout sending notification to https://mobile-apps.home-assistant.io/api/sendPush/android/v1
-2021-10-09 11:25:41 ERROR (MainThread) [homeassistant.components.google_assistant.http] Request for https://homegraph.googleapis.com/v1/devices:requestSync failed: 500
-2021-10-09 11:25:59 ERROR (MainThread) [homeassistant.components.google_assistant.http] Request for https://homegraph.googleapis.com/v1/devices:reportStateAndNotification failed: 404
-2021-10-09 11:30:00 ERROR (MainThread) [homeassistant.components.automation.ramen_sluit_raam_master_bedroom_bart_en_madouce_2] 🪟 ramen - sluit raam master bedroom (Bart en Madouce): Error executing script. Error for call_service at pos 1: Error rendering data template: TypeError: '<' not supported between instances of 'str' and 'float'
-2021-10-09 11:30:00 ERROR (MainThread) [homeassistant.components.automation.ramen_sluit_raam_master_bedroom_bart_en_madouce_2] Error while executing automation automation.ramen_sluit_raam_master_bedroom_bart_en_madouce_2: Error rendering data template: TypeError: '<' not supported between instances of 'str' and 'float'
-2021-10-09 11:32:05 ERROR (MainThread) [custom_components.googlewifi] Unexpected error fetching GoogleWifi data: 'NoneType' object is not iterable
+2021-10-09 14:34:48 ERROR (SyncWorker_0) [glocaltokens.client] [Device - Nest Wifi router(id=2f2a9d15-0ae2-4ffe-b6c1-2ef24c742b8a)] local_auth_token must follow the correct format
+2021-10-09 14:34:48 ERROR (SyncWorker_0) [glocaltokens.client] [Device - Nest Wifi router(id=e1e5a8d5-d21f-444d-95a9-c76d78c9bc79)] local_auth_token must follow the correct format
+2021-10-09 14:34:48 ERROR (SyncWorker_0) [glocaltokens.client] [Device - Nest Wifi router(id=ea3de37c-ca74-4689-8171-1681b2f4f924)] local_auth_token must follow the correct format
+2021-10-09 14:34:48 WARNING (MainThread) [homeassistant.config_entries] Config entry 'OnHub' for upnp integration not ready yet; Retrying in background
+2021-10-09 14:34:57 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.tv_living_on_today') | float * 0.085 | round(3) }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
+2021-10-09 14:34:57 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.tv_living_on_today') | float * 0.085 | round(3) }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
+2021-10-09 14:34:57 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.master_bedroom_TV_on_today') | float * 0.063 | round(3) }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
+2021-10-09 14:34:57 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.master_bedroom_TV_on_today') | float * 0.063 | round(3) }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
+2021-10-09 14:35:00 WARNING (MainThread) [homeassistant.components.media_player] Updating huesyncbox media_player took longer than the scheduled update interval 0:00:02
+2021-10-09 14:35:01 WARNING (MainThread) [homeassistant.components.automation] Error evaluating condition in '💨 Air Quality Index < 8 = purifier off':
+In 'condition':
+  In 'numeric_state':
+    In 'numeric_state' condition: attribute 'aqi' (of entity fan.xiaomi_air_purifier_3h) does not exist
+2021-10-09 14:35:01 WARNING (MainThread) [homeassistant.components.automation] Error evaluating condition in '💨 Air Quality Index > 8 = purifier on':
+In 'condition' (item 1 of 3):
+  In 'numeric_state':
+    In 'numeric_state' condition: attribute 'aqi' (of entity fan.xiaomi_air_purifier_3h) does not exist
+2021-10-09 14:35:06 ERROR (MainThread) [homeassistant.components.hue.sensor_base] Timeout fetching sensor data
+2021-10-09 14:35:06 ERROR (MainThread) [homeassistant] Error doing job: Task exception was never retrieved
 Traceback (most recent call last):
-  File "/usr/src/homeassistant/homeassistant/helpers/update_coordinator.py", line 187, in _async_refresh
-    self.data = await self._async_update_data()
-  File "/config/custom_components/googlewifi/__init__.py", line 171, in _async_update_data
-    system_data = await self.api.get_systems()
-  File "/usr/local/lib/python3.9/site-packages/googlewifi/__init__.py", line 191, in get_systems
-    return await self.structure_systems(response)
-  File "/usr/local/lib/python3.9/site-packages/googlewifi/__init__.py", line 289, in structure_systems
-    for this_station in system_metrics.get("stationMetrics"):
-TypeError: 'NoneType' object is not iterable
-2021-10-09 11:33:18 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_badkamer_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:33:18 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_kamer_alunya_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:33:18 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_badkamer_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:33:18 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_kamer_alunya_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:35:32 WARNING (MainThread) [homeassistant.helpers.service] Unable to find referenced entities media_player.veranda_speaker_2
-2021-10-09 11:35:42 WARNING (MainThread) [homeassistant.helpers.service] Unable to find referenced entities camera.netatmo_eikenbos_oprit
-2021-10-09 11:40:09 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_kamer_alunya_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:41:15 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_badkamer_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:41:15 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_kamer_alunya_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
-2021-10-09 11:45:00 ERROR (MainThread) [homeassistant.components.automation.ramen_sluit_raam_master_bedroom_bart_en_madouce_2] 🪟 ramen - sluit raam master bedroom (Bart en Madouce): Error executing script. Error for call_service at pos 1: Error rendering data template: TypeError: '<' not supported between instances of 'str' and 'float'
-2021-10-09 11:45:00 ERROR (MainThread) [homeassistant.components.automation.ramen_sluit_raam_master_bedroom_bart_en_madouce_2] Error while executing automation automation.ramen_sluit_raam_master_bedroom_bart_en_madouce_2: Error rendering data template: TypeError: '<' not supported between instances of 'str' and 'float'
-2021-10-09 11:45:23 ERROR (MainThread) [custom_components.audiconnect.audi_connect_account] Unable to update the vehicle position of WAUZZZGE6MB019131: 204, message='No Content', url=URL('https://fal-3a.prd.eu.dp.vwg-connect.com/fs-car/bs/cf/v1/Audi/BE/vehicles/WAUZZZGE6MB019131/position')
-2021-10-09 11:45:59 WARNING (MainThread) [homeassistant.helpers.service] Unable to find referenced entities media_player.veranda_speaker_2
-2021-10-09 11:46:09 WARNING (MainThread) [homeassistant.helpers.service] Unable to find referenced entities camera.netatmo_eikenbos_oprit
-2021-10-09 11:51:35 WARNING (MainThread) [homeassistant.helpers.service] Unable to find referenced entities media_player.veranda_speaker_2
-2021-10-09 11:51:45 WARNING (MainThread) [homeassistant.helpers.service] Unable to find referenced entities camera.netatmo_eikenbos_oprit
-2021-10-09 12:00:00 ERROR (MainThread) [homeassistant.components.automation.ramen_sluit_raam_master_bedroom_bart_en_madouce_2] 🪟 ramen - sluit raam master bedroom (Bart en Madouce): Error executing script. Error for call_service at pos 1: Error rendering data template: TypeError: '<' not supported between instances of 'str' and 'float'
-2021-10-09 12:00:00 ERROR (MainThread) [homeassistant.components.automation.ramen_sluit_raam_master_bedroom_bart_en_madouce_2] Error while executing automation automation.ramen_sluit_raam_master_bedroom_bart_en_madouce_2: Error rendering data template: TypeError: '<' not supported between instances of 'str' and 'float'
-2021-10-09 12:15:00 ERROR (MainThread) [homeassistant.components.automation.ramen_sluit_raam_master_bedroom_bart_en_madouce_2] 🪟 ramen - sluit raam master bedroom (Bart en Madouce): Error executing script. Error for call_service at pos 1: Error rendering data template: TypeError: '<' not supported between instances of 'str' and 'float'
-2021-10-09 12:15:00 ERROR (MainThread) [homeassistant.components.automation.ramen_sluit_raam_master_bedroom_bart_en_madouce_2] Error while executing automation automation.ramen_sluit_raam_master_bedroom_bart_en_madouce_2: Error rendering data template: TypeError: '<' not supported between instances of 'str' and 'float'
-2021-10-09 12:16:20 WARNING (MainThread) [homeassistant.helpers.service] Unable to find referenced entities media_player.veranda_speaker_2
-2021-10-09 12:16:30 WARNING (MainThread) [homeassistant.helpers.service] Unable to find referenced entities camera.netatmo_eikenbos_oprit
-2021-10-09 12:18:37 ERROR (MainThread) [custom_components.googlewifi] Error fetching GoogleWifi data: Error connecting to GoogleWifi: 
-2021-10-09 12:22:38 WARNING (MainThread) [homeassistant.helpers.service] Unable to find referenced entities media_player.veranda_speaker_2
-2021-10-09 12:22:44 ERROR (MainThread) [custom_components.googlewifi] Unexpected error fetching GoogleWifi data: 'NoneType' object is not iterable
+  File "/usr/src/homeassistant/homeassistant/components/netatmo/__init__.py", line 198, in register_webhook
+    await hass.data[DOMAIN][entry.entry_id][AUTH].async_addwebhook(webhook_url)
+  File "/usr/local/lib/python3.9/site-packages/pyatmo/auth.py", line 381, in async_addwebhook
+    resp = await self.async_post_request(WEBHOOK_URL_ADD, {"url": webhook_url})
+  File "/usr/local/lib/python3.9/site-packages/pyatmo/auth.py", line 339, in async_post_request
+    async with self.websession.post(
+  File "/usr/local/lib/python3.9/site-packages/aiohttp/client.py", line 1117, in __aenter__
+    self._resp = await self._coro
+  File "/usr/local/lib/python3.9/site-packages/aiohttp/client.py", line 544, in _request
+    await resp.start(conn)
+  File "/usr/local/lib/python3.9/site-packages/aiohttp/client_reqrep.py", line 905, in start
+    self._continue = None
+  File "/usr/local/lib/python3.9/site-packages/aiohttp/helpers.py", line 656, in __exit__
+    raise asyncio.TimeoutError from None
+asyncio.exceptions.TimeoutError
+2021-10-09 14:35:13 ERROR (MainThread) [homeassistant.components.mobile_app.notify] Timeout sending notification to https://mobile-apps.home-assistant.io/api/sendPush/android/v1
+2021-10-09 14:35:14 ERROR (MainThread) [homeassistant.components.google_assistant.http] Request for https://homegraph.googleapis.com/v1/devices:requestSync failed: 500
+2021-10-09 14:35:32 ERROR (MainThread) [homeassistant.components.google_assistant.http] Request for https://homegraph.googleapis.com/v1/devices:reportStateAndNotification failed: 404
+2021-10-09 14:39:44 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_badkamer_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
+2021-10-09 14:40:00 WARNING (MainThread) [homeassistant.components.automation] Error evaluating condition in '💨 Air Quality Index > 8 = purifier on':
+In 'condition' (item 1 of 3):
+  In 'numeric_state':
+    In 'numeric_state' condition: attribute 'aqi' (of entity fan.xiaomi_air_purifier_3h) does not exist
+2021-10-09 14:40:00 WARNING (MainThread) [homeassistant.components.automation] Error evaluating condition in '💨 Air Quality Index < 8 = purifier off':
+In 'condition':
+  In 'numeric_state':
+    In 'numeric_state' condition: attribute 'aqi' (of entity fan.xiaomi_air_purifier_3h) does not exist
+2021-10-09 14:44:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=20
+2021-10-09 14:44:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=21
+2021-10-09 14:45:00 WARNING (MainThread) [homeassistant.components.automation] Error evaluating condition in '💨 Air Quality Index < 8 = purifier off':
+In 'condition':
+  In 'numeric_state':
+    In 'numeric_state' condition: attribute 'aqi' (of entity fan.xiaomi_air_purifier_3h) does not exist
+2021-10-09 14:45:00 WARNING (MainThread) [homeassistant.components.automation] Error evaluating condition in '💨 Air Quality Index > 8 = purifier on':
+In 'condition' (item 1 of 3):
+  In 'numeric_state':
+    In 'numeric_state' condition: attribute 'aqi' (of entity fan.xiaomi_air_purifier_3h) does not exist
+2021-10-09 14:45:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=22
+2021-10-09 14:45:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=23
+2021-10-09 14:46:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=24
+2021-10-09 14:46:46 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_berging_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
+2021-10-09 14:46:46 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_badkamer_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
+2021-10-09 14:46:46 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_gang_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
+2021-10-09 14:46:46 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_kamer_alunya_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
+2021-10-09 14:46:46 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_veranda_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
+2021-10-09 14:46:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=25
+2021-10-09 14:47:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=26
+2021-10-09 14:47:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=27
+2021-10-09 14:48:03 ERROR (MainThread) [custom_components.googlewifi] Error fetching GoogleWifi data: Error connecting to GoogleWifi: 
+2021-10-09 14:48:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=28
+2021-10-09 14:48:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=29
+2021-10-09 14:49:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=30
+2021-10-09 14:49:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=31
+2021-10-09 14:50:00 WARNING (MainThread) [homeassistant.components.automation] Error evaluating condition in '💨 Air Quality Index < 8 = purifier off':
+In 'condition':
+  In 'numeric_state':
+    In 'numeric_state' condition: attribute 'aqi' (of entity fan.xiaomi_air_purifier_3h) does not exist
+2021-10-09 14:50:00 WARNING (MainThread) [homeassistant.components.automation] Error evaluating condition in '💨 Air Quality Index > 8 = purifier on':
+In 'condition' (item 1 of 3):
+  In 'numeric_state':
+    In 'numeric_state' condition: attribute 'aqi' (of entity fan.xiaomi_air_purifier_3h) does not exist
+2021-10-09 14:50:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=32
+2021-10-09 14:50:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=33
+2021-10-09 14:51:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=34
+2021-10-09 14:51:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=35
+2021-10-09 14:52:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=36
+2021-10-09 14:52:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=37
+2021-10-09 14:53:05 ERROR (MainThread) [custom_components.googlewifi] Error fetching GoogleWifi data: Error connecting to GoogleWifi: 
+2021-10-09 14:53:18 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=38
+2021-10-09 14:53:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=39
+2021-10-09 14:54:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=40
+2021-10-09 14:54:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=41
+2021-10-09 14:55:00 WARNING (MainThread) [homeassistant.components.automation] Error evaluating condition in '💨 Air Quality Index > 8 = purifier on':
+In 'condition' (item 1 of 3):
+  In 'numeric_state':
+    In 'numeric_state' condition: attribute 'aqi' (of entity fan.xiaomi_air_purifier_3h) does not exist
+2021-10-09 14:55:00 WARNING (MainThread) [homeassistant.components.automation] Error evaluating condition in '💨 Air Quality Index < 8 = purifier off':
+In 'condition':
+  In 'numeric_state':
+    In 'numeric_state' condition: attribute 'aqi' (of entity fan.xiaomi_air_purifier_3h) does not exist
+2021-10-09 14:55:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=42
+2021-10-09 14:55:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=43
+2021-10-09 14:56:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=44
+2021-10-09 14:56:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=45
+2021-10-09 14:57:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=46
+2021-10-09 14:57:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=47
+2021-10-09 14:58:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=48
+2021-10-09 14:58:46 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_berging_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
+2021-10-09 14:58:46 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_badkamer_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
+2021-10-09 14:58:46 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_gang_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
+2021-10-09 14:58:46 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_kamer_alunya_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
+2021-10-09 14:58:46 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_berging_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
+2021-10-09 14:58:46 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_badkamer_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
+2021-10-09 14:58:46 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_gang_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
+2021-10-09 14:58:46 WARNING (MainThread) [homeassistant.helpers.template] Template warning: 'float' got invalid input 'unknown' when rendering template '{{ states('sensor.gram_kamer_alunya_diff_outside') | float >= 1 }}' but no default was specified. Currently 'float' will return '0', however this template will fail to render in Home Assistant core 2021.12
+2021-10-09 14:58:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=49
+2021-10-09 14:59:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=50
+2021-10-09 14:59:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=51
+2021-10-09 15:00:00 WARNING (MainThread) [homeassistant.components.automation] Error evaluating condition in '💨 Air Quality Index < 8 = purifier off':
+In 'condition':
+  In 'numeric_state':
+    In 'numeric_state' condition: attribute 'aqi' (of entity fan.xiaomi_air_purifier_3h) does not exist
+2021-10-09 15:00:00 WARNING (MainThread) [homeassistant.components.automation] Error evaluating condition in '💨 Air Quality Index > 8 = purifier on':
+In 'condition' (item 1 of 3):
+  In 'numeric_state':
+    In 'numeric_state' condition: attribute 'aqi' (of entity fan.xiaomi_air_purifier_3h) does not exist
+2021-10-09 15:00:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=52
+2021-10-09 15:00:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=53
+2021-10-09 15:01:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=54
+2021-10-09 15:01:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=55
+2021-10-09 15:02:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=56
+2021-10-09 15:02:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=57
+2021-10-09 15:03:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=58
+2021-10-09 15:03:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=59
+2021-10-09 15:04:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=60
+2021-10-09 15:04:47 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=61
+2021-10-09 15:05:00 WARNING (MainThread) [homeassistant.components.automation] Error evaluating condition in '💨 Air Quality Index > 8 = purifier on':
+In 'condition' (item 1 of 3):
+  In 'numeric_state':
+    In 'numeric_state' condition: attribute 'aqi' (of entity fan.xiaomi_air_purifier_3h) does not exist
+2021-10-09 15:05:00 WARNING (MainThread) [homeassistant.components.automation] Error evaluating condition in '💨 Air Quality Index < 8 = purifier off':
+In 'condition':
+  In 'numeric_state':
+    In 'numeric_state' condition: attribute 'aqi' (of entity fan.xiaomi_air_purifier_3h) does not exist
+2021-10-09 15:05:17 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=62
+2021-10-09 15:05:35 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: required key not provided @ data['action'][4]['domain']. Got None. (See ?, line ?). 
+2021-10-09 15:05:35 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: [title] is an invalid option for [automation]. Check: automation->action->1->title. (See ?, line ?). 
+2021-10-09 15:05:35 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: must be a value between 0 and 59 for dictionary value @ data['minutes']. Got None. (See ?, line ?). 
+2021-10-09 15:05:35 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: must be a value between 0 and 59 for dictionary value @ data['minutes']. Got None. (See ?, line ?). 
+2021-10-09 15:05:48 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=63
+2021-10-09 15:06:18 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=64
+2021-10-09 15:06:48 ERROR (MainThread) [custom_components.xiaomi_miio_airpurifier.fan] Got exception while fetching the state: Unable to discover the device 192.168.86.250 , _retry=65
+2021-10-09 15:06:50 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: required key not provided @ data['action'][4]['domain']. Got None. (See ?, line ?). 
+2021-10-09 15:06:50 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: [title] is an invalid option for [automation]. Check: automation->action->1->title. (See ?, line ?). 
+2021-10-09 15:06:50 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: must be a value between 0 and 59 for dictionary value @ data['minutes']. Got None. (See ?, line ?). 
+2021-10-09 15:06:50 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: must be a value between 0 and 59 for dictionary value @ data['minutes']. Got None. (See ?, line ?). 
+2021-10-09 15:06:56 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: required key not provided @ data['action'][4]['domain']. Got None. (See ?, line ?). 
+2021-10-09 15:06:56 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: [title] is an invalid option for [automation]. Check: automation->action->1->title. (See ?, line ?). 
+2021-10-09 15:06:56 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: must be a value between 0 and 59 for dictionary value @ data['minutes']. Got None. (See ?, line ?). 
+2021-10-09 15:06:56 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: must be a value between 0 and 59 for dictionary value @ data['minutes']. Got None. (See ?, line ?). 
+2021-10-09 15:06:56 ERROR (MainThread) [homeassistant.helpers.entity] Update for sensor.master_bedroom_tv_on_today fails
 Traceback (most recent call last):
-  File "/usr/src/homeassistant/homeassistant/helpers/update_coordinator.py", line 187, in _async_refresh
-    self.data = await self._async_update_data()
-  File "/config/custom_components/googlewifi/__init__.py", line 171, in _async_update_data
-    system_data = await self.api.get_systems()
-  File "/usr/local/lib/python3.9/site-packages/googlewifi/__init__.py", line 191, in get_systems
-    return await self.structure_systems(response)
-  File "/usr/local/lib/python3.9/site-packages/googlewifi/__init__.py", line 289, in structure_systems
-    for this_station in system_metrics.get("stationMetrics"):
-TypeError: 'NoneType' object is not iterable
-2021-10-09 12:22:48 WARNING (MainThread) [homeassistant.helpers.service] Unable to find referenced entities camera.netatmo_eikenbos_oprit
-2021-10-09 12:29:24 WARNING (MainThread) [homeassistant.helpers.service] Unable to find referenced entities media_player.veranda_speaker_2
-2021-10-09 12:29:34 WARNING (MainThread) [homeassistant.helpers.service] Unable to find referenced entities camera.netatmo_eikenbos_oprit
-2021-10-09 12:30:00 ERROR (MainThread) [homeassistant.components.automation.ramen_sluit_raam_master_bedroom_bart_en_madouce_2] 🪟 ramen - sluit raam master bedroom (Bart en Madouce): Error executing script. Error for call_service at pos 1: Error rendering data template: TypeError: '<' not supported between instances of 'str' and 'float'
-2021-10-09 12:30:00 ERROR (MainThread) [homeassistant.components.automation.ramen_sluit_raam_master_bedroom_bart_en_madouce_2] Error while executing automation automation.ramen_sluit_raam_master_bedroom_bart_en_madouce_2: Error rendering data template: TypeError: '<' not supported between instances of 'str' and 'float'
-2021-10-09 12:43:32 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: required key not provided @ data['action'][4]['domain']. Got None. (See ?, line ?). 
-2021-10-09 12:43:32 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: [title] is an invalid option for [automation]. Check: automation->action->1->title. (See ?, line ?). 
-2021-10-09 12:43:32 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: must be a value between 0 and 59 for dictionary value @ data['minutes']. Got None. (See ?, line ?). 
-2021-10-09 12:43:32 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: must be a value between 0 and 59 for dictionary value @ data['minutes']. Got None. (See ?, line ?). 
-2021-10-09 12:43:37 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: required key not provided @ data['action'][4]['domain']. Got None. (See ?, line ?). 
-2021-10-09 12:43:37 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: [title] is an invalid option for [automation]. Check: automation->action->1->title. (See ?, line ?). 
-2021-10-09 12:43:37 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: must be a value between 0 and 59 for dictionary value @ data['minutes']. Got None. (See ?, line ?). 
-2021-10-09 12:43:37 ERROR (MainThread) [homeassistant.config] Invalid config for [automation]: must be a value between 0 and 59 for dictionary value @ data['minutes']. Got None. (See ?, line ?). 
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 438, in async_update_ha_state
+    await self.async_device_update()
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 625, in async_device_update
+    raise exc
+  File "/usr/src/homeassistant/homeassistant/components/history_stats/sensor.py", line 221, in async_update
+    await self.hass.async_add_executor_job(
+  File "/usr/local/lib/python3.9/concurrent/futures/thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/src/homeassistant/homeassistant/components/history_stats/sensor.py", line 227, in _update
+    history_list = history.state_changes_during_period(
+  File "/usr/src/homeassistant/homeassistant/components/recorder/history.py", line 147, in state_changes_during_period
+    with session_scope(hass=hass) as session:
+  File "/usr/local/lib/python3.9/contextlib.py", line 119, in __enter__
+    return next(self.gen)
+  File "/usr/src/homeassistant/homeassistant/components/recorder/util.py", line 60, in session_scope
+    session = hass.data[DATA_INSTANCE].get_session()
+TypeError: 'NoneType' object is not callable
