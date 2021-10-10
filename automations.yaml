@@ -1,5 +1,5 @@
 - alias: 🛌 Madouce thuis om 22u30 en <15° buiten = matras aan
-  id: 'a91e9cb6-dd44-48f1-91b8-81083453fa4f'
+  id: a91e9cb6-dd44-48f1-91b8-81083453fa4f
   description: ''
   trigger:
   - platform: time
@@ -19,7 +19,7 @@
   mode: single
 
 - alias: 🏡 Bart is alleen thuis
-  id: '02b63f41-9ea3-48eb-97aa-242a618f3400'
+  id: 02b63f41-9ea3-48eb-97aa-242a618f3400
   description: ''
   trigger:
   - platform: state
@@ -39,7 +39,7 @@
   mode: single
 
 - alias: 🚗 auto niet op slot (nieuwe versie)
-  id: '319021c7-eb5c-461d-ba15-e54bb53d7465'
+  id: 319021c7-eb5c-461d-ba15-e54bb53d7465
   description: auto niet op slot (nieuwe versie)
   trigger:
   - platform: state
@@ -65,9 +65,9 @@
     data:
       message: 'Auto is (bijna zeker) niet op slot '
   mode: single
-  
+
 - alias: Master bedroom deurswitch
-  id: '92ecb95d-95b8-4708-be7e-9ca5181137ac'
+  id: 92ecb95d-95b8-4708-be7e-9ca5181137ac
   description: ''
   trigger:
   - device_id: 4247e8ef769909d83520323811fc6550
@@ -88,9 +88,9 @@
     data:
       brightness_pct: 75
   mode: single
-  
+
 - alias: Alunya verwarming aan + raam open = verwarming uit
-  id: 'd8aac60f-a5fe-4a41-9ca4-0e2075e0c530'
+  id: d8aac60f-a5fe-4a41-9ca4-0e2075e0c530
   description: ''
   trigger:
   - platform: numeric_state
@@ -109,7 +109,7 @@
   mode: single
 
 - alias: vocht gram in badkamer >14 gram/m³
-  id: '8358a61f-74f1-4045-ba75-563bbca3b4e3'
+  id: 8358a61f-74f1-4045-ba75-563bbca3b4e3
   description: ''
   trigger:
   - platform: numeric_state
@@ -124,7 +124,7 @@
   mode: single
 
 - alias: vocht gram in badkamer >15 gram/m³
-  id: 'fab77066-9288-450b-9495-4e7a811ff9be'
+  id: fab77066-9288-450b-9495-4e7a811ff9be
   description: ''
   trigger:
   - platform: numeric_state
@@ -139,7 +139,7 @@
   mode: single
 
 - alias: Licht in garage aan > 5 min
-  id: 'e66f0240-309e-48ed-83e3-6c6929585303'
+  id: e66f0240-309e-48ed-83e3-6c6929585303
   description: ''
   trigger:
   - platform: numeric_state
@@ -156,4 +156,29 @@
     data:
       message: Licht in garage brandt al langer dan 5 minuten.
       title: Licht in garage
+  mode: single
+
+- alias: master bedroom TV aan 's avonds = gezellig licht
+  id: '1633814031837'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: media_player.master_bedroom_tv
+    to: playing
+  condition:
+  - condition: time
+    after: '22:00'
+  action:
+  - service: light.turn_on
+    target:
+      entity_id:
+      - light.play_bart
+      - light.play_madouce
+      - light.halve_bol
+    data:
+      color_name: darkorange
+      brightness_pct: 30
+  - service: light.turn_off
+    target:
+      entity_id: light.staande_lamp
   mode: single
