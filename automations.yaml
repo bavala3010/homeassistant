@@ -17,7 +17,6 @@
     entity_id: switch.3504547724a160162a33_4
     domain: switch
   mode: single
-
 - alias: 🏡 Bart is alleen thuis
   id: 02b63f41-9ea3-48eb-97aa-242a618f3400
   description: ''
@@ -37,7 +36,6 @@
       message: TTS
       title: Bart, je bent alleen thuis!
   mode: single
-
 - alias: Master bedroom deurswitch
   id: 92ecb95d-95b8-4708-be7e-9ca5181137ac
   description: ''
@@ -60,7 +58,6 @@
     data:
       brightness_pct: 75
   mode: single
-
 - alias: Alunya verwarming aan + raam open = verwarming uit
   id: d8aac60f-a5fe-4a41-9ca4-0e2075e0c530
   description: ''
@@ -79,7 +76,6 @@
     data:
       hvac_mode: auto
   mode: single
-
 - alias: vocht gram in badkamer >14 gram/m³
   id: 8358a61f-74f1-4045-ba75-563bbca3b4e3
   description: ''
@@ -94,7 +90,6 @@
       message: In badkamer meer dan 14 gram water /m³
       title: Veel vocht in badkamer
   mode: single
-
 - alias: vocht gram in badkamer >15 gram/m³
   id: fab77066-9288-450b-9495-4e7a811ff9be
   description: ''
@@ -109,7 +104,6 @@
       message: In badkamer meer dan 15 gram water /m³
       title: Heel veel vocht in badkamer.
   mode: single
-
 - alias: Licht in garage aan > 5 min
   id: e66f0240-309e-48ed-83e3-6c6929585303
   description: ''
@@ -129,7 +123,6 @@
       message: Licht in garage brandt al langer dan 5 minuten.
       title: Licht in garage
   mode: single
-
 - alias: master bedroom TV aan 's avonds = gezellig licht
   id: '1633814031837'
   description: ''
@@ -153,4 +146,50 @@
   - service: light.turn_off
     target:
       entity_id: light.staande_lamp
+  mode: single
+
+- id: '1633883834878'
+  alias: 🚗 Auto 5 min. niet op slot = melding (in automations)
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /2
+  condition:
+  - condition: state
+    entity_id: lock.audi_e_tron_sportback_55_door_lock_2
+    state: 'unlocked'
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  - condition: state
+    entity_id: device_tracker.bart_s10
+    state: 0
+    attribute: speed
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  - condition: state
+    entity_id: device_tracker.madouce_s20
+    state: 0
+    attribute: speed
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  action:
+  - service: notify.bart_phone
+    data:
+      message: 🚙 Auto niet op slot! (veeg omlaag voor acties)
+      data:
+        channel: Important
+        tag: slot_auto
+        color: red
+        actions:
+        - action: lock_car
+          title: SLUIT AUTO
   mode: single

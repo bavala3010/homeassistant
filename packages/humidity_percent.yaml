@@ -17,8 +17,8 @@
 # Lager dan 10 °C	Een beetje droog voor sommige mensen
 
 automation:
-- id: "Vocht in huis >75%"
-  alias: "💧 Vocht in huis >75%"
+- alias: "💧 Vocht in huis >75%"
+  id: '466f577f-83c4-4954-b17e-335ad7fa83f6'
   description: ''
   trigger:
     - platform: numeric_state
@@ -39,8 +39,8 @@ automation:
         message: "Vocht % in huis is heel hoog: {{states('sensor.avg_inside_humidity')}}."
   mode: single
   
-- id: 'Vocht % master bedroom machine aan'
-  alias: "💧 vocht % master bedroom -> machine aan"
+- alias: "💧 vocht % master bedroom -> machine aan"
+  id: '9309eba6-275f-4a93-953a-908b937358ec'
   description: ''
   trigger:
   - platform: time
