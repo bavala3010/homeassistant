@@ -28,6 +28,38 @@ auto_status_verversen:
         - action: lock_car
           title: SLUIT AUTO
 
+'auto_start_window_heating':
+  alias: auto start verwarming ruiten
+  sequence:
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: start_window_heating
+
+'auto_stop_window_heating':
+  alias: auto stop verwarming ruiten
+  sequence:
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: stop_window_heating
+
+'auto_start_preheater':
+  alias: auto start voorverwarming
+  sequence:
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: start_preheater
+
+'auto_stop_preheater':
+  alias: auto stop voorverwarming
+  sequence:
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: stop_preheater
+
 'smart_home_info':
   alias: smart home info
   sequence:
@@ -137,3 +169,4 @@ auto_status_verversen:
       data:
         brightness: 130
         rgb_color: [255,0,0]
+

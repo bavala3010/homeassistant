@@ -46,44 +46,7 @@ automation:
       code: !secret alarm_code
   mode: single
 
-- alias: ✅ niemand thuis ((vrangen om alarm in te schakelen)
-  id: '90221f2b-959a-49f3-804a-1e9d132974e5'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: group.group_gezin
-    from: home
-    to: not_home
-    for: 00:04:00
-  condition: []
-  action:
-  - service: notify.bart_phone
-    data:
-      title: Alarm inschakelen?
-      message: Niemand thuis?
-      data:
-        actions:
-        - action: set_alarm_arm_away
-          title: alarm inschakelen
-  mode: single
-  
-- alias: ✅ iemand thuis (enkel melding)
-  id: '372ae553-7313-4eb2-a141-460600c9bcb4'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: group.group_gezin
-    to: home
-  condition: []
-  action:
-  - device_id: !secret id_tel_bart
-    domain: mobile_app
-    type: notify
-    title: Home
-    message: Bart, er is nu wel iemand thuis.
-  mode: single
-  
-- alias: 🚨 niemand thuis = alarm automatisch aanzetten
+- alias: 🚨 niemand thuis (wifi) = alarm automatisch aanzetten
   id: 'cb9d8480-c66e-4ac0-b722-913bd664b8c3'
   description: ''
   trigger:
@@ -105,7 +68,7 @@ automation:
     message: ⛔ Alarm is automatisch ingeschakeld wegens niemand thuis.
   mode: single
 
-- alias: 🚨 Iemand komt thuis (wifi) = alarm uitzetten
+- alias: 🚨 Iemand komt thuis (wifi) = alarm automatisch uitzetten
   id: 'a3d26d6d-6b16-4b0e-801c-d43529db280b'
   description: ''
   trigger:

@@ -1,6 +1,7 @@
 ############################ Table of Contents ############################ 
 # 
 #   Automations
+#
 #     batterij laag en niet verbonden (week)
 #     batterij laag en niet verbonden (weekend)
 #     autolader is verbonden
@@ -10,9 +11,9 @@
 #     auto sluiten
 #     auto op slot = melding wissen
 #     Auto 10 min. niet op slot = melding
+#
 
 ############################ Automations ################################## 
-
 automation:
 
 - alias: 🚗 batterij laag en niet verbonden (week)
@@ -236,4 +237,50 @@ automation:
       message: "clear_notification"
       data:
         tag: slot_auto        
+  mode: single
+
+- alias: 🚗 Auto 2 min. niet op slot = melding
+  id: 'a2af962e-7fcf-4e6e-822e-5b33bc450628'
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /2
+  condition:
+  - condition: state
+    entity_id: lock.audi_e_tron_sportback_55_door_lock_2
+    state: 'unlocked'
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  - condition: state
+    entity_id: device_tracker.bart_s10
+    state: 0
+    attribute: speed
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  - condition: state
+    entity_id: device_tracker.madouce_s20
+    state: 0
+    attribute: speed
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  action:
+  - service: notify.bart_phone
+    data:
+      message: 🚙 Auto niet op slot! (veeg omlaag voor acties)
+      data:
+        channel: Important
+        tag: slot_auto
+        color: red
+        actions:
+        - action: lock_car
+          title: SLUIT AUTO
   mode: single
