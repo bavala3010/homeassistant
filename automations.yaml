@@ -149,7 +149,7 @@
   mode: single
 
 - id: '1633883834878'
-  alias: 🚗 Auto 5 min. niet op slot = melding (in automations)
+  alias: 🚗 Auto 2 min. niet op slot = melding (in automations)
   description: ''
   trigger:
   - platform: time_pattern

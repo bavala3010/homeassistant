@@ -51,6 +51,7 @@
       friendly_name: living rechts 5
       supported_features: 63
       state: 'on'
+
 - id: '1623951222139'
   name: 🚨 lichten uit (om te knipperen)
   entities:
@@ -78,6 +79,7 @@
       friendly_name: living rechts 5
       supported_features: 63
       state: 'off'
+
 - id: '1633813705916'
   name: TV kijken in master bedroom
   entities:

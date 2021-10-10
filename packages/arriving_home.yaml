@@ -1,15 +1,17 @@
 ############################ Table of Contents ############################ 
 # 
 #   Automations
-#     TBD
-#     TBD
-
-
+#     🏡 Bart komt thuis = melding auto % + open garage/voordeur
+#     🏡 Madouce komt thuis = melding auto % + open garage/voordeur
+#     🏡 Alunya komt thuis = welkom & melding garage/deur
+#     Open garage
+#     Open voordeur
+#
 ############################ Automations ################################## 
 
 automation:
-- id: '1626193605013'
-  alias: 🏡 Bart komt thuis = melding auto % + open garage/voordeur
+- alias: 🏡 Bart komt thuis = melding auto % + open garage/voordeur
+  id: '99d307b5-f692-4996-8d0e-7eb92a735b57'
   description: ''
   trigger:
   - platform: device
@@ -36,8 +38,9 @@ automation:
         color: red
         timeout: 420
   mode: single
-- id: '1624729230446'
-  alias: 🏡 Madouce komt thuis = melding auto % + open garage/voordeur
+
+- alias: 🏡 Madouce komt thuis = melding auto % + open garage/voordeur
+  id: '4a938979-1120-4d05-a5f3-6f572bdeac88'
   description: ''
   trigger:
   - platform: device
@@ -69,8 +72,9 @@ automation:
         - action: open_voordeur
           title: OPEN VOORDEUR
   mode: single
-- id: '1626512095991'
-  alias: 🏡 Alunya komt thuis = welkom & melding garage/deur
+
+- alias: 🏡 Alunya komt thuis = welkom & melding garage/deur
+  id: 'f3b84352-fc50-4d3e-83d5-5b3d81ee03d0'
   description: ''
   trigger:
   - platform: device
@@ -102,8 +106,9 @@ automation:
         - action: open_voordeur
           title: OPEN VOORDEUR
   mode: single
-- id: '1626196804430'
-  alias: Open garage
+
+- alias: Open garage
+  id: '17e008ff-4a39-438b-8021-89e07c3cf5cf'
   trigger:
   - platform: event
     event_type: mobile_app_notification_action
@@ -111,8 +116,9 @@ automation:
       action: open_garage
   action:
   - scene: scene.v5bab2lu7dc9oexz
-- id: '1626196924695'
-  alias: Open voordeur
+
+- alias: Open voordeur
+  id: 'b432c591-0c68-40fe-a22b-0f31296d1ba5'
   trigger:
   - platform: event
     event_type: mobile_app_notification_action

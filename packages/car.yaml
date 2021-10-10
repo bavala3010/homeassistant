@@ -217,7 +217,7 @@ automation:
       entity_id: lock.audi_e_tron_sportback_55_door_lock_2
   mode: single
 
-- alias: 🚗 auto op slot = melding wissen
+- alias: 🚗 auto is op slot (clear_notification)
   id: '1626270837776'
   description: ''
   trigger:
@@ -228,18 +228,12 @@ automation:
   action:
   - service: notify.bart_phone
     data:
-      message: 🚙 Auto is op slot!
+      message: "clear_notification"
       data:
-        channel: Important
         tag: slot_auto
-        timeout: 420
-        color: red
   - service: notify.madouce_phone
     data:
-      message: 🚙 Auto is op slot!
+      message: "clear_notification"
       data:
-        channel: Important
-        tag: slot_auto
-        timeout: 420
-        color: red
+        tag: slot_auto        
   mode: single

@@ -46,7 +46,7 @@ automation:
       code: !secret alarm_code
   mode: single
 
-- alias: ✅ niemand thuis (enkel melding)
+- alias: ✅ niemand thuis ((vrangen om alarm in te schakelen)
   id: '90221f2b-959a-49f3-804a-1e9d132974e5'
   description: ''
   trigger:
@@ -62,12 +62,9 @@ automation:
       title: Alarm inschakelen?
       message: Niemand thuis?
       data:
-  # attention: these actions still need to be changed!
         actions:
-        - action: open_garage
-          title:  (niet doen) garage openen
-        - action: open_voordeur
-          title: Niets doen
+        - action: set_alarm_arm_away
+          title: alarm inschakelen
   mode: single
   
 - alias: ✅ iemand thuis (enkel melding)
@@ -86,7 +83,7 @@ automation:
     message: Bart, er is nu wel iemand thuis.
   mode: single
   
-- alias: 🚨 niemand thuis = alarm aanzetten
+- alias: 🚨 niemand thuis = alarm automatisch aanzetten
   id: 'cb9d8480-c66e-4ac0-b722-913bd664b8c3'
   description: ''
   trigger:
@@ -372,4 +369,19 @@ automation:
     timeout: 00:01:30
   - service: media_player.turn_off
     entity_id: media_player.living_speaker
+  mode: single
+
+- alias: set_alarm_arm_away
+  id: 'b2531e01-aa6d-4a32-b6d7-8627e1450c7e'
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: set_alarm_arm_away
+  action:
+  - service: alarm_control_panel.alarm_arm_away
+    data:
+      code: !secret alarm_code
+    target:
+      entity_id: alarm_control_panel.home_alarm
   mode: single

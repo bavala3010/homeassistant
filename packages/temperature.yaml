@@ -2,8 +2,8 @@
 # 
 
 automation:
-- id: 'te warm in kamer Amilya - open raam (Bart)'
-  alias: te warm in kamer Amilya - open raam (Bart)
+- alias: te warm in kamer Amilya - open raam (Bart)
+  id: 'ae5bbb04-af4b-42e2-ba7a-5d57a411c6bc'
   description: ''
   trigger:
   - platform: time_pattern
@@ -38,8 +38,8 @@ automation:
           uri: /lovelace/temp_detail
   mode: single
   
-- id: 'te warm in kamer Amilya - open raam (Madouce)'
-  alias: te warm in kamer Amilya - open raam (Madouce)
+- alias: te warm in kamer Amilya - open raam (Madouce)
+  id: '5f334c36-306e-4ab5-84c3-ba771b739748'
   description: ''
   trigger:
   - platform: time_pattern

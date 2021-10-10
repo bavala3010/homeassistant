@@ -16,8 +16,8 @@ automation:
 # Switch ON Ensuite fan at high humidity
 # - id: ensuite_turn_on_fan_at_high_humidity
     
-- id: "Amilya niet thuis = lichten uit"
-  alias: 💡 Amilya niet thuis = lichten uit
+- alias: 💡 Amilya niet thuis = lichten uit
+  id: '9b43bf21-4588-4f12-85fd-9bcdbbbcbb7b'
   description: ''
   trigger:
   - platform: state
@@ -52,8 +52,8 @@ automation:
     domain: light
   mode: single
 
-- id: "Alunya niet thuis = licht uit"
-  alias: 💡Alunya niet thuis = licht uit
+- alias: 💡Alunya niet thuis = licht uit
+  id: 'b31b70d7-e8c0-4bb8-8a45-335d57d427b8'
   description: ''
   trigger:
   - platform: state
@@ -100,8 +100,8 @@ automation:
     domain: light
   mode: single
 
-- id: "Donker, <20° buiten en thuis = licht aan"
-  alias: 💡 Donker, <20° buiten en thuis = licht aan
+- alias: 💡 Donker, <20° buiten en thuis = licht aan
+  id: '9652f025-25a5-4eb0-8eb4-6f61ecb57936'
   description: ''
   trigger:
   - platform: state
@@ -121,8 +121,8 @@ automation:
     domain: light
   mode: single
 
-- id: "bij donker living bol inschakelen"
-  alias: 💡 bij donker living bol inschakelen
+- alias: 💡 bij donker living bol inschakelen
+  id: 'd754582e-1ba3-44f2-93ef-32a7f9bbc2af'
   description: ''
   trigger:
   - platform: sun
@@ -137,8 +137,8 @@ automation:
     flash: long
   mode: single
 
-- id: 'Master bedroom deurswitch'
-  alias: 💡 Master bedroom deurswitch
+- alias: 💡 Master bedroom deurswitch
+  id: '0ca77314-116c-4d39-bf43-fd51e9771514'
   description: ''
   trigger:
   - device_id: 4247e8ef769909d83520323811fc6550
@@ -160,8 +160,8 @@ automation:
       brightness_pct: 75
   mode: single
 
-- id: "TV aan + zon onder = TV strip aan"
-  alias: 📺 TV aan + zon onder = TV strip aan
+- alias: 📺 TV aan + zon onder = TV strip aan
+  id: 'decc48cf-f977-42e0-8d54-52cc3fad75d1'
   description: ''
   trigger:
   - platform: state
@@ -180,8 +180,8 @@ automation:
     brightness_pct: 25
   mode: single
 
-- id: "TV uit = TV strip uit"
-  alias: 📺 TV uit = TV strip uit
+- alias: 📺 TV uit = TV strip uit
+  id: 'dfbb4779-8083-49e3-9b83-b045c4db5d43'
   description: ''
   trigger:
   - platform: state
