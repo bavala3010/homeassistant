@@ -38,34 +38,6 @@
       title: Bart, je bent alleen thuis!
   mode: single
 
-- alias: 🚗 auto niet op slot (nieuwe versie)
-  id: 319021c7-eb5c-461d-ba15-e54bb53d7465
-  description: auto niet op slot (nieuwe versie)
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.audi_e_tron_sportback_55_doors_lock
-    for:
-      hours: 0
-      minutes: 10
-      seconds: 0
-      milliseconds: 0
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: device_tracker.bart_s10
-    state: '0'
-    attribute: speed
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-      milliseconds: 0
-  action:
-  - service: notify.bart_phone
-    data:
-      message: 'Auto is (bijna zeker) niet op slot '
-  mode: single
-
 - alias: Master bedroom deurswitch
   id: 92ecb95d-95b8-4708-be7e-9ca5181137ac
   description: ''

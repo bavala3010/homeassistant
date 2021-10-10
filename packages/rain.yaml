@@ -23,7 +23,7 @@ automation:
         tag: regen
   mode: single
 
-- alias: "Het gaat regenen over 15 minuten (en raam nog open ?) (Bart)"
+- alias: Het gaat regenen over 15 minuten (en raam nog open ?) (Bart)
   id: '212d32e6-2fc1-4164-a8de-a4f1a06843dc'
   description: ''
   trigger:
