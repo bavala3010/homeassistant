@@ -25,7 +25,10 @@ tts:
 
 group: !include groups.yaml
 automation: !include automations.yaml
-script: !include scripts.yaml
+# script: !include scripts.yaml
+# include all scripts from the subfolder called "scripts"
+
+script: !include_dir_merge_named scripts
 scene: !include scenes.yaml
 google_assistant: !include google_assistant_integration.yaml
 
@@ -44,6 +47,8 @@ homeassistant:
 
 # secrets should not be mentioned in this file; it is automatic !
 # secrets: !include secrets.yaml
+
+
 
 influxdb:
   api_version: 2

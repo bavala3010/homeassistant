@@ -283,4 +283,15 @@ automation:
         actions:
         - action: lock_car
           title: SLUIT AUTO
+  - service: notify.madouce_phone
+    data:
+      message: 🚙 Auto niet op slot! (veeg omlaag voor acties)
+      data:
+        channel: Important
+        tag: slot_auto
+        color: red
+        actions:
+        - action: lock_car
+          title: SLUIT AUTO          
   mode: single
+  
