@@ -36,15 +36,35 @@ check_auto_op_slot:
 auto_start_climatisation:
   alias: auto start climatisatie
   sequence:
+  - service: timer.start
+    data:
+      duration: '1200'
+    target:
+      entity_id: timer.car_climatisation
   - service: audiconnect.execute_vehicle_action
     data:
       vin: WAUZZZGE6MB019131
       action: start_climatisation
-
-auto_stop_climatisation:
-  alias: auto stop climatisatie
-  sequence:
+  - delay:
+      hours: 0
+      minutes: 20
+      seconds: 0
+      milliseconds: 0
   - service: audiconnect.execute_vehicle_action
     data:
       vin: WAUZZZGE6MB019131
       action: stop_climatisation
+
+auto_stop_climatisation:
+  alias: auto stop climatisatie
+  sequence:
+  - service: timer.cancel
+    target:
+      entity_id: timer.car_climatisation
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: stop_climatisation
+  - service: script.turn_off
+    target:
+      entity_id: script.auto_start_climatisation      

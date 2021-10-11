@@ -787,4 +787,8 @@ notify:
     platform: group
     services:
       - service: mobile_app_sm_a715f
-      
+
+timer:
+  car_climatisation:
+#  duration: '00:20:00'
+    icon: mdi:radiator      
