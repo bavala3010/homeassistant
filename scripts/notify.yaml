@@ -1,0 +1,51 @@
+'notify_bart_windows':
+  alias: notify_bart_windows
+  sequence:
+    - condition: time
+      after: '7:0:0'
+      before: '23:30:00'
+    - condition: zone
+      entity_id: person.bart
+      zone: zone.home
+    - service: notify.bart_phone
+      data_template:
+        title: " {{ title }} {{ reason }}"
+        message: "{{ message }}"
+        data:
+          color: blue
+          channel: ramen
+          timeout: 3600
+          tag: " {{ tag }}"
+          actions:
+          - action: "{{ action_window_pause }}" 
+            title: stel meldingen 2 uren uit
+          - action: URI
+            title: meer info
+            uri: /lovelace/humidity
+  mode: parallel
+            
+'notify_madouce_windows':
+  alias: notify_madouce_windows
+  sequence:
+    - condition: time
+      after: '7:0:0'
+      before: '23:30:00'
+    - condition: zone
+      entity_id: person.madouce
+      zone: zone.home
+    - service: notify.madouce_phone
+      data_template:
+        title: " {{ title }} {{ reason }}"
+        message: "{{ message }}"
+        data:
+          color: blue
+          channel: ramen
+          timeout: 3600
+          tag: " {{ tag }}"
+          actions:
+          - action: "{{ action_window_pause }}" 
+            title: stel meldingen 2 uren uit
+          - action: URI
+            title: meer info
+            uri: /lovelace/humidity
+  mode: parallel
