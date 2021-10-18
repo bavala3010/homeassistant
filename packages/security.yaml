@@ -47,11 +47,11 @@ automation:
   mode: single
 
 - alias: 🚨 niemand thuis (wifi) = alarm automatisch aanzetten
-  id: 'cb9d8480-c66e-4ac0-b722-913bd664b8c3'
+  id: '71de9fe1-32d9-4a62-ae3a-635d6103daac'
   description: ''
   trigger:
   - platform: state
-    entity_id: group.group_gezin
+    entity_id: group.gezin
     to: not_home
     for: 00:05:00
   condition: []
@@ -69,11 +69,11 @@ automation:
   mode: single
 
 - alias: 🚨 Iemand komt thuis (wifi) = alarm automatisch uitzetten
-  id: 'a3d26d6d-6b16-4b0e-801c-d43529db280b'
+  id: 'f17014e2-4cf5-43f0-90ae-be7d609f2a28'
   description: ''
   trigger:
   - platform: state
-    entity_id: group.group_gezin
+    entity_id: group.gezin
     to: home
   condition:
   - condition: state
@@ -83,9 +83,9 @@ automation:
   - service: alarm_control_panel.alarm_disarm
     target:
       entity_id: alarm_control_panel.home_alarm
-    data:
-      code: !secret alarm_code
-  - service: notify.bart_phone
+  - device_id: !secret id_tel_bart
+    domain: mobile_app
+    type: notify
     title: ''
     message: '✅  Alarm is automatisch uitgeschakeld door thuiskomst.'
   mode: single

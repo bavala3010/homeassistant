@@ -1,22 +1,22 @@
 ############################ Table of Contents ############################ 
 #
-#     Open windows notifications
-#  🪟 ramen - open raam living room (Bart en Madouce)
-#  🪟 ramen - open raam kamer Amilya (Bart en Madouce)
-#  🪟 ramen - open raam veranda (Bart en Madouce)
-#  🪟 ramen - open raam berging (Bart en Madouce)
-#  🪟 ramen - open raam badkamer (Bart en Madouce)
-#  🪟 ramen - open raam kamer Alunya (Bart en Madouce)
-#  🪟 ramen - open raam master bedroom (Bart en Madouce)
+#   Open windows notifications
+#   🪟 ramen - open raam living room (Bart en Madouce)
+#   🪟 ramen - open raam kamer Amilya (Bart en Madouce)
+#   🪟 ramen - open raam veranda (Bart en Madouce)
+#   🪟 ramen - open raam berging (Bart en Madouce)
+#   🪟 ramen - open raam badkamer (Bart en Madouce)
+#   🪟 ramen - open raam kamer Alunya (Bart en Madouce)
+#   🪟 ramen - open raam master bedroom (Bart en Madouce)
 #
-#     Open windows clear notifications
-#  🪟 ramen - open raam living room - clear notification (Bart en Madouce)
-#  🪟 ramen - open raam kamer Amilya - clear notification (Bart en Madouce)
-#  🪟 ramen - open raam veranda - clear notification (Bart en Madouce)
-#  🪟 ramen - open raam berging - clear notification (Bart en Madouce)
-#  🪟 ramen - open raam badkamer - clear notification (Bart en Madouce)
-#  🪟 ramen - open raam kamer Alunya - clear notification (Bart en Madouce)
-#  🪟 ramen - open raam master bedroom - clear notification (Bart en Madouce)
+#   Open windows clear notifications
+#   🪟 ramen - open raam living room - clear notification (Bart en Madouce)
+#   🪟 ramen - open raam kamer Amilya - clear notification (Bart en Madouce)
+#   🪟 ramen - open raam veranda - clear notification (Bart en Madouce)
+#   🪟 ramen - open raam berging - clear notification (Bart en Madouce)
+#   🪟 ramen - open raam badkamer - clear notification (Bart en Madouce)
+#   🪟 ramen - open raam kamer Alunya - clear notification (Bart en Madouce)
+#   🪟 ramen - open raam master bedroom - clear notification (Bart en Madouce)
 #
 ###########################################################################
 
@@ -37,13 +37,13 @@ automation:
     entity_id: input_boolean.living_room_raam_moet_open
     state: 'on'
   - condition: state
-    entity_id: binary_sensor.keuken_raam_sensor
+    entity_id: binary_sensor.keuken_raam
     state: 'off'
   - condition: state
-    entity_id: binary_sensor.living_room_oprit_raam_sensor
+    entity_id: binary_sensor.living_room_oprit_raam
     state: 'off'
   - condition: state
-    entity_id: binary_sensor.living_room_tuin_raam_sensor
+    entity_id: binary_sensor.living_room_tuin_raam
     state: 'off'
   - condition: state
     entity_id: input_boolean.living_room_window_pause
@@ -76,7 +76,7 @@ automation:
     entity_id: input_boolean.kamer_amilya_raam_moet_open
     state: 'on'
   - condition: state
-    entity_id: binary_sensor.kamer_amilya_raam_sensor
+    entity_id: binary_sensor.kamer_amilya_raam
     state: 'off'
   - condition: state
     entity_id: input_boolean.kamer_amilya_window_pause
@@ -112,7 +112,7 @@ automation:
     entity_id: input_boolean.veranda_schuifraam_moet_open
     state: 'on'
   - condition: state
-    entity_id: binary_sensor.veranda_schuifraam_sensor
+    entity_id: binary_sensor.veranda_schuifraam
     state: 'off'
   - condition: state
     entity_id: input_boolean.veranda_window_pause
@@ -145,7 +145,7 @@ automation:
     entity_id: input_boolean.berging_raam_moet_open
     state: 'on'
   - condition: state
-    entity_id: binary_sensor.berging_raam_sensor
+    entity_id: binary_sensor.berging_raam
     state: 'off'
   - condition: state
     entity_id: input_boolean.berging_window_pause
@@ -178,7 +178,7 @@ automation:
     entity_id: input_boolean.badkamer_raam_moet_open
     state: 'on'
   - condition: state
-    entity_id: binary_sensor.badkamer_raam_sensor
+    entity_id: sensor.badkamer_raam
     state: 'off'
   - condition: state
     entity_id: input_boolean.badkamer_window_pause
@@ -211,10 +211,10 @@ automation:
     entity_id: input_boolean.kamer_alunya_raam_moet_open
     state: 'on'
   - condition: state
-    entity_id: binary_sensor.kamer_alunya_raam_sensor
+    entity_id: binary_sensor.kamer_alunya_raam
     state: 'off'
   - condition: state
-    entity_id: binary_sensor.kamer_alunya_schuifraam_sensor
+    entity_id: binary_sensor.kamer_alunya_schuifraam
     state: 'off'  
   - condition: state
     entity_id: input_boolean.kamer_alunya_window_pause
@@ -247,7 +247,7 @@ automation:
     entity_id: input_boolean.master_bedroom_raam_moet_open
     state: 'on'
   - condition: state
-    entity_id: binary_sensor.master_bedroom_raam_sensor
+    entity_id: binary_sensor.master_bedroom_raam_kantel
     state: 'off'
   - condition: state
     entity_id: input_boolean.master_bedroom_window_pause
@@ -279,15 +279,15 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.keuken_raam_sensor
+    entity_id: binary_sensor.keuken_raam
  #  from: 'off'
     to: 'on'
   - platform: state
-    entity_id: binary_sensor.living_room_oprit_raam_sensor
+    entity_id: binary_sensor.living_room_oprit_raam
  #  from: 'off'
     to: 'on'
   - platform: state
-    entity_id: binary_sensor.living_room_tuin_raam_sensor
+    entity_id: binary_sensor.living_room_tuin_raam
  #  from: 'off'
     to: 'on'
   - platform: state
@@ -318,7 +318,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.kamer_amilya_raam_sensor
+    entity_id: binary_sensor.kamer_amilya_raam
     from: 'off'
     to: 'on'
   - platform: state
@@ -349,7 +349,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.veranda_schuifraam_sensor
+    entity_id: binary_sensor.veranda_schuifraam
     from: 'off'
     to: 'on'
   - platform: state
@@ -380,7 +380,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.berging_raam_sensor
+    entity_id: binary_sensor.berging_raam
     from: 'off'
     to: 'on'
   - platform: state
@@ -411,7 +411,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.badkamer_raam_sensor
+    entity_id: binary_sensor.badkamer_raam_kantel
     from: 'off'
     to: 'on'
   - platform: state
@@ -442,11 +442,11 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.kamer_alunya_raam_sensor
+    entity_id: binary_sensor.kamer_alunya_raam
  #  from: 'off'
     to: 'on'
   - platform: state
-    entity_id: binary_sensor.kamer_alunya_schuifraam_sensor
+    entity_id: binary_sensor.kamer_alunya_schuifraam
  #  from: 'off'
     to: 'on'
   - platform: state
@@ -477,7 +477,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.master_bedroom_raam_sensor
+    entity_id: binary_sensor.master_bedroom_raam_kantel
     from: 'off'
     to: 'on'
   - platform: state

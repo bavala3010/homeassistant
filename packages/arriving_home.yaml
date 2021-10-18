@@ -10,6 +10,7 @@
 ############################ Automations ################################## 
 
 automation:
+
 - alias: 🏡 Bart komt thuis = melding auto % + open garage/voordeur
   id: '99d307b5-f692-4996-8d0e-7eb92a735b57'
   description: ''
@@ -37,6 +38,11 @@ automation:
         tag: persistent
         color: red
         timeout: 420
+        actions:
+        - action: open_garage
+          title: OPEN GARAGE
+        - action: open_voordeur
+          title: OPEN VOORDEUR        
   mode: single
 
 - alias: 🏡 Madouce komt thuis = melding auto % + open garage/voordeur

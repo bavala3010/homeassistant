@@ -1,12 +1,19 @@
 ############################ Table of Contents ############################ 
 #
-#  check to CLSOE windows
-# 
+#  check to CLOSE windows
+#   🪟 ramen - check living room (moet dicht)
+#   🪟 ramen - check kamer Amilya (moet dicht)
+#   🪟 ramen - check veranda (moet dicht)
+#   🪟 ramen - check berging (moet dicht)
+#   🪟 ramen - check badkamer (moet dicht)
+#   🪟 ramen - check gang (moet dicht)
+#   🪟 ramen - check kamer Alunya (moet dicht)
+#   🪟 ramen - check master bedroom (moet dicht)
+#
 ###########################################################################
 
 #    De laagste temperatuur morgen (dus de volgende nacht) =
 #    value_template: "{{ state_attr('weather.eikenbos', 'forecast')[0].templow }}"
-
 
 automation:
 

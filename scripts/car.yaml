@@ -32,6 +32,7 @@ check_auto_op_slot:
 #  not allowed by Audi Etron
 #  start_window_heating
 #  start_preheater
+#  start_charger
 
 auto_start_climatisation:
   alias: auto start climatisatie
@@ -45,6 +46,24 @@ auto_start_climatisation:
     data:
       vin: WAUZZZGE6MB019131
       action: start_climatisation
+  - service: notify.bart_phone
+    data:
+      message: Climatisatie auto gestart
+      data:
+        timeout: 12000  # 20 minuten
+        actions:
+        - action: URI
+          title: meer info
+          uri: /lovelace/e-tron
+  - service: notify.madouce_phone
+    data:
+      message: Climatisatie auto gestart
+      data:
+        timeout: 12000  # 20 minuten
+        actions:
+        - action: URI
+          title: meer info
+          uri: /lovelace/e-tron
   - delay:
       hours: 0
       minutes: 20
@@ -54,6 +73,24 @@ auto_start_climatisation:
     data:
       vin: WAUZZZGE6MB019131
       action: stop_climatisation
+  - service: notify.bart_phone
+    data:
+      message: Climatisatie auto gestopt
+      data:
+        timeout: 6000  # 10 minuten
+        actions:
+        - action: URI
+          title: meer info
+          uri: /lovelace/e-tron
+  - service: notify.madouce_phone
+    data:
+      message: Climatisatie auto gestopt
+      data:
+        timeout: 6000  # 10 minuten
+        actions:
+        - action: URI
+          title: meer info
+          uri: /lovelace/e-tron
 
 auto_stop_climatisation:
   alias: auto stop climatisatie
@@ -67,4 +104,22 @@ auto_stop_climatisation:
       action: stop_climatisation
   - service: script.turn_off
     target:
-      entity_id: script.auto_start_climatisation      
+      entity_id: script.auto_start_climatisation
+  - service: notify.bart_phone
+    data:
+      message: Climatisatie auto gestopt
+      data:
+        timeout: 6000 # 10 minuten
+        actions:
+        - action: URI
+          title: meer info
+          uri: /lovelace/e-tron
+  - service: notify.madouce_phone
+    data:
+      message: Climatisatie auto gestopt
+      data:
+        timeout: 6000   # 10 minuten
+        actions:
+        - action: URI
+          title: meer info
+          uri: /lovelace/e-tron

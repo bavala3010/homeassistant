@@ -58,24 +58,6 @@
     data:
       brightness_pct: 75
   mode: single
-- alias: Alunya verwarming aan + raam open = verwarming uit
-  id: d8aac60f-a5fe-4a41-9ca4-0e2075e0c530
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.kamer_alunya_heating
-    above: '0'
-  condition:
-  - condition: state
-    entity_id: binary_sensor.kamer_alunya_raam_sensor
-    state: 'on'
-  action:
-  - service: climate.set_hvac_mode
-    target:
-      entity_id: climate.kamer_alunya
-    data:
-      hvac_mode: auto
-  mode: single
 - alias: vocht gram in badkamer >14 gram/m³
   id: 8358a61f-74f1-4045-ba75-563bbca3b4e3
   description: ''
@@ -147,49 +129,22 @@
     target:
       entity_id: light.staande_lamp
   mode: single
-
-- id: '1633883834878'
-  alias: 🚗 Auto 2 min. niet op slot = melding (in automations)
+- id: '1634496434206'
+  alias: 'Amilya: chauffage ''s nachts niet hoger dan 20° C'
   description: ''
   trigger:
-  - platform: time_pattern
-    minutes: /2
+  - platform: numeric_state
+    entity_id: climate.kamer_amilya
+    attribute: temperature
+    above: '20'
   condition:
-  - condition: state
-    entity_id: lock.audi_e_tron_sportback_55_door_lock_2
-    state: 'unlocked'
-    for:
-      hours: 0
-      minutes: 2
-      seconds: 0
-      milliseconds: 0
-  - condition: state
-    entity_id: device_tracker.bart_s10
-    state: 0
-    attribute: speed
-    for:
-      hours: 0
-      minutes: 2
-      seconds: 0
-      milliseconds: 0
-  - condition: state
-    entity_id: device_tracker.madouce_s20
-    state: 0
-    attribute: speed
-    for:
-      hours: 0
-      minutes: 2
-      seconds: 0
-      milliseconds: 0
+  - condition: time
+    after: '23:30'
+    before: 06:00
   action:
-  - service: notify.bart_phone
+  - service: climate.set_hvac_mode
+    target:
+      entity_id: climate.kamer_amilya
     data:
-      message: 🚙 Auto niet op slot! (veeg omlaag voor acties)
-      data:
-        channel: Important
-        tag: slot_auto
-        color: red
-        actions:
-        - action: lock_car
-          title: SLUIT AUTO
+      hvac_mode: auto
   mode: single

@@ -32,7 +32,6 @@ script: !include_dir_merge_named scripts
 scene: !include scenes.yaml
 google_assistant: !include google_assistant_integration.yaml
 
-
 frontend:
   themes: !include_dir_merge_named themes
 
@@ -47,8 +46,6 @@ homeassistant:
 
 # secrets should not be mentioned in this file; it is automatic !
 # secrets: !include secrets.yaml
-
-
 
 influxdb:
   api_version: 2
@@ -375,6 +372,12 @@ sensor:
         unit_of_measurement: KJ/kg      
         value_template: "{{ (1.006 * (states('sensor.master_bedroom_temperature') | float) ) + ( (states('sensor.master_bedroom_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.master_bedroom_temperature') | float))) | round (2) }}" 
 
+      car_range_per_10percent:
+        friendly_name: 'range per 10%'
+        unit_of_measurement: km
+        value_template: "{{ (10 * states('sensor.audi_e_tron_sportback_55_primary_engine_range') | float / states('sensor.audi_e_tron_sportback_55_state_of_charge') | float ) | round (1) }}" 
+
+
 # - platform: powercalc
 #   entity_id: light.living
 #   manufacturer: signify
@@ -656,6 +659,89 @@ sensor:
     file_paths:
       - /config/home-assistant_v2.db
 
+template:
+  - sensor:
+      - name: "badkamer raam"
+        state: >
+          {% if is_state('binary_sensor.badkamer_raam_wijd', 'on') %}
+            wijd
+          {% elif is_state('binary_sensor.badkamer_raam_kantel', 'on') %}
+            gekanteld
+          {% else %}
+            Gesloten
+          {% endif %}
+
+      - name: "master bedroom raam"
+        state: >
+          {% if is_state('binary_sensor.master_bedroom_raam_wijd', 'on') %}
+            wijd
+          {% elif is_state('binary_sensor.master_bedroom_raam_kantel', 'on') %}
+            gekanteld
+          {% else %}
+            Gesloten
+          {% endif %}
+
+adaptive_lighting:
+- name: "living room bol adaptive lightning"
+  lights: [light.living_bol]
+  prefer_rgb_color: false
+  transition: 45
+  initial_transition: 1
+  interval: 90
+  min_brightness: 1
+  max_brightness: 100
+  min_color_temp: 2000
+  max_color_temp: 5500
+  sleep_brightness: 1
+  sleep_color_temp: 1000
+#  sunrise_time: '08:00:00'  # override the sunrise time
+#  sunrise_offset:
+#  sunset_time:
+  sunset_offset: 1800  # in seconds or '00:15:00'
+  take_over_control: true
+  detect_non_ha_changes: false
+  only_once: false
+
+- name: "living room links adaptive lightning"
+  lights: [light.living_alle_spots]
+  prefer_rgb_color: false
+  transition: 45
+  initial_transition: 1
+  interval: 90
+  min_brightness: 1
+  max_brightness: 100
+  min_color_temp: 2000
+  max_color_temp: 4000
+  sleep_brightness: 1
+  sleep_color_temp: 1000
+#  sunrise_time: '08:00:00'  # override the sunrise time
+#  sunrise_offset:
+#  sunset_time:
+  sunset_offset: 1800  # in seconds or '00:15:00'
+  take_over_control: true
+  detect_non_ha_changes: false
+  only_once: false
+
+- name: "master bedroom staande lamp adaptive lightning"
+  lights: [light.staande_lamp]
+  prefer_rgb_color: false
+  transition: 45
+  initial_transition: 1
+  interval: 90
+  min_brightness: 1
+  max_brightness: 100
+  min_color_temp: 2000
+  max_color_temp: 5500
+  sleep_brightness: 1
+  sleep_color_temp: 1000
+#  sunrise_time: '08:00:00'  # override the sunrise time
+#  sunrise_offset:
+#  sunset_time:
+  sunset_offset: 1800  # in seconds or '00:15:00'
+  take_over_control: true
+  detect_non_ha_changes: false
+  only_once: false
+
 anniversaries:
   sensors:
   - name: huwelijk Madouce & Bart
@@ -771,6 +857,8 @@ binary_sensor:
 # Enables a map showing the location of tracked devices
 map:
 
+# Mapping of the phone to a fixed name
+# If you change smartphone, you can easily change the mapping and keep the fixed name in the automations.
 
 notify:
   - name: bart_phone
@@ -783,12 +871,11 @@ notify:
     services:
       - service: mobile_app_madouce_s20
 
-  - name: alanya_phone
+  - name: alunya_phone
     platform: group
     services:
       - service: mobile_app_sm_a715f
 
 timer:
   car_climatisation:
-#  duration: '00:20:00'
     icon: mdi:radiator      

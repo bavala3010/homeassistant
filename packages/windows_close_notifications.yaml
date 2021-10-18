@@ -1,6 +1,6 @@
 ############################ Table of Contents ############################ 
 #
-# Close windows notifications
+#   Close windows notifications
 #   🪟 ramen - sluit raam living room (Bart en Madouce)
 #   🪟 ramen - sluit raam kamer Amilya (Bart en Madouce)
 #   🪟 ramen - sluit raam veranda (Bart en Madouce)
@@ -9,14 +9,14 @@
 #   🪟 ramen - sluit raam kamer Alunya (Bart en Madouce)
 #   🪟 ramen - sluit raam master bedroom (Bart en Madouce)
 #
-# Close windows clear notifications
-#  🪟 ramen - sluit raam living room - clear notification (Bart en Madouce)
-#  🪟 ramen - sluit raam kamer Amilya - clear notification (Bart en Madouce)
-#  🪟 ramen - sluit raam veranda - clear notification (Bart en Madouce)
-#  🪟 ramen - sluit raam berging - clear notification (Bart en Madouce)
-#  🪟 ramen - sluit raam badkamer - clear notification (Bart en Madouce)
-#  🪟 ramen - sluit raam kamer Alunya - clear notification (Bart en Madouce)
-#  🪟 ramen - sluit raam master bedroom - clear notification (Bart en Madouce)
+#   Close windows clear notifications
+#   🪟 ramen - sluit raam living room - clear notification (Bart en Madouce)
+#   🪟 ramen - sluit raam kamer Amilya - clear notification (Bart en Madouce)
+#   🪟 ramen - sluit raam veranda - clear notification (Bart en Madouce)
+#   🪟 ramen - sluit raam berging - clear notification (Bart en Madouce)
+#   🪟 ramen - sluit raam badkamer - clear notification (Bart en Madouce)
+#   🪟 ramen - sluit raam kamer Alunya - clear notification (Bart en Madouce)
+#   🪟 ramen - sluit raam master bedroom - clear notification (Bart en Madouce)
 # 
 #############################################################################
 
@@ -39,13 +39,13 @@ automation:
   - condition: or
     conditions:    
     - condition: state
-      entity_id: binary_sensor.keuken_raam_sensor
+      entity_id: binary_sensor.keuken_raam
       state: 'on'
     - condition: state
-      entity_id: binary_sensor.living_room_oprit_raam_sensor
+      entity_id: binary_sensor.living_room_oprit_raam
       state: 'on'
     - condition: state
-      entity_id: binary_sensor.living_room_tuin_raam_sensor
+      entity_id: binary_sensor.living_room_tuin_raam
       state: 'on'
   - condition: state
     entity_id: input_boolean.living_room_window_pause
@@ -78,7 +78,7 @@ automation:
     entity_id: input_boolean.kamer_amilya_raam_moet_dicht
     state: 'on'
   - condition: state
-    entity_id: binary_sensor.kamer_amilya_raam_sensor
+    entity_id: binary_sensor.kamer_amilya_raam
     state: 'on'
   - condition: state
     entity_id: input_boolean.kamer_amilya_window_pause
@@ -111,7 +111,7 @@ automation:
     entity_id: input_boolean.veranda_schuifraam_moet_dicht
     state: 'on'
   - condition: state
-    entity_id: binary_sensor.veranda_schuifraam_sensor
+    entity_id: binary_sensor.veranda_schuifraam
     state: 'on'
   - condition: state
     entity_id: input_boolean.veranda_window_pause
@@ -144,7 +144,7 @@ automation:
     entity_id: input_boolean.berging_raam_moet_dicht
     state: 'on'
   - condition: state
-    entity_id: binary_sensor.berging_raam_sensor
+    entity_id: binary_sensor.berging_raam
     state: 'on'
   - condition: state
     entity_id: input_boolean.berging_window_pause
@@ -177,7 +177,7 @@ automation:
     entity_id: input_boolean.badkamer_raam_moet_dicht
     state: 'on'
   - condition: state
-    entity_id: binary_sensor.badkamer_raam_sensor
+    entity_id: binary_sensor.badkamer_raam_kantel
     state: 'on'
   - condition: state
     entity_id: input_boolean.badkamer_window_pause
@@ -199,7 +199,7 @@ automation:
       reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 12 %} Te koud buiten.{% elif states('sensor.gram_water_badkamer_diff_outside') | float < 0.5 %} Te vochtig buiten.{% endif %}"
   mode: single
 
-- alias: 🪟 ramen - sluit raam kamer Alunya (Bart en Madouce)
+- alias: 🪟 ramen - sluit raam kamer Alunya (Bart en Madouce en Alunya)
   id: '2cc50202-cd87-49d9-ad25-21627a175597'
   description: ''
   trigger:
@@ -212,10 +212,10 @@ automation:
   - condition: or
     conditions:    
     - condition: state
-      entity_id: binary_sensor.kamer_alunya_raam_sensor
+      entity_id: binary_sensor.kamer_alunya_raam
       state: 'on'
     - condition: state
-      entity_id: binary_sensor.kamer_alunya_schuifraam_sensor
+      entity_id: binary_sensor.kamer_alunya_schuifraam
       state: 'on'
   - condition: state
     entity_id: input_boolean.kamer_alunya_window_pause
@@ -235,6 +235,13 @@ automation:
       tag: "window_kamer_alunya"
       action_window_pause: "kamer_alunya_window_pause"
       reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 15 %} Te koud buiten. {% endif %}"
+  - service: script.notify_alunya_windows
+    data_template:
+      message: "Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      title: "Sluit het raam van Alunya!"
+      tag: "window_kamer_alunya"
+      action_window_pause: "kamer_alunya_window_pause"
+      reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 15 %} Te koud buiten. {% endif %}"
   mode: single
 
 - alias: 🪟 ramen - sluit raam master bedroom (Bart en Madouce)
@@ -248,7 +255,7 @@ automation:
     entity_id: input_boolean.master_bedroom_raam_moet_dicht
     state: 'on'
   - condition: state
-    entity_id: binary_sensor.master_bedroom_raam_sensor
+    entity_id: binary_sensor.master_bedroom_raam_kantel
     state: 'on'
   - condition: state
     entity_id: input_boolean.master_bedroom_window_pause
@@ -288,15 +295,15 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.keuken_raam_sensor
+    entity_id: binary_sensor.keuken_raam
     from: 'on'
     to: 'off'
   - platform: state
-    entity_id: binary_sensor.living_room_oprit_raam_sensor
+    entity_id: binary_sensor.living_room_oprit_raam
     from: 'on'
     to: 'off'
   - platform: state
-    entity_id: binary_sensor.living_room_tuin_raam_sensor
+    entity_id: binary_sensor.living_room_tuin_raam
     from: 'on'
     to: 'off'
   - platform: state
@@ -328,11 +335,11 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.kamer_amilya_raam_sensor
+    entity_id: binary_sensor.kamer_amilya_raam
     from: 'on'
     to: 'off'
   - platform: state
-    entity_id: binary_sensor.kamer_amilya_schuifraam_sensor
+    entity_id: binary_sensor.kamer_amilya_schuifraam
     from: 'on'
     to: 'off'
   - platform: state
@@ -364,7 +371,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.veranda_schuifraam_sensor
+    entity_id: binary_sensor.veranda_schuifraam
     from: 'on'
     to: 'off'
   - platform: state
@@ -396,7 +403,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.berging_raam_sensor
+    entity_id: binary_sensor.berging_raam
     from: 'on'
     to: 'off'
   - platform: state
@@ -428,7 +435,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.badkamer_raam_sensor
+    entity_id: binary_sensor.badkamer_raam
     from: 'on'
     to: 'off'
   - platform: state
@@ -460,11 +467,11 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.kamer_alunya_raam_sensor
+    entity_id: binary_sensor.kamer_alunya_raam
     from: 'on'
     to: 'off'
   - platform: state
-    entity_id: binary_sensor.kamer_alunya_schuifraam_sensor
+    entity_id: binary_sensor.kamer_alunya_schuifraam
     from: 'on'
     to: 'off'
   - platform: state
@@ -496,7 +503,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.master_bedroom_raam_sensor
+    entity_id: binary_sensor.master_bedroom_raam_kantel
     from: 'on'
     to: 'off'
   - platform: state

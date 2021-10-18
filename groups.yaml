@@ -1,4 +1,4 @@
-group_gezin:
+gezin:
   name: gezin
   entities:
     - person.bart
@@ -10,20 +10,20 @@ group_gezin:
 #   - device_tracker.amilya_iphone_xs
 #   - device_tracker.alunya_samsung_galaxy_a71
 
-group_not_bart:
+alleen_bart:
   name: not_bart
   entities:
     - device_tracker.madouce_samsung_s20
     - device_tracker.amilya_iphone_xs
     - device_tracker.alunya_samsung_galaxy_a71
       
-group_kinderen:
+kinderen:
   name: kinderen
   entities:
     - device_tracker.amilya_iphone_xs
     - device_tracker.alunya_samsung_galaxy_a71
 
-group_living_veranda_speakers:
+living_veranda_speakers:
   name: speaker_living_veranda
   entities:
     - media_player.living_speaker
@@ -31,7 +31,7 @@ group_living_veranda_speakers:
 # you can now use group.group_living_veranda_speakers in automations and scripts
     
 
-group_living_masterbedroom_speakers:
+living_masterbedroom_speakers:
   name: speaker_living_veranda
   entities:
     - media_player.living_speaker
@@ -40,17 +40,44 @@ group_living_masterbedroom_speakers:
 # but the 2 speakers will not play synchroniously
 # better make a speaker group in the Google Home app: eg: media_player.groep_living_veranda 
 
-group_raam_sensoren:
-  name: raam_sensoren
+alle_raam_sensoren:
+  name: groep_alle_raam_sensoren
   entities:
     - binary_sensor.ty18857573dc4f22b78e02
-    - binary_sensor.amilya_raam_sensor
-    - binary_sensor.alunya_raam_sensor
-    - binary_sensor.alunya_schuifraam_sensor
-    - binary_sensor.badkamer_raam_sensor
-    - binary_sensor.berging_raam_sensor
-    - binary_sensor.keuken_raam_sensor
-    - binary_sensor.living_oprit_raam_sensor
-    - binary_sensor.living_tuin_raam_sensor
-    - binary_sensor.master_bedroom_raam_sensor
-    - binary_sensor.veranda_schuifraam_sensor
+    - binary_sensor.badkamer_raam_kantel
+    - binary_sensor.badkamer_raam_wijd
+    - binary_sensor.berging_raam
+    - binary_sensor.kamer_alunya_raam
+    - binary_sensor.kamer_amilya_raam
+    - binary_sensor.kamer_alunya_schuifraam
+    - binary_sensor.keuken_raam
+    - binary_sensor.living_oprit_raam
+    - binary_sensor.living_tuin_raam
+    - binary_sensor.master_bedroom_raam_kantel
+    - binary_sensor.master_bedroom_raam_wijd
+    - binary_sensor.veranda_schuifraam
+
+living_room_ramen:
+  name: living_room_ramen
+  entities:
+    - binary_sensor.keuken_raam
+    - binary_sensor.living_oprit_raam
+    - binary_sensor.living_tuin_raam
+    
+kamer_alunya_ramen:
+  name: kamer_alunya_ramen
+  entities:
+    - binary_sensor.kamer_alunya_raam
+    - binary_sensor.kamer_alunya_schuifraam
+
+badkamer_ramen:
+  name: badkamer_ramen
+  entities:
+    - binary_sensor.badkamer_raam_kantel
+    - binary_sensor.badkamer_raam_wijd
+
+master_bedroom_ramen:
+  name: master_bedroom_ramen
+  entities:
+    - binary_sensor.badkamer_raam_kantel
+    - binary_sensor.badkamer_raam_wijd

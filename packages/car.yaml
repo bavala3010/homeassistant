@@ -16,6 +16,10 @@
 ############################ Automations ################################## 
 automation:
 
+#########################
+# Auto laden
+#########################
+
 - alias: 🚗 batterij laag en niet verbonden (week)
   id: '1622708363419'
   description: ''
@@ -125,6 +129,7 @@ automation:
   - platform: state
     entity_id: sensor.audi_e_tron_sportback_55_charging_state
     to: charging
+    for: 00:01:00
   condition: []
   action:
   - service: notify.bart_phone
@@ -135,6 +140,10 @@ automation:
         color: green
         tag: auto_laden
         timeout: 300
+        actions:
+        - action: URI
+          title: meer info
+          uri: /lovelace/e-tron
   - service: notify.madouce_phone
     data:
       message: 🚙 Auto is aan het laden. Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%.
@@ -143,6 +152,10 @@ automation:
         color: green
         tag: auto_laden
         timeout: 300
+        actions:
+        - action: URI
+          title: meer info
+          uri: /lovelace/e-tron
   mode: single
 
 - alias: 🚗 auto gedaan met laden = melding
@@ -161,6 +174,10 @@ automation:
         color: green
         tag: auto_laden
         timeout: 43200
+        actions:
+        - action: URI
+          title: meer info
+          uri: /lovelace/e-tron
   - service: notify.madouce_phone
     data:
       message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%. {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
@@ -168,7 +185,15 @@ automation:
         color: green
         tag: auto_laden
         timeout: 43200
+        actions:
+        - action: URI
+          title: meer info
+          uri: /lovelace/e-tron
   mode: single
+
+#########################
+# Auto op slot
+#########################
 
 - alias: 🚗 Auto 's avonds op slot?
   id: '1523708463420'
@@ -295,3 +320,20 @@ automation:
           title: SLUIT AUTO          
   mode: single
   
+#########################
+# Auto climatisatie
+#########################  
+
+- alias: 🚗 start auto climatisatie op uur bepaald in GUI
+  id: '583aabff-84db-4aac-a7de-023aee0d79f1'
+  trigger:
+  - platform: template
+    value_template: '{{ states(''sensor.time'') == (states.input_datetime.car_climatisation_time.attributes.timestamp
+      | int | timestamp_custom(''%H:%M'', False)) }}'
+  condition:
+  - condition: state
+    entity_id: input_boolean.car_climatisation_timer
+    state: 'on'
+  action:
+   - service: script.auto_start_climatisation
+  mode: restart
