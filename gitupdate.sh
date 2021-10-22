@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /home/bart/.homeassistant/config
+cd /home/bart/homeassistant/config
 
 #you need to configure the next line
 #source /srv/homeassistant/bin/activate

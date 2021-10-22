@@ -46,7 +46,7 @@ automation:
     above: '0'
   condition:
   - condition: state
-    entity_id: binary_sensor.kamer_amilya_raam_sensor
+    entity_id: binary_sensor.kamer_amilya_raam
     state: 'on'
   action:
   - service: notify.bart_phone

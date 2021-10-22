@@ -220,6 +220,15 @@ automation:
           hvac_mode: auto
     - conditions:
       - condition: trigger
+        id: kamer_amilya
+      sequence:
+      - service: climate.set_hvac_mode
+        target:
+          entity_id: climate.kamer_amilya
+        data:
+          hvac_mode: auto
+    - conditions:
+      - condition: trigger
         id: veranda
       sequence:
       - service: climate.set_hvac_mode
