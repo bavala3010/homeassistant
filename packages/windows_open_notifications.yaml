@@ -280,15 +280,15 @@ automation:
   trigger:
   - platform: state
     entity_id: binary_sensor.keuken_raam
- #  from: 'off'
+    from: 'off'
     to: 'on'
   - platform: state
     entity_id: binary_sensor.living_room_oprit_raam
- #  from: 'off'
+    from: 'off'
     to: 'on'
   - platform: state
     entity_id: binary_sensor.living_room_tuin_raam
- #  from: 'off'
+    from: 'off'
     to: 'on'
   - platform: state
     entity_id: input_boolean.living_room_window_pause
@@ -443,11 +443,11 @@ automation:
   trigger:
   - platform: state
     entity_id: binary_sensor.kamer_alunya_raam
- #  from: 'off'
+    from: 'off'
     to: 'on'
   - platform: state
     entity_id: binary_sensor.kamer_alunya_schuifraam
- #  from: 'off'
+    from: 'off'
     to: 'on'
   - platform: state
     entity_id: input_boolean.kamer_alunya_window_pause
