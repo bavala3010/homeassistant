@@ -111,6 +111,22 @@ automation:
       message: Google servers konden niet worden bereikt.
   mode: single
 
+- alias: 🚀 Google servers terug bereikbaar = melding sturen
+  id: '0f7ada67-01bc-4603-8da3-124b26cf1e24'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.google_server
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Internettoegang thuis opnieuw OK.
+      message: Google servers konden opnieuw worden bereikt.
+  mode: single
+
 - alias: 🚀Home Assistant update notification
   id: '3cc10db6-a3e7-4a90-b165-87a606e438cd'
   description: ''
