@@ -1,6 +1,16 @@
+############################ Table of Contents ############################ 
+# 
+#   Automations
+#
+#
+#
+#
+########################################################################### 
+
+
 automation:
-- id: '1628968597336'
-  alias: 🚀 Pi processor temp >72 °C = melding
+- alias: 🚀 Pi processor temp >72 °C = melding
+  id: '64c59baf-e8fb-4fc0-b789-cf74742e57e4'
   description: ''
   trigger:
   - platform: numeric_state
@@ -14,8 +24,9 @@ automation:
       message: temperatuur Raspberry Pi CPU is %{{states('sensor.processor_temperature')}}%
       title: Raspberry PI
   mode: single
-- id: '1629102977277'
-  alias: 🚀 CPU > 60% = melding
+  
+- alias: 🚀 CPU > 60% = melding
+  id: 'db887805-238d-4fe2-8512-e10b918eefe3'
   description: ''
   trigger:
   - platform: numeric_state
@@ -30,8 +41,8 @@ automation:
       title: Raspberry Pi
   mode: single
 
-- id: '1630139381340'
-  alias: 🚀 system shutdown notification
+- alias: 🚀 system shutdown notification-
+  id: 'f15aa89e-f40c-45ad-8c54-dfa8317a98d1'
   description: Send notification on Home Assistant stop
   trigger:
   - platform: homeassistant
@@ -42,8 +53,8 @@ automation:
       message: Home Assistant wordt gestopt.
   mode: single
 
-- id: '1630139968618'
-  alias: 🚀 system restart notification
+- alias: 🚀 system restart notification
+  id: 'c7eacdc5-7bf3-4a6f-a4a4-03fb7e62262c'
   description: Send notification on Home Assistant start
   trigger:
   - platform: homeassistant
@@ -55,8 +66,8 @@ automation:
       message: Home Assistant is volledig gestart.
   mode: single
 
-- id: '1620906941892'
-  alias: 🚀Low battery level detection & notification for all battery sensors
+- alias: 🚀Low battery level detection & notification for all battery sensors
+  id: '9e972067-200b-4b7c-9a33-4a1d79543085'
   description: ''
   use_blueprint:
     path: sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
@@ -70,8 +81,51 @@ automation:
         message: Batterijen laag van {{sensors}}
       day: 6
       time: '12:00:00'
-- id: toiletteller
-  alias: '⏱ toiletteller: beweging = + 1'
+
+- alias: 🚀 Database cleanen
+  id: '9bda21a0-65f4-4c33-8c17-e12f4331522b'
+  description: ''
+  trigger:
+  - platform: time
+    at: 09:00
+  condition: []
+  action:
+  - service: recorder.purge
+    data:
+      keep_days: 30
+  mode: single
+
+- alias: 🚀 Google servers onbereikbaar = melding internetprobleem
+  id: 'ba3fab2f-867f-4e94-a699-9580bacd8f27'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.google_server
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Probleem met internettoegang thuis.
+      message: Google servers konden niet worden bereikt.
+  mode: single
+
+- alias: 🚀Home Assistant update notification
+  id: '3cc10db6-a3e7-4a90-b165-87a606e438cd'
+  description: ''
+  use_blueprint:
+    path: Klumper/update_notification.yaml
+    input:
+      notification_message: Home Assistant {{ newest_version }} is available
+      delay: 0
+      updater: binary_sensor.updater
+      notify_device: b5d28be91fff8c03aece377f73b28dd2
+      is_ios: false
+      notification_title: Upgrade time!
+
+- alias: '⏱ toiletteller: beweging = + 1'
+  id: toiletteller
   description: ''
   trigger:
   - platform: state
@@ -83,8 +137,9 @@ automation:
     target:
       entity_id: counter.toilet_counter
   mode: single
-- id: 'toiletteller: reset om middernacht'
-  alias: '⏱ toiletteller: reset om middernacht'
+
+- alias: '⏱ toiletteller: reset om middernacht'
+  id: 'toiletteller: reset om middernacht'
   description: ''
   trigger:
   - platform: time
@@ -94,62 +149,4 @@ automation:
   - service: counter.reset
     target:
       entity_id: counter.toilet_counter
-  mode: single
-- id: '1623481635053'
-  alias: 🚀Home Assistant update notification
-  description: ''
-  use_blueprint:
-    path: Klumper/update_notification.yaml
-    input:
-      notification_message: Home Assistant {{ newest_version }} is available
-      delay: 0
-      updater: binary_sensor.updater
-      notify_device: b5d28be91fff8c03aece377f73b28dd2
-      is_ios: false
-      notification_title: Upgrade time!
-- id: '1624690710489'
-  alias: 🚀 Database cleanen
-  description: ''
-  trigger:
-  - platform: time
-    at: 09:00
-  condition: []
-  action:
-  - service: recorder.purge
-    data:
-      keep_days: 30
-  mode: single
-- id: '1626947283881'
-  alias: 'fan: slaapkamer >21° = ventilator aan'
-  description: ''
-  trigger:
-  - platform: template
-    value_template: '{{ states(''sensor.master_bedroom_temperature'') | float > 21
-      }}'
-  condition:
-  - condition: time
-    after: '22:30:00'
-    before: '8:00:00'
-  - condition: state
-    entity_id: person.bart
-    state: home
-  action:
-  - service: fan.turn_on
-    target:
-      entity_id: fan.xiaomi_smart_fan_3c
-    data:
-      percentage: 15
-  mode: single
-- id: '1626947798371'
-  alias: 'fan: slaapkamer <21° = ventilator uit'
-  description: ''
-  trigger:
-  - platform: template
-    value_template: '{{ states(''sensor.master_bedroom_temperature'') | float < 21
-      }}'
-  condition: []
-  action:
-  - service: fan.turn_off
-    target:
-      entity_id: fan.xiaomi_smart_fan_3c
   mode: single

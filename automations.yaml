@@ -17,6 +17,7 @@
     entity_id: switch.3504547724a160162a33_4
     domain: switch
   mode: single
+
 - alias: 🏡 Bart is alleen thuis
   id: 02b63f41-9ea3-48eb-97aa-242a618f3400
   description: ''
@@ -36,6 +37,7 @@
       message: TTS
       title: Bart, je bent alleen thuis!
   mode: single
+
 - alias: Master bedroom deurswitch
   id: 92ecb95d-95b8-4708-be7e-9ca5181137ac
   description: ''
@@ -58,6 +60,7 @@
     data:
       brightness_pct: 75
   mode: single
+
 - alias: vocht gram in badkamer >14 gram/m³
   id: 8358a61f-74f1-4045-ba75-563bbca3b4e3
   description: ''
@@ -72,6 +75,7 @@
       message: In badkamer meer dan 14 gram water /m³
       title: Veel vocht in badkamer
   mode: single
+
 - alias: vocht gram in badkamer >15 gram/m³
   id: fab77066-9288-450b-9495-4e7a811ff9be
   description: ''
@@ -86,8 +90,9 @@
       message: In badkamer meer dan 15 gram water /m³
       title: Heel veel vocht in badkamer.
   mode: single
-- id: e66f0240-309e-48ed-83e3-6c6929585303
-  alias: Licht in garage aan > 5 min
+
+- alias: Licht in garage aan > 5 min
+  id: 'c3801d8a-dd6e-444e-9a25-0adc8c0655d8'
   description: ''
   trigger:
   - platform: numeric_state
@@ -105,8 +110,9 @@
       message: Licht in garage brandt al langer dan 5 minuten.
       title: Licht in garage
   mode: single
+
 - alias: master bedroom TV aan 's avonds = gezellig licht
-  id: '1633814031837'
+  id: '62b15358-7447-43f7-9c76-b2d72db61875'
   description: ''
   trigger:
   - platform: state
@@ -129,8 +135,9 @@
     target:
       entity_id: light.staande_lamp
   mode: single
-- id: '1634496434206'
-  alias: 'Amilya: chauffage ''s nachts niet hoger dan 20° C'
+
+- alias: Amilya chauffage 's nachts niet hoger dan 20° C
+  id: 'b5bc7134-9f34-455e-9f89-447ae445cce8'
   description: ''
   trigger:
   - platform: numeric_state
@@ -148,8 +155,9 @@
     data:
       hvac_mode: auto
   mode: single
-- id: '1634570625798'
-  alias: Amilya licht badkamer brandt langer dan 20 minuten
+
+- alias: Amilya licht badkamer brandt langer dan 20 minuten
+  id: 'db73f94a-536a-4d6f-9f5b-ce2757587b20'
   description: ''
   trigger:
   - platform: state

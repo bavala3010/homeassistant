@@ -762,6 +762,11 @@ counter:
     step: 1 
     
 binary_sensor:
+  - platform: ping
+    name: google_server
+    host: 8.8.8.8
+    scan_interval: 5    # scan every 5 minutes
+
   - platform: template
     sensors:
       warm_outside_living:
