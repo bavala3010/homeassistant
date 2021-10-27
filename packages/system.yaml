@@ -109,6 +109,8 @@ automation:
     data:
       title: Probleem met internettoegang thuis.
       message: Google servers konden niet worden bereikt.
+      data:
+        color: red      
   mode: single
 
 - alias: 🚀 Google servers terug bereikbaar = melding sturen
