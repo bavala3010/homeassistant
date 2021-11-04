@@ -4,6 +4,7 @@ default_config:
 # useful links
 # https://pictogrammers.github.io/@mdi/font/5.3.45/
 # https://materialdesignicons.com/
+# https://mdi.bessarabov.com/
 # https://emojidb.org/
 # https://www.zapsplat.com/sound-effect-category/sirens-and-alarms/
 # https://www.uuidgenerator.net/
@@ -34,6 +35,8 @@ google_assistant: !include google_assistant_integration.yaml
 
 frontend:
   themes: !include_dir_merge_named themes
+  extra_module_url:
+    - /hacsfiles/hass-hue-icons/hass-hue-icons.js
 
 homeassistant:
   allowlist_external_dirs:
@@ -177,6 +180,16 @@ utility_meter:
 sensor:
   - platform: version
   # The version sensor platform can display the current Home Assistant versions.
+
+  # sensors to check if there are updates in Ubuntu
+  - platform: command_line
+    name: System Updates
+    scan_interval: 86400
+    command: "cat /local/system_updates.out | cut -d ';' -f 1"
+  - platform: command_line
+    name: Security Updates
+    scan_interval: 86400
+    command: "cat /local/system_updates.out | cut -d ';' -f 2"
   
   - platform: thermal_comfort
     sensors:
@@ -378,17 +391,82 @@ sensor:
         value_template: "{{ (10 * states('sensor.audi_e_tron_sportback_55_primary_engine_range') | float / states('sensor.audi_e_tron_sportback_55_state_of_charge') | float ) | round (1) }}" 
 
 
-# - platform: powercalc
-#   entity_id: light.living
-#   manufacturer: signify
-#   model: LCT003
-# - platform: powercalc
-#   entity_id: light.amilya
-# - platform: powercalc
-#   entity_id: light.badkamer
-# - platform: powercalc
-#   entity_id: light.buiten
+  - platform: powercalc
+    create_group: all living room lights
+    entities:
+      -  entity_id: light.living_links_1
+      -  entity_id: light.living_links_2
+      -  entity_id: light.living_links_3
+      -  entity_id: light.living_links_4
+      -  entity_id: light.living_links_5
+      -  entity_id: light.living_rechts_1  
+      -  entity_id: light.living_rechts_2
+      -  entity_id: light.living_rechts_3
+      -  entity_id: light.living_rechts_4
+      -  entity_id: light.living_rechts_5
+    manufacturer: signify
+    model: LCT003
+    # creates a sensor called sensor.living_power
 
+  - platform: powercalc
+    entity_id: light.living_bol
+    manufacturer: signify
+    model: LCT015
+    # creates a sensor called sensor.living_bol_power
+
+  - platform: powercalc
+    entity_id: light.amilya_badkamer
+    manufacturer: signify
+    model: LST002
+    # creates a sensor called sensor.amilya_badkamer_power
+
+  - platform: powercalc
+    entity_id: light.amilya_bureau
+    manufacturer: signify
+    model: LCT003
+    multiply_factor: 2
+    # creates a sensor called sensor.amilya_bureau_power
+
+  - platform: powercalc
+    entity_id: light.amilya_living_room
+    manufacturer: signify
+    model: LCT003
+    # creates a sensor called sensor.amilya_living_room_power
+
+  - platform: powercalc
+    entity_id: light.gang
+    manufacturer: signify
+    model: LCT003
+    multiply_factor: 3
+    
+  - platform: powercalc
+    entity_id: light.wasbak_rechts
+    manufacturer: signify
+    model: LCT003
+    
+  - platform: powercalc
+    entity_id: light.douche
+    manufacturer: signify
+    model: LCT003
+    
+  - platform: powercalc
+    entity_id: light.bad
+    manufacturer: signify
+    model: LCT003
+
+  - platform: powercalc
+    create_group: master bedroom play bar lights 
+    entities:
+      -  entity_id: light.play_bart
+      -  entity_id: light.play_madouce
+    multiply_factor: 2
+    manufacturer: signify
+    model: LCT024
+    
+  - platform: powercalc
+    entity_id: light.buiten
+    manufacturer: signify
+    model: LTA001     # model 1744630P7 not found
 
   - platform: history_stats
     name: TV_living_on_today

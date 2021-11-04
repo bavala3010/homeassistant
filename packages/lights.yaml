@@ -1,14 +1,15 @@
 ############################ Table of Contents ############################ 
 # 
 #   Automations
-#     Amilya niet thuis = licht uit
-#     Alunya niet thuis = licht uit
-#     bij donker living bol inschakelen
-#     Alunya lichten uit om 1u en 2u 's nachts
-#     Donker, <20° buiten en thuis = licht aan
-#     Master bedroom deurswitch
-#     TV aan + zon onder = TV strip aan
-#     TV uit = TV strip uit
+#     💡 Amilya niet thuis = licht uit
+#     💡 Alunya niet thuis = licht uit
+#     💡 bij donker living bol inschakelen
+#     💡 Alunya lichten uit om 1u en 2u 's nachts
+#     💡 Donker, <20° buiten en thuis = licht aan
+#     💡 Master bedroom deurswitch
+#     💡 Licht in garage aan > 10 min
+#     💡 TV aan + zon onder = TV strip aan
+#     💡 TV uit = TV strip uit
 
 ############################ Automations ################################## 
 
@@ -52,7 +53,7 @@ automation:
     domain: light
   mode: single
 
-- alias: 💡Alunya niet thuis = licht uit
+- alias: 💡 Alunya niet thuis = licht uit
   id: 'b31b70d7-e8c0-4bb8-8a45-335d57d427b8'
   description: ''
   trigger:
@@ -76,14 +77,18 @@ automation:
     domain: light
   mode: single
 
-- id: "Alunya lichten uit om 1u en 2u 's nachts"
-  alias: 💡 Alunya lichten uit om 1u en 2u 's nachts
+- alias: 💡 Alunya lichten uit om 1u, 2u, 3u en 4u 's nachts
+  id: 'ee497cc7-cb83-4a8d-afd9-dedaf4fe56ff'
   description: ''
   trigger:
   - platform: time
     at: 01:00:00
   - platform: time
     at: 02:00:00
+  - platform: time
+    at: 03:00:00
+  - platform: time
+    at: 04:00:00
   condition: []
   action:
   - type: turn_off
@@ -158,6 +163,26 @@ automation:
       - light.staande_lamp
     data:
       brightness_pct: 75
+  mode: single
+
+- alias: 💡 Licht in garage aan > 10 min
+  id: c3801d8a-dd6e-444e-9a25-0adc8c0655d8
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.garage_sensor_light_level
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+    above: '4'
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      message: Licht in garage brandt al langer dan 10 minuten.
+      title: Licht in garage
   mode: single
 
 - alias: 📺 TV aan + zon onder = TV strip aan

@@ -20,7 +20,7 @@ automation:
 # Auto laden
 #########################
 
-- alias: 🚗 batterij laag en niet verbonden (week)
+- alias: 🚗 batterij <60% en niet verbonden (week)
   id: '1622708363419'
   description: ''
   trigger:
@@ -60,7 +60,7 @@ automation:
         tag: auto_laden
   mode: single
 
-- alias: 🚗 batterij laag en niet verbonden (weekend)
+- alias: 🚗 batterij <80% en niet verbonden (weekend)
   id: '1625819980111'
   description: ''
   trigger:
@@ -123,11 +123,12 @@ automation:
   mode: single
 
 - alias: 🚗 auto laadt = melding
-  id: '1626506978554'
+  id: '10f06a54-7eea-4d86-9bf8-2ef07549a4d6'
   description: ''
   trigger:
   - platform: state
     entity_id: sensor.audi_e_tron_sportback_55_charging_state
+    from: off
     to: charging
     for: 00:01:00
   condition: []

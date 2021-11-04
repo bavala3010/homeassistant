@@ -17,7 +17,7 @@
     entity_id: switch.3504547724a160162a33_4
     domain: switch
   mode: single
-
+  
 - alias: 🏡 Bart is alleen thuis
   id: 02b63f41-9ea3-48eb-97aa-242a618f3400
   description: ''
@@ -37,30 +37,7 @@
       message: TTS
       title: Bart, je bent alleen thuis!
   mode: single
-
-- alias: Master bedroom deurswitch
-  id: 92ecb95d-95b8-4708-be7e-9ca5181137ac
-  description: ''
-  trigger:
-  - device_id: 4247e8ef769909d83520323811fc6550
-    domain: hue
-    platform: device
-    type: remote_button_short_release
-    subtype: turn_on
-  condition:
-  - condition: sun
-    after: sunset
-  action:
-  - service: light.turn_on
-    target:
-      entity_id:
-      - light.play_madouce
-      - light.play_bart
-      - light.staande_lamp
-    data:
-      brightness_pct: 75
-  mode: single
-
+  
 - alias: vocht gram in badkamer >14 gram/m³
   id: 8358a61f-74f1-4045-ba75-563bbca3b4e3
   description: ''
@@ -70,49 +47,26 @@
     above: '14'
   condition: []
   action:
-  - service: notify.bart_phone
-    data:
-      message: In badkamer meer dan 14 gram water /m³
-      title: Veel vocht in badkamer
-  mode: single
-
-- alias: vocht gram in badkamer >15 gram/m³
-  id: fab77066-9288-450b-9495-4e7a811ff9be
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.badkamer_thermal_absolutehumidity
-    above: '15'
-  condition: []
-  action:
-  - service: notify.bart_phone
-    data:
-      message: In badkamer meer dan 15 gram water /m³
-      title: Heel veel vocht in badkamer.
-  mode: single
-
-- alias: Licht in garage aan > 5 min
-  id: 'c3801d8a-dd6e-444e-9a25-0adc8c0655d8'
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.garage_sensor_light_level
-    for:
-      hours: 0
-      minutes: 5
-      seconds: 0
-      milliseconds: 0
-    above: '4'
-  condition: []
-  action:
-  - service: notify.bart_phone
-    data:
-      message: Licht in garage brandt al langer dan 5 minuten.
-      title: Licht in garage
+  - repeat:
+      while:
+      - condition: numeric_state
+        entity_id: sensor.badkamer_thermal_absolutehumidity
+        above: '14'
+      sequence:
+      - service: notify.bart_phone
+        data:
+          message: '{{states(''sensor.badkamer_thermal_absolutehumidity'')}} gram
+            water /m³ en {{states(''sensor.badkamer_humidity'')}}% vocht.'
+          title: Veel vocht in badkamer!
+          data:
+            color: blue
+            tag: badkamer_vocht
+      - wait_template: 00:15:00
+        continue_on_timeout: true
   mode: single
 
 - alias: master bedroom TV aan 's avonds = gezellig licht
-  id: '62b15358-7447-43f7-9c76-b2d72db61875'
+  id: 62b15358-7447-43f7-9c76-b2d72db61875
   description: ''
   trigger:
   - platform: state
@@ -137,7 +91,7 @@
   mode: single
 
 - alias: Amilya chauffage 's nachts niet hoger dan 20° C
-  id: 'b5bc7134-9f34-455e-9f89-447ae445cce8'
+  id: b5bc7134-9f34-455e-9f89-447ae445cce8
   description: ''
   trigger:
   - platform: numeric_state
@@ -165,7 +119,7 @@
     to: 'on'
     for:
       hours: 0
-      minutes: 15
+      minutes: 20
       seconds: 0
       milliseconds: 0
   condition: []

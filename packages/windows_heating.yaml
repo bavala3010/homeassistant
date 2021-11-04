@@ -101,6 +101,11 @@ automation:
           entity_id: climate.veranda
         data:
           hvac_mode: 'off'
+      - service: climate.set_hvac_mode
+        target:
+          entity_id: climate.gang
+        data:
+          hvac_mode: 'off'
     - conditions:
       - condition: trigger
         id: berging
@@ -236,6 +241,11 @@ automation:
           entity_id: climate.veranda
         data:
           hvac_mode: auto
+      - service: climate.set_hvac_mode
+        target:
+          entity_id: climate.gang
+        data:
+          hvac_mode: auto          
     - conditions:
       - condition: trigger
         id: berging
@@ -243,6 +253,11 @@ automation:
       - service: climate.set_hvac_mode
         target:
           entity_id: climate.berging
+        data:
+          hvac_mode: auto
+      - service: climate.set_hvac_mode
+        target:
+          entity_id: climate.gang
         data:
           hvac_mode: auto
     - conditions:
