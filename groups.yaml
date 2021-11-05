@@ -97,13 +97,13 @@ all_lights_power:
     - sensor.living_rechts_5_power
     - sensor.living_bol_power
     - sensor.amilya_badkamer_power
-    - sensor.amilya_bureau_power
+  # - sensor.amilya_bureau_power
     - sensor.amilya_living_room_power
     - sensor.gang_power
   # - sensor.wasbak_links_power
-    - sensor.wasbak_rechts_power
-    - sensor.douche_power
-    - sensor.bad_power
+  # - sensor.wasbak_rechts_power
+  # - sensor.douche_power
+  # - sensor.bad_power
     - sensor.master_bedroom_play_bar_lights_power
   # - sensor.buiten_power
     
