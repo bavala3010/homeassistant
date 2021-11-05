@@ -123,6 +123,11 @@ recorder:
       - zone
       - zwave
 
+
+###############################################################################
+# Defines the Xiaomi devices (2 fans + 1 air purifier)
+###############################################################################
+
 fan:
   - platform: xiaomi_miio_fan
     name: Xiaomi Smart Fan 3C
@@ -190,6 +195,10 @@ sensor:
     name: Security Updates
     scan_interval: 86400
     command: "cat /local/system_updates.out | cut -d ';' -f 2"
+
+###############################################################################
+# Calculate the absolute humidity (gram w/m³) in every room and outside  
+###############################################################################
   
   - platform: thermal_comfort
     sensors:
@@ -237,6 +246,11 @@ sensor:
         value_template: "{{ state_attr('fan.xiaomi_air_purifier_3h', 'aqi') }}"
         unit_of_measurement: "μg/m³"
         icon_template: "mdi:weather-fog"
+
+
+###############################################################################
+#  Calc water /m³ in every room and outside
+###############################################################################
 
   - platform: template
   # calculation of absolute humidity based on relative humidity and temperature
@@ -390,6 +404,9 @@ sensor:
         unit_of_measurement: km
         value_template: "{{ (10 * states('sensor.audi_e_tron_sportback_55_primary_engine_range') | float / states('sensor.audi_e_tron_sportback_55_state_of_charge') | float ) | round (1) }}" 
 
+###############################################################################
+# Powercalc measures the power consumption of lights 
+###############################################################################
 
   - platform: powercalc
     create_group: all living room lights
@@ -468,6 +485,11 @@ sensor:
     manufacturer: signify
     model: LTA001     # model 1744630P7 not found
 
+###############################################################################
+# How long the TV has played and lights were on
+# Used to calculate the power consumption
+###############################################################################
+
   - platform: history_stats
     name: TV_living_on_today
     entity_id: media_player.ue55ju7000
@@ -523,6 +545,10 @@ sensor:
     type: time
     start: '{{ now().replace(hour=0, minute=0, second=0) }}'
     end: '{{ now().replace(hour=23, minute=59, second=59) }}'
+
+###############################################################################
+# 
+###############################################################################
 
   - platform: afvalbeheer
     wastecollector: RecycleApp
@@ -594,13 +620,9 @@ sensor:
       - sensor.master_bedroom_temperature
     round_digits: 1
     
-    
-  - platform: average
-    name: 'Gemiddelde temperatuur beneden'
-    entities:
-      - sensor.living_room_temperature
-      - sensor.gang_temperature
-      - sensor.berging_temperature
+###############################################################################
+# Scrape weather info from the local weather station
+###############################################################################
     
   - platform: scrape
     resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
@@ -665,6 +687,22 @@ sensor:
     select: "#precip-graph > div > lib-precipitation-graph-alert > div > h2 > span"
     scan_interval: 1200
 
+###############################################################################
+# Sensor to calculate the consumption of lights, tv etc.
+###############################################################################
+
+  - platform: template
+    sensors:
+      all_lights_power:
+        friendly_name: Alle lichten power
+        unit_of_measurement: W
+        icon_template: mdi:transmission-tower
+        device_class: power
+        value_template: >
+          {{ expand('group.all_lights_power') 
+          | rejectattr('state', 'in', ['unavailable', 'unknown'])
+          | map(attribute='state') | map('float') | sum | round(2) }}
+
   - platform: template
     sensors:  
       living_tv_elec:
@@ -695,7 +733,10 @@ sensor:
           state_class: measurement
           device_class: energy
           icon: mdi:counter
-
+          
+###############################################################################
+# Sensors to measure Raspberry Pi components 
+###############################################################################
   - platform: systemmonitor
     resources:
     - type: processor_use
@@ -714,13 +755,27 @@ sensor:
       arg: eth0
     - type: processor_temperature
     - type: last_boot
-# OPTIONAL CPU Raspberry Pi Temp
+    
+  # OPTIONAL CPU Raspberry Pi Temp
   - platform: command_line
     name: CPU Temp
     command: "cat /sys/class/thermal/thermal_zone0/temp"
     unit_of_measurement: "°C"
     value_template: '{{ value | multiply(0.001) | round(2)  }}'
 
+###############################################################################
+#
+# Integration
+# To make the sum of the power consumption -> to show in the energy dashboard
+###############################################################################
+
+#  - platform: integration
+#    source: sensor.all_lights_power
+#    name: Totaal energieverbruik lichten
+#    unit_prefix: k
+#    unit: kWh
+#    round: 2
+  
   - platform: integration
     source: sensor.ty02820620a4cf12eb80b8_2
     name: droogkast_totaal_verbruik
@@ -733,6 +788,9 @@ sensor:
     unit_prefix: k
     round: 2
 
+###############################################################################
+# Sensor to measure size of the Home Asisstant database 
+###############################################################################
   - platform: filesize
     file_paths:
       - /config/home-assistant_v2.db
@@ -758,6 +816,12 @@ template:
           {% else %}
             Gesloten
           {% endif %}
+
+###############################################################################
+#
+# adaptive lightning
+# This changes the brightness of the lights according to the time of day
+###############################################################################
 
 adaptive_lighting:
 - name: "living room bol adaptive lightning"
@@ -820,6 +884,12 @@ adaptive_lighting:
   detect_non_ha_changes: false
   only_once: false
 
+###############################################################################
+#
+# anniversaries
+# 
+###############################################################################
+
 anniversaries:
   sensors:
   - name: huwelijk Madouce & Bart
@@ -844,6 +914,12 @@ binary_sensor:
     name: google_server
     host: 8.8.8.8
     scan_interval: 5    # scan every 5 minutes
+
+###############################################################################
+#
+# binary sensors: warmer/kouder dan binnen/buiten
+# 
+###############################################################################
 
   - platform: template
     sensors:
@@ -874,7 +950,14 @@ binary_sensor:
 
   - platform: trend
     sensors:
-    
+
+###############################################################################
+#
+# Sensors to detect rising/falling humidity outside and in every room 
+# Used to calculate when to open/close the windows
+#
+###############################################################################
+
       gram_water_outside_rising:
         entity_id: sensor.gram_water_outside
         sample_duration: 4800
@@ -927,21 +1010,25 @@ binary_sensor:
         entity_id: sensor.humidity_leuven24_wunderground
         sample_duration: 3600  # 1 hour
         min_gradient: 0.00027777777
-# 4% increase per hour = 4/(60x60) = 0.00111111111
+        # 4% increase per hour = 4/(60x60) = 0.00111111111
         device_class: moisture
 
       humidity_eikenbos_falling:
         entity_id: sensor.humidity_leuven24_wunderground
         sample_duration: 3600  # 1 hour
         min_gradient: -0.00027777777
-# 4% increase per hour = 4/(60x60) = 0.00111111111
+        # 4% increase per hour = 4/(60x60) = 0.00111111111
         device_class: moisture
 
 # Enables a map showing the location of tracked devices
 map:
 
+###############################################################################
+#
 # Mapping of the phone to a fixed name
 # If you change smartphone, you can easily change the mapping and keep the fixed name in the automations.
+#
+###############################################################################
 
 notify:
   - name: bart_phone
@@ -959,6 +1046,7 @@ notify:
     services:
       - service: mobile_app_sm_a715f
 
+
 timer:
   car_climatisation:
-    icon: mdi:radiator      
+    icon: mdi:radiator

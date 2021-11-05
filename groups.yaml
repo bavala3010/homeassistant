@@ -81,3 +81,30 @@ master_bedroom_ramen:
   entities:
     - binary_sensor.badkamer_raam_kantel
     - binary_sensor.badkamer_raam_wijd
+
+all_lights_power:
+  name: alle lichten power
+  entities:
+    - sensor.living_links_1_power
+    - sensor.living_links_2_power
+    - sensor.living_links_3_power
+    - sensor.living_links_4_power
+    - sensor.living_links_5_power
+    - sensor.living_rechts_1_power
+    - sensor.living_rechts_2_power
+    - sensor.living_rechts_3_power
+    - sensor.living_rechts_4_power
+    - sensor.living_rechts_5_power
+    - sensor.living_bol_power
+    - sensor.amilya_badkamer_power
+    - sensor.amilya_bureau_power
+    - sensor.amilya_living_room_power
+    - sensor.gang_power
+  # - sensor.wasbak_links_power
+    - sensor.wasbak_rechts_power
+    - sensor.douche_power
+    - sensor.bad_power
+    - sensor.master_bedroom_play_bar_lights_power
+  # - sensor.buiten_power
+    
+    

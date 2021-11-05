@@ -12,7 +12,7 @@ automation:
     attribute: aqi
     above: '8'
   - condition: state
-    entity_id: group.group_gezin
+    entity_id: group.gezin
     state: home
   - condition: time
     after: '7:00'
@@ -29,7 +29,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: group.group_gezin
+    entity_id: group.gezin
     to: not_home
     for: 00:05:00
   condition: []
