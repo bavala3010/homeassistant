@@ -36,8 +36,8 @@
       message: TTS
       title: Bart, je bent alleen thuis!
   mode: single
-- alias: vocht gram in badkamer >14 gram/m³
-  id: 8358a61f-74f1-4045-ba75-563bbca3b4e3
+- id: 8358a61f-74f1-4045-ba75-563bbca3b4e3
+  alias: vocht gram in badkamer >14 gram/m³
   description: ''
   trigger:
   - platform: numeric_state
@@ -60,7 +60,7 @@
             color: blue
             tag: badkamer_vocht
       - wait_template: 00:15:00
-        continue_on_timeout: true
+        continue_on_timeout: false
   mode: single
 - alias: master bedroom TV aan 's avonds = gezellig licht
   id: 62b15358-7447-43f7-9c76-b2d72db61875

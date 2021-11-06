@@ -107,4 +107,9 @@ all_lights_power:
     - sensor.master_bedroom_play_bar_lights_power
   # - sensor.buiten_power
     
-    
+
+amilya_plafond:
+  name: Amilya plafond
+  entities:
+    - light.amilya_plafond_1
+    - light.amilya_plafond_2
