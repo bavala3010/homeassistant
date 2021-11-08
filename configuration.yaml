@@ -827,12 +827,19 @@ sensor:
       tv_energy:
         friendly_name: "energieverbruik TV's"
         unit_of_measurement: kWh
-        value_template: "{{ states('sensor.living_tv_elec') | float + states('sensor.master_bedroom_tv_elec') | float + states('sensor.ads_tv_elec') | float }}"
+        value_template: "{{ states('sensor.living_tv_elec') | float + states('sensor.master_bedroom_tv_elec') | float + states('sensor.ads_tv_elec') | float | round(3) }}"
         attribute_templates:
           last_reset: "1970-01-01T00:00:00+00:00"
           state_class: measurement
           device_class: energy
           icon: mdi:counter
+
+  - platform: template
+    sensors:  
+      forecast_temperature_max:
+        unit_of_measurement: C
+        friendly_name: "maximum temperatuur morgen"
+        value_template: "{% set start = (now().replace(hour=0,minute=0,second=0).timestamp() * 1000) | int %} {% set end = start + 86400000 %} {{ state_attr('weather.openweathermap', 'forecast') | selectattr('datetime', '>', start) | selectattr('datetime','<=', end) | map(attribute='temperature') | list | max }}"
           
 ###############################################################################
 # Sensors to measure Raspberry Pi components 
