@@ -36,7 +36,7 @@ automation:
     - service: notify.bart_phone
       data:
         title: Vocht
-        message: "Vocht % in huis is heel hoog: {{states('sensor.avg_inside_humidity')}}."
+        message: "Vocht % in huis is heel hoog: {{states('sensor.avg_inside_humidity')}}%."
   mode: single
   
 - alias: "💧 vocht % master bedroom -> machine aan"

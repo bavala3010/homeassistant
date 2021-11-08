@@ -113,7 +113,6 @@ recorder:
       - automation
       - camera
       - group
-      - media_player
       - updater
       - persistent_notification
       - script
@@ -122,7 +121,7 @@ recorder:
       - weather
       - zone
       - zwave
-
+      # do not exclude mediaplayer, otherwise the daily statistics will not work
 
 ###############################################################################
 # Defines the Xiaomi devices (2 fans + 1 air purifier)
@@ -449,19 +448,9 @@ sensor:
     manufacturer: signify
     model: LCT003
     # creates a sensor called sensor.amilya_living_room_power
-    
-  - platform: powercalc
-    entity_id: light.alunya_bol
-    manufacturer: signify
-    model: LCT015
-    
-  - platform: powercalc
-    entity_id: light.alunya_staande_lamp
-    manufacturer: signify
-    model: LCT007
 
   - platform: powercalc
-    entity_id: light.alunya_wasbak
+    entity_id: light.veranda
     manufacturer: signify
     model: LCT015
 
@@ -487,6 +476,21 @@ sensor:
     model: LCT003
 
   - platform: powercalc
+    entity_id: light.alunya_bol
+    manufacturer: signify
+    model: LCT015
+    
+  - platform: powercalc
+    entity_id: light.alunya_staande_lamp
+    manufacturer: signify
+    model: LCT007
+
+  - platform: powercalc
+    entity_id: light.alunya_wasbak
+    manufacturer: signify
+    model: LCT015
+
+  - platform: powercalc
     create_group: master bedroom play bar lights 
     entities:
       -  entity_id: light.play_bart
@@ -507,7 +511,7 @@ sensor:
 ###############################################################################
 
   - platform: history_stats
-    name: TV_living_on_today
+    name: "Living TV aan vandaag"
     entity_id: media_player.ue55ju7000
     state: 'on'
     type: time
@@ -515,31 +519,31 @@ sensor:
     end: '{{ now() }}'
 
   - platform: history_stats
-    name: ADS_TV_on_today
+    name: "ADS TV aan vandaag"
     entity_id: media_player.ads_tv
-    state: 'playing'
+    state: "playing"
     type: time
     start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
     end: '{{ now() }}'
 
   - platform: history_stats
-    name: master_bedroom_TV_on_today
+    name: "master bedroom TV aan vandaag"
     entity_id: media_player.master_bedroom_tv
-    state: 'playing'
+    state: "playing"
     type: time
     start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
     end: '{{ now() }}'
 
   - platform: history_stats
-    name: veranda_speaker_on_today
+    name: "veranda speaker aan vandaag"
     entity_id: media_player.veranda_speaker
-    state: 'playing'
+    state: "playing"
     type: time
     start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
     end: '{{ now() }}'
     
   - platform: history_stats
-    name: living_light_links_on_today
+    name: "living lichten links aan vandaag"
     entity_id: light.living_links 
     state: 'on'
     type: time
@@ -547,7 +551,7 @@ sensor:
     end: '{{ now() }}'
 
   - platform: history_stats
-    name: living_light_rechts_on_today
+    name: "living lichten rechts aan vandaag"
     entity_id: light.living_rechts 
     state: 'on'
     type: time
@@ -555,7 +559,7 @@ sensor:
     end: '{{ now() }}'
 
   - platform: history_stats
-    name: veranda_light_on_today
+    name: "veranda licht aan vandaag"
     entity_id: light.veranda 
     state: 'on'
     type: time
@@ -563,7 +567,31 @@ sensor:
     end: '{{ now() }}'
 
   - platform: history_stats
-    name: Alunya raam open vandaag
+    name: "Alunya licht bol aan vandaag"
+    entity_id: light.alunya_bol 
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "Alunya licht staande lamp aan vandaag"
+    entity_id: light.alunya_staande_lamp
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "Alunya licht wasbak aan vandaag"
+    entity_id: light.alunya_wasbak
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "Alunya raam open vandaag"
     entity_id: binary_sensor.kamer_alunya_raam 
     state: 'on'
     type: time
@@ -571,7 +599,7 @@ sensor:
     end: '{{ now() }}'
 
   - platform: history_stats
-    name: Amilya raam open vandaag
+    name: "Amilya raam open vandaag"
     entity_id: binary_sensor.kamer_amilya_raam 
     state: 'on'
     type: time
@@ -579,8 +607,32 @@ sensor:
     end: '{{ now() }}'
 
   - platform: history_stats
-    name: master bedroom raam gekanteld vandaag
+    name: "master bedroom raam gekanteld vandaag"
     entity_id: binary_sensor.master_bedroom_raam_kantel 
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "master bedroom raam wijd open vandaag"
+    entity_id: binary_sensor.master_bedroom_raam_wijd 
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "badkamer raam gekanteld vandaag"
+    entity_id: binary_sensor.badkamer_raam_kantel 
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "badkamer raam wijd open vandaag"
+    entity_id: binary_sensor.badkamer_raam_wijd
     state: 'on'
     type: time
     start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
@@ -748,7 +800,7 @@ sensor:
       living_tv_elec:
         unit_of_measurement: kWh
         friendly_name: "elektriciteitsverbruik TV living"
-        value_template: "{{ states('sensor.tv_living_on_today') | float(default=0) * 0.085 | round(3) }}"
+        value_template: "{{ states('sensor.living_tv_aan_vandaag') | float(default=0) * 0.085 | round(3) }}"
    # TV consumes 82 W per hour + Google TV 3 W per hour
    
   - platform: template
@@ -756,9 +808,17 @@ sensor:
       master_bedroom_tv_elec:
         unit_of_measurement: kWh
         friendly_name: "elektriciteitsverbruik TV master bedroom"
-        value_template: "{{ states('sensor.master_bedroom_TV_on_today') | float(default=0) * 0.063 | round(3) }}"
+        value_template: "{{ states('sensor.master_bedroom_tv_aan_vandaag') | float(default=0) * 0.063 | round(3) }}"
    # TV + Google TV consumes 63 W per hour
-   
+
+  - platform: template
+    sensors:  
+      ads_tv_elec:
+        unit_of_measurement: kWh
+        friendly_name: "elektriciteitsverbruik ADS TV"
+        value_template: "{{ states('sensor.ads_tv_aan_vandaag') | float(default=0) * 0.085 | round(3) }}"
+   # TV consumes 82 W per hour + Google Chromecast 3 W per hour
+
 #   Examples    
 #   value_template: '{{ (value| float)}}'
 #   value_template: '{{ (value.rstrip(" °C") | float) }}'
@@ -767,7 +827,7 @@ sensor:
       tv_energy:
         friendly_name: "energieverbruik TV's"
         unit_of_measurement: kWh
-        value_template: "{{ states('sensor.living_tv_elec') | float + states('sensor.master_bedroom_tv_elec') | float}}"
+        value_template: "{{ states('sensor.living_tv_elec') | float + states('sensor.master_bedroom_tv_elec') | float + states('sensor.ads_tv_elec') | float }}"
         attribute_templates:
           last_reset: "1970-01-01T00:00:00+00:00"
           state_class: measurement
@@ -905,7 +965,7 @@ adaptive_lighting:
   only_once: true
 
 - name: "master bedroom staande lamp adaptive lightning"
-  lights: [light.staande_lamp]
+  lights: [light.master_bedroom_staande_lamp]
   prefer_rgb_color: false
   transition: 45
   initial_transition: 1

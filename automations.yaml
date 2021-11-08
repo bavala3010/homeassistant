@@ -17,6 +17,7 @@
     entity_id: switch.3504547724a160162a33_4
     domain: switch
   mode: single
+
 - alias: 🏡 Bart is alleen thuis
   id: 02b63f41-9ea3-48eb-97aa-242a618f3400
   description: ''
@@ -36,8 +37,9 @@
       message: TTS
       title: Bart, je bent alleen thuis!
   mode: single
-- id: 8358a61f-74f1-4045-ba75-563bbca3b4e3
-  alias: vocht gram in badkamer >14 gram/m³
+
+- alias: vocht gram in badkamer >14 gram/m³
+  id: 8358a61f-74f1-4045-ba75-563bbca3b4e3
   description: ''
   trigger:
   - platform: numeric_state
@@ -60,8 +62,8 @@
             color: blue
             tag: badkamer_vocht
       - wait_template: 00:15:00
-        continue_on_timeout: false
   mode: single
+  
 - alias: master bedroom TV aan 's avonds = gezellig licht
   id: 62b15358-7447-43f7-9c76-b2d72db61875
   description: ''
@@ -86,6 +88,7 @@
     target:
       entity_id: light.staande_lamp
   mode: single
+
 - alias: Amilya chauffage 's nachts niet hoger dan 20° C
   id: b5bc7134-9f34-455e-9f89-447ae445cce8
   description: ''
@@ -105,6 +108,7 @@
     data:
       hvac_mode: auto
   mode: single
+  
 - alias: Amilya licht badkamer brandt langer dan 20 minuten
   id: db73f94a-536a-4d6f-9f5b-ce2757587b20
   description: ''
@@ -123,8 +127,9 @@
     target:
       entity_id: light.amilya_badkamer
   mode: single
-- id: '1636143287459'
-  alias: kamer Amilya >21 ° = chauffage op automatisch
+
+- alias: kamer Amilya >21 ° = chauffage op automatisch
+  id: '1636143287459'
   description: ''
   trigger:
   - platform: state
