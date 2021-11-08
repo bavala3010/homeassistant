@@ -495,56 +495,80 @@ sensor:
     entity_id: media_player.ue55ju7000
     state: 'on'
     type: time
-    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
-    end: '{{ now().replace(hour=23, minute=59, second=59) }}'
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
 
   - platform: history_stats
     name: ADS_TV_on_today
     entity_id: media_player.ads_tv
     state: 'playing'
     type: time
-    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
-    end: '{{ now().replace(hour=23, minute=59, second=59) }}'
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
 
   - platform: history_stats
     name: master_bedroom_TV_on_today
     entity_id: media_player.master_bedroom_tv
     state: 'playing'
     type: time
-    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
-    end: '{{ now().replace(hour=23, minute=59, second=59) }}'
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
 
   - platform: history_stats
     name: veranda_speaker_on_today
     entity_id: media_player.veranda_speaker
     state: 'playing'
     type: time
-    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
-    end: '{{ now().replace(hour=23, minute=59, second=59) }}'
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
     
   - platform: history_stats
     name: living_light_links_on_today
     entity_id: light.living_links 
-    state: on
+    state: 'on'
     type: time
-    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
-    end: '{{ now().replace(hour=23, minute=59, second=59) }}'
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
 
   - platform: history_stats
     name: living_light_rechts_on_today
     entity_id: light.living_rechts 
-    state: on
+    state: 'on'
     type: time
-    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
-    end: '{{ now().replace(hour=23, minute=59, second=59) }}'
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
 
   - platform: history_stats
     name: veranda_light_on_today
     entity_id: light.veranda 
-    state: on
+    state: 'on'
     type: time
-    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
-    end: '{{ now().replace(hour=23, minute=59, second=59) }}'
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: kamer_alunya_open_today
+    entity_id: binary_sensor.kamer_alunya_raam 
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: kamer_amilya_open_today
+    entity_id: binary_sensor.kamer_amilya_raam 
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: master_bedroom_raam_kantel_open_today
+    entity_id: binary_sensor.master_bedroom_raam_kantel 
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
 
 ###############################################################################
 # 
@@ -708,7 +732,7 @@ sensor:
       living_tv_elec:
         unit_of_measurement: kWh
         friendly_name: "elektriciteitsverbruik TV living"
-        value_template: "{{ states('sensor.tv_living_on_today') | float * 0.085 | round(3) }}"
+        value_template: "{{ states('sensor.tv_living_on_today') | float(default=0) * 0.085 | round(3) }}"
    # TV consumes 82 W per hour + Google TV 3 W per hour
    
   - platform: template
@@ -716,7 +740,7 @@ sensor:
       master_bedroom_tv_elec:
         unit_of_measurement: kWh
         friendly_name: "elektriciteitsverbruik TV master bedroom"
-        value_template: "{{ states('sensor.master_bedroom_TV_on_today') | float * 0.063 | round(3) }}"
+        value_template: "{{ states('sensor.master_bedroom_TV_on_today') | float(default=0) * 0.063 | round(3) }}"
    # TV + Google TV consumes 63 W per hour
    
 #   Examples    

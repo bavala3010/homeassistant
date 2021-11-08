@@ -32,7 +32,7 @@ automation:
   condition:
   - condition: state
     entity_id: alarm_control_panel.home_alarm
-    state: armed
+    state: armed_away
   action:
   - device_id: !secret id_tel_bart
     domain: mobile_app
@@ -78,7 +78,7 @@ automation:
   condition:
   - condition: state
     entity_id: alarm_control_panel.home_alarm
-    state: armed
+    state: armed_away
   action:
   - service: alarm_control_panel.alarm_disarm
     target:
