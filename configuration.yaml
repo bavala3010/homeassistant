@@ -449,6 +449,21 @@ sensor:
     manufacturer: signify
     model: LCT003
     # creates a sensor called sensor.amilya_living_room_power
+    
+  - platform: powercalc
+    entity_id: light.alunya_bol
+    manufacturer: signify
+    model: LCT015
+    
+  - platform: powercalc
+    entity_id: light.alunya_staande_lamp
+    manufacturer: signify
+    model: LCT007
+
+  - platform: powercalc
+    entity_id: light.alunya_wasbak
+    manufacturer: signify
+    model: LCT015
 
   - platform: powercalc
     entity_id: light.gang
@@ -483,7 +498,8 @@ sensor:
   - platform: powercalc
     entity_id: light.buiten
     manufacturer: signify
-    model: LTA001     # model 1744630P7 not found
+    model: LCT015     # model 1744630P7 not found
+    multiply_factor: 2
 
 ###############################################################################
 # How long the TV has played and lights were on
@@ -547,7 +563,7 @@ sensor:
     end: '{{ now() }}'
 
   - platform: history_stats
-    name: kamer_alunya_open_today
+    name: Alunya raam open vandaag
     entity_id: binary_sensor.kamer_alunya_raam 
     state: 'on'
     type: time
@@ -555,7 +571,7 @@ sensor:
     end: '{{ now() }}'
 
   - platform: history_stats
-    name: kamer_amilya_open_today
+    name: Amilya raam open vandaag
     entity_id: binary_sensor.kamer_amilya_raam 
     state: 'on'
     type: time
@@ -563,7 +579,7 @@ sensor:
     end: '{{ now() }}'
 
   - platform: history_stats
-    name: master_bedroom_raam_kantel_open_today
+    name: master bedroom raam gekanteld vandaag
     entity_id: binary_sensor.master_bedroom_raam_kantel 
     state: 'on'
     type: time
