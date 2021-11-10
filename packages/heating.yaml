@@ -1,3 +1,7 @@
+############################ Table of Contents ############################ 
+# 
+#   Automations
+
 automation:
 
 - alias: Amilya niet thuis = verwarming op automatisch
@@ -31,6 +35,45 @@ automation:
     service: climate.set_hvac_mode
     target:
       entity_id: climate.kamer_alunya
+    data:
+      hvac_mode: auto
+  mode: single
+
+- alias: kamer Amilya >21 ° = chauffage op automatisch
+  id: '1636143287459'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.kamer_amilya_temperature
+    to: '21'
+  condition: []
+  action:
+  - service: climate.set_hvac_mode
+    target:
+      entity_id: climate.kamer_amilya
+    data:
+      hvac_mode: auto
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: Kamer Amilya 21° = nu op automatisch.
+  mode: single
+  
+- alias: kamer Amilya 's nachts niet hoger dan 20° C
+  id: b5bc7134-9f34-455e-9f89-447ae445cce8
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: climate.kamer_amilya
+    attribute: temperature
+    above: '20'
+  condition:
+  - condition: time
+    after: '23:00'
+    before: 06:00
+  action:
+  - service: climate.set_hvac_mode
+    target:
+      entity_id: climate.kamer_amilya
     data:
       hvac_mode: auto
   mode: single

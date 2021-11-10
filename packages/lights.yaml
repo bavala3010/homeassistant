@@ -2,9 +2,10 @@
 # 
 #   Automations
 #     💡 Amilya niet thuis = licht uit
+#     💡 Amilya licht badkamer brandt langer dan 20 minuten
 #     💡 Alunya niet thuis = licht uit
-#     💡 bij donker living bol inschakelen
 #     💡 Alunya lichten uit om 1u en 2u 's nachts
+#     💡 bij donker living bol inschakelen
 #     💡 Donker, <20° buiten en thuis = licht aan
 #     💡 Master bedroom deurswitch
 #     💡 Licht in garage aan > 10 min
@@ -18,7 +19,7 @@ automation:
 # - id: ensuite_turn_on_fan_at_high_humidity
     
 - alias: 💡 Amilya niet thuis = lichten uit
-  id: '9b43bf21-4588-4f12-85fd-9bcdbbbcbb7b'
+  id: 'c5fc-389d-42e8-8f3f-78f'
   description: ''
   trigger:
   - platform: state
@@ -51,6 +52,25 @@ automation:
     device_id: c17c802d6eae726de2531355e36a0d5e
     entity_id: light.amilya_strip
     domain: light
+  mode: single
+  
+- alias: 💡 Amilya licht badkamer brandt langer dan 20 minuten
+  id: db73f94a-536a-4d6f-9f5b-ce2757587b20
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: light.amilya_badkamer
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 20
+      seconds: 0
+      milliseconds: 0
+  condition: []
+  action:
+  - service: light.turn_off
+    target:
+      entity_id: light.amilya_badkamer
   mode: single
 
 - alias: 💡 Alunya niet thuis = licht uit

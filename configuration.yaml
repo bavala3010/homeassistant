@@ -493,8 +493,8 @@ sensor:
   - platform: powercalc
     create_group: master bedroom play bar lights 
     entities:
-      -  entity_id: light.play_bart
-      -  entity_id: light.play_madouce
+      -  entity_id: light.master_bedroom_play_bart
+      -  entity_id: light.master_bedroom_play_madouce
     multiply_factor: 2
     manufacturer: signify
     model: LCT024
@@ -585,6 +585,14 @@ sensor:
   - platform: history_stats
     name: "Alunya licht wasbak aan vandaag"
     entity_id: light.alunya_wasbak
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "keuken raam open vandaag"
+    entity_id: binary_sensor.keuken_raam 
     state: 'on'
     type: time
     start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
@@ -835,12 +843,18 @@ sensor:
           icon: mdi:counter
 
   - platform: template
-    sensors:  
-      forecast_temperature_max:
-        unit_of_measurement: C
-        friendly_name: "maximum temperatuur morgen"
-        value_template: "{% set start = (now().replace(hour=0,minute=0,second=0).timestamp() * 1000) | int %} {% set end = start + 86400000 %} {{ state_attr('weather.openweathermap', 'forecast') | selectattr('datetime', '>', start) | selectattr('datetime','<=', end) | map(attribute='temperature') | list | max }}"
-          
+    sensors:
+      day_max_temp:
+        friendly_name: "max dagtemperatuur"
+        unit_of_measurement: "°C"
+        # entity_id: weather.openweathermap
+        value_template: >
+          {% set start = now().replace(hour=0,minute=0,second=0, microsecond=0) %}
+          {% set end = (start + timedelta(days=1)) %}
+          {% set start = start.strftime("%Y-%m-%dT%H:%M:%S+00:00") %}
+          {% set end = end.strftime("%Y-%m-%dT%H:%M:%S+00:00") %}
+          {{ state_attr('weather.openweathermap', 'forecast') | selectattr('datetime', '>=', start) | selectattr('datetime','<=', end) | map(attribute='temperature') | list | max }}
+
 ###############################################################################
 # Sensors to measure Raspberry Pi components 
 ###############################################################################

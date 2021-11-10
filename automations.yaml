@@ -17,7 +17,6 @@
     entity_id: switch.3504547724a160162a33_4
     domain: switch
   mode: single
-
 - alias: 🏡 Bart is alleen thuis
   id: 02b63f41-9ea3-48eb-97aa-242a618f3400
   description: ''
@@ -37,7 +36,6 @@
       message: TTS
       title: Bart, je bent alleen thuis!
   mode: single
-
 - alias: vocht gram in badkamer >14 gram/m³
   id: 8358a61f-74f1-4045-ba75-563bbca3b4e3
   description: ''
@@ -63,7 +61,6 @@
             tag: badkamer_vocht
       - wait_template: 00:15:00
   mode: single
-  
 - alias: master bedroom TV aan 's avonds = gezellig licht
   id: 62b15358-7447-43f7-9c76-b2d72db61875
   description: ''
@@ -88,61 +85,18 @@
     target:
       entity_id: light.staande_lamp
   mode: single
-
-- alias: Amilya chauffage 's nachts niet hoger dan 20° C
-  id: b5bc7134-9f34-455e-9f89-447ae445cce8
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: climate.kamer_amilya
-    attribute: temperature
-    above: '20'
-  condition:
-  - condition: time
-    after: '23:00'
-    before: 06:00
-  action:
-  - service: climate.set_hvac_mode
-    target:
-      entity_id: climate.kamer_amilya
-    data:
-      hvac_mode: auto
-  mode: single
-  
-- alias: Amilya licht badkamer brandt langer dan 20 minuten
-  id: db73f94a-536a-4d6f-9f5b-ce2757587b20
+- id: '1636484431738'
+  alias: test camera streaming
   description: ''
   trigger:
   - platform: state
-    entity_id: light.amilya_badkamer
+    entity_id: light.living_rechts_1
     to: 'on'
-    for:
-      hours: 0
-      minutes: 20
-      seconds: 0
-      milliseconds: 0
   condition: []
   action:
-  - service: light.turn_off
+  - service: camera.play_stream
     target:
-      entity_id: light.amilya_badkamer
-  mode: single
-
-- alias: kamer Amilya >21 ° = chauffage op automatisch
-  id: '1636143287459'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: sensor.kamer_amilya_temperature
-    to: '21'
-  condition: []
-  action:
-  - service: climate.set_hvac_mode
-    target:
-      entity_id: climate.kamer_amilya
+      entity_id: camera.indoor_camera
     data:
-      hvac_mode: auto
-  - service: notify.mobile_app_bart_s10
-    data:
-      message: Kamer Amilya 21° = nu op automatisch.
+      media_player: media_player.living_speaker
   mode: single

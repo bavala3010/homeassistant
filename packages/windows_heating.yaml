@@ -194,6 +194,15 @@ automation:
       seconds: 0
       milliseconds: 0
   - platform: state
+    entity_id: binary_sensor.badkamer_raam_wijd
+    to: 'off'
+    id: badkamer
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - platform: state
     entity_id: group.kamer_alunya_ramen
     to: 'off'
     id: kamer_alunya
@@ -204,6 +213,15 @@ automation:
       milliseconds: 0
   - platform: state
     entity_id: binary_sensor.master_bedroom_raam_kantel
+    id: master_bedroom
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - platform: state
+    entity_id: binary_sensor.master_bedroom_raam_wijd
     id: master_bedroom
     to: 'off'
     for:
