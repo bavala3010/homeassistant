@@ -46,6 +46,7 @@ homeassistant:
   customize: !include customize.yaml
   
   external_url: http://bartland.duckdns.org
+  time_zone: "Europe/Brussels"
 
 # secrets should not be mentioned in this file; it is automatic !
 # secrets: !include secrets.yaml
@@ -844,7 +845,7 @@ sensor:
 
   - platform: template
     sensors:
-      day_max_temp:
+      day_max_temp_datetime:
         friendly_name: "max dagtemperatuur"
         unit_of_measurement: "°C"
         # entity_id: weather.openweathermap
@@ -853,7 +854,20 @@ sensor:
           {% set end = (start + timedelta(days=1)) %}
           {% set start = start.strftime("%Y-%m-%dT%H:%M:%S+00:00") %}
           {% set end = end.strftime("%Y-%m-%dT%H:%M:%S+00:00") %}
-          {{ state_attr('weather.openweathermap', 'forecast') | selectattr('datetime', '>=', start) | selectattr('datetime','<=', end) | map(attribute='temperature') | list | max }}
+          {% set ns = namespace(min_temp=100, max_temp=-100) %}
+          {% for i in state_attr('weather.openweathermap', 'forecast') -%}
+            {% if start <= i.datetime < end %}
+              {% if i.temperature < ns.min_temp %}
+                {% set ns.min_temp = i.temperature %}
+                {% set ns.min_temp_datetime = i.datetime %}
+              {% endif %}
+              {% if i.temperature > ns.max_temp %}
+                {% set ns.max_temp = i.temperature %}
+                {% set ns.max_temp_datetime = i.datetime %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          {{ as_timestamp(ns.max_temp_datetime)|timestamp_custom('%H:%M') }}
 
 ###############################################################################
 # Sensors to measure Raspberry Pi components 

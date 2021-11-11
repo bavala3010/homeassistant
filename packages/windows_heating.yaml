@@ -4,7 +4,7 @@ automation:
 #
 ###########################################################################
 
-- alias: Raam open = verwarming uit
+- alias: 🪟 Raam open = verwarming uit
   id: '6c852b1f-e1fe-413d-9447-49bc4e9e30ed'
   description: ''
   trigger:
@@ -54,6 +54,15 @@ automation:
       seconds: 30
       milliseconds: 0
   - platform: state
+    entity_id: binary_sensor.badkamer_raam_wijd
+    to: 'on'
+    id: badkamer
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - platform: state
     entity_id: group.kamer_alunya_ramen
     to: 'on'
     id: kamer_alunya
@@ -64,6 +73,15 @@ automation:
       milliseconds: 0
   - platform: state
     entity_id: binary_sensor.master_bedroom_raam_kantel
+    id: master_bedroom
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - platform: state
+    entity_id: binary_sensor.master_bedroom_raam_wijd
     id: master_bedroom
     to: 'on'
     for:
@@ -144,7 +162,7 @@ automation:
           hvac_mode: 'off'
   mode: parallel
 
-- alias: Raam dicht = verwarming automatisch
+- alias: 🪟 Raam dicht = verwarming automatisch
   id: 'bc2f6955-e69a-44fc-a5f4-eb6ef94e036d'
   description: ''
   trigger:

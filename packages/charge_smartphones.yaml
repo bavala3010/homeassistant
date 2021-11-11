@@ -15,42 +15,33 @@ automation:
   id: '0bf72dd5-1543-429f-a9c1-2adc7c2de301'
   description: ''
   trigger:
-  - type: battery_level
-    platform: device
-    device_id: d434bc1199aafa4c5d9e448b1fd55e30
+  - platform: numeric_state
     entity_id: sensor.madouce_s20_batterijniveau
-    domain: sensor
-    above: 90
+    above: '90'
   condition:
   - condition: time
     after: '23:00:00'
     before: 06:00:00
   action:
-  - type: turn_off
-    device_id: 67e877428d1284033bae308054594b87
-    entity_id: switch.3504547724a160162a33_3
-    domain: switch
+  - service: switch.turn_off
+    target:
+      entity_id: switch.smart_power_strip_3
   mode: single
 
 - alias: 🔌S10+ Bart 90% geladen = stekker uit
   id: 'e5696f69-3c20-4419-af56-b79f207a319b'
   description: ''
   trigger:
-  - type: battery_level
-    platform: device
-    device_id: b5d28be91fff8c03aece377f73b28dd2
+  - platform: numeric_state
     entity_id: sensor.sm_g975f_battery_level
-    domain: sensor
-    below: 90
-  condition:
+    above: '90'
   - condition: time
     after: '23:00:00'
     before: 06:00:00
   action:
-  - type: turn_off
-    device_id: 1e52a9c7a4b24f4cf71f9bf521b58d4a
-    entity_id: switch.53703774d8f15ba9d6e4
-    domain: switch
+  - service: switch.turn_off
+    target:
+      entity_id: switch.bart_gsm
   mode: single
 
 - alias: 🔌's morgens Bart S10+ nog bijladen
@@ -60,23 +51,18 @@ automation:
   - platform: time
     at: 06:00:00
   condition:
-  - type: is_battery_level
-    condition: device
-    device_id: b5d28be91fff8c03aece377f73b28dd2
+  - platform: numeric_state
     entity_id: sensor.sm_g975f_battery_level
-    domain: sensor
-    below: 95
+    below: '95'
   action:
-  - type: turn_on
-    device_id: 1e52a9c7a4b24f4cf71f9bf521b58d4a
-    entity_id: switch.53703774d8f15ba9d6e4
-    domain: switch
+  - service: switch.turn_on
+    target:
+      entity_id: switch.bart_gsm
   - wait_template: ''
     timeout: 02:00:00
-  - type: turn_off
-    device_id: 1e52a9c7a4b24f4cf71f9bf521b58d4a
-    entity_id: switch.53703774d8f15ba9d6e4
-    domain: switch
+  - service: switch.turn_off
+    target:
+      entity_id: switch.bart_gsm
   mode: single
 
 - alias: 🔌's morgens Madouce S20+ nog bijladen
@@ -86,23 +72,18 @@ automation:
   - platform: time
     at: 06:00:00
   condition:
-  - type: is_battery_level
-    condition: device
-    device_id: d434bc1199aafa4c5d9e448b1fd55e30
+  - platform: numeric_state
     entity_id: sensor.madouce_s20_batterijniveau
-    domain: sensor
-    below: 90
+    below: '95'
   action:
-  - type: turn_on
-    device_id: 67e877428d1284033bae308054594b87
-    entity_id: switch.3504547724a160162a33_3
-    domain: switch
+  - service: switch.turn_on
+    target:
+      entity_id: switch.smart_power_strip_3
   - wait_template: ''
     timeout: 02:00:00
-  - type: turn_off
-    device_id: 67e877428d1284033bae308054594b87
-    entity_id: switch.3504547724a160162a33_3
-    domain: switch
+  - service: switch.turn_off
+    target:
+      entity_id: switch.smart_power_strip_3
   mode: single
   
 - alias: 🔌Lader terug aanzetten als batterij gsm Madouce laag is (tussen 22:00 en 24:00)
@@ -110,7 +91,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: switch.3504547724a160162a33_3
+    entity_id: switch.smart_power_strip_3
     from: 'on'
     to: 'off'
   condition:
@@ -123,8 +104,7 @@ automation:
       entity_id: sensor.madouce_s20_batterijniveau
       below: '90'
   action:
-  - type: turn_on
-    device_id: 67e877428d1284033bae308054594b87
-    entity_id: switch.3504547724a160162a33_3
-    domain: switch
+  - service: switch.turn_on
+    target:
+      entity_id: switch.smart_power_strip_3
   mode: single

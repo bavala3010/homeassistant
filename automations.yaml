@@ -12,10 +12,9 @@
     entity_id: sensor.buitensensor_deur_temperature
     below: '15'
   action:
-  - type: turn_on
-    device_id: 81260564597a746196ba44e4eea0059e
-    entity_id: switch.3504547724a160162a33_4
-    domain: switch
+  - service: switch.turn_on
+    target:
+      entity_id: switch.smart_power_strip_4
   mode: single
 - alias: 🏡 Bart is alleen thuis
   id: 02b63f41-9ea3-48eb-97aa-242a618f3400
@@ -99,4 +98,38 @@
       entity_id: camera.indoor_camera
     data:
       media_player: media_player.living_speaker
+  mode: single
+- id: '1636624396729'
+  alias: 🪟 raam Alunya openen op warmste moment van dag
+  description: als het raam nog niet geopend geweest is vandaag = melding sturen op
+    warmste moment van de dag
+  trigger:
+  - platform: time
+    at: sensor.day_max_temp_datetime
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.alunya_raam_open_vandaag
+    below: '0.1'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: Raam Alunya is vandaag nog niet geopend.<br>Nu beste moment om te openen.
+      title: Raam Alunya openen.
+  mode: single
+- id: '1636624805111'
+  alias: 🪟 raam keuken openen op warmste moment van dag
+  description: als het raam nog niet geopend geweest is vandaag = melding sturen op
+    warmste moment van de dag
+  trigger:
+  - platform: time
+    at: sensor.day_max_temp_datetime
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.keuken_raam_open_vandaag
+    below: '0.1'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: Keukenraam is vandaag nog niet geopend.<br>Nu beste moment om te openen.
+      title: Keukenraam  openen.
   mode: single
