@@ -15,9 +15,7 @@
 ############################ Automations ################################## 
 
 automation:
-# Switch ON Ensuite fan at high humidity
-# - id: ensuite_turn_on_fan_at_high_humidity
-    
+
 - alias: 💡 Amilya niet thuis = lichten uit
   id: 'c5fc-389d-42e8-8f3f-78f'
   description: ''

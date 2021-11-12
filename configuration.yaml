@@ -846,8 +846,8 @@ sensor:
   - platform: template
     sensors:
       day_max_temp_datetime:
-        friendly_name: "max dagtemperatuur"
-        unit_of_measurement: "°C"
+        friendly_name: "max dagtemperatuur uur"
+        unit_of_measurement: "h"
         # entity_id: weather.openweathermap
         value_template: >
           {% set start = now().replace(hour=0,minute=0,second=0, microsecond=0) %}

@@ -11,8 +11,8 @@
 ############################ Automations ################################## 
 
 automation:
-- alias: 🔌S20+ Madouce 90% geladen = stekker uit
-  id: '0bf72dd5-1543-429f-a9c1-2adc7c2de301'
+- alias: 🔌 S20+ Madouce 90% geladen = stekker uit
+  id: '0103219c-07a8-4e3f-b103-2df77aaa464e'
   description: ''
   trigger:
   - platform: numeric_state
@@ -28,7 +28,7 @@ automation:
       entity_id: switch.smart_power_strip_3
   mode: single
 
-- alias: 🔌S10+ Bart 90% geladen = stekker uit
+- alias: 🔌 S10+ Bart 90% geladen = stekker uit
   id: 'e5696f69-3c20-4419-af56-b79f207a319b'
   description: ''
   trigger:
@@ -44,7 +44,7 @@ automation:
       entity_id: switch.bart_gsm
   mode: single
 
-- alias: 🔌's morgens Bart S10+ nog bijladen
+- alias: 🔌 's morgens Bart S10+ nog bijladen
   id: 'c08edfeb-aa74-43a4-9f31-656346c79a9c'
   description: ''
   trigger:
@@ -65,8 +65,8 @@ automation:
       entity_id: switch.bart_gsm
   mode: single
 
-- alias: 🔌's morgens Madouce S20+ nog bijladen
-  id: '93e260b7-2213-40ee-816f-f50217ff03bd'
+- alias: 🔌 's morgens Madouce S20+ nog bijladen
+  id: '67cc86a4-4fff-4c86-ac81-c5dcacaf1893'
   description: ''
   trigger:
   - platform: time
@@ -86,8 +86,8 @@ automation:
       entity_id: switch.smart_power_strip_3
   mode: single
   
-- alias: 🔌Lader terug aanzetten als batterij gsm Madouce laag is (tussen 22:00 en 24:00)
-  id: 'a2e86fd1-0087-4b85-a260-a20e5435fc49'
+- alias: 🔌 Lader terug aanzetten als batterij gsm Madouce laag is (tussen 22:00 en 24:00)
+  id: 'e216612c-07ac-4974-a227-ebb1e6777049'
   description: ''
   trigger:
   - platform: state

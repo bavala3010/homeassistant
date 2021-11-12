@@ -16,6 +16,19 @@
     target:
       entity_id: switch.smart_power_strip_4
   mode: single
+  
+- alias: 🛌 Madouce matras uit om 00:00   
+  id: 901db0bb-9cab-48cd-a176-c5662b7a4e06
+  description: ''
+  trigger:
+  - platform: time
+    at: '00:00'
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.smart_power_strip_4
+  mode: single
+
 - alias: 🏡 Bart is alleen thuis
   id: 02b63f41-9ea3-48eb-97aa-242a618f3400
   description: ''
@@ -35,6 +48,7 @@
       message: TTS
       title: Bart, je bent alleen thuis!
   mode: single
+
 - alias: vocht gram in badkamer >14 gram/m³
   id: 8358a61f-74f1-4045-ba75-563bbca3b4e3
   description: ''
@@ -83,21 +97,6 @@
   - service: light.turn_off
     target:
       entity_id: light.staande_lamp
-  mode: single
-- id: '1636484431738'
-  alias: test camera streaming
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: light.living_rechts_1
-    to: 'on'
-  condition: []
-  action:
-  - service: camera.play_stream
-    target:
-      entity_id: camera.indoor_camera
-    data:
-      media_player: media_player.living_speaker
   mode: single
 - id: '1636624396729'
   alias: 🪟 raam Alunya openen op warmste moment van dag

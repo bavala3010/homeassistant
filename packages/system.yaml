@@ -66,7 +66,7 @@ automation:
       message: Home Assistant is volledig gestart.
   mode: single
 
-- alias: 🚀Low battery level detection & notification for all battery sensors
+- alias: 🚀 Low battery level detection & notification for all battery sensors
   id: '9e972067-200b-4b7c-9a33-4a1d79543085'
   description: ''
   use_blueprint:
@@ -129,7 +129,7 @@ automation:
       message: Google servers konden opnieuw worden bereikt.
   mode: single
 
-- alias: 🚀Home Assistant update notification
+- alias: 🚀 Home Assistant update notification
   id: '3cc10db6-a3e7-4a90-b165-87a606e438cd'
   description: ''
   use_blueprint:
