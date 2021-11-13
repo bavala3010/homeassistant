@@ -135,3 +135,21 @@ automation:
     target:
       entity_id: lock.voordeur
   mode: single
+
+- alias: Madouce verlaat huis, check mobiel internet
+  id: '7a3032cd-ad92-448b-98e2-d8068a396ea1'
+  description: ''
+  trigger:
+  - platform: zone
+    entity_id: device_tracker.madouce_s20
+    zone: zone.home
+    event: leave
+  condition:
+  - condition: state
+    entity_id: binary_sensor.madouce_s20_mobiele_data
+    state: 'off'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: Mobiele data telefoon Madouce staat niet aan.
+  mode: single

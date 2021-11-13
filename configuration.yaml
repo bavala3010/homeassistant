@@ -839,7 +839,7 @@ sensor:
         value_template: "{{ states('sensor.living_tv_elec') | float + states('sensor.master_bedroom_tv_elec') | float + states('sensor.ads_tv_elec') | float | round(3) }}"
         attribute_templates:
           last_reset: "1970-01-01T00:00:00+00:00"
-          state_class: measurement
+#          state_class: measurement
           device_class: energy
           icon: mdi:counter
 
@@ -919,6 +919,18 @@ sensor:
 
   - platform: integration
     source: sensor.living_tv_elec
+    name: tv_living_totaal_verbruik
+    unit_prefix: k
+    round: 2
+
+  - platform: integration
+    source: sensor.master_bedroom_tv_elec
+    name: tv_living_totaal_verbruik
+    unit_prefix: k
+    round: 2
+
+  - platform: integration
+    source: sensor.ads_tv_elec
     name: tv_living_totaal_verbruik
     unit_prefix: k
     round: 2

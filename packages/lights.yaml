@@ -238,3 +238,28 @@ automation:
     entity_id: light.tv_strip
     domain: light
   mode: single
+  
+- alias: master bedroom TV aan 's avonds = gezellig licht
+  id: 62b15358-7447-43f7-9c76-b2d72db61875
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: media_player.master_bedroom_tv
+    to: playing
+  condition:
+  - condition: time
+    after: '22:00'
+  action:
+  - service: light.turn_on
+    target:
+      entity_id:
+      - light.play_bart
+      - light.play_madouce
+      - light.halve_bol
+    data:
+      color_name: darkorange
+      brightness_pct: 30
+  - service: light.turn_off
+    target:
+      entity_id: light.staande_lamp
+  mode: single

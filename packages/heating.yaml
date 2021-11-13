@@ -43,9 +43,10 @@ automation:
   id: '1636143287459'
   description: ''
   trigger:
-  - platform: state
-    entity_id: sensor.kamer_amilya_temperature
-    to: '21'
+  - platform: numeric_state
+    entity_id: climate.kamer_amilya
+    attribute: temperature
+    above: '21'
   condition: []
   action:
   - service: climate.set_hvac_mode
@@ -55,7 +56,7 @@ automation:
       hvac_mode: auto
   - service: notify.mobile_app_bart_s10
     data:
-      message: Kamer Amilya 21° = nu op automatisch.
+      message: Kamer Amilya > 21° = zet op automatisch.
   mode: single
   
 - alias: kamer Amilya 's nachts niet hoger dan 20° C

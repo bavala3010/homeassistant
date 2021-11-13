@@ -99,3 +99,8 @@
             width: 4em
             height: 4em
             transform: none
+
+lovelace:
+  resources:
+    - url: /hacsfiles/lovelace-battery-entity-row/battery-entity-row.js
+      type: module

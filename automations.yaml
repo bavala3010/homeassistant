@@ -16,13 +16,13 @@
     target:
       entity_id: switch.smart_power_strip_4
   mode: single
-  
-- alias: 🛌 Madouce matras uit om 00:00   
+
+- alias: 🛌 Madouce matras uit om 00:00
   id: 901db0bb-9cab-48cd-a176-c5662b7a4e06
   description: ''
   trigger:
   - platform: time
-    at: '00:00'
+    at: 00:00
   action:
   - service: switch.turn_off
     target:
@@ -49,57 +49,8 @@
       title: Bart, je bent alleen thuis!
   mode: single
 
-- alias: vocht gram in badkamer >14 gram/m³
-  id: 8358a61f-74f1-4045-ba75-563bbca3b4e3
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.badkamer_thermal_absolutehumidity
-    above: '14'
-  condition: []
-  action:
-  - repeat:
-      while:
-      - condition: numeric_state
-        entity_id: sensor.badkamer_thermal_absolutehumidity
-        above: '14'
-      sequence:
-      - service: notify.bart_phone
-        data:
-          message: '{{states(''sensor.badkamer_thermal_absolutehumidity'')}} gram
-            water /m³ en {{states(''sensor.badkamer_humidity'')}}% vocht.'
-          title: Veel vocht in badkamer!
-          data:
-            color: blue
-            tag: badkamer_vocht
-      - wait_template: 00:15:00
-  mode: single
-- alias: master bedroom TV aan 's avonds = gezellig licht
-  id: 62b15358-7447-43f7-9c76-b2d72db61875
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: media_player.master_bedroom_tv
-    to: playing
-  condition:
-  - condition: time
-    after: '22:00'
-  action:
-  - service: light.turn_on
-    target:
-      entity_id:
-      - light.play_bart
-      - light.play_madouce
-      - light.halve_bol
-    data:
-      color_name: darkorange
-      brightness_pct: 30
-  - service: light.turn_off
-    target:
-      entity_id: light.staande_lamp
-  mode: single
-- id: '1636624396729'
-  alias: 🪟 raam Alunya openen op warmste moment van dag
+- alias: 🪟 raam Alunya openen op warmste moment van dag
+  id: 'dd9c7ae2-3ef4-4757-9e16-d8ba27ebade5'
   description: als het raam nog niet geopend geweest is vandaag = melding sturen op
     warmste moment van de dag
   trigger:
@@ -115,8 +66,9 @@
       message: Raam Alunya is vandaag nog niet geopend.<br>Nu beste moment om te openen.
       title: Raam Alunya openen.
   mode: single
-- id: '1636624805111'
-  alias: 🪟 raam keuken openen op warmste moment van dag
+
+- alias: 🪟 raam keuken openen op warmste moment van dag
+  id: '0772d4dd-5fb3-40f2-ada2-a13fc3e3ec29'
   description: als het raam nog niet geopend geweest is vandaag = melding sturen op
     warmste moment van de dag
   trigger:

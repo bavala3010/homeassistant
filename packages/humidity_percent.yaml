@@ -66,3 +66,37 @@ automation:
           uri: /lovelace/humidity
   mode: single
 
+- alias: vocht gram in badkamer >14 gram/m³
+  id: 8358a61f-74f1-4045-ba75-563bbca3b4e3
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.badkamer_thermal_absolutehumidity
+    above: '14'
+  condition: []
+  action:
+  - repeat:
+      while:
+      - condition: numeric_state
+        entity_id: sensor.badkamer_thermal_absolutehumidity
+        above: '14'
+      sequence:
+      - service: notify.bart_phone
+        data:
+          message: '{{states(''sensor.badkamer_thermal_absolutehumidity'')}} gram
+            water /m³ en {{states(''sensor.badkamer_humidity'')}}% vocht.'
+          title: Veel vocht in badkamer!
+          data:
+            color: blue
+            tag: badkamer_vocht
+      - delay:
+          hours: 0
+          minutes: 15
+          seconds: 0
+          milliseconds: 0
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: badkamer_vocht
+  mode: single
