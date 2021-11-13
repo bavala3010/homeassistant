@@ -1,7 +1,7 @@
 automation:
 
 - alias: 💨 Air Quality Index > 8 = purifier on
-  id: '1585984405489'
+  id: '7e3043d1-8299-4121-ad8b-08da26340065'
   description: ''
   trigger:
   - minutes: /5
@@ -25,7 +25,7 @@ automation:
   mode: single
 
 - alias: 💨 not home = Air purifier off
-  id: '1627132017585'
+  id: '0c3adcca-2586-4ee3-a3bc-a78f38f65937'
   description: ''
   trigger:
   - platform: state
@@ -40,7 +40,7 @@ automation:
   mode: single
 
 - alias: 💨 Air Quality Index < 8 = purifier off
-  id: '1628319868217'
+  id: '991a6848-2b77-4573-a2c4-76d603eeb899'
   description: ''
   trigger:
   - minutes: /5
@@ -57,7 +57,7 @@ automation:
   mode: single
 
 - alias: 💨 purifier off @ 23u30
-  id: '1629324307314'
+  id: '1894cdae-230b-4faa-a1cf-209e92df141b'
   description: ''
   trigger:
   - platform: time

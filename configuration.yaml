@@ -110,6 +110,11 @@ recorder:
       - binary_sensor.alunya_a71_interactief
       - binary_sensor.sm_g975f_device_locked
       - binary_sensor.sm_g975f_interactive
+      - binary_sensor.google_server
+      - sensor.sm_g975f_app_memory
+      - sensor.madouce_s20_app_geheugen
+      - sensor.google_wifi_system_aaaaabzipgy_upload_traffic
+      - sensor.google_wifi_system_aaaaabzipgy_download_traffic
     domains:
       - automation
       - camera
@@ -600,6 +605,30 @@ sensor:
     end: '{{ now() }}'
 
   - platform: history_stats
+    name: "Amilya raam open vandaag"
+    entity_id: binary_sensor.kamer_amilya_raam 
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "badkamer raam gekanteld vandaag"
+    entity_id: binary_sensor.badkamer_raam_kantel 
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "badkamer raam wijd open vandaag"
+    entity_id: binary_sensor.badkamer_raam_wijd
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
     name: "Alunya raam open vandaag"
     entity_id: binary_sensor.kamer_alunya_raam 
     state: 'on'
@@ -608,8 +637,8 @@ sensor:
     end: '{{ now() }}'
 
   - platform: history_stats
-    name: "Amilya raam open vandaag"
-    entity_id: binary_sensor.kamer_amilya_raam 
+    name: "Alunya schuifraam open vandaag"
+    entity_id: binary_sensor.kamer_alunya_schuifraam 
     state: 'on'
     type: time
     start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
@@ -631,21 +660,6 @@ sensor:
     start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
     end: '{{ now() }}'
 
-  - platform: history_stats
-    name: "badkamer raam gekanteld vandaag"
-    entity_id: binary_sensor.badkamer_raam_kantel 
-    state: 'on'
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-  - platform: history_stats
-    name: "badkamer raam wijd open vandaag"
-    entity_id: binary_sensor.badkamer_raam_wijd
-    state: 'on'
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
 
 ###############################################################################
 # 

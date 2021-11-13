@@ -21,7 +21,7 @@ automation:
 #########################
 
 - alias: 🚗 batterij <60% en niet verbonden (week)
-  id: '1622708363419'
+  id: '19c7cda6-2abb-4e28-9025-0ea5c4e1caa1'
   description: ''
   trigger:
   - platform: time
@@ -61,7 +61,7 @@ automation:
   mode: single
 
 - alias: 🚗 batterij <80% en niet verbonden (weekend)
-  id: '1625819980111'
+  id: '30ea35b4-3f2a-4702-9df4-323965d8bf70'
   description: ''
   trigger:
   - platform: time
@@ -98,7 +98,7 @@ automation:
   mode: single
 
 - alias: 🚗 autolader is verbonden
-  id: '1626274710956'
+  id: 'cdd4783a-a810-4b0a-b46d-1b1bf58eb80e'
   description: ''
   trigger:
   - platform: state
@@ -160,7 +160,7 @@ automation:
   mode: single
 
 - alias: 🚗 auto gedaan met laden = melding
-  id: '1626508135498'
+  id: '23ebfe4a-e944-49dc-aa3f-e8a1983e8a56'
   description: ''
   trigger:
   - platform: state
@@ -197,7 +197,7 @@ automation:
 #########################
 
 - alias: 🚗 Auto 's avonds op slot?
-  id: '1523708463420'
+  id: 'b35dc129-9a89-4655-b8da-32e7798880c1'
   description: Stuur een bericht als auto om 22u30 nog open is.
   trigger:
   - platform: time
@@ -232,7 +232,7 @@ automation:
   mode: single
 
 - alias: auto sluiten
-  id: '1626251778020'
+  id: 'ead368ce-23d8-4cd2-b63b-ad6cc916bae0'
   trigger:
   - platform: event
     event_type: mobile_app_notification_action
@@ -245,7 +245,7 @@ automation:
   mode: single
 
 - alias: 🚗 auto is op slot (clear_notification)
-  id: '1626270837776'
+  id: 'aef6ff87-883d-40ed-b638-a59c6eb66837'
   description: ''
   trigger:
   - platform: state
