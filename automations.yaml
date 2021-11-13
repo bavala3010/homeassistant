@@ -49,6 +49,39 @@
       title: Bart, je bent alleen thuis!
   mode: single
 
+- alias: RecycleApp notificaties
+  id: '50cbd530-9e44-4283-95f9-24f8ca182701'
+  trigger:
+  - platform: time
+    at: '20:30:00'
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.recycleapp_morgen
+      state: Geen
+  action:
+  - service: notify.bart_phone
+    data:
+      title: '{{title}}'
+      message: '{{message}}'
+  - service: notify.mobile_app_madouce_S20
+    data:
+      title: '{{title}}'
+      message: '{{message}}'
+  variables:
+    title: '{% if state_attr(''sensor.recycleapp_gft'', ''Days-until'') == 1 %} Morgen
+      groene bak  {%elif state_attr(''sensor.recycleapp_restafval'', ''Days-until'')
+      == 1 %}  Morgen bruine zak {%elif state_attr(''sensor.recycleapp_pmd'', ''Days-until'')
+      == 1 %} Morgen blauwe zak {%elif state_attr(''sensor.recycleapp_papier'', ''Days-until'')
+      == 1 %} Morgen oud papier {%endif%} '
+    message: '{% if state_attr(''sensor.recycleapp_gft'', ''Days-until'') == 1 %}
+      Zet de groene bak aan straat. {%elif state_attr(''sensor.recycleapp_restafval'',
+      ''Days-until'') == 1 %} Zet de bruine zak aan straat. {%elif state_attr(''sensor.recycleapp_pmd'',
+      ''Days-until'') == 1 %} Zet de blauwe zak aan straat. {%elif state_attr(''sensor.recycleapp_papier'',
+      ''Days-until'') == 1 %} Zet het oud papier aan straat. {%endif%} '
+  mode: single
+
 - alias: 🪟 raam Alunya openen op warmste moment van dag
   id: 'dd9c7ae2-3ef4-4757-9e16-d8ba27ebade5'
   description: als het raam nog niet geopend geweest is vandaag = melding sturen op

@@ -11,6 +11,7 @@
 #     💡 Licht in garage aan > 10 min
 #     💡 TV aan + zon onder = TV strip aan
 #     💡 TV uit = TV strip uit
+#     💡 master bedroom TV aan 's avonds = gezellig licht
 
 ############################ Automations ################################## 
 
@@ -203,7 +204,7 @@ automation:
       title: Licht in garage
   mode: single
 
-- alias: 📺 TV aan + zon onder = TV strip aan
+- alias: 💡 TV aan + zon onder = TV strip aan
   id: 'decc48cf-f977-42e0-8d54-52cc3fad75d1'
   description: ''
   trigger:
@@ -223,7 +224,7 @@ automation:
     brightness_pct: 25
   mode: single
 
-- alias: 📺 TV uit = TV strip uit
+- alias: 💡 TV uit = TV strip uit
   id: 'dfbb4779-8083-49e3-9b83-b045c4db5d43'
   description: ''
   trigger:
@@ -239,7 +240,7 @@ automation:
     domain: light
   mode: single
   
-- alias: master bedroom TV aan 's avonds = gezellig licht
+- alias: 💡 master bedroom TV aan 's avonds = gezellig licht
   id: 62b15358-7447-43f7-9c76-b2d72db61875
   description: ''
   trigger:

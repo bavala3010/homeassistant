@@ -39,8 +39,8 @@ automation:
       hvac_mode: auto
   mode: single
 
-- alias: kamer Amilya >21 ° = chauffage op automatisch
-  id: '1636143287459'
+- alias: ">21 °C gevraagd in kamer Amilya = chauffage op automatisch"
+  id: '95335e38-c593-48a6-b356-1be5f78db02c'
   description: ''
   trigger:
   - platform: numeric_state
@@ -59,8 +59,8 @@ automation:
       message: Kamer Amilya > 21° = zet op automatisch.
   mode: single
   
-- alias: kamer Amilya 's nachts niet hoger dan 20° C
-  id: b5bc7134-9f34-455e-9f89-447ae445cce8
+- alias: ">20 °C gevraagd in kamer Amilya 's nachts = chauffage op automatisch"
+  id: 'b5bc7134-9f34-455e-9f89-447ae445cce8'
   description: ''
   trigger:
   - platform: numeric_state
