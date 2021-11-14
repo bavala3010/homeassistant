@@ -92,7 +92,7 @@ automation:
   action:
   - service: recorder.purge
     data:
-      keep_days: 7
+      keep_days: 1
   mode: single
 
 - alias: 🚀 Google servers onbereikbaar = melding internetprobleem

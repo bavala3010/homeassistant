@@ -100,3 +100,38 @@ automation:
       data:
         tag: badkamer_vocht
   mode: single
+  
+- alias: 💧 vocht gram in master bedroom >80 %
+  id: 'e1a0cee2-ee78-4e66-a133-9ea28f3a4fb8'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.master_bedroom_humidity
+    above: '80'
+  condition: []
+  action:
+  - repeat:
+      while:
+      - condition: numeric_state
+        entity_id: sensor.master_bedroom_humidity
+        above: '80'
+      sequence:
+      - service: notify.bart_phone
+        data:
+          title: Veel vocht in master bedroom!
+          message: '{{states(''sensor.master_bedroom_thermal_absolutehumidity'')}} gram
+            water /m³ en {{states(''sensor.master_bedroom_humidity'')}}% vocht.'
+          data:
+            color: blue
+            tag: master_bedroom_vocht
+      - delay:
+          hours: 1
+          minutes: 0
+          seconds: 0
+          milliseconds: 0
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: master_bedroom_vocht
+  mode: single
