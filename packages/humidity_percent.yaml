@@ -101,7 +101,7 @@ automation:
         tag: badkamer_vocht
   mode: single
   
-- alias: 💧 vocht gram in master bedroom >80 %
+- alias: 💧 vocht gram in master bedroom >80%
   id: 'e1a0cee2-ee78-4e66-a133-9ea28f3a4fb8'
   description: ''
   trigger:

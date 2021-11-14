@@ -92,7 +92,8 @@ automation:
   action:
   - service: recorder.purge
     data:
-      keep_days: 1
+      keep_days: 7
+      repack: true  # if you do not repack, the database size will not reduce
   mode: single
 
 - alias: 🚀 Google servers onbereikbaar = melding internetprobleem

@@ -94,7 +94,7 @@ http:
 #  api_key: !secret pihole_api_key
            
 recorder:
-  purge_keep_days: 1
+  purge_keep_days: 7
   exclude:
     entities:
       - sensor.cpu
