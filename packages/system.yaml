@@ -1,10 +1,17 @@
 ############################ Table of Contents ############################ 
 # 
 #   Automations
-#
-#
-#
-#
+#   🚀 Pi processor temp >72 °C = melding
+#   🚀 CPU > 60% = melding
+#   🚀 system shutdown notification
+#   🚀 system restart notification
+#   🚀 Low battery level detection & notification for all battery sensors
+#   🚀 Database cleanen
+#   🚀 Google servers onbereikbaar = melding internetprobleem
+#   🚀 Google servers terug bereikbaar = melding sturen
+#   🚀 Home Assistant update notification
+#   ⏱ toiletteller: beweging = + 1'
+#   ⏱ toiletteller: reset om middernacht'
 ########################################################################### 
 
 
@@ -41,7 +48,7 @@ automation:
       title: Raspberry Pi
   mode: single
 
-- alias: 🚀 system shutdown notification-
+- alias: 🚀 system shutdown notification
   id: 'f15aa89e-f40c-45ad-8c54-dfa8317a98d1'
   description: Send notification on Home Assistant stop
   trigger:
