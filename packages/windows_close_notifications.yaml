@@ -435,7 +435,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.badkamer_raam
+    entity_id: binary_sensor.badkamer_raam_kantel
     from: 'on'
     to: 'off'
   - platform: state
