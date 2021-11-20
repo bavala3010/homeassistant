@@ -89,6 +89,7 @@ automation:
           data:
             color: blue
             tag: badkamer_vocht
+            channel: vocht
       - service: notify.madouce_phone
         data:
           message: '{{states(''sensor.badkamer_thermal_absolutehumidity'')}} gram
@@ -97,6 +98,7 @@ automation:
           data:
             color: blue
             tag: badkamer_vocht
+            channel: vocht
       - delay:
           hours: 1
   - service: notify.bart_phone
@@ -134,6 +136,7 @@ automation:
           data:
             color: blue
             tag: master_bedroom_vocht
+            channel: vocht
       - service: notify.madouce_phone
         data:
           title: Veel vocht in master bedroom!
@@ -142,6 +145,7 @@ automation:
           data:
             color: blue
             tag: master_bedroom_vocht
+            channel: vocht
       - delay:
           hours: 1
   - service: notify.bart_phone
