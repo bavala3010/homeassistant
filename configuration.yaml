@@ -895,9 +895,9 @@ sensor:
     resources:
     - type: processor_use
     - type: disk_use_percent
-      arg: "/"
+      arg: /
     - type: disk_free
-      arg: "/"
+      arg: /
     - type: memory_use_percent
     - type: network_in
       arg: eth0
@@ -1081,6 +1081,14 @@ binary_sensor:
     host: 8.8.8.8
     scan_interval: 5    # scan every 5 minutes
 
+  - platform: template
+    sensors:
+      garagepoort_invert:
+        value_template: >-
+           {{ is_state('cover.garagepoort_door', 'off') }}
+        friendly_name: garagepoort_corrected
+        device_class: garage_door
+
 ###############################################################################
 #
 # binary sensors: warmer/kouder dan binnen/buiten
@@ -1216,3 +1224,4 @@ notify:
 timer:
   car_climatisation:
     icon: mdi:radiator
+    

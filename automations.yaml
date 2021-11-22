@@ -16,7 +16,6 @@
     target:
       entity_id: switch.smart_power_strip_4
   mode: single
-
 - alias: 🛌 Madouce matras uit om 00:00
   id: 901db0bb-9cab-48cd-a176-c5662b7a4e06
   description: ''
@@ -28,7 +27,6 @@
     target:
       entity_id: switch.smart_power_strip_4
   mode: single
-
 - alias: 🏡 Bart is alleen thuis
   id: 02b63f41-9ea3-48eb-97aa-242a618f3400
   description: ''
@@ -48,9 +46,8 @@
       message: TTS
       title: Bart, je bent alleen thuis!
   mode: single
-
 - alias: RecycleApp notificaties
-  id: '50cbd530-9e44-4283-95f9-24f8ca182701'
+  id: 50cbd530-9e44-4283-95f9-24f8ca182701
   trigger:
   - platform: time
     at: '20:30:00'
@@ -81,9 +78,8 @@
       ''Days-until'') == 1 %} Zet de blauwe zak aan straat. {%elif state_attr(''sensor.recycleapp_papier'',
       ''Days-until'') == 1 %} Zet het oud papier aan straat. {%endif%} '
   mode: single
-
 - alias: 🪟 raam Alunya openen op warmste moment van dag
-  id: 'dd9c7ae2-3ef4-4757-9e16-d8ba27ebade5'
+  id: dd9c7ae2-3ef4-4757-9e16-d8ba27ebade5
   description: als het raam nog niet geopend geweest is vandaag = melding sturen op
     warmste moment van de dag
   trigger:
@@ -99,9 +95,8 @@
       message: Raam Alunya is vandaag nog niet geopend.<br>Nu beste moment om te openen.
       title: Raam Alunya openen.
   mode: single
-
 - alias: 🪟 raam keuken openen op warmste moment van dag
-  id: '0772d4dd-5fb3-40f2-ada2-a13fc3e3ec29'
+  id: 0772d4dd-5fb3-40f2-ada2-a13fc3e3ec29
   description: als het raam nog niet geopend geweest is vandaag = melding sturen op
     warmste moment van de dag
   trigger:
@@ -116,4 +111,16 @@
     data:
       message: Keukenraam is vandaag nog niet geopend.<br>Nu beste moment om te openen.
       title: Keukenraam  openen.
+  mode: single
+- id: '1637583613403'
+  alias: update de "max_dagtemperatuur_uur" sensor
+  description: ''
+  trigger:
+  - platform: time_pattern
+    hours: /4
+  condition: []
+  action:
+  - service: homeassistant.update_entity
+    target:
+      entity_id: sensor.day_max_temp_datetime
   mode: single
