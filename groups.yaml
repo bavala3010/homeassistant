@@ -113,3 +113,15 @@ amilya_plafond:
   entities:
     - light.amilya_plafond_1
     - light.amilya_plafond_2
+    
+master_bedroom_lights:
+  name: master bedroom lights
+    - light.master_bedroom_play_bart
+    - light.master_bedroom_play_madouce
+    - light.master_bedroom_staande_lamp
+    
+gang_lights:
+  name: gang lights
+    - light.gang_spot_voor
+    - light.gang_spot_midden
+    - light.gang_spot_achter

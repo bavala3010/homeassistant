@@ -68,3 +68,103 @@ automation:
     target:
       entity_id: fan.xiaomi_air_purifier_3h
   mode: single
+
+- alias: Om 6 uur bepaal max dagtemperatuur uur
+  id: 'ed9969de-ed32-4d1d-94ed-48e3622c94b4'
+  description: ''
+  trigger:
+  - platform: time
+    at: 06:00
+  condition: []
+  action:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.max_dagtemperatuur_uur
+    data:
+      time:
+        sensor.day_max_temp_datetime:
+  mode: single
+  
+- alias: max temperatuur van de dag bereikt = melding
+  id: '91ed3a1c-ce13-47db-a612-4dc6d912fb89'
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.max_dagtemperatuur_uur
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Nu is het warmste deel van de dag.
+      message: Nu is het warmste deel van de dag.
+  mode: single
+
+- alias: raam Alunya openen op warmste moment van de dag
+  id: 'f2d84987-861d-460a-9ff0-79535903143a'
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.max_dagtemperatuur_uur
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.alunya_raam_open_vandaag
+      below: '0.1'
+    - condition: numeric_state
+      entity_id: sensor.kamer_alunya_heating
+      below: '0.1'     
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Zet raam Alunya nu even open. Beste moment van de dag.
+      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.<br>Raam is vandaag nog niet open geweest."
+  - service: notify.madouce_phone
+    data:
+      title: Zet raam Alunya nu even open. Beste moment van de dag.
+      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.<br>Raam is vandaag nog niet open geweest."
+  mode: single
+
+- alias: raam Amilya openen op warmste moment van de dag
+  id: '63cf0cbd-bc53-422d-9095-90cffa3eea3e'
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.max_dagtemperatuur_uur
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.amilya_raam_open_vandaag
+      below: '0.1'
+    - condition: numeric_state
+      entity_id: sensor.kamer_amilya_heating
+      below: '0.1'
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Zet raam Amilya nu even open. Beste moment van de dag.
+      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.<br>Raam is vandaag nog niet open geweest."
+  - service: notify.madouce_phone
+    data:
+      title: Zet raam Amilya nu even open. Beste moment van de dag.
+      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.<br>Raam is vandaag nog niet open geweest."
+  mode: single
+
+- alias: 🪟 raam keuken openen op warmste moment van dag
+  id: aaa23215-35b5-4159-a036-0c6ee66e0646
+  description: als het raam nog niet geopend geweest is vandaag = melding sturen op warmste moment van de dag
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.max_dagtemperatuur_uur
+  condition:
+    - condition: state
+      entity_id: sensor.keuken_raam_open_vandaag
+      state: O
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Zet keukenraam nu even open. Beste moment van de dag.
+      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.<br>Raam is vandaag nog niet open geweest."
+  - service: notify.madouce_phone
+    data:
+      title: Zet keukenraam nu even open. Beste moment van de dag.
+      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.<br>Raam is vandaag nog niet open geweest."
+  mode: single

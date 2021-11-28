@@ -78,87 +78,27 @@
       ''Days-until'') == 1 %} Zet de blauwe zak aan straat. {%elif state_attr(''sensor.recycleapp_papier'',
       ''Days-until'') == 1 %} Zet het oud papier aan straat. {%endif%} '
   mode: single
-- alias: 🪟 raam Alunya openen op warmste moment van dag
-  id: dd9c7ae2-3ef4-4757-9e16-d8ba27ebade5
-  description: als het raam nog niet geopend geweest is vandaag = melding sturen op
-    warmste moment van de dag
+- id: '1638105991193'
+  description: ''
   trigger:
   - platform: time
-    at: sensor.day_max_temp_datetime
+    at: input_datetime.max_dagtemperatuur_uur
   condition:
-  - condition: numeric_state
+  - condition: state
     entity_id: sensor.alunya_raam_open_vandaag
-    below: '0.1'
+    state: '0'
+  - condition: state
+    entity_id: sensor.kamer_alunya_heating
+    state: '0'
   action:
   - service: notify.bart_phone
     data:
-      message: Raam Alunya is vandaag nog niet geopend.<br>Nu beste moment om te openen.
-      title: Raam Alunya openen.
-  mode: single
-- alias: 🪟 raam keuken openen op warmste moment van dag
-  id: 0772d4dd-5fb3-40f2-ada2-a13fc3e3ec29
-  description: als het raam nog niet geopend geweest is vandaag = melding sturen op
-    warmste moment van de dag
-  trigger:
-  - platform: time
-    at: sensor.day_max_temp_datetime
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.keuken_raam_open_vandaag
-    below: '0.1'
-  action:
-  - service: notify.bart_phone
+      title: Zet raam Alunya nu even open. Beste moment van de dag.
+      message: 'Temp buiten: {{states(''sensor.temp_leuven24_wunderground'')}} °C.<br>Raam
+        is vandaag nog niet open geweest.'
+  - service: notify.madouce_phone
     data:
-      message: Keukenraam is vandaag nog niet geopend.<br>Nu beste moment om te openen.
-      title: Keukenraam  openen.
-  mode: single
-- id: '1637787469777'
-  alias: Om 6 uur bepaal max dagtemperatuur uur
-  description: ''
-  trigger:
-  - platform: time
-    at: 06:00
-  condition: []
-  action:
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.max_dagtemperatuur_uur
-    data:
-      time:
-        sensor.day_max_temp_datetime:
-  mode: single
-- id: '1637788319424'
-  alias: max temperatuur van de dag bereikt = melding
-  description: ''
-  trigger:
-  - platform: time
-    at: input_datetime.max_dagtemperatuur_uur
-  condition: []
-  action:
-  - service: notify.bart_phone
-    data:
-      title: Nu is het warmste deel van de dag.
-      message: Nu is het warmste deel van de dag.
-  mode: single
-- id: '1637961959949'
-  alias: max temperatuur van de dag bereikt = check of ramen hebben opengestaan voor
-    verluchting
-  description: ''
-  trigger:
-  - platform: time
-    at: input_datetime.max_dagtemperatuur_uur
-  condition:
-  - condition: or
-    conditions:
-    - condition: state
-      entity_id: sensor.alunya_raam_open_vandaag
-      state: O
-    - condition: state
-      entity_id: sensor.amilya_raam_open_vandaag
-      state: '0'
-  action:
-  - service: notify.bart_phone
-    data:
-      title: Goed moment om even raam te openen voor verluchting.
-      message: Raam is vandaag nog niet open geweest.
+      title: Zet raam Alunya nu even open. Beste moment van de dag.
+      message: 'Temp buiten: {{states(''sensor.temp_leuven24_wunderground'')}} °C.<br>Raam
+        is vandaag nog niet open geweest.'
   mode: single
