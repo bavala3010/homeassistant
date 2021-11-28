@@ -112,15 +112,53 @@
       message: Keukenraam is vandaag nog niet geopend.<br>Nu beste moment om te openen.
       title: Keukenraam  openen.
   mode: single
-- id: '1637583613403'
-  alias: update de "max_dagtemperatuur_uur" sensor
+- id: '1637787469777'
+  alias: Om 6 uur bepaal max dagtemperatuur uur
   description: ''
   trigger:
-  - platform: time_pattern
-    hours: /4
+  - platform: time
+    at: 06:00
   condition: []
   action:
-  - service: homeassistant.update_entity
+  - service: input_datetime.set_datetime
     target:
-      entity_id: sensor.day_max_temp_datetime
+      entity_id: input_datetime.max_dagtemperatuur_uur
+    data:
+      time:
+        sensor.day_max_temp_datetime:
+  mode: single
+- id: '1637788319424'
+  alias: max temperatuur van de dag bereikt = melding
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.max_dagtemperatuur_uur
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Nu is het warmste deel van de dag.
+      message: Nu is het warmste deel van de dag.
+  mode: single
+- id: '1637961959949'
+  alias: max temperatuur van de dag bereikt = check of ramen hebben opengestaan voor
+    verluchting
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.max_dagtemperatuur_uur
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: sensor.alunya_raam_open_vandaag
+      state: O
+    - condition: state
+      entity_id: sensor.amilya_raam_open_vandaag
+      state: '0'
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Goed moment om even raam te openen voor verluchting.
+      message: Raam is vandaag nog niet open geweest.
   mode: single

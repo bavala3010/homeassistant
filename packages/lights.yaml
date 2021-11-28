@@ -198,10 +198,31 @@ automation:
     above: '4'
   condition: []
   action:
+  - repeat:
+      while:
+      - condition: numeric_state
+        entity_id: sensor.garage_sensor_light_level
+        above: '4'
+      sequence:
+      - service: notify.bart_phone
+        data:
+          message: Licht in garage brandt al langer dan 10 minuten.
+          title: Licht in garage
+          data:
+            color: blue
+            tag: garage_licht
+      - delay:
+          minutes: 5
   - service: notify.bart_phone
     data:
-      message: Licht in garage brandt al langer dan 10 minuten.
-      title: Licht in garage
+      message: "clear_notification"
+      data:
+        tag: garage_licht
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: garage_licht
   mode: single
 
 - alias: 💡 TV aan + zon onder = TV strip aan

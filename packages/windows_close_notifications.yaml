@@ -119,14 +119,14 @@ automation:
   action:
   - service: script.notify_bart_windows
     data_template:
-      message: "Vocht veranda: {{states('sensor.gram_water_veranda')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp veranda: {{states('sensor.veranda_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      message: "Vocht veranda: {{states('sensor.gram_water_veranda')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Vocht veranda: {{states('sensor.veranda_humidity')}} %. Buiten: {{states('sensor.humidity_leuven24_wunderground')}} %.<br>Temp veranda: {{states('sensor.veranda_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: "Sluit het raam van de veranda!"
       tag: "window_veranda"
       action_window_pause: "veranda_window_pause"
       reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 16 %} Te koud buiten. {% endif %}"
   - service: script.notify_madouce_windows
     data_template:
-      message: "Vocht veranda: {{states('sensor.gram_water_veranda')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp veranda: {{states('sensor.veranda_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      message: "Vocht veranda: {{states('sensor.gram_water_veranda')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Vocht veranda: {{states('sensor.veranda_humidity')}} %. Buiten: {{states('sensor.humidity_leuven24_wunderground')}} %.<br>Temp veranda: {{states('sensor.veranda_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: "Sluit het raam van de veranda!"
       tag: "window_veranda"
       action_window_pause: "veranda_window_pause"
