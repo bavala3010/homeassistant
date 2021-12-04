@@ -16,6 +16,7 @@
     target:
       entity_id: switch.smart_power_strip_4
   mode: single
+  
 - alias: 🛌 Madouce matras uit om 00:00
   id: 901db0bb-9cab-48cd-a176-c5662b7a4e06
   description: ''
@@ -27,6 +28,7 @@
     target:
       entity_id: switch.smart_power_strip_4
   mode: single
+  
 - alias: 🏡 Bart is alleen thuis
   id: 02b63f41-9ea3-48eb-97aa-242a618f3400
   description: ''
@@ -46,6 +48,7 @@
       message: TTS
       title: Bart, je bent alleen thuis!
   mode: single
+
 - alias: RecycleApp notificaties
   id: 50cbd530-9e44-4283-95f9-24f8ca182701
   trigger:
@@ -77,28 +80,4 @@
       ''Days-until'') == 1 %} Zet de bruine zak aan straat. {%elif state_attr(''sensor.recycleapp_pmd'',
       ''Days-until'') == 1 %} Zet de blauwe zak aan straat. {%elif state_attr(''sensor.recycleapp_papier'',
       ''Days-until'') == 1 %} Zet het oud papier aan straat. {%endif%} '
-  mode: single
-- id: '1638105991193'
-  description: ''
-  trigger:
-  - platform: time
-    at: input_datetime.max_dagtemperatuur_uur
-  condition:
-  - condition: state
-    entity_id: sensor.alunya_raam_open_vandaag
-    state: '0'
-  - condition: state
-    entity_id: sensor.kamer_alunya_heating
-    state: '0'
-  action:
-  - service: notify.bart_phone
-    data:
-      title: Zet raam Alunya nu even open. Beste moment van de dag.
-      message: 'Temp buiten: {{states(''sensor.temp_leuven24_wunderground'')}} °C.<br>Raam
-        is vandaag nog niet open geweest.'
-  - service: notify.madouce_phone
-    data:
-      title: Zet raam Alunya nu even open. Beste moment van de dag.
-      message: 'Temp buiten: {{states(''sensor.temp_leuven24_wunderground'')}} °C.<br>Raam
-        is vandaag nog niet open geweest.'
   mode: single

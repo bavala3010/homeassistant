@@ -99,7 +99,7 @@ automation:
       message: Nu is het warmste deel van de dag.
   mode: single
 
-- alias: raam Alunya openen op warmste moment van de dag
+- alias: 🪟 raam Alunya openen op warmste moment van de dag
   id: 'f2d84987-861d-460a-9ff0-79535903143a'
   description: ''
   trigger:
@@ -123,7 +123,7 @@ automation:
       message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.<br>Raam is vandaag nog niet open geweest."
   mode: single
 
-- alias: raam Amilya openen op warmste moment van de dag
+- alias: 🪟 raam Amilya openen op warmste moment van de dag
   id: '63cf0cbd-bc53-422d-9095-90cffa3eea3e'
   description: ''
   trigger:
