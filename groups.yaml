@@ -1,3 +1,7 @@
+#######################################################################
+# personen
+#######################################################################
+
 gezin:
   name: gezin
   entities:
@@ -22,6 +26,10 @@ kinderen:
   entities:
     - device_tracker.amilya_iphone_xs
     - device_tracker.alunya_samsung_galaxy_a71
+    
+#######################################################################
+# speaker groups
+#######################################################################
 
 living_veranda_speakers:
   name: speaker_living_veranda
@@ -30,7 +38,6 @@ living_veranda_speakers:
     - media_player.veranda_speaker
 # you can now use group.group_living_veranda_speakers in automations and scripts
     
-
 living_masterbedroom_speakers:
   name: speaker_living_veranda
   entities:
@@ -39,6 +46,10 @@ living_masterbedroom_speakers:
 # you can now use group.group_living_masterbedroom_speakers in automations and scripts
 # but the 2 speakers will not play synchroniously
 # better make a speaker group in the Google Home app: eg: media_player.groep_living_veranda 
+
+#######################################################################
+# sensoren
+#######################################################################
 
 alle_raam_sensoren:
   name: groep_alle_raam_sensoren
@@ -81,6 +92,10 @@ master_bedroom_ramen:
   entities:
     - binary_sensor.badkamer_raam_kantel
     - binary_sensor.badkamer_raam_wijd
+
+#######################################################################
+# lichten
+#######################################################################
 
 all_lights_power:
   name: alle lichten power
@@ -125,3 +140,11 @@ gang_lights:
     - light.gang_spot_voor
     - light.gang_spot_midden
     - light.gang_spot_achter
+    
+#######################################################################
+# plugs
+#######################################################################
+kerstlichten:
+  name: kerstverlichting buiten
+    - switch.plug_1
+    - switch.plug_2

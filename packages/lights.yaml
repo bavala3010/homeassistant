@@ -184,7 +184,7 @@ automation:
       brightness_pct: 75
   mode: single
 
-- alias: 💡 Licht in garage aan > 10 min
+- alias: 'licht in garage'
   id: c3801d8a-dd6e-444e-9a25-0adc8c0655d8
   description: ''
   trigger:
@@ -206,7 +206,7 @@ automation:
       sequence:
       - service: notify.bart_phone
         data:
-          message: Licht in garage brandt al langer dan 10 minuten.
+          message: "Licht in garage brandt al {{ as_timestamp(now()) - as_timestamp(state_attr('automation.licht_in_garage'),'last_triggered') | int }} minuten."
           title: Licht in garage
           data:
             color: blue

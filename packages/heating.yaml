@@ -56,7 +56,7 @@ automation:
       hvac_mode: auto
   - service: notify.mobile_app_bart_s10
     data:
-      message: Kamer Amilya > 21° = zet op automatisch.
+      message: Kamer Amilya op meer dan 21° gezet = herzet naar automatisch.
   mode: single
   
 - alias: ">20 °C gevraagd in kamer Amilya 's nachts = chauffage op automatisch"
@@ -77,4 +77,7 @@ automation:
       entity_id: climate.kamer_amilya
     data:
       hvac_mode: auto
+  - service: notify.mobile_app_bart_s10
+    data:
+      message: Kamer Amilya op meer dan 20° 's nachts gezet = herzet naar automatisch.      
   mode: single

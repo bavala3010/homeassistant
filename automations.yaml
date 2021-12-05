@@ -23,12 +23,32 @@
   trigger:
   - platform: time
     at: 00:00
+  - platform: time
+    at: 01:00
+  - platform: time
+    at: 02:00
+  - platform: time
+    at: 03:00
+  - platform: time
+    at: 04:00
+  - platform: time
+    at: 05:00
+  - platform: time
+    at: 06:00
+  - platform: time
+    at: 07:00
+  - platform: time
+    at: 08:00
+  - platform: time
+    at: 09:00
+  - platform: time
+    at: 10:00
   action:
   - service: switch.turn_off
     target:
       entity_id: switch.smart_power_strip_4
   mode: single
-  
+
 - alias: 🏡 Bart is alleen thuis
   id: 02b63f41-9ea3-48eb-97aa-242a618f3400
   description: ''
@@ -65,10 +85,20 @@
     data:
       title: '{{title}}'
       message: '{{message}}'
-  - service: notify.mobile_app_madouce_S20
+      data:
+        tag: recycle
+        actions:
+          - action: recycle_done 
+            title: zak/bak staat buiten
+  - service: notify.madouce_phone
     data:
       title: '{{title}}'
       message: '{{message}}'
+      data:
+        tag: recycle
+        actions:
+          - action: recycle_done 
+            title: zak/bak staat buiten
   variables:
     title: '{% if state_attr(''sensor.recycleapp_gft'', ''Days-until'') == 1 %} Morgen
       groene bak  {%elif state_attr(''sensor.recycleapp_restafval'', ''Days-until'')
@@ -80,4 +110,68 @@
       ''Days-until'') == 1 %} Zet de bruine zak aan straat. {%elif state_attr(''sensor.recycleapp_pmd'',
       ''Days-until'') == 1 %} Zet de blauwe zak aan straat. {%elif state_attr(''sensor.recycleapp_papier'',
       ''Days-until'') == 1 %} Zet het oud papier aan straat. {%endif%} '
+  mode: single
+  
+- alias: "recycle_done"
+  id: '761e33f9-8fad-4537-8bf3-361aba8f5638'
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: recycle_done
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: recycle
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: recycle
+
+- alias: '🎄 Kerstlichten buiten: string 1&2 aan bij donker'
+  id: '9ea35193-b3b5-4315-a207-d6578af21180'
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: '0'
+  condition: []
+  action:
+  - type: turn_on
+    device_id: 5eb1b86deea1ee98ff854ddf66b7d74e
+    entity_id: switch.plug_1
+    domain: switch
+  - type: turn_on
+    device_id: 1288c9559a847c5a18e6f2ba2be073a7
+    entity_id: switch.plug_2
+    domain: switch
+  - service: notify.bart_phone
+    data:
+      message: Joehoe, de kerstverlichting brandt weer!
+  mode: single
+
+- alias: 🎄 Kerstverlichting string 1&2 uit om 22u15 zo-do en 23u vrij-za
+  id: '5815b415-4d0d-4241-8c44-83bf504514cc'
+  description: ''
+  trigger:
+  - platform: time
+    at:
+    - '22:15'
+    - '23:00'
+  condition:
+  - condition: template
+    value_template: "{% set h = now().hour %} {% set wd = now().isoweekday() %} {{\
+      \ (h == 22 and 1 <= wd <= 4) or\n   (h == 23 and wd in [5,6]) }}\n"
+  action:
+  - type: turn_off
+    device_id: 5eb1b86deea1ee98ff854ddf66b7d74e
+    entity_id: switch.plug_1
+    domain: switch
+  - type: turn_off
+    device_id: 1288c9559a847c5a18e6f2ba2be073a7
+    entity_id: switch.plug_2
+    domain: switch
   mode: single
