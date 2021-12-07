@@ -50,6 +50,9 @@ automation:
     entity_id: fan.xiaomi_air_purifier_3h
     attribute: aqi
     below: '8'
+  - condition: state
+    entity_id: input_boolean.busy_cooking
+    state: 'off'    
   action:
   - service: fan.turn_off
     target:

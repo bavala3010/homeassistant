@@ -539,8 +539,8 @@ sensor:
 
   - platform: history_stats
     name: "master bedroom TV aan vandaag"
-    entity_id: media_player.master_bedroom_tv
-    state: "playing"
+    entity_id: binary_sensor.master_bedroom_tv_on
+    state: "on"
     type: time
     start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
     end: '{{ now() }}'
@@ -1088,6 +1088,14 @@ binary_sensor:
            {{ is_state('cover.garagepoort_door', 'off') }}
         friendly_name: garagepoort_corrected
         device_class: garage_door
+
+  - platform: template
+    sensors:
+      master_bedroom_tv_on:
+        friendly_name: "master bedroom tv aan"
+        value_template: >-
+          {{ states('media_player.master_bedroom_tv') in ['unknown', 'playing'] }}
+    # als netflix speelt is de status "unknown"    
 
 ###############################################################################
 #
