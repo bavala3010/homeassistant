@@ -53,7 +53,7 @@ automation:
   action:
   - service: script.notify_bart_windows
     data_template:
-      message: "Vocht living: {{states('sensor.gram_water_living_room')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp living: {{states('sensor.living_room_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      message: "Vocht living: {{states('sensor.gram_water_living_room')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Vocht living: {{states('sensor.living_room_humidity')}} %. Buiten: {{states('sensor.humidity_leuven24_wunderground')}} %.<br>Temp living: {{states('sensor.living_room_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: "Sluit raam van living/keuken!"
       tag: "window_living_room"
       action_window_pause: "living_room_window_pause"
@@ -86,7 +86,7 @@ automation:
   action:
   - service: script.notify_bart_windows
     data_template:
-      message: "Vocht kamer Amilya: {{states('sensor.gram_water_kamer_amilya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp kamer Amilya: {{states('sensor.kamer_amilya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      message: "Vocht kamer Amilya: {{states('sensor.gram_water_kamer_amilya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Vocht kamer Amilya: {{states('sensor.kamer_amilya_humidity')}} %. Buiten: {{states('sensor.humidity_leuven24_wunderground')}} %.<br>Temp kamer Amilya: {{states('sensor.kamer_amilya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: "Sluit het raam van Amilya!"
       tag: "window_kamer_amilya"
       action_window_pause: "kamer_amilya_window_pause"
@@ -223,21 +223,21 @@ automation:
   action:
   - service: script.notify_bart_windows
     data_template:
-      message: "Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      message: "Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Vocht kamer Alunya: {{states('sensor.kamer_alunya_humidity')}} %. Buiten: {{states('sensor.humidity_leuven24_wunderground')}} %.<br>Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: "Sluit het raam van Alunya!"
       tag: "window_kamer_alunya"
       action_window_pause: "kamer_alunya_window_pause"
       reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 15 %} Te koud buiten. {% endif %}"
   - service: script.notify_madouce_windows
     data_template:
-      message: "Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      message: "Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Vocht kamer Alunya: {{states('sensor.kamer_alunya_humidity')}} %. Buiten: {{states('sensor.humidity_leuven24_wunderground')}} %.<br>Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: "Sluit het raam van Alunya!"
       tag: "window_kamer_alunya"
       action_window_pause: "kamer_alunya_window_pause"
       reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 15 %} Te koud buiten. {% endif %}"
   - service: script.notify_alunya_windows
     data_template:
-      message: "Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      message: "Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Vocht kamer Alunya: {{states('sensor.kamer_alunya_humidity')}} %. Buiten: {{states('sensor.humidity_leuven24_wunderground')}} %.<br>Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: "Sluit het raam van Alunya!"
       tag: "window_kamer_alunya"
       action_window_pause: "kamer_alunya_window_pause"

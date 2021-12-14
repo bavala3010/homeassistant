@@ -1,9 +1,9 @@
-- alias: 🛌 Madouce thuis om 22u30 en <15° buiten = matras aan
+- alias: 🛌 Madouce thuis om 22u15 en <15° buiten = matras aan
   id: a91e9cb6-dd44-48f1-91b8-81083453fa4f
   description: ''
   trigger:
   - platform: time
-    at: '22:30'
+    at: '22:15'
   condition:
   - condition: state
     entity_id: device_tracker.madouce_samsung_s20
@@ -16,6 +16,7 @@
     target:
       entity_id: switch.smart_power_strip_4
   mode: single
+
 - alias: 🛌 Matras uitschakelen als die al 1 uur aanstaat
   id: 6e09a54d-530d-4e8e-a9dd-8af7b9ec7554
   description: ''
@@ -34,6 +35,7 @@
     target:
       entity_id: switch.smart_power_strip_4
   mode: single
+
 - alias: 🏡 Bart is alleen thuis
   id: 02b63f41-9ea3-48eb-97aa-242a618f3400
   description: ''
@@ -53,6 +55,7 @@
       message: TTS
       title: Bart, je bent alleen thuis!
   mode: single
+
 - alias: RecycleApp notificaties
   id: 50cbd530-9e44-4283-95f9-24f8ca182701
   trigger:
@@ -95,6 +98,7 @@
       ''Days-until'') == 1 %} Zet de blauwe zak aan straat. {%elif state_attr(''sensor.recycleapp_papier'',
       ''Days-until'') == 1 %} Zet het oud papier aan straat. {%endif%} '
   mode: single
+
 - alias: recycle_done
   id: 761e33f9-8fad-4537-8bf3-361aba8f5638
   trigger:
@@ -113,20 +117,3 @@
       message: clear_notification
       data:
         tag: recycle
-- id: '1638821579817'
-  alias: Aan het koken = air purifier inschakelen
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.busy_cooking
-    to: 'on'
-  condition: []
-  action:
-  - service: fan.turn_on
-    target:
-      entity_id: fan.xiaomi_air_purifier_3h
-    data: {}
-  - service: notify.bart_phone
-    data:
-      message: Lekker aan het koken?  De lucht wordt gezuiverd.
-  mode: single

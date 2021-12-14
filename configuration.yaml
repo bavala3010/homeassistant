@@ -19,7 +19,7 @@ tts:
   - platform: google_translate
     cache: false
     cache_dir: /tmp/tts
-    time_memory: 300
+    time_memory: 57600    #min 60 max 57600 (16 hours)
     base_url: http://192.168.86.101:8123
     service_name: google_say
     language: 'nl'

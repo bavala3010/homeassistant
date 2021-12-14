@@ -245,6 +245,26 @@ automation:
     brightness_pct: 25
   mode: single
 
+- alias: 💡 Google TV living playing + zon onder = Hue sync aan
+  id: 'cf1702e9-33d4-43cc-be9c-67cafc91d105'
+  trigger:
+  - platform: state
+    entity_id: media_player.google_tv
+    to: playing
+  condition:
+  - condition: state
+    entity_id: sun.sun
+    state: below_horizon
+  action:
+    - service: huesyncbox.set_sync_state
+      target:
+        entity_id: media_player.sync_box
+      data:
+        sync: true
+        mode: video
+        intensity: subtle
+  mode: single
+
 - alias: 💡 TV uit = TV strip uit
   id: 'dfbb4779-8083-49e3-9b83-b045c4db5d43'
   description: ''

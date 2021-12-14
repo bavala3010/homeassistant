@@ -71,6 +71,68 @@ automation:
     target:
       entity_id: fan.xiaomi_air_purifier_3h
   mode: single
+  
+- alias: 💨 aan het koken = air purifier inschakelen
+  id: 'ef2b8563-60f8-4962-a357-6ac1589b08cd'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.busy_cooking
+    to: 'on'
+  - device_id: dd2e7860b0b3eade0fbecf9965c6106a
+    domain: deconz
+    platform: device
+    type: remote_button_short_press
+    subtype: turn_on  
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.busy_cooking
+  - service: fan.turn_on
+    target:
+      entity_id: fan.xiaomi_air_purifier_3h
+    data: {}
+  - service: notify.bart_phone
+    data:
+      message: Lekker aan het koken? De lucht wordt gezuiverd.
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.living_speaker
+      volume_level: 0.5      
+  - service: tts.google_say
+    data:
+      entity_id: media_player.living_speaker
+      message: Laat het dadelijk smaken! Ik zorg voor de zuivere lucht.  
+  - delay: '00:00:10'
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.living_speaker
+      volume_level: 0.3
+  - delay: '01:00:00'
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.busy_cooking
+  mode: restart
+  
+- alias: 💨 koken gedaan = air purifier uitschakelen
+  id: 'dd3f89f5-e628-408a-a5aa-9aa9afbbd6d6'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.busy_cooking
+    to: 'off'
+  condition: []
+  action:
+  - service: fan.turn_off
+    target:
+      entity_id: fan.xiaomi_air_purifier_3h
+    data: {}
+  - service: tts.google_say
+    data:
+      entity_id: media_player.living_speaker
+      message: De kooksessie is gedaan. Hopelijk heeft het gesmaakt.
+  mode: restart
 
 - alias: Om 6 uur bepaal max dagtemperatuur uur
   id: 'ed9969de-ed32-4d1d-94ed-48e3622c94b4'
@@ -158,9 +220,12 @@ automation:
   - platform: time
     at: input_datetime.max_dagtemperatuur_uur
   condition:
-    - condition: state
+    - condition: numeric_state
       entity_id: sensor.keuken_raam_open_vandaag
-      state: O
+      below: 'O.1'
+    - condition: numeric_state
+      entity_id: sensor.living_room_heating
+      below: '0.1'
   action:
   - service: notify.bart_phone
     data:
