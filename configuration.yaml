@@ -825,8 +825,15 @@ sensor:
 
   - platform: template
     sensors:  
+      dehumidifier_elec:
+        unit_of_measurement: W
+        friendly_name: "elektriciteitsverbruik ontvochtiger"
+        value_template: "{{ states('sensor.power_monitor_power') | float(default=0) | round(3) }}"
+
+  - platform: template
+    sensors:  
       living_tv_elec:
-        unit_of_measurement: kWh
+        unit_of_measurement: kW
         friendly_name: "elektriciteitsverbruik TV living"
         value_template: "{{ states('sensor.living_tv_aan_vandaag') | float(default=0) * 0.085 | round(3) }}"
    # TV consumes 82 W per hour + Google TV 3 W per hour
@@ -834,7 +841,7 @@ sensor:
   - platform: template
     sensors:  
       master_bedroom_tv_elec:
-        unit_of_measurement: kWh
+        unit_of_measurement: kW
         friendly_name: "elektriciteitsverbruik TV master bedroom"
         value_template: "{{ states('sensor.master_bedroom_tv_aan_vandaag') | float(default=0) * 0.063 | round(3) }}"
    # TV + Google TV consumes 63 W per hour
@@ -842,7 +849,7 @@ sensor:
   - platform: template
     sensors:  
       ads_tv_elec:
-        unit_of_measurement: kWh
+        unit_of_measurement: kW
         friendly_name: "elektriciteitsverbruik ADS TV"
         value_template: "{{ states('sensor.ads_tv_aan_vandaag') | float(default=0) * 0.085 | round(3) }}"
    # TV consumes 82 W per hour + Google Chromecast 3 W per hour
@@ -931,27 +938,27 @@ sensor:
 #    round: 2
   
   - platform: integration
-    source: sensor.ty02820620a4cf12eb80b8_2
-    name: droogkast_totaal_verbruik
-    unit_prefix: k
+    source: sensor.dehumidifier_elec
+    name: ontvochtiger_totaal_verbruik
+    unit_prefix: Wh
     round: 2
 
   - platform: integration
     source: sensor.living_tv_elec
     name: tv_living_totaal_verbruik
-    unit_prefix: k
+    unit_prefix: Wh
     round: 2
 
   - platform: integration
     source: sensor.master_bedroom_tv_elec
     name: tv_living_totaal_verbruik
-    unit_prefix: k
+    unit_prefix: Wh
     round: 2
 
   - platform: integration
     source: sensor.ads_tv_elec
     name: tv_living_totaal_verbruik
-    unit_prefix: k
+    unit_prefix: Wh
     round: 2
 
 ###############################################################################

@@ -215,7 +215,6 @@ automation:
 - alias: 🪟 raam keuken openen op warmste moment van dag
   id: aaa23215-35b5-4159-a036-0c6ee66e0646
   description: als het raam nog niet geopend geweest is vandaag = melding sturen op warmste moment van de dag
-  description: ''
   trigger:
   - platform: time
     at: input_datetime.max_dagtemperatuur_uur
