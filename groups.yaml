@@ -121,22 +121,55 @@ all_lights_power:
   # - sensor.bad_power
     - sensor.master_bedroom_play_bar_lights_power
   # - sensor.buiten_power
+
+living_lights:
+  name: living lights
+  entities:
+  - light.living_links_1
+  - light.living_links_2
+  - light.living_links_3
+  - light.living_links_4
+  - light.living_links_5
+  - light.living_rechts_1
+  - light.living_rechts_2
+  - light.living_rechts_3
+  - light.living_rechts_4
+  - light.living_rechts_5
+  - light.living_bol
+  - light.tv_strip  
     
+amilya_lights:
+  name: Amilya lights
+  entities:
+  - light.amilya_badkamer
+  - light.amilya_plafond
+  - light.amilya_living_room
+  - light.amilya_strip
+  - light.amilya_bol
 
 amilya_plafond:
   name: Amilya plafond
   entities:
     - light.amilya_plafond_1
     - light.amilya_plafond_2
-    
+
+alunya_lights:
+  name: Alunya lights
+  entities:
+    - light.alunya_bol
+    - light.alunya_wasbak
+    - light.alunya_staande_lamp    
+
 master_bedroom_lights:
   name: master bedroom lights
+  entities:
     - light.master_bedroom_play_bart
     - light.master_bedroom_play_madouce
     - light.master_bedroom_staande_lamp
     
 gang_lights:
   name: gang lights
+  entities:
     - light.gang_spot_voor
     - light.gang_spot_midden
     - light.gang_spot_achter
@@ -146,5 +179,6 @@ gang_lights:
 #######################################################################
 kerstlichten:
   name: kerstverlichting buiten
+  entities:
     - switch.plug_1
     - switch.plug_2

@@ -1,3 +1,13 @@
+############################ Table of Contents ############################ 
+# 
+#   Automations
+#     🎄 Kerstverlichting buiten aan bij donker
+#     🎄 Kerstverlichting buiten aan tijdens week vanaf 7u15
+#     🎄 Kerstverlichting buiten uit bij zonsopgang
+#     🎄 Kerstverlichting buiten uit om 22u30 zo-do en 23u vrij-za
+#     🎄 Kerstboom binnen aan om 7u15 (weekdagen)
+#     🎄 Kerstboom binnen aan om 9u00 (weekend)
+#     🎄 Kerstboom binnen uit om 23u00
 
 automation:
 
