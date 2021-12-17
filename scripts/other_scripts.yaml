@@ -63,3 +63,12 @@
   - service: googlewifi.reset
     data:
       entity_id: binary_sensor.google_wifi_system_aaaaabzipgy
+
+speak:
+  alias: TTS handler
+  sequence:
+  - service: tts.google_say
+    entity_id: media_player.veranda_speaker
+    data_template:
+      message: "{{ message }}"
+  mode: queued

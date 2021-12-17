@@ -8,10 +8,10 @@ automation:
   description: ''
   trigger:
   - platform: time_pattern
-    minutes: /60
+    hours: /1
   condition:
   - condition: state
-    entity_id: binary_sensor.kamer_amilya_raam_sensor
+    entity_id: binary_sensor.kamer_amilya_raam
     state: 'off'
   - condition: template
     value_template: "{{ states('sensor.kamer_amilya_temperature') | float > 23 }}"
@@ -44,10 +44,10 @@ automation:
   description: ''
   trigger:
   - platform: time_pattern
-    minutes: /60
+    hours: /1
   condition:
   - condition: state
-    entity_id: binary_sensor.kamer_amilya_raam_sensor
+    entity_id: binary_sensor.kamer_amilya_raam
     state: 'off'
   - condition: template
     value_template: "{{ states('sensor.kamer_amilya_temperature') | float > 23 }}"
@@ -102,8 +102,7 @@ automation:
   description: ''
   trigger:
   - platform: template
-    value_template: '{{ states(''sensor.master_bedroom_temperature'') | float < 21
-      }}'
+    value_template: '{{ states(''sensor.master_bedroom_temperature'') | float < 21 }}'
   condition: []
   action:
   - service: fan.turn_off

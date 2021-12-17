@@ -158,8 +158,91 @@ automation:
         channel: home_access
   mode: single
   
-- alias: button nachtkastje Bart
-  id: '2484b046-5083-487b-b5e5-d040d486cf09'
+- alias: button nachtkastje Bart (single press)
+  id: '2daac4a9-ac7c-4cbd-a52d-03ed47da044b'
+  description: ''
+  trigger:
+    - platform: tag
+      tag_id: df93d9d5-f6c6-4705-902a-b7e5d9dfbb77
+    - device_id: 29af8c63a47e9e6e880ee1da155a8a1e
+      domain: deconz
+      platform: device
+      type: remote_button_short_press
+      subtype: turn_on
+  condition: []
+  action:
+    - service: tts.google_say
+      data:
+        entity_id: media_player.master_bedroom_speaker
+        cache: false
+        message: >-
+          Het is nu {{ as_timestamp(now()) |timestamp_custom('%H') }} uur {{
+          as_timestamp(now()) |timestamp_custom('%M') }}. Buiten is het
+          {{states('sensor.temp_leuven24_wunderground')}} graden.
+    - delay:
+        seconds: 7
+    - service: tts.google_say
+      data:
+        entity_id: media_player.master_bedroom_speaker
+        message: >-
+          Nog {{states('sensor.anniversary_huwelijk_madouce_bart')}} dagen voor
+          jullie huwelijk. {{("Het begint nu echt wel te korten!", "Dat is eigenlijk niet zo lang meer!", "Proficiat alvast!", "Heb je de ringen al?", "Het kostuum mag nu toch gaan komen.", "Spannend hé?", "Ik kijk er zelf ook al naar uit!"
+              )|random }}
+    - delay:
+        seconds: 10
+    - service: tts.google_say
+      data:
+        entity_id: media_player.master_bedroom_speaker
+        message: >-
+          {% if is_state('lock.audi_e_tron_sportback_55_door_lock_2', 'unlocked')
+          %} De auto is niet op slot. {% else %} De auto is op slot. {% endif %}
+    - delay:
+        seconds: 2
+    - service: tts.google_say
+      data:
+        entity_id: media_player.master_bedroom_speaker
+        message: >-
+          De auto is
+          {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% geladen
+          {% if is_state('sensor.audi_e_tron_sportback_55_plug_state',
+          'connected') %} en de laadkabel is verbonden. {%else%} maar de laadkabel
+          is niet verbonden. {% endif %}
+    - delay:
+        seconds: 7
+    - service: tts.google_say
+      data:
+        entity_id: media_player.master_bedroom_speaker
+        cache: false
+        message: >-
+          {% if is_state('lock.voordeur', 'unlocked') %} De voordeur is niet op
+          slot. {% else %} De voordeur is op slot. {% endif %}
+    - delay:
+        seconds: 3
+    - service: tts.google_say
+      data:
+        entity_id: media_player.master_bedroom_speaker
+        cache: false
+        message: >-
+          {% if is_state('group.alle_raam_sensoren', 'off') %} Alle ramen zijn
+          dicht! {% else %} De volgende ramen staan nog open:
+          {{expand(states.binary_sensor.kamer_amilya_raam,
+          states.binary_sensor.kamer_alunya_raam,
+          states.binary_sensor.kamer_alunya_schuifraam,
+          states.binary_sensor.badkamer_raam_kantel,
+          states.binary_sensor.badkamer_raam_wijd,
+          states.binary_sensor.berging_raam,
+          states.binary_sensor.keuken_raam,
+          states.binary_sensor.living_oprit_raam,
+          states.binary_sensor.living_tuin_raam,
+          states.binary_sensor.master_bedroom_raam_kantel,
+          states.binary_sensor.master_bedroom_raam_wijd,
+          states.binary_sensor.veranda_schuifraam)
+          |selectattr('state','eq','on') | map(attribute='name')| list }} {% endif
+          %}
+  mode: single
+
+- alias: button nachtkastje Bart (double press)
+  id: '0ec9223b-fa63-4dc4-bd8a-c1602f2c49e7'
   description: ''
   trigger:
   - platform: tag
@@ -167,53 +250,16 @@ automation:
   - device_id: 29af8c63a47e9e6e880ee1da155a8a1e
     domain: deconz
     platform: device
-    type: remote_button_short_press
+    type: remote_button_double_press
     subtype: turn_on
   condition: []
   action:
-  - service: tts.google_say
-    data:
-      entity_id: media_player.master_bedroom_speaker
-      cache: false # no need to cache this sentence
-      message: "Het is nu {{ as_timestamp(now()) |timestamp_custom('%H') }} uur {{ as_timestamp(now()) |timestamp_custom('%M') }}. Buiten is het {{states('sensor.temp_leuven24_wunderground')}} graden."
-  - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle') }}"  # wacht totdat mediaspeler gedaan heeft 
-  - service: tts.google_say
-    data:
-      entity_id: media_player.master_bedroom_speaker
-      message: "Nog {{states('sensor.anniversary_huwelijk_madouce_bart')}} dagen voor jullie huwelijk."
-      # {{ ["Proficiat alvast."], ["Spannend hé?"],["Het begint al serieus af te tellen."] | random }}"
-  - wait_template: ''
-    timeout: 00:00:07
-  - service: tts.google_say
-    data:
-      entity_id: media_player.master_bedroom_speaker
-      message: "{% if is_state('lock.audi_e_tron_sportback_55_door_lock_2', 'unlocked') %} De auto is niet op slot. {% else %} De auto is op slot. {% endif %}"
-  - wait_template: ''
-    timeout: 00:00:05
-  - service: tts.google_say
-    data:
-      entity_id: media_player.master_bedroom_speaker
-      message: "De auto is {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% geladen {% if is_state('sensor.audi_e_tron_sportback_55_plug_state', 'connected') %} en de laadkabel is verbonden. {%else%} maar de laadkabel is niet verbonden. {% endif %}"
-  - wait_template: ''
-    timeout: 00:00:06
-  - service: tts.google_say
-    data:
-      entity_id: media_player.master_bedroom_speaker
-      cache: false # no need to cache this sentence
-      message: "{% if is_state('lock.voordeur', 'unlocked') %} De voordeur is niet op slot. {% else %} De voordeur is op slot. {% endif %}"
-  - wait_template: ''
-    timeout: 00:00:03
-  - service: tts.google_say
-    data:
-      entity_id: media_player.master_bedroom_speaker
-      cache: false # no need to cache this sentence
-      message: '{% if is_state(''group.group.raam_sensoren'', ''off'')
-        %} Alle ramen zijn dicht! {% else %} De volgende ramen staan nog open: {{
-        expand(states.binary_sensor.kamer_amilya_raam_sensor, states.binary_sensor.kamer_alunya_raam_sensor,
-        states.binary_sensor.kamer_alunya_schuifraam_sensor, states.binary_sensor.badkamer_raam_sensor,
-        states.binary_sensor.berging_raam_sensor, states.binary_sensor.keuken_raam_sensor,
-        states.binary_sensor.living_oprit_raam_sensor, states.binary_sensor.living_tuin_raam_sensor,
-        states.binary_sensor.master_bedroom_raam_sensor, states.binary_sensor.veranda_schuifraam_sensor)
-        | selectattr(''state'',''eq'',''on'') | map(attribute=''name'')| list }} {%
-        endif %}'
+  - service: script.speak
+    data_template:
+      message: "Goede morgen schat. Het wordt waarschijnlijk weer een fijne werkdag met veel afwisseling en andere leuke dingen."
+  - delay:
+      seconds: 8
+  - service: script.speak
+    data_template:
+      message: "En vergeet niet de website te bekijken, hé...?"
   mode: single

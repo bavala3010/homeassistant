@@ -15,6 +15,8 @@
 
 ############################ Automations ################################## 
 
+# gekopieerd naar automations.yml en alles OK
+
 automation:
 
 - alias: 💡 Amilya niet thuis = lichten uit
@@ -23,9 +25,9 @@ automation:
   trigger:
   - platform: state
     entity_id: device_tracker.amilya_iphone_xs
-    to: not_home
+    to: 'not_home'
     for: 00:03:00
-    from: home
+    from: 'home'
   condition: []
   action:
   - type: turn_off
@@ -78,7 +80,7 @@ automation:
   trigger:
   - platform: state
     entity_id: device_tracker.alunya_samsung_galaxy_a71
-    to: not_home
+    to: 'not_home'
     for: 00:03:00
   condition: []
   action:
@@ -130,7 +132,7 @@ automation:
   trigger:
   - platform: state
     entity_id: sun.sun
-    to: below_horizon
+    to: 'below_horizon'
   condition:
   - condition: state
     entity_id: person.madouce
@@ -168,8 +170,9 @@ automation:
   - device_id: 4247e8ef769909d83520323811fc6550
     domain: hue
     platform: device
-    type: remote_button_short_release
-    subtype: turn_on
+    type: short_release
+    subtype: 1
+    unique_id: 6e39bb0e-63cc-4dad-9237-29b7cc04d796
   condition:
   - condition: sun
     after: sunset
@@ -250,7 +253,7 @@ automation:
   trigger:
   - platform: state
     entity_id: media_player.google_tv
-    to: playing
+    to: 'playing'
   condition:
   - condition: state
     entity_id: sun.sun
@@ -287,7 +290,7 @@ automation:
   trigger:
   - platform: state
     entity_id: media_player.master_bedroom_tv
-    to: playing
+    to: 'playing'
   condition:
   - condition: time
     after: '22:00'
@@ -303,6 +306,6 @@ automation:
       brightness_pct: 30
   - service: light.turn_off
     target:
-      entity_id: light.staande_lamp
+      entity_id: light.master_bedroom_staande_lamp
   mode: single
 

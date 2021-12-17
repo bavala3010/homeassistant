@@ -30,7 +30,7 @@ automation:
   trigger:
   - platform: state
     entity_id: group.gezin
-    to: not_home
+    to: 'not_home'
     for: 00:05:00
   condition: []
   action:

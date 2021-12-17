@@ -51,34 +51,6 @@ homeassistant:
 # secrets should not be mentioned in this file; it is automatic !
 # secrets: !include secrets.yaml
 
-influxdb:
-  api_version: 2
-  ssl: false
-  host: 192.168.86.101
-  port: 8086
-  token: K2k46Gxxtwl83bqhKJs2M4CsoYECUccjMnxpIcvjqzg64Tkxk-QdF_QHq3IB4rtDHxZEABx3Q74YBZ6oFwHNyQ==
-  organization: 30fed6985f8efca2
-  bucket: home_assistant
-  tags:
-    source: HA
-  tags_attributes:
-    - friendly_name
-  default_measurement: units
-  exclude:
-    entities:
-      - zone.home
-    domains:
-      - persistent_notification
-      - person
-  include:
-    domains:
-      - sensor
-      - binary_sensor
-      - sun
-    entities:
-      - weather.home
-
-
 # needed when using reverse proxy managers (eg. Nginx)
 http:
   use_x_forwarded_for: true

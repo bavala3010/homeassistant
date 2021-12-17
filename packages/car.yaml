@@ -103,7 +103,7 @@ automation:
   trigger:
   - platform: state
     entity_id: sensor.audi_e_tron_sportback_55_plug_state
-    to: connected
+    to: 'connected'
   condition:
   action:
   - service: notify.bart_phone
@@ -128,8 +128,8 @@ automation:
   trigger:
   - platform: state
     entity_id: sensor.audi_e_tron_sportback_55_charging_state
-    from: off
-    to: charging
+    from: 'off'
+    to: 'charging'
     for: 00:01:00
   condition: []
   action:
@@ -165,7 +165,7 @@ automation:
   trigger:
   - platform: state
     entity_id: sensor.audi_e_tron_sportback_55_charging_state
-    to: completed
+    to: 'completed'
   condition: []
   action:
   - service: notify.bart_phone
@@ -250,7 +250,7 @@ automation:
   trigger:
   - platform: state
     entity_id: lock.audi_e_tron_sportback_55_door_lock_2
-    to: locked
+    to: 'locked'
   condition: []
   action:
   - service: notify.bart_phone

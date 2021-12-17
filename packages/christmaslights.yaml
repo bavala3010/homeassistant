@@ -62,7 +62,7 @@ automation:
   trigger:
   - platform: state
     entity_id: sun.sun
-    to: "above_horizon"
+    to: 'above_horizon'
   condition: []    
   action:
   - service: switch.turn_off
@@ -149,7 +149,7 @@ automation:
     at: '23:00:00'
   - platform: state
     entity_id: group.gezin
-    to: not_home
+    to: 'not_home'
   condition:
   - condition: and
     conditions:
@@ -167,3 +167,5 @@ automation:
     target:
       entity_id: switch.plug_2
   mode: single
+  
+

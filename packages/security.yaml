@@ -22,13 +22,13 @@ automation:
   trigger:
   - platform: state
     entity_id: person.bart
-    to: home
+    to: 'home'
   - platform: state
     entity_id: person.madouce
-    to: home
+    to: 'home'
   - platform: state
     entity_id: person.alunya
-    to: home
+    to: 'home'
   condition:
   - condition: state
     entity_id: alarm_control_panel.home_alarm
@@ -52,7 +52,7 @@ automation:
   trigger:
   - platform: state
     entity_id: group.gezin
-    to: not_home
+    to: 'not_home'
     for: 00:05:00
   condition: []
   action:
@@ -74,7 +74,7 @@ automation:
   trigger:
   - platform: state
     entity_id: group.gezin
-    to: home
+    to: 'home'
   condition:
   - condition: state
     entity_id: alarm_control_panel.home_alarm
@@ -122,7 +122,7 @@ automation:
       entity_id: media_player.living_speaker
       message: "Alarm ingeschakeld!
       {% if is_state('group.group.raam_sensoren', 'off') %} Alle ramen zijn dicht!
-      {% else %} De volgende ramen staan nog open: {{ expand(states.binary_sensor.kamer_amilya_raam_sensor, states.binary_sensor.kamer_alunya_raam_sensor, states.binary_sensor.kamer_alunya_schuifraam_sensor, states.binary_sensor.badkamer_raam_sensor, states.binary_sensor.berging_raam_sensor, states.binary_sensor.keuken_raam_sensor, states.binary_sensor.living_oprit_raam_sensor, states.binary_sensor.living_tuin_raam_sensor, states.binary_sensor.master_bedroom_raam_sensor, states.binary_sensor.veranda_schuifraam_sensor) | selectattr('state','eq','on') | map(attribute='name')| list }}
+      {% else %} De volgende ramen staan nog open: {{ expand(states.binary_sensor.kamer_amilya_raam, states.binary_sensor.kamer_alunya_raam, states.binary_sensor.kamer_alunya_schuifraam, states.binary_sensor.badkamer_raam, states.binary_sensor.berging_raam, states.binary_sensor.keuken_raam, states.binary_sensor.living_oprit_raam, states.binary_sensor.living_tuin_raam, states.binary_sensor.master_bedroom_raam, states.binary_sensor.veranda_schuifraam) | selectattr('state','eq','on') | map(attribute='name')| list }}
       {% endif %}"
   - wait_template: ''
     timeout: 00:00:02
@@ -179,16 +179,16 @@ automation:
     - binary_sensor.toilet_motion_sensor_motion
     - binary_sensor.terras_motion_sensor
     # raam sensoren
-    - binary_sensor.kamer_alunya_raam_sensor
-    - binary_sensor.kamer_alunya_schuifraam_sensor
-    - binary_sensor.kamer_amilya_raam_sensor
-    - binary_sensor.badkamer_raam_sensor
-    - binary_sensor.berging_raam_sensor
-    - binary_sensor.keuken_raam_sensor
-    - binary_sensor.living_oprit_raam_sensor
-    - binary_sensor.living_tuin_raam_sensor
-    - binary_sensor.master_bedroom_raam_sensor
-    - binary_sensor.veranda_schuifraam_sensor
+    - binary_sensor.kamer_alunya_raam
+    - binary_sensor.kamer_alunya_schuifraam
+    - binary_sensor.kamer_amilya_raam
+    - binary_sensor.badkamer_raam
+    - binary_sensor.berging_raam
+    - binary_sensor.keuken_raam
+    - binary_sensor.living_oprit_raam
+    - binary_sensor.living_tuin_raam
+    - binary_sensor.master_bedroom_raam
+    - binary_sensor.veranda_schuifraam
     from: 'off'
     to: 'on'
   condition:
@@ -210,7 +210,7 @@ automation:
   trigger:
   - platform: state
     entity_id: alarm_control_panel.home_alarm
-    to: triggered
+    to: 'triggered'
   condition: []
   action:
   - service: notify.bart_phone
@@ -323,7 +323,7 @@ automation:
       message: Beweging op oprit!
   - service: tts.google_say
     data:
-      entity_id: media_player.veranda_speaker_2
+      entity_id: media_player.veranda_speaker
       message: Beweging op oprit! 
   - wait_template: ''
     timeout: 00:00:07

@@ -42,7 +42,7 @@ living_masterbedroom_speakers:
   name: speaker_living_veranda
   entities:
     - media_player.living_speaker
-    - media_player.nestaudio3875
+    - media_player.veranda_speaker
 # you can now use group.group_living_masterbedroom_speakers in automations and scripts
 # but the 2 speakers will not play synchroniously
 # better make a speaker group in the Google Home app: eg: media_player.groep_living_veranda 
@@ -54,7 +54,6 @@ living_masterbedroom_speakers:
 alle_raam_sensoren:
   name: alle_raam_sensoren
   entities:
-    - binary_sensor.ty18857573dc4f22b78e02
     - binary_sensor.badkamer_raam_kantel
     - binary_sensor.badkamer_raam_wijd
     - binary_sensor.berging_raam

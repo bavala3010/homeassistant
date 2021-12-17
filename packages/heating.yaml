@@ -10,9 +10,9 @@ automation:
   trigger:
   - platform: state
     entity_id: device_tracker.amilya_iphone_xs
-    to: not_home
+    to: 'not_home'
     for: 00:03:00
-    from: home
+    from: 'home'
   condition: []
   action:
     service: climate.set_hvac_mode
@@ -28,7 +28,7 @@ automation:
   trigger:
   - platform: state
     entity_id: device_tracker.alunya_samsung_galaxy_a71
-    to: not_home
+    to: 'not_home'
     for: 00:03:00
   condition: []
   action:
@@ -70,7 +70,7 @@ automation:
   condition:
   - condition: time
     after: '23:00'
-    before: 06:00
+    before: '06:00'
   action:
   - service: climate.set_hvac_mode
     target:
@@ -81,3 +81,5 @@ automation:
     data:
       message: Kamer Amilya op meer dan 20° 's nachts gezet = herzet naar automatisch.      
   mode: single
+
+# - alias: chauffage badkamer aan + raam open = chauffage uit
