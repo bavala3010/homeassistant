@@ -35,8 +35,7 @@ automation:
     - thu
     - sun
   - condition: template
-    value_template: '{% if states.sensor.audi_e_tron_sportback_55_state_of_charge.state
-      | float < 60.0 %} true {% endif %}'
+    value_template: "{% if states('sensor.audi_e_tron_sportback_55_state_of_charge') | float < 60.0 %} true {% endif %}"
   - condition: state
     entity_id: device_tracker.audi_e_tron_sportback_55_position
     state: home
@@ -72,8 +71,7 @@ automation:
     - fri
     - sat
   - condition: template
-    value_template: '{% if states.sensor.audi_e_tron_sportback_55_state_of_charge.state
-      | float < 80.0 %} true {% endif %}'
+    value_template: "{% if states('sensor.audi_e_tron_sportback_55_state_of_charge') | float < 80.0 %} true {% endif %}"
   - condition: state
     entity_id: device_tracker.audi_e_tron_sportback_55_position
     state: home
@@ -104,7 +102,7 @@ automation:
   - platform: state
     entity_id: sensor.audi_e_tron_sportback_55_plug_state
     to: 'connected'
-  condition:
+  condition: []
   action:
   - service: notify.bart_phone
     data:
@@ -329,8 +327,8 @@ automation:
   id: '583aabff-84db-4aac-a7de-023aee0d79f1'
   trigger:
   - platform: template
-    value_template: '{{ states(''sensor.time'') == (states.input_datetime.car_climatisation_time.attributes.timestamp
-      | int | timestamp_custom(''%H:%M'', False)) }}'
+    value_template: "{{ states('sensor.time') == (states.input_datetime.car_climatisation_time.attributes.timestamp
+      | int | timestamp_custom('%H:%M', False)) }}"
   condition:
   - condition: state
     entity_id: input_boolean.car_climatisation_timer

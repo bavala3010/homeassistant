@@ -6,7 +6,7 @@
 #     garagepoorttag binnen gescand door Alunya
 #     garagepoorttag buiten gescand door Madouce
 #     garagepoorttag buiten gescand door Alunya
-#     Tag gescand controle voor nacht
+#     button nachtkastje Bart (single press)
 
 ############################ Automations ################################## 
 
@@ -158,17 +158,12 @@ automation:
         channel: home_access
   mode: single
   
-- alias: button nachtkastje Bart (single press)
+- alias: tag nachtkastje Bart
   id: '2daac4a9-ac7c-4cbd-a52d-03ed47da044b'
   description: ''
   trigger:
     - platform: tag
       tag_id: df93d9d5-f6c6-4705-902a-b7e5d9dfbb77
-    - device_id: 29af8c63a47e9e6e880ee1da155a8a1e
-      domain: deconz
-      platform: device
-      type: remote_button_short_press
-      subtype: turn_on
   condition: []
   action:
     - service: tts.google_say
@@ -180,7 +175,7 @@ automation:
           as_timestamp(now()) |timestamp_custom('%M') }}. Buiten is het
           {{states('sensor.temp_leuven24_wunderground')}} graden.
     - delay:
-        seconds: 7
+        seconds: 8
     - service: tts.google_say
       data:
         entity_id: media_player.master_bedroom_speaker
@@ -239,27 +234,4 @@ automation:
           states.binary_sensor.veranda_schuifraam)
           |selectattr('state','eq','on') | map(attribute='name')| list }} {% endif
           %}
-  mode: single
-
-- alias: button nachtkastje Bart (double press)
-  id: '0ec9223b-fa63-4dc4-bd8a-c1602f2c49e7'
-  description: ''
-  trigger:
-  - platform: tag
-    tag_id: df93d9d5-f6c6-4705-902a-b7e5d9dfbb77
-  - device_id: 29af8c63a47e9e6e880ee1da155a8a1e
-    domain: deconz
-    platform: device
-    type: remote_button_double_press
-    subtype: turn_on
-  condition: []
-  action:
-  - service: script.speak
-    data_template:
-      message: "Goede morgen schat. Het wordt waarschijnlijk weer een fijne werkdag met veel afwisseling en andere leuke dingen."
-  - delay:
-      seconds: 8
-  - service: script.speak
-    data_template:
-      message: "En vergeet niet de website te bekijken, hé...?"
   mode: single

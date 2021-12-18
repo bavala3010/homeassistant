@@ -1,0 +1,35 @@
+automation:
+
+# 
+
+- alias: "button garagepoort: single press = sluit garagepoort"
+  id: '02226be6-e34d-4185-9839-3f05db02063d'
+  description: ''
+  trigger:
+  - device_id: 29af8c63a47e9e6e880ee1da155a8a1e
+    domain: deconz
+    platform: device
+    type: remote_button_short_press
+    subtype: turn_on
+  condition: []
+  action:
+  - service: cover.close_cover
+    target:
+      entity_id: cover.garagepoort_door
+  mode: single
+  
+- alias: "button garagepoort: long press = open garagepoort"
+  id: '8578845a-6ef6-4e79-85fa-2b8f0d5481b1'
+  description: ''
+  trigger:
+  - device_id: 29af8c63a47e9e6e880ee1da155a8a1e
+    domain: deconz
+    platform: device
+    type: remote_button_long_release
+    subtype: turn_on
+  condition: []
+  action:
+  - service: cover.open_cover
+    target:
+      entity_id: cover.garagepoort_door
+  mode: single       

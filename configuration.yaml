@@ -11,6 +11,11 @@ default_config:
 # https://app.diagrams.net/
 # https://demo.home-assistant.io/#/energy
 
+# integration (Riemann sum integral) unit moet k, M, G of T zijn. (NIET kW of kWh) 
+
+# An integration sensor isuseful in energy billing scenarios since energy is generally billed in kWh and many sensors provide power in W (Watts).
+# If you have a sensor that provides you with power readings in Watts (uses W as unit_of_measurement), then you can use the integration sensor to track how much energy is being spent.
+
 
 discovery:
 
@@ -833,7 +838,7 @@ sensor:
 
       tv_energy:
         friendly_name: "energieverbruik TV's"
-        unit_of_measurement: kWh
+        unit_of_measurement: kW
         value_template: "{{ states('sensor.living_tv_elec') | float + states('sensor.master_bedroom_tv_elec') | float + states('sensor.ads_tv_elec') | float | round(3) }}"
         attribute_templates:
           last_reset: "1970-01-01T00:00:00+00:00"
@@ -912,25 +917,25 @@ sensor:
   - platform: integration
     source: sensor.dehumidifier_elec
     name: ontvochtiger_totaal_verbruik
-    unit_prefix: Wh
+    unit_prefix: k
     round: 2
 
   - platform: integration
     source: sensor.living_tv_elec
     name: tv_living_totaal_verbruik
-    unit_prefix: Wh
+    unit_prefix: k
     round: 2
 
   - platform: integration
     source: sensor.master_bedroom_tv_elec
     name: tv_living_totaal_verbruik
-    unit_prefix: Wh
+    unit_prefix: k
     round: 2
 
   - platform: integration
     source: sensor.ads_tv_elec
     name: tv_living_totaal_verbruik
-    unit_prefix: Wh
+    unit_prefix: k
     round: 2
 
 ###############################################################################
