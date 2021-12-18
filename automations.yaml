@@ -113,7 +113,38 @@
       message: clear_notification
       data:
         tag: recycle
-
-
-#####################################
-
+- id: cf71a308-2cd3-42b2-94c9-9968d8f67330
+  alias: bij beweging toilet = afzuig aan tot 5 minuten na laatste beweging
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.toilet_motion_sensor_motion
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 30
+  condition:
+  - condition: time
+    after: '7:0:0'
+    before: '23:00:00'
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id:
+      - switch.on_off_plug_in_unit_7
+  - service: notify.bart_phone
+    data:
+      message: Afzuig toilet/douche START nu.
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - service: switch.turn_off
+    target:
+      entity_id: switch.on_off_plug_in_unit_7
+  - service: notify.bart_phone
+    data:
+      message: Afzuig toilet/douche STOPT nu.
+  mode: restart

@@ -15,12 +15,14 @@ input_select:
     initial: Joe
     icon: mdi:radio
 
-  chromecast_radio:
+  chromecast_speaker:
     name: 'Select Speakers:'
     options:
       - Living
       - Veranda
       - Living & veranda
+      - badkamer
+      - Alunya
       - Master bedroom
     initial: Living
     icon: mdi:speaker-wireless
@@ -53,10 +55,12 @@ automation:
     - service: media_player.volume_set
       data_template:
         entity_id: >
-          {% if is_state("input_select.chromecast_radio", "Living") %} media_player.living_speaker
-          {% elif is_state("input_select.chromecast_radio", "Veranda") %} media_player.veranda_speaker
-          {% elif is_state("input_select.chromecast_radio", "Living & veranda") %} media_player.groep_living_veranda
-          {% elif is_state("input_select.chromecast_radio", "Master bedroom") %} media_player.nestaudio3875
+          {% if is_state("input_select.chromecast_speaker", "Living") %} media_player.living_speaker
+          {% elif is_state("input_select.chromecast_speaker", "Veranda") %} media_player.veranda_speaker
+          {% elif is_state("input_select.chromecast_speaker", "Living & veranda") %} media_player.groep_living_veranda
+          {% elif is_state("input_select.chromecast_speaker", "badkamer") %} media_player.badkamer_speaker
+          {% elif is_state("input_select.chromecast_speaker", "Alunya") %} media_player.alunya_speaker
+          {% elif is_state("input_select.chromecast_speaker", "Master bedroom") %} media_player.master_bedroom_speaker
           {% endif %}
     #     volume_level: '{{  states.input_number.volume_radio.state  }}'
         volume_level: "{{ states('input_number.volume_radio') | float / 100 | round(0) }}"
@@ -68,20 +72,24 @@ script:
     - service: media_player.volume_set
       data_template:
         entity_id: >
-          {% if is_state("input_select.chromecast_radio", "Living") %} media_player.living_speaker
-          {% elif is_state("input_select.chromecast_radio", "Veranda") %} media_player.veranda_speaker
-          {% elif is_state("input_select.chromecast_radio", "Living & veranda") %} media_player.groep_living_veranda
-          {% elif is_state("input_select.chromecast_radio", "Master bedroom") %} media_player.nestaudio3875
+          {% if is_state("input_select.chromecast_speaker", "Living") %} media_player.living_speaker
+          {% elif is_state("input_select.chromecast_speaker", "Veranda") %} media_player.veranda_speaker
+          {% elif is_state("input_select.chromecast_speaker", "Living & veranda") %} media_player.groep_living_veranda
+          {% elif is_state("input_select.chromecast_speaker", "badkamer") %} media_player.badkamer_speaker
+          {% elif is_state("input_select.chromecast_speaker", "Alunya") %} media_player.alunya_speaker
+          {% elif is_state("input_select.chromecast_speaker", "Master bedroom") %} media_player.master_bedroom_speaker
           {% endif %}
 #       volume_level: '{{  states.input_number.volume_radio.state  }}'
         volume_level: "{{ states('input_number.volume_radio') | float / 100 | round(0) }}"
     - service: media_player.play_media
       data_template:
         entity_id: >
-          {% if is_state("input_select.chromecast_radio", "Living") %} media_player.living_speaker
-          {% elif is_state("input_select.chromecast_radio", "Veranda") %} media_player.veranda_speaker
-          {% elif is_state("input_select.chromecast_radio", "Living & veranda") %} media_player.groep_living_veranda          
-          {% elif is_state("input_select.chromecast_radio", "Master bedroom") %} media_player.nestaudio3875
+          {% if is_state("input_select.chromecast_speaker", "Living") %} media_player.living_speaker
+          {% elif is_state("input_select.chromecast_speaker", "Veranda") %} media_player.veranda_speaker
+          {% elif is_state("input_select.chromecast_speaker", "Living & veranda") %} media_player.groep_living_veranda
+          {% elif is_state("input_select.chromecast_speaker", "badkamer") %} media_player.badkamer_speaker
+          {% elif is_state("input_select.chromecast_speaker", "Alunya") %} media_player.alunya_speaker
+          {% elif is_state("input_select.chromecast_speaker", "Master bedroom") %} media_player.master_bedroom_speaker
           {% endif %}
         media_content_id: >
           {% if is_state("input_select.radio_station", "Joe") %} https://22673.live.streamtheworld.com/JOE.mp3?pname=tunein&dist=tunein&DIST=TuneIn&TGT=TuneIn&maxServers=2

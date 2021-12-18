@@ -1,6 +1,6 @@
 automation:
 
-- alias: 💨 Air Quality Index > 8 = purifier on
+- alias: 💨 Air Quality Index > 8 = purifier aan
   id: '7e3043d1-8299-4121-ad8b-08da26340065'
   description: ''
   trigger:
@@ -24,22 +24,7 @@ automation:
       preset_mode: auto
   mode: single
 
-- alias: 💨 not home = Air purifier off
-  id: '0c3adcca-2586-4ee3-a3bc-a78f38f65937'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: group.gezin
-    to: 'not_home'
-    for: 00:05:00
-  condition: []
-  action:
-  - service: fan.turn_off
-    target:
-      entity_id: fan.xiaomi_air_purifier_3h
-  mode: single
-
-- alias: 💨 Air Quality Index < 8 = purifier off
+- alias: 💨 Air Quality Index < 8 = purifier uit
   id: '991a6848-2b77-4573-a2c4-76d603eeb899'
   description: ''
   trigger:
@@ -59,20 +44,22 @@ automation:
       entity_id: fan.xiaomi_air_purifier_3h
   mode: single
 
-- alias: 💨 purifier off @ 23u30
-  id: '1894cdae-230b-4faa-a1cf-209e92df141b'
+- alias: 💨 not home = Air purifier off
+  id: '0c3adcca-2586-4ee3-a3bc-a78f38f65937'
   description: ''
   trigger:
-  - platform: time
-    at: '23:30'
+  - platform: state
+    entity_id: group.gezin
+    to: 'not_home'
+    for: 00:05:00
   condition: []
   action:
   - service: fan.turn_off
     target:
       entity_id: fan.xiaomi_air_purifier_3h
   mode: single
-  
-- alias: 💨 aan het koken = air purifier inschakelen
+
+- alias: 💨 aan het koken = air purifier aan
   id: 'ef2b8563-60f8-4962-a357-6ac1589b08cd'
   description: ''
   trigger:
@@ -115,7 +102,7 @@ automation:
       entity_id: input_boolean.busy_cooking
   mode: restart
   
-- alias: 💨 koken gedaan = air purifier uitschakelen
+- alias: 💨 koken gedaan = air purifier uit
   id: 'dd3f89f5-e628-408a-a5aa-9aa9afbbd6d6'
   description: ''
   trigger:
@@ -235,3 +222,93 @@ automation:
       title: Zet keukenraam nu even open. Beste moment van de dag.
       message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.<br>Raam is vandaag nog niet open geweest."
   mode: single
+
+- alias: 💨 beweging in toilet = ventilator aan na 1,5 minuten tot 5 minuten na laatste beweging
+  id: '8215c271-a2bb-4a05-a083-9e31db80b3a1'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.toilet_motion_sensor_motion
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 30
+  # only trigger when there is more than 1,5 minutes of motion    
+  condition:
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id:
+      - switch.on_off_plug_in_unit_7
+  - service: notify.bart_phone
+    data:
+      message: Afzuig toilet/douche START nu.
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - service: switch.turn_off
+    target:
+      entity_id: switch.on_off_plug_in_unit_7
+  - service: notify.bart_phone
+    data:
+      message: Afzuig toilet/douche STOPT nu.
+  mode: restart
+  
+- alias: 💨 beweging in douche = ventilator aan na 1,5 minuten tot 10 minuten na laatste beweging
+  id: '26b154d2-b891-4df6-84c3-b954e639a08e'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.douche_sensor_motion
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+  # only trigger when there is more than 30 seconds of motion    
+  condition: []
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id:
+      - switch.on_off_plug_in_unit_7
+  - service: notify.bart_phone
+    data:
+      message: Afzuig toilet/douche START nu.
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - service: switch.turn_off
+    target:
+      entity_id: switch.on_off_plug_in_unit_7
+  - service: notify.bart_phone
+    data:
+      message: Afzuig toilet/douche STOPT nu.
+  mode: restart
+
+- alias: 🪟 badkamer raam wijd open = ventilator uit
+  id: '09185cc1-4293-4cc0-9f89-831f0be7a74e'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.badkamer_raam_wijd
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.on_off_plug_in_unit_7
+  mode: single  

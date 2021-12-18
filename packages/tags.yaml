@@ -20,7 +20,9 @@ automation:
     device_id: !secret id_nfc_bart
   condition: []
   action:
-  - scene: scene.garagepoort_open
+  - service: cover.open_cover
+    target:
+      entity_id: cover.garagepoort_door
   - service: notify.bart_phone
     data:
       message: 'Bart scant tag garagepoort binnen.'
@@ -39,7 +41,9 @@ automation:
     device_id: !secret id_nfc_madouce
   condition: []
   action:
-  - scene: scene.garagepoort_open
+  - service: cover.open_cover
+    target:
+      entity_id: cover.garagepoort_door
   - service: notify.bart_phone
     data:
       message: 'Madouce scant tag garagepoort binnen.'
@@ -58,7 +62,9 @@ automation:
     device_id: !secret id_nfc_alunya
   condition: []
   action:
-  - scene: scene.garagepoort_open
+  - service: cover.open_cover
+    target:
+      entity_id: cover.garagepoort_door
   - service: notify.bart_phone
     data:
       message: 'Alunya scant tag garagepoort binnen.'
@@ -88,7 +94,9 @@ automation:
     data:
       entity_id: media_player.living_speaker
       message: Bart scant garagepoort.
-  - scene: scene.v5bab2lu7dc9oexz
+  - service: cover.open_cover
+    target:
+      entity_id: cover.garagepoort_door
   - service: notify.bart_phone
     data:
       message: 'Bart scant garagepoorttag buiten.'
@@ -118,7 +126,9 @@ automation:
     data:
       entity_id: media_player.living_speaker
       message: Madouce scant garagepoort.
-  - scene: scene.garagepoort_open
+  - service: cover.open_cover
+    target:
+      entity_id: cover.garagepoort_door
   - service: notify.bart_phone
     data:
       message: 'Madouce scant garagepoorttag buiten.'
@@ -141,7 +151,9 @@ automation:
     data:
       entity_id: media_player.living_speaker
       message: Alunya scant garagepoort.
-  - scene: scene.garagepoort_open
+  - service: cover.open_cover
+    target:
+      entity_id: cover.garagepoort_door
   - service: notify.bart_phone
     data:
       message: 'Alunya scant garagepoorttag buiten.'
