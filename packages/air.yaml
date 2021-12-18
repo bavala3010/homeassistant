@@ -147,7 +147,7 @@ automation:
       entity_id: input_datetime.max_dagtemperatuur_uur
     data:
       time:
-        sensor.day_max_temp_datetime:
+        sensor.day_max_temp_datetime
   mode: single
   
 - alias: max temperatuur van de dag bereikt = melding

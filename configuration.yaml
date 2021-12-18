@@ -1062,14 +1062,6 @@ binary_sensor:
 
   - platform: template
     sensors:
-      garagepoort_invert:
-        value_template: >-
-           {{ is_state('cover.garagepoort_door', 'off') }}
-        friendly_name: garagepoort_corrected
-        device_class: garage_door
-
-  - platform: template
-    sensors:
       master_bedroom_tv_on:
         friendly_name: "master bedroom tv aan"
         value_template: >-
@@ -1206,7 +1198,6 @@ notify:
     platform: group
     services:
       - service: mobile_app_sm_a715f
-
 
 timer:
   car_climatisation:
