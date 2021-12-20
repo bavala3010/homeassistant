@@ -7,6 +7,7 @@
 #     🎄 Kerstverlichting buiten uit om 22u30 zo-do en 23u vrij-za
 #     🎄 Kerstboom binnen aan om 7u15 (weekdagen)
 #     🎄 Kerstboom binnen aan om 9u00 (weekend)
+#     🎄 Kerstboom binnen aan bij thuiskomst
 #     🎄 Kerstboom binnen uit om 23u00
 
 automation:
@@ -22,7 +23,7 @@ automation:
   action:
   - service: switch.turn_on
     target:
-      entity_id: switch.plug_1
+      entity_id: switch.kerstverlichting
   - service: notify.bart_phone
     data_template:
       message: '{{ ["Joehoe, de kerstverlichting brandt weer!","Jingle bells", "Merry Christmas with lots of love.", "Kerst is leuker met lichtjes.", "Wishing you a Christmas that is merry and bright!"] | random }}'
@@ -53,7 +54,7 @@ automation:
   action:
   - service: switch.turn_on
     target:
-      entity_id: switch.plug_1
+      entity_id: switch.kerstverlichting
   mode: single
 
 - alias: 🎄 Kerstverlichting buiten uit bij zonsopgang
@@ -67,7 +68,7 @@ automation:
   action:
   - service: switch.turn_off
     target:
-      entity_id: switch.plug_1
+      entity_id: switch.kerstverlichting
   mode: single
 
 - alias: 🎄 Kerstverlichting buiten uit om 22u30 zo-do en 23u vrij-za
@@ -85,7 +86,7 @@ automation:
   action:
   - service: switch.turn_off
     target:
-      entity_id: switch.plug_1
+      entity_id: switch.kerstverlichting
   - service: notify.bart_phone
     data:
       message: Wat jammer, de kerstverlichting is weer uit!
@@ -116,7 +117,7 @@ automation:
   action:
   - service: switch.turn_on
     target:
-      entity_id: switch.plug_2
+      entity_id: switch.kerstboom
   mode: single
 
 - alias: 🎄 Kerstboom binnen aan om 9u00 (weekend)
@@ -138,10 +139,23 @@ automation:
   action:
   - service: switch.turn_on
     target:
-      entity_id: switch.plug_2
+      entity_id: switch.kerstboom
   mode: single
 
-- alias: 🎄 Kerstboom binnen uit om 23u00
+- alias: 🎄 Kerstboom binnen aan bij thuiskomst
+  id: '92d962fe-1066-49a6-ab20-dfd3c26a73e1'
+  trigger:
+  - platform: state
+    entity_id: group.gezin
+    to: 'home'
+  condition: []
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.kerstboom
+  mode: single  
+
+- alias: 🎄 Kerstboom binnen uit om 23u00 of bij niemand thuis
   id: aa945472-94cf-4dde-9cad-40eb1bc81245
   description: ''
   trigger:
@@ -165,7 +179,6 @@ automation:
   action:
   - service: switch.turn_off
     target:
-      entity_id: switch.plug_2
+      entity_id: switch.kerstboom
   mode: single
-  
-
+    

@@ -494,8 +494,7 @@ sensor:
     multiply_factor: 2
 
 ###############################################################################
-# How long the TV has played and lights were on
-# Used to calculate the power consumption
+# historiek TV
 ###############################################################################
 
   - platform: history_stats
@@ -507,13 +506,21 @@ sensor:
     end: '{{ now() }}'
 
   - platform: history_stats
-    name: "ADS TV aan vandaag"
+    name: "Amilya TV aan vandaag"
     entity_id: media_player.ads_tv
     state: "playing"
     type: time
     start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
     end: '{{ now() }}'
 
+  - platform: history_stats
+    name: "Alunya TV aan vandaag"
+    entity_id: media_player.alunya_tv
+    state: "playing"
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+ 
   - platform: history_stats
     name: "master bedroom TV aan vandaag"
     entity_id: binary_sensor.master_bedroom_tv_on
@@ -530,6 +537,10 @@ sensor:
     start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
     end: '{{ now() }}'
     
+#####################################################################
+# historiek lichten
+#####################################################################
+    
   - platform: history_stats
     name: "living lichten links aan vandaag"
     entity_id: light.living_links 
@@ -541,6 +552,14 @@ sensor:
   - platform: history_stats
     name: "living lichten rechts aan vandaag"
     entity_id: light.living_rechts 
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "gang lichten aan vandaag"
+    entity_id: light.gang
     state: 'on'
     type: time
     start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
@@ -577,6 +596,10 @@ sensor:
     type: time
     start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
     end: '{{ now() }}'
+
+#####################################################################
+# historiek ramen
+#####################################################################
 
   - platform: history_stats
     name: "keuken raam open vandaag"
@@ -642,6 +665,17 @@ sensor:
     start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
     end: '{{ now() }}'
 
+###############################################################################
+# 
+###############################################################################
+
+  - platform: history_stats
+    name: pagina's vandaag geprint
+    entity_id: sensor.dcp_l8410cdw_duplex_unit_pages_counter
+    state: "on"
+    type: count
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
 
 ###############################################################################
 # 
@@ -805,31 +839,40 @@ sensor:
       dehumidifier_elec:
         unit_of_measurement: W
         friendly_name: "elektriciteitsverbruik ontvochtiger"
-        value_template: "{{ states('sensor.power_monitor_power') | float(default=0) | round(3) }}"
+        value_template: "{{ ( states('sensor.power_monitor_power') | float(default=0) ) | round(3) }}"
 
   - platform: template
     sensors:  
       living_tv_elec:
         unit_of_measurement: kW
-        friendly_name: "elektriciteitsverbruik TV living"
-        value_template: "{{ states('sensor.living_tv_aan_vandaag') | float(default=0) * 0.085 | round(3) }}"
+        friendly_name: "elektriciteitsverbruik living TV"
+        value_template: "{{ ( states('sensor.living_tv_aan_vandaag') | float(default=0) * 0.085 ) | round(3) }}"
    # TV consumes 82 W per hour + Google TV 3 W per hour
    
   - platform: template
     sensors:  
       master_bedroom_tv_elec:
         unit_of_measurement: kW
-        friendly_name: "elektriciteitsverbruik TV master bedroom"
-        value_template: "{{ states('sensor.master_bedroom_tv_aan_vandaag') | float(default=0) * 0.063 | round(3) }}"
+        friendly_name: "elektriciteitsverbruik master bedroom TV"
+        value_template: "{{ ( states('sensor.master_bedroom_tv_aan_vandaag') | float(default=0) * 0.063 ) | round(3) }}"
    # TV + Google TV consumes 63 W per hour
 
   - platform: template
     sensors:  
-      ads_tv_elec:
+      amilya_tv_elec:
         unit_of_measurement: kW
-        friendly_name: "elektriciteitsverbruik ADS TV"
-        value_template: "{{ states('sensor.ads_tv_aan_vandaag') | float(default=0) * 0.085 | round(3) }}"
+        friendly_name: "elektriciteitsverbruik Amilya TV"
+        value_template: "{{ ( states('sensor.amilya_tv_aan_vandaag') | float(default=0) * 0.085 ) | round(3) }}"
    # TV consumes 82 W per hour + Google Chromecast 3 W per hour
+
+  - platform: template
+    sensors:  
+      alunya_tv_elec:
+        unit_of_measurement: kW
+        friendly_name: "elektriciteitsverbruik Alunya TV"
+        value_template: "{{ ( states('sensor.alunya_tv_aan_vandaag') | float(default=0) * 0.085 ) | round(3) }}"
+   # TV consumes 82 W per hour + Google Chromecast 3 W per hour
+
 
 #   Examples    
 #   value_template: '{{ (value| float)}}'
@@ -838,8 +881,8 @@ sensor:
 
       tv_energy:
         friendly_name: "energieverbruik TV's"
-        unit_of_measurement: kW
-        value_template: "{{ states('sensor.living_tv_elec') | float + states('sensor.master_bedroom_tv_elec') | float + states('sensor.ads_tv_elec') | float | round(3) }}"
+        unit_of_measurement: kWh
+        value_template: "{{ states('sensor.living_tv_elec') | float + states('sensor.master_bedroom_tv_elec') | float + states('sensor.amilya_tv_elec') | float + states('sensor.alunya_tv_elec') | float | round(3) }}"
         attribute_templates:
           last_reset: "1970-01-01T00:00:00+00:00"
           state_class: measurement
@@ -1071,7 +1114,24 @@ binary_sensor:
         friendly_name: "master bedroom tv aan"
         value_template: >-
           {{ states('media_player.master_bedroom_tv') in ['unknown', 'playing'] }}
-    # als netflix speelt is de status "unknown"    
+    # als netflix speelt is de status "unknown"
+    
+  - platform: template
+    sensors:
+      alunya_tv_on:
+        friendly_name: "Alunya tv aan"
+        value_template: >-
+          {{ states('media_player.alunya_tv') in ['unknown', 'playing'] }}
+    # als netflix speelt is de status "unknown"
+
+  - platform: template
+    sensors:
+      amilya_tv_on:
+        friendly_name: "Amilya tv aan"
+        value_template: >-
+          {{ states('media_player.amilya_tv') in ['unknown', 'playing'] }}
+    # als netflix speelt is de status "unknown"
+
 
 ###############################################################################
 #

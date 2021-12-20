@@ -1,8 +1,8 @@
 ############################ Table of Contents ############################ 
 # 
 #   Automations
-#   🚀 Pi processor temp >72 °C = melding
-#   🚀 CPU > 60% = melding
+#   🚀 Pi CPU temp >72 °C = melding
+#   🚀 Pi CPU > 60% = melding
 #   🚀 system shutdown notification
 #   🚀 system restart notification
 #   🚀 Low battery level detection & notification for all battery sensors
@@ -16,7 +16,7 @@
 
 
 automation:
-- alias: 🚀 Pi processor temp >72 °C = melding
+- alias: 🚀 Pi CPU temp >72 °C = melding
   id: '64c59baf-e8fb-4fc0-b789-cf74742e57e4'
   description: ''
   trigger:
@@ -32,7 +32,7 @@ automation:
       title: Raspberry PI
   mode: single
   
-- alias: 🚀 CPU > 60% = melding
+- alias: 🚀 Pi CPU > 60% = melding
   id: 'db887805-238d-4fe2-8512-e10b918eefe3'
   description: ''
   trigger:
@@ -48,9 +48,9 @@ automation:
       title: Raspberry Pi
   mode: single
 
-- alias: 🚀 system shutdown notification
+- alias: 🚀 HA stopt
   id: 'f15aa89e-f40c-45ad-8c54-dfa8317a98d1'
-  description: Send notification on Home Assistant stop
+  description:
   trigger:
   - platform: homeassistant
     event: shutdown
@@ -60,9 +60,9 @@ automation:
       message: Home Assistant wordt gestopt.
   mode: single
 
-- alias: 🚀 system restart notification
+- alias: 🚀 HA is herstart
   id: 'c7eacdc5-7bf3-4a6f-a4a4-03fb7e62262c'
-  description: Send notification on Home Assistant start
+  description:
   trigger:
   - platform: homeassistant
     event: start
@@ -73,7 +73,7 @@ automation:
       message: Home Assistant is volledig gestart.
   mode: single
 
-- alias: 🚀 Low battery level detection & notification for all battery sensors
+- alias: 🚀 Melding lage batterij voor alle batterijsensoren
   id: '9e972067-200b-4b7c-9a33-4a1d79543085'
   description: ''
   use_blueprint:
@@ -157,12 +157,21 @@ automation:
   - platform: state
     entity_id: binary_sensor.toilet_motion_sensor_motion
     to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30    
   condition: []
   action:
   - service: counter.increment
     target:
       entity_id: counter.toilet_counter
-  mode: single
+  - delay:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  mode: single    
 
 - alias: '⏱ toiletteller: reset om middernacht'
   id: 'toiletteller: reset om middernacht'

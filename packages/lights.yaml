@@ -309,3 +309,47 @@ automation:
       entity_id: light.master_bedroom_staande_lamp
   mode: single
 
+- alias: licht gang uit na 1 minuut
+  id: 'd268f950-cbb3-4220-a017-850bb950ec4a'
+  description: ''
+  trigger:
+  - platform: device
+    type: turned_on
+    device_id: dfa6e3e21463bd9dd78d7797538d0856
+    entity_id: light.gang_spot_achter
+    domain: light
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  condition: []
+  action:
+  - type: turn_off
+    device_id: dfa6e3e21463bd9dd78d7797538d0856
+    entity_id: light.gang_spot_achter
+    domain: light
+  - type: turn_off
+    device_id: 000f3ef55a11cba542ee124d2cd9d1bd
+    entity_id: light.gang_spot_midden
+    domain: light
+  - type: turn_off
+    device_id: dcd326d2513a14f044cc1d90f5e9bb8f
+    entity_id: light.gang_spot_voor
+    domain: light
+  mode: single
+
+- alias: licht toilet uit na 4 minuten
+  id: cb7ab5c4-1930-4495-a55a-85d1d6e26a8b
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: light.toilet
+    to: 'on'
+    for: '00:04:00'
+  condition: []
+  action:
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.toilet
+  mode: single
