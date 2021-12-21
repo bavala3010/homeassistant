@@ -887,7 +887,7 @@ sensor:
           last_reset: "1970-01-01T00:00:00+00:00"
           state_class: measurement
           device_class: energy
-          icon: mdi:counter
+          icon: mdi:chart-histogram
 
   - platform: template
     sensors:
