@@ -29,10 +29,10 @@ check_auto_op_slot:
           title: SLUIT AUTO
 
 ###########################################
-#  not allowed by Audi Etron
-#  start_window_heating
-#  start_preheater
-#  start_charger
+#  The following functions are not allowed by Audi Etron:
+#    start_window_heating
+#    start_preheater
+#    start_charger
 
 auto_start_climatisation:
   alias: auto start climatisatie

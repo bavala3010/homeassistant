@@ -173,6 +173,14 @@ gang_lichten:
     - light.gang_spot_midden
     - light.gang_spot_achter
     
+badkamer_lichten:
+  name: badkamer lichten
+  entities:
+    - light.bad
+    - light.douche
+    - light.wasbak_links
+    - light.wasbak_rechts
+
 #######################################################################
 # plugs
 #######################################################################

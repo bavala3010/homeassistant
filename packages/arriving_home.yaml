@@ -121,8 +121,11 @@ automation:
     event_data:
       action: open_garage
   action:
-  - scene: scene.v5bab2lu7dc9oexz
-
+  - service: cover.open_cover
+    target:
+      entity_id: cover.garagepoort_door
+  mode: single
+  
 - alias: Open voordeur
   id: 'b432c591-0c68-40fe-a22b-0f31296d1ba5'
   trigger:
@@ -134,22 +137,4 @@ automation:
   - service: lock.unlock
     target:
       entity_id: lock.voordeur
-  mode: single
-
-- alias: Madouce verlaat huis, check mobiel internet
-  id: '7a3032cd-ad92-448b-98e2-d8068a396ea1'
-  description: ''
-  trigger:
-  - platform: zone
-    entity_id: device_tracker.madouce_s20
-    zone: zone.home
-    event: leave
-  condition:
-  - condition: state
-    entity_id: binary_sensor.madouce_s20_mobiele_data
-    state: 'off'
-  action:
-  - service: notify.bart_phone
-    data:
-      message: Mobiele data telefoon Madouce staat niet aan.
   mode: single
