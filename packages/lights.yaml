@@ -30,29 +30,15 @@ automation:
     from: 'home'
   condition: []
   action:
-  - type: turn_off
-    device_id: 7fa0163478cef7ca4d8f74d7d8f8872e
-    entity_id: light.amilya_badkamer
-    domain: light
-  - type: turn_off
-    device_id: 5849a609ec647763c122b1619fdcc430
-    entity_id: light.amilya_plafond_1
-    domain: light
-  - type: turn_off
-    device_id: d132ab8d29e675c160114d2470ce12e5
-    entity_id: light.amilya_plafond_2
-    domain: light
-  - type: turn_off
-    device_id: 31f28530e074ca664948b83668a55dfa
-    entity_id: light.amilya_bol
-    domain: light
-  - type: turn_off
-    device_id: c17c802d6eae726de2531355e36a0d5e
-    entity_id: light.amilya_strip
-  - type: turn_off
-    device_id: c17c802d6eae726de2531355e36a0d5e
-    entity_id: light.amilya_strip
-    domain: light
+  - service: light.turn_off
+    target:
+      entity_id:
+        - light.amilya_badkamer
+        - light.amilya_plafond_1
+        - light.amilya_plafond_2
+        - light.amilya_bol
+        - light.amilya_strip
+        - light.amilya_strip
   mode: single
   
 - alias: 💡 Amilya licht badkamer brandt langer dan 20 minuten
@@ -84,18 +70,12 @@ automation:
     for: 00:03:00
   condition: []
   action:
-  - type: turn_off
-    device_id: 698a7cf7cee6d32dda3a430591d0ebe9
-    entity_id: light.alunya_bol
-    domain: light
-  - type: turn_off
-    device_id: c79c606a18f7c9049409ee7a945f768c
-    entity_id: light.alunya_staande_lamp
-    domain: light
-  - type: turn_off
-    device_id: bc3bf3bec76c984ab510c820d37ea63b
-    entity_id: light.alunya_wasbak
-    domain: light
+  - service: light.turn_off
+    target:
+      entity_id:
+        - light.alunya_bol
+        - light.alunya_staande_lamp
+        - light.alunya_wasbak
   mode: single
 
 - alias: 💡 Alunya lichten uit om 1u, 2u, 3u en 4u 's nachts
@@ -112,18 +92,12 @@ automation:
     at: 04:00:00
   condition: []
   action:
-  - type: turn_off
-    device_id: 698a7cf7cee6d32dda3a430591d0ebe9
-    entity_id: light.alunya_bol
-    domain: light
-  - type: turn_off
-    device_id: c79c606a18f7c9049409ee7a945f768c
-    entity_id: light.alunya_staande_lamp
-    domain: light
-  - type: turn_off
-    device_id: bc3bf3bec76c984ab510c820d37ea63b
-    entity_id: light.alunya_wasbak
-    domain: light
+  - service: light.turn_off
+    target:
+      entity_id:
+        - light.alunya_bol
+        - light.alunya_staande_lamp
+        - light.alunya_wasbak
   mode: single
 
 - alias: 💡 Donker, <20° buiten en thuis = licht aan
@@ -278,10 +252,10 @@ automation:
     to: 'off'
   condition: []
   action:
-  - type: turn_off
-    device_id: d5ef9b4f569a408660e7e445331abfcc
-    entity_id: light.tv_strip
-    domain: light
+  - service: light.turn_off
+    target:
+      entity_id:
+      -  light.tv_strip
   mode: single
   
 - alias: 💡 master bedroom TV aan 's avonds = gezellig licht
@@ -324,18 +298,12 @@ automation:
       seconds: 0
   condition: []
   action:
-  - type: turn_off
-    device_id: dfa6e3e21463bd9dd78d7797538d0856
-    entity_id: light.gang_spot_achter
-    domain: light
-  - type: turn_off
-    device_id: 000f3ef55a11cba542ee124d2cd9d1bd
-    entity_id: light.gang_spot_midden
-    domain: light
-  - type: turn_off
-    device_id: dcd326d2513a14f044cc1d90f5e9bb8f
-    entity_id: light.gang_spot_voor
-    domain: light
+  - service: light.turn_off
+    target:
+      entity_id:
+        - light.gang_spot_achter
+        - light.gang_spot_midden
+        - light.gang_spot_voor
   mode: single
 
 - alias: licht toilet uit na 4 minuten

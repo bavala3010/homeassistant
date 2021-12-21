@@ -16,6 +16,7 @@
 
 
 automation:
+
 - alias: 🚀 Pi CPU temp >72 °C = melding
   id: '64c59baf-e8fb-4fc0-b789-cf74742e57e4'
   description: ''
@@ -50,7 +51,7 @@ automation:
 
 - alias: 🚀 HA stopt
   id: 'f15aa89e-f40c-45ad-8c54-dfa8317a98d1'
-  description:
+  description: ''
   trigger:
   - platform: homeassistant
     event: shutdown
@@ -62,7 +63,7 @@ automation:
 
 - alias: 🚀 HA is herstart
   id: 'c7eacdc5-7bf3-4a6f-a4a4-03fb7e62262c'
-  description:
+  description: ''
   trigger:
   - platform: homeassistant
     event: start

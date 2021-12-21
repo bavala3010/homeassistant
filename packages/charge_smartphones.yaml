@@ -11,13 +11,14 @@
 ############################ Automations ################################## 
 
 automation:
+
 - alias: 🔌 S20+ Madouce 90% geladen = stekker uit
   id: '0103219c-07a8-4e3f-b103-2df77aaa464e'
   description: ''
   trigger:
   - platform: numeric_state
     entity_id: sensor.madouce_s20_batterijniveau
-    above: '90'
+    above: 90
   condition:
   - condition: time
     after: '23:00:00'
@@ -34,10 +35,11 @@ automation:
   trigger:
   - platform: numeric_state
     entity_id: sensor.sm_g975f_battery_level
-    above: '90'
+    above: 90
+  condition:    
   - condition: time
     after: '23:00:00'
-    before: 06:00:00
+    before: '06:00:00'
   action:
   - service: switch.turn_off
     target:
@@ -53,7 +55,7 @@ automation:
   condition:
   - condition: numeric_state
     entity_id: sensor.sm_g975f_battery_level
-    below: '95'
+    below: 95
   action:
   - service: switch.turn_on
     target:
@@ -74,7 +76,7 @@ automation:
   condition:
   - condition: numeric_state
     entity_id: sensor.madouce_s20_batterijniveau
-    below: '95'
+    below: 95
   action:
   - service: switch.turn_on
     target:
@@ -98,11 +100,11 @@ automation:
   - condition: and
     conditions:
     - condition: time
-      before: 00:00
+      before: '00:00'
       after: '22:00'
     - condition: numeric_state
       entity_id: sensor.madouce_s20_batterijniveau
-      below: '90'
+      below: 90
   action:
   - service: switch.turn_on
     target:

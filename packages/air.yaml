@@ -7,13 +7,11 @@ automation:
   - minutes: /5
     platform: time_pattern
   condition:
-  - condition: numeric_state
-    entity_id: fan.xiaomi_air_purifier_3h
-    attribute: aqi
-    above: '8'
+  - condition: template
+    value_template: "{{ state_attr('fan.xiaomi_air_purifier_3h', 'aqi')| float(default=0) > 8  }}"
   - condition: state
     entity_id: group.gezin
-    state: home
+    state: 'home'
   - condition: time
     after: '7:00'
     before: '23:30'
@@ -31,10 +29,8 @@ automation:
   - minutes: /5
     platform: time_pattern
   condition:
-  - condition: numeric_state
-    entity_id: fan.xiaomi_air_purifier_3h
-    attribute: aqi
-    below: '8'
+  - condition: template
+    value_template: "{{ state_attr('fan.xiaomi_air_purifier_3h', 'aqi')| float(default=0) < 8  }}"
   - condition: state
     entity_id: input_boolean.busy_cooking
     state: 'off'    
@@ -158,12 +154,10 @@ automation:
   - platform: time
     at: input_datetime.max_dagtemperatuur_uur
   condition:
-    - condition: numeric_state
-      entity_id: sensor.alunya_raam_open_vandaag
-      below: '0.1'
-    - condition: numeric_state
-      entity_id: sensor.kamer_alunya_heating
-      below: '0.1'     
+  - condition: template
+    value_template: "{{ ('sensor.alunya_raam_open_vandaag')| float(default=0) == 0 }}"
+  - condition: template
+    value_template: "{{ ('sensor.kamer_alunya_heating')| float(default=0) == 0 }}"
   action:
   - service: notify.bart_phone
     data:
@@ -182,12 +176,10 @@ automation:
   - platform: time
     at: input_datetime.max_dagtemperatuur_uur
   condition:
-    - condition: numeric_state
-      entity_id: sensor.amilya_raam_open_vandaag
-      below: '0.1'
-    - condition: numeric_state
-      entity_id: sensor.kamer_amilya_heating
-      below: '0.1'
+  - condition: template
+    value_template: "{{ ('sensor.amilya_raam_open_vandaag')| float(default=0) == 0 }}"
+  - condition: template
+    value_template: "{{ ('sensor.kamer_amilya_heating')| float(default=0) == 0 }}"
   action:
   - service: notify.bart_phone
     data:
@@ -206,12 +198,10 @@ automation:
   - platform: time
     at: input_datetime.max_dagtemperatuur_uur
   condition:
-    - condition: numeric_state
-      entity_id: sensor.keuken_raam_open_vandaag
-      below: 'O.1'
-    - condition: numeric_state
-      entity_id: sensor.living_room_heating
-      below: '0.1'
+  - condition: template
+    value_template: "{{ ('sensor.keuken_raam_open_vandaag')| float(default=0) == 0 }}"
+  - condition: template
+    value_template: "{{ ('sensor.living_room_heating')| float(default=0) == 0 }}"
   action:
   - service: notify.bart_phone
     data:
