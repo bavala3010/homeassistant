@@ -15,9 +15,12 @@
 
 ############################ Automations ################################## 
 
-# gekopieerd naar automations.yml en alles OK
 
 automation:
+
+#################################################  
+# Amilya
+#################################################
 
 - alias: 💡 Amilya niet thuis = lichten uit
   id: 'c5fc-389d-42e8-8f3f-78f'
@@ -60,6 +63,34 @@ automation:
       entity_id: light.amilya_badkamer
   mode: single
 
+- alias: 💡 Amilya lichtschakelaar deur ingedrukt = badkamerlicht aan voor 2 minuten
+  # de andere lichten gaan ook gewoon aan, maar enkel licht badkamer gaat nadien uit
+  id: 'd40b0f01-3e2f-4382-9480-971874f9d4f6'
+  description: ''
+  trigger:
+  - device_id: 925e49167bd25df143efa1a2e317424d
+    domain: hue
+    platform: device
+    type: short_release
+    subtype: 1
+    unique_id: beaaeaf3-d5e1-4d50-8aa9-1dfc2065073e
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  - service: light.turn_off
+    target:
+      entity_id: light.amilya_badkamer
+  mode: single
+
+
+#################################################  
+# Alunya
+#################################################
+
 - alias: 💡 Alunya niet thuis = licht uit
   id: 'b31b70d7-e8c0-4bb8-8a45-335d57d427b8'
   description: ''
@@ -100,6 +131,11 @@ automation:
         - light.alunya_wasbak
   mode: single
 
+
+#################################################  
+# living
+#################################################
+
 - alias: 💡 Donker, <20° buiten en thuis = licht aan
   id: '9652f025-25a5-4eb0-8eb4-6f61ecb57936'
   description: ''
@@ -119,87 +155,6 @@ automation:
     device_id: a0297c6061546a2108b2d33e01ed449d
     entity_id: light.living_links_3
     domain: light
-  mode: single
-
-- alias: 💡 Het wordt donker = living bol inschakelen
-  id: 'd754582e-1ba3-44f2-93ef-32a7f9bbc2af'
-  description: ''
-  trigger:
-  - platform: sun
-    event: sunset
-  condition: []
-  action:
-  - type: turn_on
-    device_id: 3623c76590024bf538fcc54a365fc8cc
-    entity_id: light.living_bol
-    domain: light
-    brightness_pct: 10
-    flash: long
-  mode: single
-
-- alias: 💡 Master bedroom deurswitch
-  id: '0ca77314-116c-4d39-bf43-fd51e9771514'
-  description: ''
-  trigger:
-  - device_id: 4247e8ef769909d83520323811fc6550
-    domain: hue
-    platform: device
-    type: short_release
-    subtype: 1
-    unique_id: 6e39bb0e-63cc-4dad-9237-29b7cc04d796
-  condition:
-  - condition: sun
-    after: sunset
-  action:
-  - service: light.turn_on
-    target:
-      entity_id:
-      - light.master_bedroom_play_madouce
-      - light.master_bedroom_play_bart
-      - light.master_bedroom_staande_lamp
-    data:
-      brightness_pct: 75
-  mode: single
-
-- alias: 'licht in garage'
-  id: c3801d8a-dd6e-444e-9a25-0adc8c0655d8
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.garage_sensor_light_level
-    for:
-      hours: 0
-      minutes: 10
-      seconds: 0
-      milliseconds: 0
-    above: '4'
-  condition: []
-  action:
-  - repeat:
-      while:
-      - condition: numeric_state
-        entity_id: sensor.garage_sensor_light_level
-        above: '4'
-      sequence:
-      - service: notify.bart_phone
-        data:
-          message: "Licht in garage brandt al {{ as_timestamp(now()) - as_timestamp(state_attr('automation.licht_in_garage'),'last_triggered') | int }} minuten."
-          title: Licht in garage
-          data:
-            color: blue
-            tag: garage_licht
-      - delay:
-          minutes: 5
-  - service: notify.bart_phone
-    data:
-      message: "clear_notification"
-      data:
-        tag: garage_licht
-  - service: notify.madouce_phone
-    data:
-      message: "clear_notification"
-      data:
-        tag: garage_licht
   mode: single
 
 - alias: 💡 TV aan + zon onder = TV strip aan
@@ -257,7 +212,28 @@ automation:
       entity_id:
       -  light.tv_strip
   mode: single
-  
+
+- alias: 💡 Het wordt donker = living bol inschakelen
+  id: 'd754582e-1ba3-44f2-93ef-32a7f9bbc2af'
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+  condition: []
+  action:
+  - type: turn_on
+    device_id: 3623c76590024bf538fcc54a365fc8cc
+    entity_id: light.living_bol
+    domain: light
+    brightness_pct: 10
+    flash: long
+  mode: single
+
+
+#################################################  
+# Master bedroom
+#################################################
+
 - alias: 💡 master bedroom TV aan 's avonds = gezellig licht
   id: 62b15358-7447-43f7-9c76-b2d72db61875
   description: ''
@@ -283,7 +259,77 @@ automation:
       entity_id: light.master_bedroom_staande_lamp
   mode: single
 
-- alias: licht gang uit na 1 minuut
+- alias: 💡 Master bedroom deurswitch
+  id: '0ca77314-116c-4d39-bf43-fd51e9771514'
+  description: ''
+  trigger:
+  - device_id: 4247e8ef769909d83520323811fc6550
+    domain: hue
+    platform: device
+    type: short_release
+    subtype: 1
+    unique_id: 6e39bb0e-63cc-4dad-9237-29b7cc04d796
+  condition:
+  - condition: sun
+    after: sunset
+  action:
+  - service: light.turn_on
+    target:
+      entity_id:
+      - light.master_bedroom_play_madouce
+      - light.master_bedroom_play_bart
+      - light.master_bedroom_staande_lamp
+    data:
+      brightness_pct: 75
+  mode: single
+
+
+#################################################  
+# Gang, toilet, garage
+#################################################
+
+- alias: 'licht in garage'
+  id: c3801d8a-dd6e-444e-9a25-0adc8c0655d8
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.garage_sensor_light_level
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+    above: '4'
+  condition: []
+  action:
+  - repeat:
+      while:
+      - condition: numeric_state
+        entity_id: sensor.garage_sensor_light_level
+        above: '4'
+      sequence:
+      - service: notify.bart_phone
+        data:
+          message: "Licht in garage brandt al {{ as_timestamp(now()) - as_timestamp(state_attr('automation.licht_in_garage'),'last_triggered') | int }} minuten."
+          title: Licht in garage
+          data:
+            color: blue
+            tag: garage_licht
+      - delay:
+          minutes: 5
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: garage_licht
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: garage_licht
+  mode: single
+
+- alias: 💡 licht gang uit na 1 minuut
   id: 'd268f950-cbb3-4220-a017-850bb950ec4a'
   description: ''
   trigger:
@@ -306,7 +352,7 @@ automation:
         - light.gang_spot_voor
   mode: single
 
-- alias: licht toilet uit na 5 minuten
+- alias: 💡 licht toilet uit na 5 minuten
   id: cb7ab5c4-1930-4495-a55a-85d1d6e26a8b
   description: ''
   trigger:
@@ -321,3 +367,5 @@ automation:
       entity_id:
       - light.toilet
   mode: single
+
+  

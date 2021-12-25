@@ -11,6 +11,11 @@
 ############################ Automations ################################## 
 
 automation:
+
+##########################################################################
+# binnen
+##########################################################################
+
 - alias: 🔐 garagepoorttag binnen gescand door Bart
   id: '67a89219-5e5a-4862-b4a2-55f6013be43e'
   description: ''
@@ -80,14 +85,19 @@ automation:
         color: "#FFA500"
         channel: home_access
   mode: single
-  
+
+
+##########################################################################
+# buiten
+##########################################################################
+
 - alias: 🔐 garagepoorttag buiten gescand door Bart
   id: '15550e2d-9a16-4d69-9342-c753548c534b'
   description: ''
   trigger:
   - platform: tag
     tag_id: !secret id_tag_garagepoort_buiten
-    device_id: scene.garagepoort_open
+    device_id: !secret id_nfc_bart
   condition: []
   action:
   - service: tts.google_say

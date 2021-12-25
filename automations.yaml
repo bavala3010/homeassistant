@@ -176,3 +176,24 @@
     entity_id: light.gang_spot_voor
     domain: light
   mode: single
+- id: '1640431702137'
+  alias: Amilya lichtschakelaar deur ingedrukt = badkamerlicht aan voor 2 minuten
+  description: ''
+  trigger:
+  - device_id: 925e49167bd25df143efa1a2e317424d
+    domain: hue
+    platform: device
+    type: short_release
+    subtype: 1
+    unique_id: beaaeaf3-d5e1-4d50-8aa9-1dfc2065073e
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  - service: light.turn_off
+    target:
+      entity_id: light.amilya_badkamer
+  mode: single

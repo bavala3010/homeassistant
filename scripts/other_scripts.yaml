@@ -72,3 +72,21 @@ speak:
     data_template:
       message: "{{ message }}"
   mode: queued
+  
+toilet_douche_ventilator_aan:
+  alias: 💨 ventilator in toilet/douche 10 minuten aan  
+  sequence:
+  - service: switch.turn_on
+    target:
+      entity_id:
+      - switch.toilet_douche_ventilatie
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - service: switch.turn_off
+    target:
+      entity_id:
+      - switch.toilet_douche_ventilatie
+      
