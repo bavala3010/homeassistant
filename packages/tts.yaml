@@ -1,0 +1,25 @@
+automation:
+
+- alias: tts_announce
+  id: '0ac397dd-357f-4c69-919f-f3932ac97d7c'    
+  description: ''
+  trigger:
+    platform: state
+    entity_id: input_text.tts_synthesis
+  condition: []
+  action:
+  - service: tts.google_say
+    data_template:
+      entity_id: >
+          {% if is_state("input_select.chromecast_speaker", "Living") %} media_player.living_speaker
+          {% elif is_state("input_select.chromecast_speaker", "Veranda") %} media_player.veranda_speaker
+          {% elif is_state("input_select.chromecast_speaker", "Living & veranda") %} media_player.groep_living_veranda
+          {% elif is_state("input_select.chromecast_speaker", "badkamer") %} media_player.badkamer_speaker
+          {% elif is_state("input_select.chromecast_speaker", "Alunya") %} media_player.alunya_speaker
+          {% elif is_state("input_select.chromecast_speaker", "Master bedroom") %} media_player.master_bedroom_speaker
+          {% endif %}
+      message: '{{ states(''input_text.tts_synthesis'') }}'
+  mode: single
+  
+  
+  

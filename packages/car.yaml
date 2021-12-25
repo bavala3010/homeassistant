@@ -142,7 +142,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /lovelace/e-tron
+          uri: /lovelace-eikenbos_apparaten/e-tron
   - service: notify.madouce_phone
     data:
       message: 🚙 Auto is aan het laden. Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%.

@@ -138,18 +138,20 @@ automation:
       message: Google servers konden opnieuw worden bereikt.
   mode: single
 
-- alias: 🚀 Home Assistant update notification
-  id: '3cc10db6-a3e7-4a90-b165-87a606e438cd'
+- alias: 🚀 Nieuwe versie Home Assistant beschikbaar
+  id: 27f3b3f5-aad9-4aaf-a37b-461e1a856935
   description: ''
-  use_blueprint:
-    path: Klumper/update_notification.yaml
-    input:
-      notification_message: Home Assistant {{ newest_version }} is available
-      delay: 0
-      updater: binary_sensor.updater
-      notify_device: b5d28be91fff8c03aece377f73b28dd2
-      is_ios: false
-      notification_title: Upgrade time!
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.updater
+    to: 'on'
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Er is een update van Home Assistant beschikbaar.
+      message: "Nieuwe versie: {{ state_attr('binary_sensor.updater', 'newest_version') }}"
+  mode: single
 
 - alias: '⏱ toiletteller: beweging = + 1'
   id: toiletteller

@@ -306,14 +306,14 @@ automation:
         - light.gang_spot_voor
   mode: single
 
-- alias: licht toilet uit na 4 minuten
+- alias: licht toilet uit na 5 minuten
   id: cb7ab5c4-1930-4495-a55a-85d1d6e26a8b
   description: ''
   trigger:
   - platform: state
     entity_id: light.toilet
     to: 'on'
-    for: '00:04:00'
+    for: '00:05:00'
   condition: []
   action:
   - service: light.turn_off
