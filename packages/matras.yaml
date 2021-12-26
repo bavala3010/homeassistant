@@ -1,0 +1,64 @@
+automation:
+
+- alias: 🛌 Madouce thuis om 22u15 en <15° buiten = matras aan
+  id: d71eddad-0ba8-45b3-84e7-8be3589de0fc
+  description: ''
+  trigger:
+  - platform: time
+    at: '22:15'
+  condition:
+  - condition: state
+    entity_id: device_tracker.madouce_samsung_s20
+    state: home
+  - condition: numeric_state
+    entity_id: sensor.buitensensor_deur_temperature
+    below: '15'
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.smart_power_strip_4
+  mode: single
+  
+- alias: 🛌 Matras uitschakelen als die al 1 uur aanstaat
+  id: 6e09a54d-530d-4e8e-a9dd-8af7b9ec7554
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.smart_power_strip_4
+    to: 'on'
+    for:
+      hours: 1
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.smart_power_strip_4
+  mode: single
+  
+- alias: 🛌 Bij thuiskomst Madouce na 22u15, matras inschakelen
+  id: f66e33c4-88b9-4a32-9e15-7d38d5e7120e
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: device_tracker.madouce_samsung_s20
+    from: 'not_home'
+    to: 'home'
+  condition:
+  - condition: time
+    after: '22:15'
+    before: '02:00'
+  - condition: numeric_state
+    entity_id: sensor.buitensensor_deur_temperature
+    below: '15'
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.smart_power_strip_4
+  - service: notify.madouce_phone
+    data:
+      title: Matrasverwarming ingeschakeld.
+      message: Geniet ervan ;)      
+  mode: single

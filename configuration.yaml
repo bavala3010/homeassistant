@@ -105,7 +105,6 @@ recorder:
       - persistent_notification
       - script
       - sun
-      - switch
       - weather
       - zone
       - zwave
@@ -173,6 +172,9 @@ sensor:
   - platform: version
   # The version sensor platform can display the current Home Assistant versions.
 
+  - platform: google_wifi
+  # sensors to report network status, up-time, current IP address and firmware versions.
+  
   # sensors to check if there are updates in Ubuntu
   - platform: command_line
     name: System Updates

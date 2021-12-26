@@ -16,24 +16,6 @@
     target:
       entity_id: switch.smart_power_strip_4
   mode: single
-- alias: 🛌 Matras uitschakelen als die al 1 uur aanstaat
-  id: 6e09a54d-530d-4e8e-a9dd-8af7b9ec7554
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: switch.smart_power_strip_4
-    to: 'on'
-    for:
-      hours: 1
-      minutes: 0
-      seconds: 0
-      milliseconds: 0
-  condition: []
-  action:
-  - service: switch.turn_off
-    target:
-      entity_id: switch.smart_power_strip_4
-  mode: single
 - alias: 🏡 Bart is alleen thuis
   id: 02b63f41-9ea3-48eb-97aa-242a618f3400
   description: ''
