@@ -13,3 +13,4 @@ value_template: "{{ (1.006 * (states('sensor.veranda_temperature') | float) ) + 
 
 enthalpy_master_bedroom in KJ/kg
 value_template: "{{ (1.006 * (states('sensor.master_bedroom_temperature') | float) ) + ( (states('sensor.master_bedroom_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.master_bedroom_temperature') | float))) }}" 
+
