@@ -39,7 +39,7 @@ auto_start_climatisation:
   sequence:
   - service: timer.start
     data:
-      duration: '1200'
+      duration: '1800'
     target:
       entity_id: timer.car_climatisation
   - service: audiconnect.execute_vehicle_action
@@ -50,7 +50,7 @@ auto_start_climatisation:
     data:
       message: Climatisatie auto gestart
       data:
-        timeout: 12000  # 20 minuten
+        timeout: 18000  # 1800 seconden = half uur
         actions:
         - action: URI
           title: meer info
@@ -59,7 +59,7 @@ auto_start_climatisation:
     data:
       message: Climatisatie auto gestart
       data:
-        timeout: 12000  # 20 minuten
+        timeout: 180000  # half uur
         actions:
         - action: URI
           title: meer info

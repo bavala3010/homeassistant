@@ -130,3 +130,17 @@
     data:
       message: Afzuig toilet/douche STOPT nu.
   mode: restart
+- id: '1640598375537'
+  alias: TEST
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: ''
+  condition: []
+  action:
+  - service: camera.play_stream
+    data:
+      media_player: media_player.living_speaker
+    target:
+      entity_id: camera.indoor_camera
+  mode: single
