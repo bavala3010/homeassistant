@@ -66,9 +66,11 @@ alle_raam_sensoren:
     - binary_sensor.master_bedroom_raam_kantel
     - binary_sensor.master_bedroom_raam_wijd
     - binary_sensor.veranda_schuifraam
+    - binary_sensor.voordeur
+    - binary_sensor.voordeur_nuki
 
-living_room_ramen:
-  name: living_room_ramen
+living_ramen:
+  name: living_ramen
   entities:
     - binary_sensor.keuken_raam
     - binary_sensor.living_oprit_raam
@@ -112,7 +114,7 @@ alle_lichten_power:
     - sensor.living_bol_power
     - sensor.amilya_badkamer_power
   # - sensor.amilya_bureau_power
-    - sensor.amilya_living_room_power
+    - sensor.amilya_living_power
     - sensor.gang_power
   # - sensor.wasbak_links_power
   # - sensor.wasbak_rechts_power
@@ -142,7 +144,7 @@ amilya_lichten:
   entities:
     - light.amilya_badkamer
     - light.amilya_plafond
-    - light.amilya_living_room
+    - light.amilya_living
     - light.amilya_strip
     - light.amilya_bol
 

@@ -1,7 +1,7 @@
 ############################ Table of Contents ############################ 
 #
 #   Close windows notifications
-#   🪟 ramen - sluit raam living room (Bart en Madouce)
+#   🪟 ramen - sluit raam living (Bart en Madouce)
 #   🪟 ramen - sluit raam kamer Amilya (Bart en Madouce)
 #   🪟 ramen - sluit raam veranda (Bart en Madouce)
 #   🪟 ramen - sluit raam berging (Bart en Madouce)
@@ -10,7 +10,7 @@
 #   🪟 ramen - sluit raam master bedroom (Bart en Madouce)
 #
 #   Close windows clear notifications
-#   🪟 ramen - sluit raam living room - clear notification (Bart en Madouce)
+#   🪟 ramen - sluit raam living - clear notification (Bart en Madouce)
 #   🪟 ramen - sluit raam kamer Amilya - clear notification (Bart en Madouce)
 #   🪟 ramen - sluit raam veranda - clear notification (Bart en Madouce)
 #   🪟 ramen - sluit raam berging - clear notification (Bart en Madouce)
@@ -26,7 +26,7 @@ automation:
 # Close windows: send notifications
 ############################################
 
-- alias: 🪟 ramen - sluit raam living room (Bart en Madouce)
+- alias: 🪟 ramen - sluit raam living (Bart en Madouce)
   id: 'cec1c79b-5c6a-46a3-a3c7-5f981f7e18b3'
   description: ''
   trigger:
@@ -34,7 +34,7 @@ automation:
     minutes: /15
   condition:
   - condition: state
-    entity_id: input_boolean.living_room_raam_moet_dicht
+    entity_id: input_boolean.living_raam_moet_dicht
     state: 'on'
   - condition: or
     conditions:    
@@ -42,28 +42,28 @@ automation:
       entity_id: binary_sensor.keuken_raam
       state: 'on'
     - condition: state
-      entity_id: binary_sensor.living_room_oprit_raam
+      entity_id: binary_sensor.living_oprit_raam
       state: 'on'
     - condition: state
-      entity_id: binary_sensor.living_room_tuin_raam
+      entity_id: binary_sensor.living_tuin_raam
       state: 'on'
   - condition: state
-    entity_id: input_boolean.living_room_window_pause
+    entity_id: input_boolean.living_window_pause
     state: 'off'
   action:
   - service: script.notify_bart_windows
     data_template:
-      message: "Vocht living: {{states('sensor.gram_water_living_room')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Vocht living: {{states('sensor.living_room_humidity')}} %. Buiten: {{states('sensor.humidity_leuven24_wunderground')}} %.<br>Temp living: {{states('sensor.living_room_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      message: "Vocht living: {{states('sensor.gram_water_living')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Vocht living: {{states('sensor.living_humidity')}} %. Buiten: {{states('sensor.humidity_leuven24_wunderground')}} %.<br>Temp living: {{states('sensor.living_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: "Sluit raam van living/keuken!"
-      tag: "window_living_room"
-      action_window_pause: "living_room_window_pause"
+      tag: "window_living"
+      action_window_pause: "living_window_pause"
       reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 16 %} Te koud buiten. {% endif %}"
   - service: script.notify_madouce_windows
     data_template:
-      message: "Vocht living: {{states('sensor.gram_water_living_room')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp living: {{states('sensor.living_room_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+      message: "Vocht living: {{states('sensor.gram_water_living')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp living: {{states('sensor.living_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
       title: "Sluit raam van living/keuken!"
-      tag: "window_living_room"
-      action_window_pause: "living_room_window_pause"
+      tag: "window_living"
+      action_window_pause: "living_window_pause"
       reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 16 %} Te koud buiten. {% endif %}"
   mode: single
 
@@ -282,7 +282,7 @@ automation:
 # Clear notifications when window is closed
 ############################################
 
-- alias: 🪟 ramen - sluit raam living room - clear notification (Bart en Madouce)
+- alias: 🪟 ramen - sluit raam living - clear notification (Bart en Madouce)
   id: '14873cee-f737-4de1-9f0c-7e3ee45cea02'
   description: ''
   trigger:
@@ -291,20 +291,20 @@ automation:
     from: 'on'
     to: 'off'
   - platform: state
-    entity_id: binary_sensor.living_room_oprit_raam
+    entity_id: binary_sensor.living_oprit_raam
     from: 'on'
     to: 'off'
   - platform: state
-    entity_id: binary_sensor.living_room_tuin_raam
+    entity_id: binary_sensor.living_tuin_raam
     from: 'on'
     to: 'off'
   - platform: state
-    entity_id: input_boolean.living_room_window_pause
+    entity_id: input_boolean.living_window_pause
     from: 'off'
     to: 'on'
   condition:
   - condition: state
-    entity_id: input_boolean.living_room_raam_moet_dicht
+    entity_id: input_boolean.living_raam_moet_dicht
     state: 'on'
   - condition: time
     after: '7:0:0'
@@ -314,12 +314,12 @@ automation:
     data:
       message: "clear_notification"
       data:
-        tag: window_living_room
+        tag: window_living
   - service: notify.madouce_phone
     data:
       message: "clear_notification"
       data:
-        tag: window_living_room
+        tag: window_living
   mode: single
 
 - alias: 🪟 ramen - sluit raam kamer Amilya - clear notification (Bart en Madouce)
@@ -496,7 +496,6 @@ automation:
   trigger:
   - platform: state
     entity_id: binary_sensor.master_bedroom_raam_kantel
-    from: 'on'
     to: 'off'
   - platform: state
     entity_id: input_boolean.master_bedroom_window_pause

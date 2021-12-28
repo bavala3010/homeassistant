@@ -1,7 +1,7 @@
 ############################ Table of Contents ############################ 
 #
 #  check to OPEN windows
-#  🪟 ramen - check living room (moet open)
+#  🪟 ramen - check living (moet open)
 #  🪟 ramen - check kamer Amilya (moet open)
 #  🪟 ramen - check veranda (moet open)
 #  🪟 ramen - check berging (moet open)
@@ -12,7 +12,7 @@
 
 automation:
 
-- alias: 🪟 ramen - check living room (moet open)
+- alias: 🪟 ramen - check living (moet open)
   id: '856ea331-ad65-41ec-bb62-5eaceb73c301'
   description: ''
   trigger:
@@ -21,7 +21,7 @@ automation:
   - platform: state
     entity_id: sensor.temp_leuven24_wunderground  
   - platform: state
-    entity_id: sensor.gram_water_living_room    
+    entity_id: sensor.gram_water_living    
   condition:
   - condition: template
     value_template: >
@@ -29,10 +29,10 @@ automation:
         trigger.from_state is not none and
         trigger.to_state.state != trigger.from_state.state}}
   - condition: numeric_state
-    entity_id: sensor.living_room_temperature
+    entity_id: sensor.living_temperature
     above: '17'            
   - condition: numeric_state
-    entity_id: sensor.living_room_heating
+    entity_id: sensor.living_heating
     below: '0.1'
   - condition: template
     value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float) >= 15 }}"     
@@ -44,21 +44,21 @@ automation:
             entity_id: binary_sensor.gram_water_outside_rising
             state: 'off'
           - condition: template
-            value_template: "{{ states('sensor.gram_water_living_room_diff_outside') | float >= 0.5 }}"
+            value_template: "{{ states('sensor.gram_water_living_diff_outside') | float >= 0.5 }}"
       - condition: and
         conditions:
           - condition: state
             entity_id: binary_sensor.gram_water_outside_rising
             state: 'on'
           - condition: template
-            value_template: "{{ states('sensor.gram_water_living_room_diff_outside') | float >= 1 }}"
+            value_template: "{{ states('sensor.gram_water_living_diff_outside') | float >= 1 }}"
   action:
   - service: input_boolean.turn_on
     target:
-      entity_id: input_boolean.living_room_raam_moet_open
+      entity_id: input_boolean.living_raam_moet_open
   - service: input_boolean.turn_off
     target:
-      entity_id: input_boolean.living_room_raam_moet_dicht
+      entity_id: input_boolean.living_raam_moet_dicht
   mode: restart
   
 - alias: 🪟 ramen - check kamer Amilya (moet open)
