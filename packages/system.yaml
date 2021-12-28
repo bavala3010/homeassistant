@@ -33,13 +33,13 @@ automation:
       title: Raspberry PI
   mode: single
   
-- alias: 🚀 Pi CPU > 60% = melding
+- alias: 🚀 Pi CPU > 50% = melding
   id: 'db887805-238d-4fe2-8512-e10b918eefe3'
   description: ''
   trigger:
   - platform: numeric_state
     entity_id: sensor.processor_use_percent
-    above: '60'
+    above: '50'
     for: 00:15
   condition: []
   action:
@@ -58,7 +58,7 @@ automation:
   action:
   - service: notify.bart_phone
     data:
-      message: Home Assistant wordt gestopt.
+      title: Home Assistant wordt gestopt.
   mode: single
 
 - alias: 🚀 HA is herstart
@@ -71,7 +71,7 @@ automation:
   action:
   - service: notify.bart_phone
     data:
-      message: Home Assistant is volledig gestart.
+      title: Home Assistant is volledig gestart.
   mode: single
 
 - alias: 🚀 Melding lage batterij voor alle batterijsensoren

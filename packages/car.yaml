@@ -50,6 +50,10 @@ automation:
       data:
         color: green
         tag: auto_laden
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/e-tron        
   - service: notify.madouce_phone
     data:
       title: Auto laden?
@@ -57,6 +61,10 @@ automation:
       data:
         color: green
         tag: auto_laden
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/e-tron        
   mode: single
 
 - alias: 🚗 batterij <80% en niet verbonden (weekend)
@@ -86,6 +94,10 @@ automation:
       data:
         color: green
         tag: auto_laden
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/e-tron        
   - service: notify.madouce_phone
     data:
       title: Auto laden voor het weekend?
@@ -93,6 +105,10 @@ automation:
       data:
         color: green
         tag: auto_laden
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/e-tron        
   mode: single
 
 - alias: 🚗 autolader is verbonden
@@ -111,6 +127,10 @@ automation:
         color: green
         tag: auto_laden
         timeout: 300
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/e-tron        
   - service: notify.madouce_phone
     data:
       message: 🚙 Autolader is verbonden.
@@ -118,6 +138,10 @@ automation:
         color: green
         tag: auto_laden
         timeout: 300
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/e-tron        
   mode: single
 
 - alias: 🚗 auto laadt = melding
@@ -142,7 +166,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /lovelace-eikenbos_apparaten/e-tron
+          uri: /eikenbos-dashboard/e-tron
   - service: notify.madouce_phone
     data:
       message: 🚙 Auto is aan het laden. Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%.
@@ -154,7 +178,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /lovelace/e-tron
+          uri: /eikenbos-dashboard/e-tron
   mode: single
 
 - alias: 🚗 auto gedaan met laden = melding
@@ -176,7 +200,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /lovelace/e-tron
+          uri: /eikenbos-dashboard/e-tron
   - service: notify.madouce_phone
     data:
       message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%. {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
@@ -187,7 +211,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /lovelace/e-tron
+          uri: /eikenbos-dashboard/e-tron
   mode: single
 
 #########################
@@ -213,6 +237,10 @@ automation:
         channel: Important
         tag: slot_auto
         color: red
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/e-tron        
   - service: lock.lock
     target:
       entity_id: lock.audi_e_tron_sportback_55_door_lock_2
@@ -224,6 +252,10 @@ automation:
         channel: Important
         tag: slot_auto
         color: red
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/e-tron        
   - service: lock.lock
     target:
       entity_id: lock.audi_e_tron_sportback_55_door_lock_2
@@ -307,6 +339,9 @@ automation:
         actions:
         - action: lock_car
           title: SLUIT AUTO
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/e-tron          
   - service: notify.madouce_phone
     data:
       message: 🚙 Auto niet op slot! (veeg omlaag voor acties)
@@ -317,6 +352,9 @@ automation:
         actions:
         - action: lock_car
           title: SLUIT AUTO          
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/e-tron
   mode: single
   
 #########################

@@ -127,7 +127,7 @@ fan:
     
   - platform: xiaomi_miio_airpurifier
     name: Xiaomi Air Purifier 3H
-    host: 192.168.86.250
+    host: 192.168.86.247
     token: !secret purifier_3H_token
     model: zhimi.airpurifier.mb3
 
