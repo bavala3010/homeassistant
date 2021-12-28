@@ -195,10 +195,10 @@ sensor:
         friendly_name: outside
         temperature_sensor: sensor.temp_leuven24_wunderground
         humidity_sensor: sensor.humidity_leuven24_wunderground
-      living_room_thermal:
-        friendly_name: living room
-        temperature_sensor: sensor.living_room_temperature
-        humidity_sensor: sensor.living_room_humidity
+      living_thermal:
+        friendly_name: living
+        temperature_sensor: sensor.living_temperature
+        humidity_sensor: sensor.living_humidity
       kamer_amilya_thermal:
         friendly_name: kamer Amilya
         temperature_sensor: sensor.kamer_amilya_temperature
@@ -253,13 +253,13 @@ sensor:
         value_template: >-
           {{ ((e ** ((17.67 * (states('sensor.temp_leuven24_wunderground')|float)) / (243.5 + (states('sensor.temp_leuven24_wunderground')|float)) ) * 6.112 * (states('sensor.humidity_leuven24_wunderground')|float) * 2.1674 ) / (273.15 + (states('sensor.temp_leuven24_wunderground')|float))) | round(1) }}
 
-      gram_water_living_room:
+      gram_water_living:
         friendly_name: 'gram vocht per m³ in living'
         device_class: humidity
         unit_of_measurement: 'g/m³'
         icon_template: mdi:water
         value_template: >-
-          {{ ((e ** ((17.67 * (states('sensor.living_room_temperature')|float)) / (243.5 + (states('sensor.living_room_temperature')|float)) ) * 6.112 * (states('sensor.living_room_humidity')|float) * 2.1674 ) / (273.15 + (states('sensor.living_room_temperature')|float))) | round(1) }}
+          {{ ((e ** ((17.67 * (states('sensor.living_temperature')|float)) / (243.5 + (states('sensor.living_temperature')|float)) ) * 6.112 * (states('sensor.living_humidity')|float) * 2.1674 ) / (273.15 + (states('sensor.living_temperature')|float))) | round(1) }}
 
       gram_water_kamer_amilya:
         friendly_name: 'gram vocht per m³ in kamer Amilya'
@@ -317,12 +317,12 @@ sensor:
         value_template: >-
           {{ ((e ** ((17.67 * (states('sensor.master_bedroom_temperature')|float)) / (243.5 + (states('sensor.master_bedroom_temperature')|float)) ) * 6.112 * (states('sensor.master_bedroom_humidity')|float) * 2.1674 ) / (273.15 + (states('sensor.master_bedroom_temperature')|float))) | round(1) }}
 
-      gram_water_living_room_diff_outside:
-        friendly_name: 'verschil gram vocht per m³ in living room en buiten'
+      gram_water_living_diff_outside:
+        friendly_name: 'verschil gram vocht per m³ in living en buiten'
         device_class: humidity
         unit_of_measurement: 'g/m³'
         icon_template: mdi:water
-        value_template: "{{ ((states('sensor.gram_water_living_room') | float) - (states('sensor.gram_water_outside')|float)) | round(1) }}"
+        value_template: "{{ ((states('sensor.gram_water_living') | float) - (states('sensor.gram_water_outside')|float)) | round(1) }}"
 
       gram_water_kamer_amilya_diff_outside:
         friendly_name: 'verschil gram vocht per m³ in kamer Amilya en buiten'
@@ -398,7 +398,7 @@ sensor:
 ###############################################################################
 
   - platform: powercalc
-    create_group: all living room lights
+    create_group: all living lights
     entities:
       -  entity_id: light.living_links_1
       -  entity_id: light.living_links_2
@@ -434,10 +434,10 @@ sensor:
     # creates a sensor called sensor.amilya_bureau_power
 
   - platform: powercalc
-    entity_id: light.amilya_living_room
+    entity_id: light.amilya_living
     manufacturer: signify
     model: LCT003
-    # creates a sensor called sensor.amilya_living_room_power
+    # creates a sensor called sensor.amilya_living_power
 
   - platform: powercalc
     entity_id: light.veranda
@@ -731,7 +731,7 @@ sensor:
     type: mean
     name: avg_inside_humidity
     entity_ids:
-      - sensor.living_room_humidity
+      - sensor.living_humidity
       - sensor.kamer_amilya_humidity
       - sensor.veranda_humidity
       - sensor.gang_humidity
@@ -744,7 +744,7 @@ sensor:
     type: mean
     name: avg_inside_temperature
     entity_ids:
-      - sensor.living_room_temperature
+      - sensor.living_temperature
       - sensor.kamer_amilya_temperature
       - sensor.veranda_temperature
       - sensor.gang_temperature
@@ -1019,7 +1019,7 @@ template:
 ###############################################################################
 
 adaptive_lighting:
-- name: "living room bol adaptive lightning"
+- name: "living bol adaptive lightning"
   lights: [light.living_bol]
   prefer_rgb_color: false
   transition: 45
@@ -1039,7 +1039,7 @@ adaptive_lighting:
   detect_non_ha_changes: false
   only_once: false
 
-- name: "living room links adaptive lightning"
+- name: "living links adaptive lightning"
   lights: [light.living_links_4,light.living_links_5]
   prefer_rgb_color: false
   transition: 45
@@ -1145,10 +1145,10 @@ binary_sensor:
     sensors:
       warm_outside_living:
         friendly_name: "buiten warmer dan in living"
-        value_template: "{{ states('sensor.temp_leuven24_wunderground') > states('sensor.living_room_temperature') }}"
+        value_template: "{{ states('sensor.temp_leuven24_wunderground') > states('sensor.living_temperature') }}"
       warm_inside_living:
         friendly_name: "in living warmer dan buiten"
-        value_template: "{{ states('sensor.living_room_temperature') > states('sensor.temp_leuven24_wunderground') }}"
+        value_template: "{{ states('sensor.living_temperature') > states('sensor.temp_leuven24_wunderground') }}"
       warm_outside_amilya:
         friendly_name: "buiten warmer dan in kamer Amilya"
         value_template: "{{ states('sensor.temp_leuven24_wunderground') > states('sensor.kamer_amilya_temperature') }}"
