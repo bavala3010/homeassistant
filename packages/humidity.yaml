@@ -37,6 +37,11 @@ automation:
       data:
         title: Vocht
         message: "Vocht % in huis is heel hoog: {{states('sensor.avg_inside_humidity')}}%."
+        actions:
+        - action: URI
+          title: meer info
+          uri: /lovelace/humidity
+        
   mode: single
   
 - alias: "💧 vocht % master bedroom -> machine aan"
@@ -90,6 +95,10 @@ automation:
             color: blue
             tag: badkamer_vocht
             channel: vocht
+            actions:
+            - action: URI
+              title: meer info
+              uri: /lovelace/humidity
       - service: notify.madouce_phone
         data:
           message: '{{states(''sensor.badkamer_thermal_absolutehumidity'')}} gram
@@ -99,6 +108,10 @@ automation:
             color: blue
             tag: badkamer_vocht
             channel: vocht
+            actions:
+            - action: URI
+              title: meer info
+              uri: /lovelace/humidity
       - delay:
           hours: 1
   - service: notify.bart_phone
@@ -137,6 +150,10 @@ automation:
             color: blue
             tag: master_bedroom_vocht
             channel: vocht
+            actions:
+            - action: URI
+              title: meer info
+              uri: /lovelace/humidity
       - service: notify.madouce_phone
         data:
           title: Veel vocht in master bedroom!
@@ -146,6 +163,10 @@ automation:
             color: blue
             tag: master_bedroom_vocht
             channel: vocht
+            actions:
+            - action: URI
+              title: meer info
+              uri: /lovelace/humidity
       - delay:
           hours: 1
   - service: notify.bart_phone
@@ -159,3 +180,46 @@ automation:
       data:
         tag: master_bedroom_vocht
   mode: single
+  
+- alias: "💧 vocht in badkamer stijgt = ventilator aan"
+  id: '9ac47b59-6f5d-4bcf-a9f8-12ef824f2eb3'
+  description: ''
+  mode: single
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.humidity_badkamer_rising
+    to: 'on'
+  condition: []
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: 
+      - switch.toilet_douche_ventilatie
+  - service: notify.bart_phone
+    data:
+      title: Ventilatie
+      message: "Ventilator in badkamer gestart wegens {{states('sensor.badkamer_humidity')}}% vocht."
+
+      
+- alias: "💧 vocht in badkamer stabiel = ventilator uit"
+  id: '93e2dbac-87f9-427b-bc74-40f6afbe19df'
+  description: ''
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.humidity_badkamer_rising
+      to: 'off'
+  condition:
+  - condition: state
+    entity_id: switch.toilet_douche_ventilatie
+    state: 'on'
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id:
+      - switch.toilet_douche_ventilatie
+  - service: notify.bart_phone
+    data:
+      title: Ventilatie
+      message: Ventilatie in badkamer gestopt.
+

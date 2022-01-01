@@ -189,6 +189,7 @@ automation:
     - binary_sensor.living_tuin_raam
     - binary_sensor.master_bedroom_raam
     - binary_sensor.veranda_schuifraam
+    - binary_sensor.voordeur
     from: 'off'
     to: 'on'
   condition:
@@ -299,6 +300,23 @@ automation:
     data:
       title: Garagepoort
       message: Garagepoort staat al 10 minuten open.
+  mode: single
+
+- alias: Voordeur staat al 5 minuten open
+  id: '76d0bc44-085e-4a6f-bb8d-22d46f5f2ad5'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.voordeur
+    from: 'off'
+    to: 'on'
+    for: 00:05:00
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Voordeur
+      message: Voordeur staat al 5 minuten open.
   mode: single
 
 - alias: 👀 beweging oprit

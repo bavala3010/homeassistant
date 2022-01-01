@@ -251,8 +251,13 @@ automation:
   action:
   - choose:
     - conditions:
-      - condition: trigger
-        id: living
+        - condition: and
+          conditions:
+            - condition: trigger
+              id: living
+            - condition: state
+              entity_id: group.living_ramen
+              state: 'off'
       sequence:
       - service: climate.set_hvac_mode
         target:
@@ -260,8 +265,13 @@ automation:
         data:
           hvac_mode: auto
     - conditions:
-      - condition: trigger
-        id: kamer_amilya
+        - condition: and
+          conditions:
+            - condition: trigger
+              id: kamer_amilya
+            - condition: state
+              entity_id: binary_sensor.kamer_amilya_raam
+              state: 'off'
       sequence:
       - service: climate.set_hvac_mode
         target:
@@ -269,8 +279,13 @@ automation:
         data:
           hvac_mode: auto
     - conditions:
-      - condition: trigger
-        id: veranda
+        - condition: and
+          conditions:
+            - condition: trigger
+              id: veranda
+            - condition: state
+              entity_id: binary_sensor.veranda_schuifraam
+              state: 'off'
       sequence:
       - service: climate.set_hvac_mode
         target:
@@ -283,8 +298,13 @@ automation:
         data:
           hvac_mode: auto          
     - conditions:
-      - condition: trigger
-        id: berging
+        - condition: and
+          conditions:
+            - condition: trigger
+              id: berging
+            - condition: state
+              entity_id: binary_sensor.berging_raam
+              state: 'off'
       sequence:
       - service: climate.set_hvac_mode
         target:
@@ -297,8 +317,13 @@ automation:
         data:
           hvac_mode: auto
     - conditions:
-      - condition: trigger
-        id: badkamer
+        - condition: and
+          conditions:
+            - condition: trigger
+              id: badkamer
+            - condition: state
+              entity_id: binary_sensor.badkamer_raam_kantel
+              state: 'off'
       sequence:
       - service: climate.set_hvac_mode
         target:
@@ -306,8 +331,13 @@ automation:
         data:
           hvac_mode: auto
     - conditions:
-      - condition: trigger
-        id: kamer_alunya
+        - condition: and
+          conditions:
+            - condition: trigger
+              id: kamer_alunya
+            - condition: state
+              entity_id: group.kamer_alunya_ramen
+              state: 'off'
       sequence:
       - service: climate.set_hvac_mode
         target:
@@ -315,13 +345,165 @@ automation:
         data:
           hvac_mode: auto
     - conditions:
-      - condition: trigger
-        id: master_bedroom
+        - condition: and
+          conditions:
+            - condition: trigger
+              id: master_bedroom
+            - condition: state
+              entity_id: binary_sensor.master_bedroom_raam_kantel
+              state: 'off'
       sequence:
       - service: climate.set_hvac_mode
         target:
           entity_id: climate.master_bedroom
         data:
           hvac_mode: auto
+  mode: parallel
+  max: 10
+
+- alias: 🪟 Verwarming aan en raam open = verwarming uit
+  id: '82a6a600-8657-457a-b45a-7fead7073079'
+  # Het Tado tijdschema doet de chauffage aan gaan ook al heeft HA de chauffage uitgezet
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.living_heating
+    to: 'on'
+    id: living
+  - platform: state
+    entity_id: sensor.kamer_amilya_heating
+    to: 'on'
+    id: kamer_amilya
+  - platform: state
+    entity_id: sensor.veranda_heating
+    to: 'on'
+    id: veranda
+  - platform: state
+    entity_id: sensor.berging_heating
+    to: 'on'
+    id: berging
+  - platform: state
+    entity_id: sensor.badkamer_heating
+    to: 'on'
+    id: badkamer
+  - platform: state
+    entity_id: sensor.kamer_alunya_heating
+    to: 'on'
+    id: kamer_alunya
+  - platform: state
+    entity_id: sensor.master_bedroom_heating
+    id: master_bedroom
+    to: 'on'
+  condition: []
+  action:
+  - choose:
+    - conditions:
+        - condition: and
+          conditions:
+            - condition: trigger
+              id: living
+            - condition: state
+              entity_id: group.living_ramen
+              state: 'on'
+      sequence:
+      - service: climate.set_hvac_mode
+        target:
+          entity_id: climate.living
+        data:
+          hvac_mode: 'off'
+    - conditions:
+        - condition: and
+          conditions:
+            - condition: trigger
+              id: kamer_amilya
+            - condition: state
+              entity_id: binary_sensor.kamer_amilya_raam
+              state: 'on'
+      sequence:
+      - service: climate.set_hvac_mode
+        target:
+          entity_id: climate.kamer_amilya
+        data:
+          hvac_mode: 'off'
+    - conditions:
+        - condition: and
+          conditions:
+            - condition: trigger
+              id: veranda
+            - condition: state
+              entity_id: binary_sensor.veranda_schuifraam
+              state: 'on'
+      sequence:
+      - service: climate.set_hvac_mode
+        target:
+          entity_id: climate.veranda
+        data:
+          hvac_mode: 'off'
+      - service: climate.set_hvac_mode
+        target:
+          entity_id: climate.gang
+        data:
+          hvac_mode: 'off'          
+    - conditions:
+        - condition: and
+          conditions:
+            - condition: trigger
+              id: berging
+            - condition: state
+              entity_id: binary_sensor.berging_raam
+              state: 'on'
+      sequence:
+      - service: climate.set_hvac_mode
+        target:
+          entity_id: climate.berging
+        data:
+          hvac_mode: 'off'
+      - service: climate.set_hvac_mode
+        target:
+          entity_id: climate.gang
+        data:
+          hvac_mode: auto
+    - conditions:
+        - condition: and
+          conditions:
+            - condition: trigger
+              id: badkamer
+            - condition: state
+              entity_id: binary_sensor.badkamer_raam_kantel
+              state: 'on'
+      sequence:
+      - service: climate.set_hvac_mode
+        target:
+          entity_id: climate.badkamer
+        data:
+          hvac_mode: 'off'
+    - conditions:
+        - condition: and
+          conditions:
+            - condition: trigger
+              id: kamer_alunya
+            - condition: state
+              entity_id: group.kamer_alunya_ramen
+              state: 'on'
+      sequence:
+      - service: climate.set_hvac_mode
+        target:
+          entity_id: climate.kamer_alunya
+        data:
+          hvac_mode: 'off'
+    - conditions:
+        - condition: and
+          conditions:
+            - condition: trigger
+              id: master_bedroom
+            - condition: state
+              entity_id: binary_sensor.master_bedroom_raam_kantel
+              state: 'on'
+      sequence:
+      - service: climate.set_hvac_mode
+        target:
+          entity_id: climate.master_bedroom
+        data:
+          hvac_mode: 'off'
   mode: parallel
   max: 10

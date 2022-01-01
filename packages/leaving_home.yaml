@@ -1,0 +1,42 @@
+############################ Table of Contents ############################ 
+# 
+#   Automations
+#     🏡 Niemand meer thuis = voordeur op slot doen
+#
+############################ Automations ################################## 
+
+automation:
+
+
+- alias: Niemand meer thuis = voordeur op slot doen
+  id: '97b2e13f-ab8c-4346-983a-970cfacb4c4e'
+  description: ''
+  mode: single
+  trigger:
+  - platform: state
+    entity_id: group.gezin
+    to: not_home
+  condition:
+  - condition: state
+    entity_id: binary_sensor.voordeur_nuki
+    state: 'off'
+  action:
+  - service: lock.lock
+    target:
+      entity_id: lock.voordeur_nuki
+  - service: notify.bart_phone
+    data:
+      title: Voordeur
+      message: Niemand thuis? Gelukkig heb ik de voordeur voor jou op slot gedaan.
+      data:
+        color: red
+  - service: notify.bart_phone
+    data:
+      message: TTS
+      title: Ik heb voor jou de voordeur op slot gedaan!
+  - service: notify.madouce_phone
+    data:
+      title: Voordeur
+      message: Niemand thuis? Gelukkig heb ik de voordeur voor jou op slot gedaan.
+      data:
+        color: red
