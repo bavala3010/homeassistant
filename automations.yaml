@@ -1,21 +1,4 @@
-- alias: 🛌 Madouce thuis om 22u15 en <15° buiten = matras aan
-  id: a91e9cb6-dd44-48f1-91b8-81083453fa4f
-  description: ''
-  trigger:
-  - platform: time
-    at: '22:15'
-  condition:
-  - condition: state
-    entity_id: device_tracker.madouce_samsung_s20
-    state: home
-  - condition: numeric_state
-    entity_id: sensor.buitensensor_deur_temperature
-    below: '15'
-  action:
-  - service: switch.turn_on
-    target:
-      entity_id: switch.smart_power_strip_4
-  mode: single
+
 - alias: 🏡 Bart is alleen thuis
   id: 02b63f41-9ea3-48eb-97aa-242a618f3400
   description: ''
@@ -35,6 +18,7 @@
       message: TTS
       title: Bart, je bent alleen thuis!
   mode: single
+  
 - alias: RecycleApp notificaties
   id: 50cbd530-9e44-4283-95f9-24f8ca182701
   trigger:
@@ -77,6 +61,7 @@
       ''Days-until'') == 1 %} Zet de blauwe zak aan straat. {%elif state_attr(''sensor.recycleapp_papier'',
       ''Days-until'') == 1 %} Zet het oud papier aan straat. {%endif%} '
   mode: single
+  
 - alias: recycle_done
   id: 761e33f9-8fad-4537-8bf3-361aba8f5638
   trigger:
@@ -95,52 +80,3 @@
       message: clear_notification
       data:
         tag: recycle
-- id: cf71a308-2cd3-42b2-94c9-9968d8f67330
-  alias: bij beweging toilet = afzuig aan tot 5 minuten na laatste beweging
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.toilet_motion_sensor_motion
-    to: 'on'
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 30
-  condition:
-  - condition: time
-    after: '7:0:0'
-    before: '23:00:00'
-  action:
-  - service: switch.turn_on
-    target:
-      entity_id:
-      - switch.on_off_plug_in_unit_7
-  - service: notify.bart_phone
-    data:
-      message: Afzuig toilet/douche START nu.
-  - delay:
-      hours: 0
-      minutes: 5
-      seconds: 0
-      milliseconds: 0
-  - service: switch.turn_off
-    target:
-      entity_id: switch.on_off_plug_in_unit_7
-  - service: notify.bart_phone
-    data:
-      message: Afzuig toilet/douche STOPT nu.
-  mode: restart
-- id: '1640598375537'
-  alias: TEST
-  description: ''
-  trigger:
-  - platform: tag
-    tag_id: ''
-  condition: []
-  action:
-  - service: camera.play_stream
-    data:
-      media_player: media_player.living_speaker
-    target:
-      entity_id: camera.indoor_camera
-  mode: single

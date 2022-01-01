@@ -184,7 +184,6 @@ automation:
 - alias: "💧 vocht in badkamer stijgt = ventilator aan"
   id: '9ac47b59-6f5d-4bcf-a9f8-12ef824f2eb3'
   description: ''
-  mode: single
   trigger:
   - platform: state
     entity_id: binary_sensor.humidity_badkamer_rising
@@ -197,9 +196,9 @@ automation:
       - switch.toilet_douche_ventilatie
   - service: notify.bart_phone
     data:
-      title: Ventilatie
-      message: "Ventilator in badkamer gestart wegens {{states('sensor.badkamer_humidity')}}% vocht."
-
+      title: Ventilatie in badkamer gestart.
+      message: "Wegens snel stijgend vochtgehalte. Nu {{states('sensor.badkamer_humidity')}}% vocht."
+  mode: single
       
 - alias: "💧 vocht in badkamer stabiel = ventilator uit"
   id: '93e2dbac-87f9-427b-bc74-40f6afbe19df'
@@ -220,6 +219,6 @@ automation:
       - switch.toilet_douche_ventilatie
   - service: notify.bart_phone
     data:
-      title: Ventilatie
-      message: Ventilatie in badkamer gestopt.
+      title: Ventilatie in badkamer gestopt.
+      message: "Nu nog {{states('sensor.badkamer_humidity')}}% vocht."
 

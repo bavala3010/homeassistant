@@ -58,7 +58,7 @@ automation:
   action:
   - service: notify.bart_phone
     data:
-      title: Home Assistant wordt gestopt.
+      message: Home Assistant wordt gestopt.
   mode: single
 
 - alias: 🚀 HA is herstart
@@ -71,7 +71,7 @@ automation:
   action:
   - service: notify.bart_phone
     data:
-      title: Home Assistant is volledig gestart.
+      message: Home Assistant is volledig gestart.
   mode: single
 
 - alias: 🚀 Melding lage batterij voor alle batterijsensoren

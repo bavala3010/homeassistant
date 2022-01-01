@@ -1266,4 +1266,16 @@ notify:
 timer:
   car_climatisation:
     icon: mdi:radiator
-    
+
+rest_command:
+# webhook om meterstanden op de site energieid te posten
+  energie_id_set_electricity_usage:
+    url: !secret energie_id_usage_webhook
+    method: 'post'
+    content_type: 'application/json'
+    payload: '{"remoteId": "ha-webhook-electricity", "remoteName": "Elektriciteit (Home Assistant)", "metric": "electricityImport", "unit": "kWh", "readingType": "counter", "data": [["{{ now().isoformat() }}", {{ usage }}]]}'
+ 
+# Deze code hieronder in automatisaties gebruiken    
+# service: rest_command.energie_id_set_electricity_usage
+#  data:
+#    usage: "{{ states('input_number.electricity_usage') | int }}"     

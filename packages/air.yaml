@@ -155,9 +155,9 @@ automation:
     at: input_datetime.max_dagtemperatuur_uur
   condition:
   - condition: template
-    value_template: "{{ ('sensor.amilya_raam_open_vandaag')| float(default=0) == 0 }}"
+    value_template: "{{ ('sensor.amilya_raam_open_vandaag')| int(2) | float(default=0) == 0 }}"
   - condition: template
-    value_template: "{{ ('sensor.kamer_amilya_heating')| float(default=0) == 0 }}"
+    value_template: "{{ ('sensor.kamer_amilya_heating')| int(2) | float(default=0) == 0 }}"
   action:
   - service: input_boolean.turn_on
     target:
@@ -182,9 +182,9 @@ automation:
     at: input_datetime.max_dagtemperatuur_uur
   condition:
   - condition: template
-    value_template: "{{ ('sensor.alunya_raam_open_vandaag')| float(default=0) == 0 }}"
+    value_template: "{{ ('sensor.alunya_raam_open_vandaag')| int(2) | float(default=0) == 0 }}"
   - condition: template
-    value_template: "{{ ('sensor.kamer_alunya_heating')| float(default=0) == 0 }}"
+    value_template: "{{ ('sensor.kamer_alunya_heating')| int(2) |float(default=0) == 0 }}"
   action:
   - service: input_boolean.turn_on
     target:
@@ -209,9 +209,9 @@ automation:
     at: input_datetime.max_dagtemperatuur_uur
   condition:
   - condition: template
-    value_template: "{{ ('sensor.keuken_raam_open_vandaag')| float(default=0) == 0 }}"
+    value_template: "{{ ('sensor.keuken_raam_open_vandaag')| int(2) | float(default=0) == 0 }}"
   - condition: template
-    value_template: "{{ ('sensor.living_room_heating')| float(default=0) == 0 }}"
+    value_template: "{{ ('sensor.living_room_heating')| int(2) | float(default=0) == 0 }}"
   action:
   - service: input_boolean.turn_on
     target:
