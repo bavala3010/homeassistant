@@ -391,7 +391,7 @@ automation:
         trigger.to_state.state != trigger.from_state.state}}
   - condition: numeric_state
     entity_id: sensor.master_bedroom_temperature
-    above: '15'            
+    above: '14.5'            
   - condition: numeric_state
     entity_id: sensor.master_bedroom_heating
     below: '0.1'

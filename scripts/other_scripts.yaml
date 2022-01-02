@@ -80,7 +80,7 @@ speak:
       message: "{{ message }}"
   mode: queued
   
-toilet_douche_ventilator_aan:
+toilet_douche_ventilator_10_min_aan:
   alias: 💨 ventilator in toilet/douche 10 minuten aan  
   sequence:
   - service: switch.turn_on

@@ -333,7 +333,7 @@ automation:
       message: Ventilatie douche START nu.
   mode: single
 
-- alias: 💨 beweging stopt in douche = ventilator uit na 10 minuten
+- alias: 💨 Geen beweging meer in douche = ventilator uit na 10 minuten
   id: 'b17903c4-7fb3-434e-9264-0f8c1f874731'
   description: ''
   trigger:
@@ -388,6 +388,34 @@ automation:
       seconds: 0
   condition: []
   action:
+  - service: switch.turn_off
+    target:
+      entity_id:
+      - switch.toilet_douche_ventilatie
+  mode: single
+
+
+##############################
+# ventilator (algemeen)
+##############################
+
+- alias: Ventilator 10 min aan
+  id: 'b1f343ba-5201-43ee-9502-f1d96abe99f9'
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: toilet_douche_ventilator_10_min_aan
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id:
+      - switch.toilet_douche_ventilatie
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
   - service: switch.turn_off
     target:
       entity_id:

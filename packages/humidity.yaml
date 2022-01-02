@@ -126,7 +126,7 @@ automation:
         tag: badkamer_vocht
   mode: single
   
-- alias: "💧 vocht gram in master bedroom >80%"
+- alias: "💧 vocht % in master bedroom >80%"
   id: 'e1a0cee2-ee78-4e66-a133-9ea28f3a4fb8'
   description: ''
   trigger:
@@ -224,4 +224,9 @@ automation:
     data:
       title: Ventilatie in badkamer gestopt.
       message: "Nu nog {{states('sensor.badkamer_humidity')}}% vocht."
-
+      data:
+        color: blue
+        timeout: 420
+        actions:
+        - action: toilet_douche_ventilator_10_min_aan
+          title: Ventilatie opnieuw 10 min. aanzetten

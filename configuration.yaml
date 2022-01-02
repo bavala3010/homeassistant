@@ -16,6 +16,12 @@ default_config:
 # An integration sensor isuseful in energy billing scenarios since energy is generally billed in kWh and many sensors provide power in W (Watts).
 # If you have a sensor that provides you with power readings in Watts (uses W as unit_of_measurement), then you can use the integration sensor to track how much energy is being spent.
 
+#   Examples    
+#   value_template: '{{ (value| float)}}'
+#   value_template: '{{ (value.rstrip(" °C") | float) }}'
+#   value_template: '{{ (value.rstrip(" %") | float) }}'
+
+
 
 discovery:
 
@@ -395,7 +401,7 @@ sensor:
 ###############################################################################
 
   - platform: powercalc
-    create_group: all living lights
+    create_group: living alle lichten
     entities:
       -  entity_id: light.living_links_1
       -  entity_id: light.living_links_2
@@ -409,13 +415,26 @@ sensor:
       -  entity_id: light.living_rechts_5
     manufacturer: signify
     model: LCT003
-    # creates a sensor called sensor.living_power
+    # creates 2 sensors called
+    #   sensor.all_living_lights_power (in W)
+    #   sensor.all_living_lights_energy (in kWh)
 
   - platform: powercalc
     entity_id: light.living_bol
     manufacturer: signify
     model: LCT015
     # creates a sensor called sensor.living_bol_power
+
+  - platform: powercalc
+    create_group: Amilya alle lichten
+    entities:
+      -  entity_id: light.amilya_badkamer
+      -  entity_id: light.amilya_bureau
+      -  entity_id: light.amilya_living
+      -  entity_id: light.amilya_bol
+      -  entity_id: light.amilya_plafond
+      -  entity_id: light.amilya_staande_lamp
+      -  entity_id: light.amilya_strip
 
   - platform: powercalc
     entity_id: light.amilya_badkamer
@@ -463,6 +482,13 @@ sensor:
     model: LCT003
 
   - platform: powercalc
+    create_group: Alunya alle lichten
+    entities:
+      -  entity_id: light.alunya_bol
+      -  entity_id: light.alunya_staande_lamp
+      -  entity_id: light.alunya_wasbak
+
+  - platform: powercalc
     entity_id: light.alunya_bol
     manufacturer: signify
     model: LCT015
@@ -476,6 +502,13 @@ sensor:
     entity_id: light.alunya_wasbak
     manufacturer: signify
     model: LCT015
+
+  - platform: powercalc
+    create_group: master bedroom alle lichten
+    entities:
+      -  entity_id: light.master_bedroom_play_bart
+      -  entity_id: light.master_bedroom_play_madouce
+      -  entity_id: light.master_bedroom_staande_lamp
 
   - platform: powercalc
     create_group: master bedroom play bar lights 
@@ -835,53 +868,42 @@ sensor:
 
   - platform: template
     sensors:  
-      ontvochtiger_power:
-        unit_of_measurement: W
-        friendly_name: "elektriciteitsverbruik ontvochtiger"
-        value_template: "{{ ( states('sensor.ontvochtiger_power') | float(default=0) ) | round(3) }}"
-
-  - platform: template
-    sensors:  
       living_tv_power:
-        unit_of_measurement: kW
-        friendly_name: "elektriciteitsverbruik living TV"
-        value_template: "{{ ( states('sensor.living_tv_aan_vandaag') | float(default=0) * 0.085 ) | round(3) }}"
+        unit_of_measurement: W
+        friendly_name: "elektriciteitsverbruik living TV (in W)"
+        value_template: "{{ ( states('sensor.living_tv_aan_vandaag') | float(default=0) * 85 ) | round(3) }}"
    # TV consumes 82 W per hour + Google TV 3 W per hour
    
   - platform: template
     sensors:  
       master_bedroom_tv_power:
-        unit_of_measurement: kW
-        friendly_name: "elektriciteitsverbruik master bedroom TV"
-        value_template: "{{ ( states('sensor.master_bedroom_tv_aan_vandaag') | float(default=0) * 0.063 ) | round(3) }}"
+        unit_of_measurement: W
+        friendly_name: "elektriciteitsverbruik master bedroom TV (in W)"
+        value_template: "{{ ( states('sensor.master_bedroom_tv_aan_vandaag') | float(default=0) * 63 ) | round(3) }}"
    # TV + Google TV consumes 63 W per hour
 
   - platform: template
     sensors:  
       amilya_tv_power:
-        unit_of_measurement: kW
-        friendly_name: "elektriciteitsverbruik Amilya TV"
-        value_template: "{{ ( states('sensor.amilya_tv_aan_vandaag') | float(default=0) * 0.085 ) | round(3) }}"
+        unit_of_measurement: W
+        friendly_name: "elektriciteitsverbruik Amilya TV (in W)"
+        value_template: "{{ ( states('sensor.amilya_tv_aan_vandaag') | float(default=0) * 85 ) | round(3) }}"
    # TV consumes 82 W per hour + Google Chromecast 3 W per hour
 
   - platform: template
     sensors:  
       alunya_tv_power:
-        unit_of_measurement: kW
-        friendly_name: "elektriciteitsverbruik Alunya TV"
-        value_template: "{{ ( states('sensor.alunya_tv_aan_vandaag') | float(default=0) * 0.085 ) | round(3) }}"
+        unit_of_measurement: W
+        friendly_name: "elektriciteitsverbruik Alunya TV (in W)"
+        value_template: "{{ ( states('sensor.alunya_tv_aan_vandaag') | float(default=0) * 85 ) | round(3) }}"
    # TV consumes 82 W per hour + Google Chromecast 3 W per hour
 
-
-#   Examples    
-#   value_template: '{{ (value| float)}}'
-#   value_template: '{{ (value.rstrip(" °C") | float) }}'
-#   value_template: '{{ (value.rstrip(" %") | float) }}'
-
-      tv_energy:
-        friendly_name: "energieverbruik TV's"
+  - platform: template
+    sensors:
+      living_tv_energy:
+        friendly_name: "living TV energieverbruik"
         unit_of_measurement: kWh
-        value_template: "{{ states('sensor.living_tv_power') | float + states('sensor.master_bedroom_tv_power') | float + states('sensor.amilya_tv_power') | float + states('sensor.alunya_tv_power') | float | round(3) }}"
+        value_template: "{{ states('sensor.living_tv_energieverbruik') | float | round(3) }}"
         attribute_templates:
           last_reset: "1970-01-01T00:00:00+00:00"
           state_class: measurement
@@ -943,11 +965,11 @@ sensor:
     unit_of_measurement: "°C"
     value_template: '{{ value | multiply(0.001) | round(2)  }}'
 
-###############################################################################
-#
+###################################################################################
 # Integration
-# To make the sum of the power consumption -> to show in the energy dashboard
-###############################################################################
+# The Riemann sum integration calculates energy (in kWh) from a power sensor (in W)
+# integration (Riemann sum integral) unit moet k, M, G of T zijn. (NIET kW of kWh) 
+###################################################################################
 
 #  - platform: integration
 #    source: sensor.all_lights_power
@@ -958,25 +980,26 @@ sensor:
   
   - platform: integration
     source: sensor.ontvochtiger_power
-    name: ontvochtiger_energie_verbruik
+    name: ontvochtiger_energieverbruik
     unit_prefix: k
     round: 2
 
   - platform: integration
     source: sensor.living_tv_power
-    name: tv_living_energie_verbruik
+    name: living_tv_energieverbruik
     unit_prefix: k
     round: 2
+    # creates sensor called: sensor.living_tv_energieverbruik
 
   - platform: integration
     source: sensor.master_bedroom_tv_power
-    name: tv_living_energie_verbruik
+    name: master_bedroom_tv_energieverbruik
     unit_prefix: k
     round: 2
 
   - platform: integration
     source: sensor.ads_tv_power
-    name: tv_living_energie_verbruik
+    name: ads_tv_energieverbruik
     unit_prefix: k
     round: 2
 
