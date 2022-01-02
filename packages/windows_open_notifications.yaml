@@ -297,9 +297,6 @@ automation:
   - condition: state
     entity_id: input_boolean.living_raam_moet_open
     state: 'on'
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
   - service: notify.bart_phone
     data:
@@ -328,9 +325,6 @@ automation:
   - condition: state
     entity_id: input_boolean.kamer_amilya_raam_moet_open
     state: 'on'
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
   - service: notify.bart_phone
     data:
@@ -359,9 +353,6 @@ automation:
   - condition: state
     entity_id: input_boolean.veranda_schuifraam_moet_open
     state: 'on'
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
   - service: notify.bart_phone
     data:
@@ -390,9 +381,6 @@ automation:
   - condition: state
     entity_id: input_boolean.berging_raam_moet_open
     state: 'on'
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
   - service: notify.bart_phone
     data:
@@ -421,9 +409,6 @@ automation:
   - condition: state
     entity_id: input_boolean.badkamer_raam_moet_open
     state: 'on'
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
   - service: notify.bart_phone
     data:
@@ -456,9 +441,6 @@ automation:
   - condition: state
     entity_id: input_boolean.kamer_alunya_raam_moet_open
     state: 'on'
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
   - service: notify.bart_phone
     data:
@@ -487,9 +469,6 @@ automation:
   - condition: state
     entity_id: input_boolean.master_bedroom_raam_moet_open
     state: 'on'
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
   - service: notify.bart_phone
     data:

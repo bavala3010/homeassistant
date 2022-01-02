@@ -1,5 +1,125 @@
 automation:
 
+##############################
+# verluchting kamers
+##############################
+
+- alias: Om 6 uur bepaal max dagtemperatuur uur
+  id: 'ed9969de-ed32-4d1d-94ed-48e3622c94b4'
+  description: ''
+  trigger:
+  - platform: time
+    at: 06:00
+  condition: []
+  action:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.max_dagtemperatuur_uur
+    data:
+      time:
+        sensor.day_max_temp_datetime
+  mode: single
+  
+- alias: max temperatuur van de dag bereikt = melding
+  id: '91ed3a1c-ce13-47db-a612-4dc6d912fb89'
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.max_dagtemperatuur_uur
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Nu is het warmste deel van de dag.
+      message: Nu is het warmste deel van de dag.
+  mode: single
+
+- alias: 🪟 raam Amilya openen op warmste moment van de dag
+  id: '63cf0cbd-bc53-422d-9095-90cffa3eea3e'
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.max_dagtemperatuur_uur
+  condition:
+  - condition: template
+    value_template: "{{ ('sensor.amilya_raam_open_vandaag')| int(2) | float(default=0) == 0 }}"
+  - condition: template
+    value_template: "{{ ('sensor.kamer_amilya_heating')| int(2) | float(default=0) == 0 }}"
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.kamer_amilya_raam_moet_open    
+  - service: script.notify_bart_windows
+    data_template:
+      title: Zet raam Amilya nu even open. Beste moment van de dag.
+      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C. Vocht kamer Amilya: {{states('sensor.kamer_amilya_humidity')}}%.<br>Raam is vandaag nog niet open geweest."
+      tag: window_kamer_amilya  
+  - service: script.notify_madouce_windows
+    data_template:
+      title: Zet raam Amilya nu even open. Beste moment van de dag.
+      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C. Vocht kamer Amilya: {{states('sensor.kamer_amilya_humidity')}}%.<br>Raam is vandaag nog niet open geweest."
+      tag: window_kamer_amilya
+  mode: single
+
+- alias: 🪟 raam Alunya openen op warmste moment van de dag
+  id: 'f2d84987-861d-460a-9ff0-79535903143a'
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.max_dagtemperatuur_uur
+  condition:
+  - condition: template
+    value_template: "{{ ('sensor.alunya_raam_open_vandaag')| int(2) | float(default=0) == 0 }}"
+  - condition: template
+    value_template: "{{ ('sensor.kamer_alunya_heating')| int(2) |float(default=0) == 0 }}"
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.kamer_alunya_raam_moet_open
+  - service: script.notify_bart_windows
+    data_template:
+      title: Zet raam Alunya nu even open. Beste moment van de dag.
+      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C. Vocht kamer Alunya: {{states('sensor.kamer_alunya_humidity')}}%.<br>Raam is vandaag nog niet open geweest."
+      tag: window_kamer_alunya
+  - service: script.notify_madouce_windows
+    data_template:
+      title: Zet raam Alunya nu even open. Beste moment van de dag.
+      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C. Vocht kamer Alunya: {{states('sensor.kamer_alunya_humidity')}}%.<br>Raam is vandaag nog niet open geweest."
+      tag: window_kamer_alunya      
+  mode: single
+
+- alias: 🪟 raam keuken openen op warmste moment van dag
+  id: 615fc634-795d-489e-9c25-4f36d912b7ca
+  description: als het raam nog niet geopend geweest is vandaag = melding sturen op warmste moment van de dag
+  trigger:
+  - platform: time
+    at: input_datetime.max_dagtemperatuur_uur
+  condition:
+  - condition: template
+    value_template: "{{ ('sensor.keuken_raam_open_vandaag')| int(2) | float(default=0) == 0 }}"
+  - condition: template
+    value_template: "{{ ('sensor.living_room_heating')| int(2) | float(default=0) == 0 }}"
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.living_room_raam_moet_open  
+  - service: script.notify_bart_windows
+    data_template:
+      title: "Zet keukenraam nu even open. Beste moment van de dag."
+      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C. Vocht living: {{states('sensor.living_room_humidity')}}%.<br>Raam is vandaag nog niet open geweest."
+      tag: "window_living_room"
+  - service: script.notify_madouce_windows
+    data_template:
+      title: "Zet keukenraam nu even open. Beste moment van de dag."
+      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C. Vocht living: {{states('sensor.living_room_humidity')}}%.<br>Raam is vandaag nog niet open geweest."
+      tag: "window_living_room"
+  mode: single
+
+
+##############################
+# luchtzuivering living
+##############################
+
 - alias: 💨 Air Quality Index > 8 = purifier aan
   id: '7e3043d1-8299-4121-ad8b-08da26340065'
   description: ''
@@ -117,116 +237,10 @@ automation:
       message: De kooksessie is gedaan. Hopelijk heeft het gesmaakt.
   mode: restart
 
-- alias: Om 6 uur bepaal max dagtemperatuur uur
-  id: 'ed9969de-ed32-4d1d-94ed-48e3622c94b4'
-  description: ''
-  trigger:
-  - platform: time
-    at: 06:00
-  condition: []
-  action:
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.max_dagtemperatuur_uur
-    data:
-      time:
-        sensor.day_max_temp_datetime
-  mode: single
-  
-- alias: max temperatuur van de dag bereikt = melding
-  id: '91ed3a1c-ce13-47db-a612-4dc6d912fb89'
-  description: ''
-  trigger:
-  - platform: time
-    at: input_datetime.max_dagtemperatuur_uur
-  condition: []
-  action:
-  - service: notify.bart_phone
-    data:
-      title: Nu is het warmste deel van de dag.
-      message: Nu is het warmste deel van de dag.
-  mode: single
 
-- alias: 🪟 raam Amilya openen op warmste moment van de dag
-  id: '63cf0cbd-bc53-422d-9095-90cffa3eea3e'
-  description: ''
-  trigger:
-  - platform: time
-    at: input_datetime.max_dagtemperatuur_uur
-  condition:
-  - condition: template
-    value_template: "{{ ('sensor.amilya_raam_open_vandaag')| int(2) | float(default=0) == 0 }}"
-  - condition: template
-    value_template: "{{ ('sensor.kamer_amilya_heating')| int(2) | float(default=0) == 0 }}"
-  action:
-  - service: input_boolean.turn_on
-    target:
-      entity_id: input_boolean.kamer_amilya_raam_moet_open    
-  - service: script.notify_bart_windows
-    data_template:
-      title: Zet raam Amilya nu even open. Beste moment van de dag.
-      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C. Vocht kamer Amilya: {{states('sensor.kamer_amilya_humidity')}}%.<br>Raam is vandaag nog niet open geweest."
-      tag: window_kamer_amilya  
-  - service: script.notify_madouce_windows
-    data_template:
-      title: Zet raam Amilya nu even open. Beste moment van de dag.
-      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C. Vocht kamer Amilya: {{states('sensor.kamer_amilya_humidity')}}%.<br>Raam is vandaag nog niet open geweest."
-      tag: window_kamer_amilya
-  mode: single
-
-- alias: 🪟 raam Alunya openen op warmste moment van de dag
-  id: 'f2d84987-861d-460a-9ff0-79535903143a'
-  description: ''
-  trigger:
-  - platform: time
-    at: input_datetime.max_dagtemperatuur_uur
-  condition:
-  - condition: template
-    value_template: "{{ ('sensor.alunya_raam_open_vandaag')| int(2) | float(default=0) == 0 }}"
-  - condition: template
-    value_template: "{{ ('sensor.kamer_alunya_heating')| int(2) |float(default=0) == 0 }}"
-  action:
-  - service: input_boolean.turn_on
-    target:
-      entity_id: input_boolean.kamer_alunya_raam_moet_open
-  - service: script.notify_bart_windows
-    data_template:
-      title: Zet raam Alunya nu even open. Beste moment van de dag.
-      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C. Vocht kamer Alunya: {{states('sensor.kamer_alunya_humidity')}}%.<br>Raam is vandaag nog niet open geweest."
-      tag: window_kamer_alunya
-  - service: script.notify_madouce_windows
-    data_template:
-      title: Zet raam Alunya nu even open. Beste moment van de dag.
-      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C. Vocht kamer Alunya: {{states('sensor.kamer_alunya_humidity')}}%.<br>Raam is vandaag nog niet open geweest."
-      tag: window_kamer_alunya      
-  mode: single
-
-- alias: 🪟 raam keuken openen op warmste moment van dag
-  id: 615fc634-795d-489e-9c25-4f36d912b7ca
-  description: als het raam nog niet geopend geweest is vandaag = melding sturen op warmste moment van de dag
-  trigger:
-  - platform: time
-    at: input_datetime.max_dagtemperatuur_uur
-  condition:
-  - condition: template
-    value_template: "{{ ('sensor.keuken_raam_open_vandaag')| int(2) | float(default=0) == 0 }}"
-  - condition: template
-    value_template: "{{ ('sensor.living_room_heating')| int(2) | float(default=0) == 0 }}"
-  action:
-  - service: input_boolean.turn_on
-    target:
-      entity_id: input_boolean.living_room_raam_moet_open  
-  - service: script.notify_bart_windows
-    data_template:
-      title: "Zet keukenraam nu even open. Beste moment van de dag."
-      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C. Vocht living: {{states('sensor.living_room_humidity')}}%.<br>Raam is vandaag nog niet open geweest."
-      tag: "window_living_room"
-  - service: script.notify_madouce_windows
-    data_template:
-      title: "Zet keukenraam nu even open. Beste moment van de dag."
-      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C. Vocht living: {{states('sensor.living_room_humidity')}}%.<br>Raam is vandaag nog niet open geweest."
-      tag: "window_living_room"
-  mode: single
+##############################
+# ventilatie toilet
+##############################
 
 - alias: 💨 beweging in toilet = ventilator aan na 1,5 minuten tot 5 minuten na laatste beweging
   id: '8215c271-a2bb-4a05-a083-9e31db80b3a1'
@@ -265,6 +279,37 @@ automation:
       message: Ventilatie toilet STOPT nu.
   mode: restart
   
+- alias: 💨 1,5 min. licht in toilet = ventilator aan gedurende 3 minuten
+  id: 'b5f5d558-a745-409f-8989-f0749a5992b4'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: light.toilet
+    to: 'on'
+    for: '00:01:30'
+  condition:
+  - condition: time
+    after: '7:0:0'
+    before: '23:30:00'
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id:
+      - switch.toilet_douche_ventilatie
+  - delay:
+      hours: 0
+      minutes: 3
+      seconds: 0
+      milliseconds: 0
+  - service: switch.turn_off
+    target:
+      entity_id: switch.toilet_douche_ventilatie
+  mode: single
+
+
+##############################
+# ventilatie badkamer
+##############################
 - alias: 💨 beweging in douche = ventilator aan na 1,5 minuten
   id: '26b154d2-b891-4df6-84c3-b954e639a08e'
   description: ''
@@ -329,3 +374,22 @@ automation:
     target:
       entity_id: switch.toilet_douche_ventilatie
   mode: single  
+
+- alias: 💨 ventilator al 20 minuten aan = ventilator uit
+  id: '6754188c-c368-4013-89cc-1acc82b30ad3'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.toilet_douche_ventilatie
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 20
+      seconds: 0
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id:
+      - switch.toilet_douche_ventilatie
+  mode: single

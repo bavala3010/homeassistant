@@ -97,3 +97,10 @@ toilet_douche_ventilator_aan:
       entity_id:
       - switch.toilet_douche_ventilatie
 
+publish_electricity_usage:
+  alias: elektriciteitsverbruik publiceren op site energie ID
+  sequence:
+  - service: rest_command.energie_id_set_electricity_usage
+    data:
+      usage: "{{ states('input_number.electricity_usage') | int }}"
+      

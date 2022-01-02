@@ -20,6 +20,3 @@ automation:
           {% endif %}
       message: '{{ states(''input_text.tts_synthesis'') }}'
   mode: single
-  
-  
-  

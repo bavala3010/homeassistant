@@ -835,14 +835,14 @@ sensor:
 
   - platform: template
     sensors:  
-      dehumidifier_elec:
+      ontvochtiger_power:
         unit_of_measurement: W
         friendly_name: "elektriciteitsverbruik ontvochtiger"
-        value_template: "{{ ( states('sensor.power_monitor_power') | float(default=0) ) | round(3) }}"
+        value_template: "{{ ( states('sensor.ontvochtiger_power') | float(default=0) ) | round(3) }}"
 
   - platform: template
     sensors:  
-      living_tv_elec:
+      living_tv_power:
         unit_of_measurement: kW
         friendly_name: "elektriciteitsverbruik living TV"
         value_template: "{{ ( states('sensor.living_tv_aan_vandaag') | float(default=0) * 0.085 ) | round(3) }}"
@@ -850,7 +850,7 @@ sensor:
    
   - platform: template
     sensors:  
-      master_bedroom_tv_elec:
+      master_bedroom_tv_power:
         unit_of_measurement: kW
         friendly_name: "elektriciteitsverbruik master bedroom TV"
         value_template: "{{ ( states('sensor.master_bedroom_tv_aan_vandaag') | float(default=0) * 0.063 ) | round(3) }}"
@@ -858,7 +858,7 @@ sensor:
 
   - platform: template
     sensors:  
-      amilya_tv_elec:
+      amilya_tv_power:
         unit_of_measurement: kW
         friendly_name: "elektriciteitsverbruik Amilya TV"
         value_template: "{{ ( states('sensor.amilya_tv_aan_vandaag') | float(default=0) * 0.085 ) | round(3) }}"
@@ -866,7 +866,7 @@ sensor:
 
   - platform: template
     sensors:  
-      alunya_tv_elec:
+      alunya_tv_power:
         unit_of_measurement: kW
         friendly_name: "elektriciteitsverbruik Alunya TV"
         value_template: "{{ ( states('sensor.alunya_tv_aan_vandaag') | float(default=0) * 0.085 ) | round(3) }}"
@@ -881,7 +881,7 @@ sensor:
       tv_energy:
         friendly_name: "energieverbruik TV's"
         unit_of_measurement: kWh
-        value_template: "{{ states('sensor.living_tv_elec') | float + states('sensor.master_bedroom_tv_elec') | float + states('sensor.amilya_tv_elec') | float + states('sensor.alunya_tv_elec') | float | round(3) }}"
+        value_template: "{{ states('sensor.living_tv_power') | float + states('sensor.master_bedroom_tv_power') | float + states('sensor.amilya_tv_power') | float + states('sensor.alunya_tv_power') | float | round(3) }}"
         attribute_templates:
           last_reset: "1970-01-01T00:00:00+00:00"
           state_class: measurement
@@ -957,26 +957,26 @@ sensor:
 #    round: 2
   
   - platform: integration
-    source: sensor.dehumidifier_elec
-    name: ontvochtiger_totaal_verbruik
+    source: sensor.ontvochtiger_power
+    name: ontvochtiger_energie_verbruik
     unit_prefix: k
     round: 2
 
   - platform: integration
-    source: sensor.living_tv_elec
-    name: tv_living_totaal_verbruik
+    source: sensor.living_tv_power
+    name: tv_living_energie_verbruik
     unit_prefix: k
     round: 2
 
   - platform: integration
-    source: sensor.master_bedroom_tv_elec
-    name: tv_living_totaal_verbruik
+    source: sensor.master_bedroom_tv_power
+    name: tv_living_energie_verbruik
     unit_prefix: k
     round: 2
 
   - platform: integration
-    source: sensor.ads_tv_elec
-    name: tv_living_totaal_verbruik
+    source: sensor.ads_tv_power
+    name: tv_living_energie_verbruik
     unit_prefix: k
     round: 2
 

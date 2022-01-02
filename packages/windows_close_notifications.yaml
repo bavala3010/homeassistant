@@ -264,14 +264,14 @@ automation:
   - service: script.notify_bart_windows
     data_template:
       message: "Vocht master bedroom: {{states('sensor.gram_water_master_bedroom')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Vocht master bedroom: {{states('sensor.master_bedroom_humidity')}} %. Buiten: {{states('sensor.humidity_leuven24_wunderground')}} %.<br>Temp master bedroom: {{states('sensor.master_bedroom_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
-      title: "Sluit master bedroom raam!"
+      title: "Sluit master bedroom raam! {{states('sensor.master_bedroom_raam')}}"
       tag: "window_master_bedroom"
       action_window_pause: "master_bedroom_window_pause"
       reason: "{% if states('sensor.master_bedroom_temperature') | float < 14 %} Wordt te koud binnen. {% endif %}"
   - service: script.notify_madouce_windows
     data_template:
       message: "Vocht master bedroom: {{states('sensor.gram_water_master_bedroom')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Vocht master bedroom: {{states('sensor.master_bedroom_humidity')}} %. Buiten: {{states('sensor.humidity_leuven24_wunderground')}} %.<br>Temp master bedroom: {{states('sensor.master_bedroom_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
-      title: "Sluit master bedroom raam!"
+      title: "Sluit master bedroom raam! {{states('sensor.master_bedroom_raam')}}"
       tag: "window_master_bedroom"
       action_window_pause: "master_bedroom_window_pause"
       reason: "{% if states('sensor.master_bedroom_temperature') | float < 14 %} Wordt te koud binnen. {% endif %}"
@@ -306,9 +306,6 @@ automation:
   - condition: state
     entity_id: input_boolean.living_raam_moet_dicht
     state: 'on'
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
   - service: notify.bart_phone
     data:
@@ -342,9 +339,6 @@ automation:
   - condition: state
     entity_id: input_boolean.kamer_amilya_raam_moet_dicht
     state: 'on'
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
   - service: notify.bart_phone
     data:
@@ -374,9 +368,6 @@ automation:
   - condition: state
     entity_id: input_boolean.veranda_schuifraam_moet_dicht
     state: 'on'
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
   - service: notify.bart_phone
     data:
@@ -406,9 +397,6 @@ automation:
   - condition: state
     entity_id: input_boolean.berging_raam_moet_dicht
     state: 'on'
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
   - service: notify.bart_phone
     data:
@@ -438,9 +426,6 @@ automation:
   - condition: state
     entity_id: input_boolean.badkamer_raam_moet_dicht
     state: 'on'
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
   - service: notify.bart_phone
     data:
@@ -474,9 +459,6 @@ automation:
   - condition: state
     entity_id: input_boolean.kamer_alunya_raam_moet_dicht
     state: 'on'
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
   - service: notify.bart_phone
     data:
@@ -505,9 +487,6 @@ automation:
   - condition: state
     entity_id: input_boolean.master_bedroom_raam_moet_dicht
     state: 'on'
-  - condition: time
-    after: '7:0:0'
-    before: '23:30:00'
   action:
   - service: notify.bart_phone
     data:
