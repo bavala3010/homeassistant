@@ -1015,21 +1015,21 @@ template:
       - name: "badkamer raam"
         state: >
           {% if is_state('binary_sensor.badkamer_raam_wijd', 'on') %}
-            wijd
+            wijd open
           {% elif is_state('binary_sensor.badkamer_raam_kantel', 'on') %}
             gekanteld
           {% else %}
-            Gesloten
+            gesloten
           {% endif %}
 
       - name: "master bedroom raam"
         state: >
           {% if is_state('binary_sensor.master_bedroom_raam_wijd', 'on') %}
-            wijd
+            wijd open
           {% elif is_state('binary_sensor.master_bedroom_raam_kantel', 'on') %}
             gekanteld
           {% else %}
-            Gesloten
+            gesloten
           {% endif %}
 
 ###############################################################################
