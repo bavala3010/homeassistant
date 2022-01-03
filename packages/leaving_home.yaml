@@ -7,7 +7,6 @@
 
 automation:
 
-
 - alias: Niemand meer thuis = voordeur op slot doen
   id: '97b2e13f-ab8c-4346-983a-970cfacb4c4e'
   description: ''
@@ -19,7 +18,7 @@ automation:
   condition:
   - condition: state
     entity_id: binary_sensor.voordeur_nuki
-    state: 'off'
+    state: 'on'
   action:
   - service: lock.lock
     target:

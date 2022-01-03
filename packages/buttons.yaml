@@ -35,11 +35,11 @@ automation:
   - service: media_player.volume_set
     data:
       entity_id: media_player.living_speaker
-      volume_level: 0.5
+      volume_level: 0.6
   - service: tts.google_say
     data:
       entity_id: media_player.living_speaker
-      message: Garapoort gaat open!
+      message: Garagepoort gaat open!
   - service: media_player.volume_set
     data:
       entity_id: media_player.living_speaker

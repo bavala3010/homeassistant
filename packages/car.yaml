@@ -122,7 +122,7 @@ automation:
   action:
   - service: notify.bart_phone
     data:
-      message: 🚙 Autolader is verbonden.
+      message: "🚙 Autolader is verbonden. Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%."
       data:
         color: green
         tag: auto_laden
@@ -133,7 +133,7 @@ automation:
           uri: /eikenbos-dashboard/e-tron        
   - service: notify.madouce_phone
     data:
-      message: 🚙 Autolader is verbonden.
+      message: "🚙 Autolader is verbonden. Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%."
       data:
         color: green
         tag: auto_laden

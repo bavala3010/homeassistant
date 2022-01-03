@@ -236,7 +236,7 @@ automation:
         trigger.to_state.state != trigger.from_state.state}}
   - condition: numeric_state
     entity_id: sensor.badkamer_temperature
-    above: '17'            
+    above: '14.5'            
   - condition: numeric_state
     entity_id: sensor.badkamer_heating
     below: '0.1'
@@ -396,7 +396,7 @@ automation:
     entity_id: sensor.master_bedroom_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float) >= 12 }}"
+    value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float) >= 10 }}"
   - condition: or
     conditions:
       # first possible case: vocht buiten stijgt niet + binnen minstens 0.4 gram vocht meer dan buiten + temp binnen hoger dan 16.5 + temperatuurverschil binnen/buiten minder dan 10°
