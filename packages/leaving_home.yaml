@@ -10,7 +10,6 @@ automation:
 - alias: Niemand meer thuis = voordeur op slot doen
   id: '97b2e13f-ab8c-4346-983a-970cfacb4c4e'
   description: ''
-  mode: single
   trigger:
   - platform: state
     entity_id: group.gezin
@@ -26,7 +25,7 @@ automation:
   - service: notify.bart_phone
     data:
       title: Voordeur
-      message: Niemand thuis? Gelukkig heb ik de voordeur voor jou op slot gedaan.
+      message: Niemand thuis. Gelukkig heb ik de voordeur voor jou op slot gedaan.
       data:
         color: red
   - service: notify.bart_phone
@@ -36,6 +35,44 @@ automation:
   - service: notify.madouce_phone
     data:
       title: Voordeur
-      message: Niemand thuis? Gelukkig heb ik de voordeur voor jou op slot gedaan.
+      message: Niemand thuis. Gelukkig heb ik de voordeur voor jou op slot gedaan.
       data:
         color: red
+  mode: single        
+        
+- alias: kind(eren) alleen thuis = voordeur op slot doen
+  id: '70541658-6b67-46f1-8e90-64a0600c646d'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.bart_madouce
+    to: not_home
+  condition:
+  - condition: state
+    entity_id: binary_sensor.voordeur_nuki
+    state: 'on'
+  action:
+  - service: lock.lock
+    target:
+      entity_id: lock.voordeur_nuki
+  - service: notify.bart_phone
+    data:
+      title: Voordeur
+      message: Ik heb de voordeur voor jou op slot gedaan.
+      data:
+        color: red
+  - service: notify.bart_phone
+    data:
+      message: TTS
+      message: Ik heb de voordeur voor jou op slot gedaan.
+  - service: notify.madouce_phone
+    data:
+      title: Voordeur
+      message: Ik heb de voordeur voor jou op slot gedaan.
+      data:
+        color: red
+  - service: notify.madouce_phone
+    data:
+      message: TTS
+      message: Ik heb de voordeur voor jou op slot gedaan.
+  mode: single

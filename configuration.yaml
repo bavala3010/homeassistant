@@ -539,7 +539,7 @@ sensor:
 
   - platform: history_stats
     name: "Amilya TV aan vandaag"
-    entity_id: media_player.ads_tv
+    entity_id: media_player.amilya_tv
     state: "playing"
     type: time
     start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'

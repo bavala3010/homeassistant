@@ -20,7 +20,13 @@ alleen_bart:
     - device_tracker.madouce_samsung_s20
     - device_tracker.amilya_iphone_xs
     - device_tracker.alunya_samsung_galaxy_a71
-      
+
+bart_madouce:
+  name: bart_madouce
+  entities:
+    - person.bart
+    - person.madouce
+
 kinderen:
   name: kinderen
   entities:

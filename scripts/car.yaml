@@ -54,7 +54,7 @@ auto_start_climatisation:
         actions:
         - action: URI
           title: meer info
-          uri: /lovelace/e-tron
+          uri: /eikenbos-dashboard/e-tron
   - service: notify.madouce_phone
     data:
       message: Climatisatie auto gestart
@@ -63,7 +63,7 @@ auto_start_climatisation:
         actions:
         - action: URI
           title: meer info
-          uri: /lovelace/e-tron
+          uri: /eikenbos-dashboard/e-tron
   - delay:
       hours: 0
       minutes: 20
@@ -113,7 +113,7 @@ auto_stop_climatisation:
         actions:
         - action: URI
           title: meer info
-          uri: /lovelace/e-tron
+          uri: /eikenbos-dashboard/e-tron
   - service: notify.madouce_phone
     data:
       message: Climatisatie auto gestopt
@@ -122,4 +122,4 @@ auto_stop_climatisation:
         actions:
         - action: URI
           title: meer info
-          uri: /lovelace/e-tron
+          uri: /eikenbos-dashboard/e-tron

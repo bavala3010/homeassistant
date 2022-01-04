@@ -275,10 +275,14 @@ automation:
     data:
       title: Garagepoort
       message: Garagepoort staat al 5 minuten open.
+      data:
+        color: red      
   - service: notify.madouce_phone
     data:
       title: Garagepoort
       message: Garagepoort staat al 5 minuten open.
+      data:
+        color: red      
   mode: single
 
 - alias: Garagepoort staat al 10 minuten open
@@ -296,10 +300,14 @@ automation:
     data:
       title: Garagepoort
       message: Garagepoort staat al 10 minuten open.
+      data:
+        color: red      
   - service: notify.madouce_phone
     data:
       title: Garagepoort
       message: Garagepoort staat al 10 minuten open.
+      data:
+        color: red      
   mode: single
 
 - alias: Voordeur staat al 5 minuten open
@@ -317,6 +325,8 @@ automation:
     data:
       title: Voordeur
       message: Voordeur staat al 5 minuten open.
+      data:
+        color: red      
   mode: single
 
 - alias: 👀 beweging oprit
