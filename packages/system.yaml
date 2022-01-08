@@ -1,8 +1,8 @@
 ############################ Table of Contents ############################ 
 # 
 #   Automations
-#   🚀 Pi CPU temp >72 °C = melding
-#   🚀 Pi CPU > 60% = melding
+#   🚀 Pi CPU temp >79 °C = melding
+#   🚀 Pi CPU > 50% = melding
 #   🚀 system shutdown notification
 #   🚀 system restart notification
 #   🚀 Low battery level detection & notification for all battery sensors
@@ -17,20 +17,20 @@
 
 automation:
 
-- alias: 🚀 Pi CPU temp >72 °C = melding
+- alias: 🚀 Pi CPU temp >70 °C = melding
   id: '64c59baf-e8fb-4fc0-b789-cf74742e57e4'
   description: ''
   trigger:
   - platform: numeric_state
     entity_id: sensor.processor_temperature
-    above: '72'
+    above: '70'
     for: 00:10
   condition: []
   action:
   - service: notify.bart_phone
     data:
-      message: temperatuur Raspberry Pi CPU is %{{states('sensor.processor_temperature')}}%
-      title: Raspberry PI
+      title: Raspberry PI temperatuur
+      message: Temperatuur Raspberry Pi CPU is {{states('sensor.processor_temperature')}}. CPU werkt op {{states('sensor.processor_use_percent')}}%.
   mode: single
   
 - alias: 🚀 Pi CPU > 50% = melding
@@ -45,8 +45,8 @@ automation:
   action:
   - service: notify.bart_phone
     data:
-      message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}%.
-      title: Raspberry Pi
+      title: Raspberry Pi CPU
+      message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}% en temperatuur is {{states('sensor.processor_temperature')}}.
   mode: single
 
 - alias: 🚀 HA stopt

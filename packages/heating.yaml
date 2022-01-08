@@ -4,7 +4,7 @@
 
 automation:
 
-- alias: Amilya niet thuis = verwarming op automatisch
+- alias: ♨️ Amilya niet thuis = verwarming op automatisch
   id: 'ba1642db-f360-46ab-8c44-3fd16cc20751'
   description: ''
   trigger:
@@ -22,7 +22,7 @@ automation:
       hvac_mode: auto
   mode: single
 
-- alias: Alunya niet thuis = verwarming op automatisch
+- alias: ♨️ Alunya niet thuis = verwarming op automatisch
   id: '14de18f4-ecec-446f-baba-399c0eaf0d9f'
   description: ''
   trigger:
@@ -39,7 +39,7 @@ automation:
       hvac_mode: auto
   mode: single
 
-- alias: ">21 °C gevraagd in kamer Amilya = chauffage op automatisch"
+- alias: "♨️ >21 °C gevraagd in kamer Amilya = chauffage op automatisch"
   id: '95335e38-c593-48a6-b356-1be5f78db02c'
   description: ''
   trigger:
@@ -59,7 +59,7 @@ automation:
       message: Kamer Amilya op meer dan 21° gezet = herzet naar automatisch.
   mode: single
   
-- alias: ">20 °C gevraagd in kamer Amilya 's nachts = chauffage op automatisch"
+- alias: "♨️ >20 °C gevraagd in kamer Amilya 's nachts = chauffage op automatisch"
   id: 'b5bc7134-9f34-455e-9f89-447ae445cce8'
   description: ''
   trigger:
@@ -80,6 +80,48 @@ automation:
   - service: notify.mobile_app_bart_s10
     data:
       message: Kamer Amilya op meer dan 20° 's nachts gezet = herzet naar automatisch.      
+  mode: single
+
+- alias: "♨️ Chauffage Alunya 's nachts op automatisch"
+  id: '0c41db26-ed5a-46c8-b2f5-ba93514fb638'
+  description: ''
+  trigger:
+  - minutes: /30
+    platform: time_pattern
+  condition:
+  - condition: time
+    after: '0:00'
+    before: '6:00'
+  - condition: state
+    entity_id: climate.kamer_alunya
+    state: "heat"
+  action:
+  - service: climate.set_hvac_mode
+    target:
+      entity_id: climate.kamer_alunya
+    data:
+      hvac_mode: auto
+  mode: single
+  
+- alias: "♨️ Chauffage Amilya 's nachts op automatisch"
+  id: 'a9ed4d73-ab63-48f1-a05b-e252d9d60694'
+  description: ''
+  trigger:
+  - minutes: /30
+    platform: time_pattern
+  condition:
+  - condition: time
+    after: '0:00'
+    before: '6:00'
+  - condition: state
+    entity_id: climate.kamer_amilya
+    state: "heat"
+  action:
+  - service: climate.set_hvac_mode
+    target:
+      entity_id: climate.kamer_amilya
+    data:
+      hvac_mode: auto
   mode: single
 
 # - alias: chauffage badkamer aan + raam open = chauffage uit

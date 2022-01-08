@@ -8,7 +8,7 @@ automation:
     at: '22:15'
   condition:
   - condition: state
-    entity_id: device_tracker.madouce_samsung_s20
+    entity_id: person.madouce
     state: home
   - condition: numeric_state
     entity_id: sensor.buitensensor_deur_temperature
@@ -17,6 +17,10 @@ automation:
   - service: switch.turn_on
     target:
       entity_id: switch.smart_power_strip_4
+  - service: notify.madouce_phone
+    data:
+      title: Matrasverwarming ingeschakeld.
+      message: Geniet er dadelijk van ;)
   mode: single
   
 - alias: 🛌 Matras uitschakelen als die al 1 uur aanstaat
@@ -43,7 +47,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: device_tracker.madouce_samsung_s20
+    entity_id: person.madouce
     from: 'not_home'
     to: 'home'
   condition:
@@ -60,5 +64,5 @@ automation:
   - service: notify.madouce_phone
     data:
       title: Matrasverwarming ingeschakeld.
-      message: Geniet ervan ;)      
+      message: Geniet er dadelijk van ;)
   mode: single

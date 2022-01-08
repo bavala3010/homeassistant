@@ -17,6 +17,7 @@
 # Lager dan 10 °C	Een beetje droog voor sommige mensen
 
 automation:
+
 - alias: "💧 Vocht in huis >75%"
   id: '466f577f-83c4-4954-b17e-335ad7fa83f6'
   description: ''
@@ -37,6 +38,8 @@ automation:
       data:
         title: Vocht
         message: "Vocht % in huis is heel hoog: {{states('sensor.avg_inside_humidity')}}%."
+        data:
+          color: "#0E86D4"
         actions:
         - action: URI
           title: meer info
@@ -44,7 +47,7 @@ automation:
         
   mode: single
   
-- alias: "💧 vocht % master bedroom -> machine aan"
+- alias: "💧 check vocht % master bedroom om 20u30"
   id: '9309eba6-275f-4a93-953a-908b937358ec'
   description: ''
   trigger:
@@ -60,10 +63,10 @@ automation:
   action:
   - service: notify.bart_phone
     data:
-      message: "Master bedroom vocht is {{states('sensor.master_bedroom_humidity')}}%. Zet eventueel machine aan."
-      title: Zet ontvochtiger in master bedroom.
+      title: Veel vocht in master bedroom. Raam is {{states('sensor.master_bedroom_raam')}}.
+      message: "Vocht is {{states('sensor.master_bedroom_humidity')}}%. Zet eventueel machine aan."
       data:
-        color: blue
+        color: "#0E86D4"
         channel: Vocht
         actions:
         - action: URI
@@ -88,11 +91,11 @@ automation:
       sequence:
       - service: notify.bart_phone
         data:
-          message: '{{states(''sensor.badkamer_thermal_absolutehumidity'')}} gram
-            water /m³ en {{states(''sensor.badkamer_humidity'')}}% vocht.'
-          title: Veel vocht in badkamer!
+          title: "Veel vocht in badkamer! Raam is {{states('sensor.badkamer_raam')}}."
+          message: "{{states('sensor.badkamer_thermal_absolutehumidity')}} gram
+            water /m³ en {{states('sensor.badkamer_humidity')}}% vocht."
           data:
-            color: blue
+            color: "#0E86D4"
             tag: badkamer_vocht
             channel: vocht
             actions:
@@ -101,11 +104,11 @@ automation:
               uri: /lovelace/humidity
       - service: notify.madouce_phone
         data:
-          message: '{{states(''sensor.badkamer_thermal_absolutehumidity'')}} gram
-            water /m³ en {{states(''sensor.badkamer_humidity'')}}% vocht.'
-          title: Veel vocht in badkamer!
+          title: "Veel vocht in badkamer! Raam is {{states('sensor.badkamer_raam')}}."
+          message: "{{states('sensor.badkamer_thermal_absolutehumidity')}} gram
+            water /m³ en {{states('sensor.badkamer_humidity')}}% vocht."
           data:
-            color: blue
+            color: "#0E86D4"
             tag: badkamer_vocht
             channel: vocht
             actions:
@@ -143,11 +146,11 @@ automation:
       sequence:
       - service: notify.bart_phone
         data:
-          title: Veel vocht in master bedroom!
-          message: '{{states(''sensor.master_bedroom_thermal_absolutehumidity'')}} gram
-            water /m³ en {{states(''sensor.master_bedroom_humidity'')}}% vocht.'
+          title: "Veel vocht in master bedroom! Raam is {{states('sensor.master_bedroom_raam')}}"
+          message: "{{states('sensor.master_bedroom_thermal_absolutehumidity')}} gram
+            water /m³ en {{states('sensor.master_bedroom_humidity')}}% vocht."
           data:
-            color: blue
+            color: "#0E86D4"
             tag: master_bedroom_vocht
             channel: vocht
             actions:
@@ -156,11 +159,11 @@ automation:
               uri: /lovelace/humidity
       - service: notify.madouce_phone
         data:
-          title: Veel vocht in master bedroom!
-          message: '{{states(''sensor.master_bedroom_thermal_absolutehumidity'')}} gram
-            water /m³ en {{states(''sensor.master_bedroom_humidity'')}}% vocht.'
+          title: "Veel vocht in master bedroom! Raam is {{states('sensor.master_bedroom_raam')}}"
+          message: "{{states('sensor.master_bedroom_thermal_absolutehumidity')}} gram
+            water /m³ en {{states('sensor.master_bedroom_humidity')}}% vocht."
           data:
-            color: blue
+            color: "#0E86D4"
             tag: master_bedroom_vocht
             channel: vocht
             actions:
@@ -201,12 +204,13 @@ automation:
     data:
       title: Ventilatie in badkamer gestart.
       message: "Wegens snel stijgend vochtgehalte. Nu {{states('sensor.badkamer_humidity')}}% vocht."
+      data:
+        color: "#0E86D4"
   mode: single
       
 - alias: "💧 vocht in badkamer stabiel = ventilator uit"
   id: '93e2dbac-87f9-427b-bc74-40f6afbe19df'
   description: ''
-  mode: single
   trigger:
     - platform: state
       entity_id: binary_sensor.humidity_badkamer_rising
@@ -225,8 +229,9 @@ automation:
       title: Ventilatie in badkamer gestopt.
       message: "Nu nog {{states('sensor.badkamer_humidity')}}% vocht."
       data:
-        color: blue
+        color: "#0E86D4"
         timeout: 420
         actions:
         - action: toilet_douche_ventilator_10_min_aan
           title: Ventilatie opnieuw 10 min. aanzetten
+  mode: single  

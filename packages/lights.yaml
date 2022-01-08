@@ -329,7 +329,7 @@ automation:
         tag: garage_licht
   mode: single
 
-- alias: 💡 licht gang uit na 1 minuut
+- alias: 💡 licht gang uit na 2 minuten
   id: 'd268f950-cbb3-4220-a017-850bb950ec4a'
   description: ''
   trigger:
@@ -340,7 +340,7 @@ automation:
     domain: light
     for:
       hours: 0
-      minutes: 1
+      minutes: 2
       seconds: 0
   condition: []
   action:

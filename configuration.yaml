@@ -62,6 +62,14 @@ homeassistant:
 # secrets should not be mentioned in this file; it is automatic !
 # secrets: !include secrets.yaml
 
+# manuele aanpassing van alle sensoren eindigend op "energieverbruik" om in het energy dashboard te krijgen
+  customize_glob:
+    sensor.*energieverbruik:
+      unit_of_measurement: "kWh"     
+      device_class: energy
+      state_class: measurement
+      last_reset: "1970-01-01T00:00:00+00:00"
+
 # needed when using reverse proxy managers (eg. Nginx)
 http:
   use_x_forwarded_for: true
@@ -851,7 +859,7 @@ sensor:
     scan_interval: 1200
 
 ###############################################################################
-# Sensor to calculate the consumption of lights, tv etc.
+# Sensor to calculate the consumption of lights
 ###############################################################################
 
   - platform: template
@@ -866,49 +874,66 @@ sensor:
           | rejectattr('state', 'in', ['unavailable', 'unknown'])
           | map(attribute='state') | map('float') | sum | round(2) }}
 
-  - platform: template
-    sensors:  
-      living_tv_power:
-        unit_of_measurement: W
-        friendly_name: "elektriciteitsverbruik living TV (in W)"
-        value_template: "{{ ( states('sensor.living_tv_aan_vandaag') | float(default=0) * 85 ) | round(3) }}"
-   # TV consumes 82 W per hour + Google TV 3 W per hour
-   
-  - platform: template
-    sensors:  
-      master_bedroom_tv_power:
-        unit_of_measurement: W
-        friendly_name: "elektriciteitsverbruik master bedroom TV (in W)"
-        value_template: "{{ ( states('sensor.master_bedroom_tv_aan_vandaag') | float(default=0) * 63 ) | round(3) }}"
-   # TV + Google TV consumes 63 W per hour
+
+###############################################################################
+# Sensor to calculate the energie consumption tv 
+###############################################################################
 
   - platform: template
     sensors:  
-      amilya_tv_power:
-        unit_of_measurement: W
-        friendly_name: "elektriciteitsverbruik Amilya TV (in W)"
-        value_template: "{{ ( states('sensor.amilya_tv_aan_vandaag') | float(default=0) * 85 ) | round(3) }}"
-   # TV consumes 82 W per hour + Google Chromecast 3 W per hour
+      living_tv_powerconsumption:
+        value_template: >
+          {% if is_state('media_player.ue55ju7000', 'on') %}
+            85
+          {% else %}
+            0
+          {% endif %}
+        device_class: 'power'
+        unit_of_measurement: 'W'
+   # creates a sensor called sensor.living_tv_powerconsumption
+   # TV consumes 82 W + Google TV 3 W
 
   - platform: template
     sensors:  
-      alunya_tv_power:
-        unit_of_measurement: W
-        friendly_name: "elektriciteitsverbruik Alunya TV (in W)"
-        value_template: "{{ ( states('sensor.alunya_tv_aan_vandaag') | float(default=0) * 85 ) | round(3) }}"
-   # TV consumes 82 W per hour + Google Chromecast 3 W per hour
+      master_bedroom_tv_powerconsumption:
+        value_template: >
+          {% if is_state('media_player.master_bedroom_tv', 'on') %}
+            63
+          {% else %}
+            0
+          {% endif %}
+        device_class: 'power'
+        unit_of_measurement: 'W'
+   # creates a sensor called sensor.master_bedroom_tv_powerconsumption
+   # TV + Google TV consumes 63 W
 
   - platform: template
-    sensors:
-      living_tv_energy:
-        friendly_name: "living TV energieverbruik"
-        unit_of_measurement: kWh
-        value_template: "{{ states('sensor.living_tv_energieverbruik') | float | round(3) }}"
-        attribute_templates:
-          last_reset: "1970-01-01T00:00:00+00:00"
-          state_class: measurement
-          device_class: energy
-          icon: mdi:chart-histogram
+    sensors:  
+      amilya_tv_powerconsumption:
+        value_template: >
+          {% if is_state('binary_sensor.amilya_tv_on', 'on') %}
+            82
+          {% else %}
+            0
+          {% endif %}
+        device_class: 'power'
+        unit_of_measurement: 'W'
+   # creates a sensor called sensor.amilya_tv_powerconsumption
+   # TV consumes 82 W + Google Chromecast 3 W
+
+  - platform: template
+    sensors:  
+      alunya_tv_powerconsumption:
+        value_template: >
+          {% if is_state('binary_sensor.alunya_tv_on', 'on') %}
+            82
+          {% else %}
+            0
+          {% endif %}
+        device_class: 'power'
+        unit_of_measurement: 'W'
+   # creates a sensor called sensor.alunya_tv_powerconsumption
+   # TV consumes 82 W + Google Chromecast 3 W
 
   - platform: template
     sensors:
@@ -980,26 +1005,32 @@ sensor:
   
   - platform: integration
     source: sensor.ontvochtiger_power
-    name: ontvochtiger_energieverbruik
+    name: ontvochtiger energieverbruik
     unit_prefix: k
     round: 2
 
   - platform: integration
-    source: sensor.living_tv_power
-    name: living_tv_energieverbruik
+    source: sensor.living_tv_powerconsumption
+    name: living tv energieverbruik
     unit_prefix: k
     round: 2
     # creates sensor called: sensor.living_tv_energieverbruik
 
   - platform: integration
-    source: sensor.master_bedroom_tv_power
-    name: master_bedroom_tv_energieverbruik
+    source: sensor.master_bedroom_tv_powerconsumption
+    name: master bedroom tv energieverbruik
     unit_prefix: k
     round: 2
 
   - platform: integration
-    source: sensor.ads_tv_power
-    name: ads_tv_energieverbruik
+    source: sensor.amilya_tv_powerconsumption
+    name: Amilya tv energieverbruik
+    unit_prefix: k
+    round: 2
+
+  - platform: integration
+    source: sensor.alunya_tv_powerconsumption
+    name: Alunya tv energieverbruik
     unit_prefix: k
     round: 2
 

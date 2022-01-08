@@ -61,10 +61,10 @@
       zone: zone.home
     - service: notify.alunya_phone
       data_template:
-        title: " {{ title }} {{ reason }}"
-        message: "{{ message }}"
+        title: " {{ title }}"
+        message: "{{ reason }}<br>{{ message }}"
         data:
-          color: blue
+          color: "#0E86D4"
           channel: ramen
           timeout: 3600
           tag: " {{ tag }}"
