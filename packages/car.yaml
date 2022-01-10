@@ -214,6 +214,7 @@ automation:
           uri: /eikenbos-dashboard/e-tron
   mode: single
 
+
 #########################
 # Auto op slot
 #########################
@@ -228,6 +229,24 @@ automation:
   - condition: state
     entity_id: lock.audi_e_tron_sportback_55_door_lock_2
     state: unlocked
+  - condition: state
+    entity_id: device_tracker.bart_s10
+    state: 0
+    attribute: speed
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  - condition: state
+    entity_id: device_tracker.madouce_s20
+    state: 0
+    attribute: speed
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0  
   action:
   - service: notify.bart_phone
     data:
@@ -241,9 +260,6 @@ automation:
         - action: URI
           title: meer info
           uri: /eikenbos-dashboard/e-tron        
-  - service: lock.lock
-    target:
-      entity_id: lock.audi_e_tron_sportback_55_door_lock_2
   - service: notify.madouce_phone
     data:
       title: Auto niet op slot!
@@ -356,6 +372,7 @@ automation:
           title: meer info
           uri: /eikenbos-dashboard/e-tron
   mode: single
+
   
 #########################
 # Auto climatisatie
@@ -374,3 +391,76 @@ automation:
   action:
    - service: script.auto_start_climatisation
   mode: restart
+
+- alias: 🚗 Om 19u in Waarschoot en koud = vraag auto voorverwarmen
+  id: '8fa06ed3-7c9f-453d-80d4-a246df6633f8'
+  description: ''
+  trigger:
+  - platform: time
+    at: '19:00'
+  condition:
+  - condition: numeric_state
+    entity_id: weather.eikenbos
+    attribute: temperature
+    below: 15
+  - condition: state
+    entity_id: person.bart
+    state: Waarschoot
+  - condition: state
+    entity_id: device_tracker.bart_s10
+    state: 0
+    attribute: speed
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  action:
+  - service: notify.bart_phone
+    data:
+      message: 🚙 Moet de auto worden voorverwamd?
+      data:
+        color: green
+        actions:
+        - action: URI
+          title: zo ja, klik hier
+          uri: /eikenbos-dashboard/e-tron-heater
+  mode: single
+
+- alias: 🚗 Madouce bij mama Madouce = vraag auto voorverwarmen
+  id: '8fa06ed3-7c9f-453d-80d4-a246df6633f8'
+  description: ''
+  trigger:
+  - condition: state
+    entity_id: person.madouce
+    state: "mama Madouce"
+    for:
+      hours: 1
+      minutes: 0 
+      seconds: 0
+      milliseconds: 0
+  condition:
+  - condition: numeric_state
+    entity_id: weather.eikenbos
+    attribute: temperature
+    below: 15
+  - condition: state
+    entity_id: device_tracker.madouce_s20
+    state: 0
+    attribute: speed
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  action:
+  - service: notify.madouce_phone
+    data:
+      message: 🚙 Moet de auto worden voorverwamd?
+      data:
+        color: green
+        actions:
+        - action: URI
+          title: zo ja, klik hier
+          uri: /eikenbos-dashboard/e-tron-heater
+  mode: single

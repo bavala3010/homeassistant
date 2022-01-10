@@ -1,0 +1,8 @@
+
+# coding tips
+
+name: |
+  [[[ 
+    if (states["timer.clean_cycle"].state == 'idle') return states['sensor.pump_on_today'].state + " h";
+    else return "."
+  ]]]

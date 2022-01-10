@@ -34,12 +34,24 @@ automation:
       entity_id: cover.garagepoort_door
   - service: media_player.volume_set
     data:
+      entity_id: media_player.veranda_speaker
+      volume_level: 0.6
+  - service: media_player.volume_set
+    data:
       entity_id: media_player.living_speaker
       volume_level: 0.6
   - service: tts.google_say
     data:
+      entity_id: media_player.veranda_speaker
+      message: Garagepoort gaat open!
+  - service: tts.google_say
+    data:
       entity_id: media_player.living_speaker
       message: Garagepoort gaat open!
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.veranda_speaker
+      volume_level: 0.4
   - service: media_player.volume_set
     data:
       entity_id: media_player.living_speaker

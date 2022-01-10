@@ -1,4 +1,3 @@
-
 - alias: 🏡 Bart is alleen thuis
   id: 02b63f41-9ea3-48eb-97aa-242a618f3400
   description: ''
@@ -18,7 +17,7 @@
       message: TTS
       title: Bart, je bent alleen thuis!
   mode: single
-  
+
 - alias: RecycleApp notificaties
   id: 50cbd530-9e44-4283-95f9-24f8ca182701
   trigger:
@@ -39,7 +38,7 @@
         tag: recycle
         actions:
         - action: recycle_done
-          title: zak/bak staat buiten
+          title: Ik heb het buiten gezet!
   - service: notify.madouce_phone
     data:
       title: '{{title}}'
@@ -48,21 +47,20 @@
         tag: recycle
         actions:
         - action: recycle_done
-          title: zak/bak staat buiten
+          title: Ik heb het buiten gezet!
   variables:
-    title: "{% if state_attr('sensor.recycleapp_gft', 'Days-until') == 1 %} Morgen
-      groene bak  {%elif state_attr('sensor.recycleapp_restafval', 'Days-until')
-      == 1 %} Morgen bruine zak {%elif state_attr('sensor.recycleapp_pmd', 'Days-until')
-      == 1 %} Morgen blauwe zak {%elif state_attr('sensor.recycleapp_papier', 'Days-until')
-      == 1 %} Morgen oud papier {%endif%}"
-    message: "{% if state_attr('sensor.recycleapp_gft', 'Days-until') == 1 %}
+    title: "{% if state_attr('sensor.recycleapp_gft', 'Days_until') == 1 %}Morgen
+      groene bak {%elif state_attr('sensor.recycleapp_restafval', 'Days_until')
+      == 1 %}Morgen ophaling bruine zak. {%elif state_attr('sensor.recycleapp_pmd', 'Days_until')
+      == 1 %}Morgen ophaling blauwe zak. {%elif state_attr('sensor.recycleapp_papier', 'Days_until')
+      == 1 %}Morgen ophaling oud papier. {%endif%}"
+    message: "{% if state_attr('sensor.recycleapp_gft', 'Days_until') == 1 %}
       Zet de groene bak aan straat. {%elif state_attr('sensor.recycleapp_restafval',
-      'Days-until') == 1 %} Zet de bruine zak aan straat. {%elif state_attr('sensor.recycleapp_pmd',
-      'Days-until') == 1 %} Zet de blauwe zak aan straat. {%elif state_attr('sensor.recycleapp_papier',
-      'Days-until') == 1 %} Zet het oud papier aan straat. {%endif%}"
-
+      'Days_until') == 1 %}Zet de bruine zak aan straat. {%elif state_attr('sensor.recycleapp_pmd',
+      'Days_until') == 1 %}Zet de blauwe zak aan straat. {%elif state_attr('sensor.recycleapp_papier',
+      'Days_until') == 1 %}Zet het oud papier aan straat. {%endif%}"
   mode: single
-  
+
 - alias: recycle_done
   id: 761e33f9-8fad-4537-8bf3-361aba8f5638
   trigger:

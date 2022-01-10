@@ -260,57 +260,40 @@ automation:
   #      volume_level: 0.8
   mode: queued
 
-- alias: Garagepoort staat al 5 minuten open
+- alias: Garagepoort staat lang open
   id: '2afaab2f-0aee-4dea-a340-be690d593fca'
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.ty18857573dc4f22b78e02
-    from: 'off'
-    to: 'on'
+    entity_id: cover.garagepoort
+    from: 'closed'
+    to: 'open'
     for: 00:05:00
   condition: []
   action:
+  - repeat:
+      while:
+      - condition: state
+        entity_id: cover.garagepoort
+        state: 'open'
+      sequence:
+      - service: notify.bart_phone      
+        data:
+          title: "Garage staat al lang open."
+          message: "Staat al {{((as_timestamp(now()) - as_timestamp(states.cover.garagepoort.last_changed)) / 60 )| int() }} minuten open."
+          data:
+            color: red
+            tag: garage_staat_open
+      - delay:
+          minutes: 2
   - service: notify.bart_phone
     data:
-      title: Garagepoort
-      message: Garagepoort staat al 5 minuten open.
+      message: "Garage is nu terug dicht."
       data:
-        color: red      
-  - service: notify.madouce_phone
-    data:
-      title: Garagepoort
-      message: Garagepoort staat al 5 minuten open.
-      data:
-        color: red      
+        tag: garage_staat_open
   mode: single
 
-- alias: Garagepoort staat al 10 minuten open
-  id: 'ad995e4e-10e6-45e9-9603-32d3b0afd0be'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.ty18857573dc4f22b78e02
-    from: 'off'
-    to: 'on'
-    for: 00:10:00
-  condition: []
-  action:
-  - service: notify.bart_phone
-    data:
-      title: Garagepoort
-      message: Garagepoort staat al 10 minuten open.
-      data:
-        color: red      
-  - service: notify.madouce_phone
-    data:
-      title: Garagepoort
-      message: Garagepoort staat al 10 minuten open.
-      data:
-        color: red      
-  mode: single
-
-- alias: Voordeur staat al 5 minuten open
+- alias: Voordeur staat lang open
   id: '76d0bc44-085e-4a6f-bb8d-22d46f5f2ad5'
   description: ''
   trigger:
@@ -321,12 +304,26 @@ automation:
     for: 00:05:00
   condition: []
   action:
+  - repeat:
+      while:
+      - condition: state
+        entity_id: binary_sensor.voordeur
+        state: 'on'
+      sequence:
+      - service: notify.bart_phone      
+        data:
+          title: "Voordeur al lang open"
+          message: "Staat al {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.voordeur.last_changed)) / 60 )| int() }} minuten open."
+          data:
+            color: red
+            tag: voordeur_staat_open
+      - delay:
+          minutes: 2
   - service: notify.bart_phone
     data:
-      title: Voordeur
-      message: Voordeur staat al 5 minuten open.
+      message: "Voordeur is nu terug dicht."
       data:
-        color: red      
+        tag: voordeur_staat_open
   mode: single
 
 - alias: 👀 beweging oprit
@@ -365,6 +362,60 @@ automation:
   - service: media_player.turn_off
     entity_id: media_player.living_speaker
   mode: single
+
+- alias: 👀 beweging terras
+  id: '1317b64b-1a0a-4a6a-848d-e3feb029ab22'
+  description: "Beweging op terras = melding op living & veranda speaker"
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.terras_sensor_motion
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: template
+    value_template: '{{ as_timestamp(now()) - as_timestamp(states.automation.beweging_terras.attributes.last_triggered) | int > 120 }}'
+  action:
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.living_speaker
+      volume_level: 0.5
+  - service: tts.google_say
+    data:
+      entity_id: media_player.living_speaker
+      message: Beweging op terras!
+  - service: tts.google_say
+    data:
+      entity_id: media_player.veranda_speaker
+      message: Beweging op terras! 
+  - wait_template: ''
+    timeout: 00:00:07
+  - service: camera.play_stream
+    data:
+      media_player: media_player.living_speaker
+    target:
+      entity_id: camera.netatmo_eikenbos_oprit
+  - wait_template: ''
+    timeout: 00:01:30
+  - service: media_player.turn_off
+    entity_id: media_player.living_speaker
+  mode: single
+  
+- alias: 👀 beweging in tuin
+  id: '28641c60-8f5e-4856-96a9-e69ceb8c9cc8'
+  description: Beweging in tuin
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.tuin_motion
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: template
+    value_template: '{{ as_timestamp(now()) - as_timestamp(states.automation.beweging_terras.attributes.last_triggered) | int > 60 }}'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: Beweging in tuin.
+  mode: single  
 
 - alias: set_alarm_arm_away
   id: 'b2531e01-aa6d-4a32-b6d7-8627e1450c7e'

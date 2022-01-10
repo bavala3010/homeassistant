@@ -329,7 +329,7 @@ automation:
         tag: garage_licht
   mode: single
 
-- alias: 💡 licht gang uit na 2 minuten
+- alias: 💡 licht gang uit na 3 minuten
   id: 'd268f950-cbb3-4220-a017-850bb950ec4a'
   description: ''
   trigger:
@@ -340,7 +340,7 @@ automation:
     domain: light
     for:
       hours: 0
-      minutes: 2
+      minutes: 3
       seconds: 0
   condition: []
   action:
@@ -368,3 +368,62 @@ automation:
       - light.toilet
   mode: single
 
+- alias: 💡 licht toilet 's nachts gedempt
+  id: be544a45-af8d-4b1a-b5d9-69c5591f44d6
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: light.toilet
+    to: 'on'
+  condition:
+  - condition: time
+    after: '22:30:0'
+    before: '7:00:00'
+  action:
+  - service: light.turn_on
+    data:
+      kelvin: 2500
+      brightness_pct: 40
+    target:
+      entity_id: light.toilet
+  mode: single
+
+- alias: 💡 licht gang na zonsondergang gedempt
+  id: 151c0615-8998-408b-a0ab-0a31af6c3ea8
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: light.gang
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: sun.sun
+    state: "below_horizon"
+  action:
+  - service: light.turn_on
+    data:
+      kelvin: 2500
+      brightness_pct: 40
+    target:
+      entity_id: light.gang
+  mode: single
+
+- alias: 💡 licht gang na zonsopgang helder
+  id: 80b10678-6e3b-41a7-ba87-fdb427cfc2ce
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: light.gang
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: sun.sun
+    state: "above_horizon"
+  action:
+  - service: light.turn_on
+    data:
+      kelvin: 2500
+      brightness_pct: 100
+    target:
+      entity_id: light.gang
+  mode: single

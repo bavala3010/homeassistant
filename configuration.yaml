@@ -183,8 +183,6 @@ utility_meter:
     cycle: monthly
 
 sensor:
-  - platform: version
-  # The version sensor platform can display the current Home Assistant versions.
 
   # sensors to check if there are updates in Ubuntu
   - platform: command_line
@@ -437,31 +435,10 @@ sensor:
     create_group: Amilya alle lichten
     entities:
       -  entity_id: light.amilya_badkamer
-      -  entity_id: light.amilya_bureau
-      -  entity_id: light.amilya_living
       -  entity_id: light.amilya_bol
+      -  entity_id: light.amilya_strip
       -  entity_id: light.amilya_plafond
       -  entity_id: light.amilya_staande_lamp
-      -  entity_id: light.amilya_strip
-
-  - platform: powercalc
-    entity_id: light.amilya_badkamer
-    manufacturer: signify
-    model: LST002
-    # creates a sensor called sensor.amilya_badkamer_power
-
-  - platform: powercalc
-    entity_id: light.amilya_bureau
-    manufacturer: signify
-    model: LCT003
-    multiply_factor: 2
-    # creates a sensor called sensor.amilya_bureau_power
-
-  - platform: powercalc
-    entity_id: light.amilya_living
-    manufacturer: signify
-    model: LCT003
-    # creates a sensor called sensor.amilya_living_power
 
   - platform: powercalc
     entity_id: light.veranda
@@ -1274,7 +1251,7 @@ binary_sensor:
         entity_id: sensor.badkamer_humidity
         sample_duration: 3600
         # 1 sample every second. 1800 seconds = 30 minutes
-        min_gradient: 0.00027777777
+        min_gradient: 0.0004
         device_class: moisture
 
       humidity_eikenbos_rising:

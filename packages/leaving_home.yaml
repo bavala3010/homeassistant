@@ -64,7 +64,7 @@ automation:
   - service: notify.bart_phone
     data:
       message: TTS
-      message: Ik heb de voordeur voor jou op slot gedaan.
+      title: Ik heb de voordeur voor jou op slot gedaan.
   - service: notify.madouce_phone
     data:
       title: Voordeur
@@ -74,5 +74,5 @@ automation:
   - service: notify.madouce_phone
     data:
       message: TTS
-      message: Ik heb de voordeur voor jou op slot gedaan.
+      title: Ik heb de voordeur voor jou op slot gedaan.
   mode: single
