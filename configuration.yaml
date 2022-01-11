@@ -984,6 +984,7 @@ sensor:
     source: sensor.ontvochtiger_power
     name: ontvochtiger energieverbruik
     unit_prefix: k
+    method: left
     round: 2
 
   - platform: integration

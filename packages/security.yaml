@@ -260,6 +260,21 @@ automation:
   #      volume_level: 0.8
   mode: queued
 
+- alias: set_alarm_arm_away
+  id: 'b2531e01-aa6d-4a32-b6d7-8627e1450c7e'
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: set_alarm_arm_away
+  action:
+  - service: alarm_control_panel.alarm_arm_away
+    data:
+      code: !secret alarm_code
+    target:
+      entity_id: alarm_control_panel.home_alarm
+  mode: single
+  
 - alias: Garagepoort staat lang open
   id: '2afaab2f-0aee-4dea-a340-be690d593fca'
   description: ''
@@ -326,7 +341,7 @@ automation:
         tag: voordeur_staat_open
   mode: single
 
-- alias: 👀 beweging oprit
+- alias: 👀 beweging op oprit
   id: 'c9b40a57-f31d-424f-80fb-c2a8c25c4d21'
   description: Beweging op oprit = melding op living speaker
   trigger:
@@ -334,9 +349,7 @@ automation:
     entity_id: binary_sensor.buitensensor_vooraan_motion
     from: 'off'
     to: 'on'
-  condition:
-  - condition: template
-    value_template: '{{ as_timestamp(now()) - as_timestamp(states.automation.beweging_oprit.attributes.last_triggered) | int > 120 }}'
+  condition: []
   action:
   - service: media_player.volume_set
     data:
@@ -363,17 +376,15 @@ automation:
     entity_id: media_player.living_speaker
   mode: single
 
-- alias: 👀 beweging terras
+- alias: 👀 beweging op terras = melding speaker
   id: '1317b64b-1a0a-4a6a-848d-e3feb029ab22'
   description: "Beweging op terras = melding op living & veranda speaker"
   trigger:
   - platform: state
-    entity_id: binary_sensor.terras_sensor_motion
+    entity_id: binary_sensor.terras_motion
     from: 'off'
     to: 'on'
-  condition:
-  - condition: template
-    value_template: '{{ as_timestamp(now()) - as_timestamp(states.automation.beweging_terras.attributes.last_triggered) | int > 120 }}'
+  condition: []
   action:
   - service: media_player.volume_set
     data:
@@ -387,47 +398,88 @@ automation:
     data:
       entity_id: media_player.veranda_speaker
       message: Beweging op terras! 
-  - wait_template: ''
-    timeout: 00:00:07
-  - service: camera.play_stream
-    data:
-      media_player: media_player.living_speaker
-    target:
-      entity_id: camera.netatmo_eikenbos_oprit
-  - wait_template: ''
-    timeout: 00:01:30
-  - service: media_player.turn_off
-    entity_id: media_player.living_speaker
   mode: single
   
-- alias: 👀 beweging in tuin
+- alias: 👀 beweging in tuin = melding smartphone
   id: '28641c60-8f5e-4856-96a9-e69ceb8c9cc8'
-  description: Beweging in tuin
+  description: ''
   trigger:
   - platform: state
     entity_id: binary_sensor.tuin_motion
     from: 'off'
     to: 'on'
-  condition:
-  - condition: template
-    value_template: '{{ as_timestamp(now()) - as_timestamp(states.automation.beweging_terras.attributes.last_triggered) | int > 60 }}'
+  condition: []
   action:
   - service: notify.bart_phone
     data:
-      message: Beweging in tuin.
-  mode: single  
-
-- alias: set_alarm_arm_away
-  id: 'b2531e01-aa6d-4a32-b6d7-8627e1450c7e'
-  trigger:
-  - platform: event
-    event_type: mobile_app_notification_action
-    event_data:
-      action: set_alarm_arm_away
-  action:
-  - service: alarm_control_panel.alarm_arm_away
+      title: Beweging in tuin! 
+      message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }}."
+      data:
+        color: red
+        tag: beweging_in_tuin
+  - repeat:
+      while:
+      - condition: state
+        entity_id: binary_sensor.tuin_motion
+        state: 'on'
+      sequence:
+      - delay:
+          seconds: 15
+      - service: notify.bart_phone      
+        data:
+          title: Beweging in tuin!
+          message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }} en duurt al {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.tuin_motion.last_changed)) / 60 )| round(1) }} min."
+          data:
+            color: red
+            tag: beweging_in_tuin
+            alert_once: true
+  - service: notify.bart_phone      
     data:
-      code: !secret alarm_code
-    target:
-      entity_id: alarm_control_panel.home_alarm
+      title: "Geen beweging in tuin meer. ({{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }})"
+      message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }} en duurde {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.tuin_motion.last_changed)) / 60 )| round(1) }} min."
+      data:
+        color: red
+        tag: beweging_in_tuin
+  mode: single
+
+- alias: 👀 beweging op terras = melding smartphone
+  id: '554afe6c-1cde-4bbd-93e2-dc4851424fc6'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.terras_motion
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Beweging op terras! 
+      message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }}"
+      data:
+        color: red
+        tag: beweging_op_terras
+  - repeat:
+      while:
+      - condition: state
+        entity_id: binary_sensor.terras_motion
+        state: 'on'
+      sequence:
+      - delay:
+          seconds: 15
+      - service: notify.bart_phone      
+        data:
+          title: Beweging op terras!
+          message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }} en duurt al {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.terras_motion.last_changed)) / 60 )| round(1) }} min."
+          data:
+            color: red
+            tag: beweging_op_terras
+            alert_once: true
+  - service: notify.bart_phone      
+    data:
+      title: "Geen beweging op terras meer. ({{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }})"
+      message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }} en duurde {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.terras_motion.last_changed)) / 60 )| round(1) }} min."
+      data:
+        color: red
+        tag: beweging_op_terras
   mode: single

@@ -399,7 +399,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: light.douche
+    entity_id: light.badkamer_douche
     to: 'on'
     for: '00:00:30'
   condition:

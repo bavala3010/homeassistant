@@ -115,15 +115,15 @@ alle_lichten_power:
   # - sensor.amilya_bureau_power
     - sensor.amilya_living_power
     - sensor.gang_power
-  # - sensor.wasbak_links_power
-  # - sensor.wasbak_rechts_power
-  # - sensor.douche_power
-  # - sensor.bad_power
+    - sensor.badkamer_wasbak_links_power
+    - sensor.badkamer_wasbak_rechts_power
+    - sensor.badkamer_douche_power
+    - sensor.badkamer_bad_power
     - sensor.master_bedroom_play_bar_lights_power
   # - sensor.buiten_power
 
 living_lichten:
-  name: living lichten
+  name: living
   entities:
     - light.living_links_1
     - light.living_links_2
@@ -139,7 +139,7 @@ living_lichten:
     - light.tv_strip 
     
 amilya_lichten:
-  name: Amilya lichten
+  name: Amilya
   entities:
     - light.amilya_badkamer
     - light.amilya_plafond
@@ -148,39 +148,47 @@ amilya_lichten:
     - light.amilya_bol
 
 amilya_plafond_lichten:
-  name: Amilya plafond lichten
+  name: Amilya plafond
   entities:
     - light.amilya_plafond_1
     - light.amilya_plafond_2
 
 alunya_lichten:
-  name: Alunya lichten
+  name: Alunya
   entities:
     - light.alunya_bol
     - light.alunya_wasbak
     - light.alunya_staande_lamp    
 
 master_bedroom_lichten:
-  name: master bedroom lichten
+  name: master bedroom
   entities:
     - light.master_bedroom_play_bart
     - light.master_bedroom_play_madouce
     - light.master_bedroom_staande_lamp
     
 gang_lichten:
-  name: gang lichten
+  name: gang
   entities:
     - light.gang_spot_voor
     - light.gang_spot_midden
     - light.gang_spot_achter
     
 badkamer_lichten:
-  name: badkamer lichten
+  name: badkamer
   entities:
-    - light.bad
-    - light.douche
-    - light.wasbak_links
-    - light.wasbak_rechts
+    - light.badkamer_bad
+    - light.badkamer_douche
+    - light.badkamer_wasbak_links
+    - light.badkamer_wasbak_rechts
+    
+buiten_lichten:
+  name: buiten
+  entities:
+    - light.buiten_oprit
+    - light.buiten_voordeur
+    - light.terras_verstraler
+    - light.tuin_verstraler
 
 #######################################################################
 # plugs

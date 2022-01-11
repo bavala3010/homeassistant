@@ -122,7 +122,8 @@ automation:
   action:
   - service: notify.bart_phone
     data:
-      message: "🚙 Autolader is verbonden. Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%."
+      title: "🚙 Autolader is verbonden." 
+      message: "Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%. Nog {{states('sensor.audi_e_tron_sportback_55_remaining_charge_time')}} laden."
       data:
         color: green
         tag: auto_laden
@@ -311,21 +312,18 @@ automation:
         tag: slot_auto        
   mode: single
 
-- alias: 🚗 Auto 2 min. niet op slot = melding
+- alias: 🚗 Auto 2 min. niet op slot = refresh & melding
   id: 'a2af962e-7fcf-4e6e-822e-5b33bc450628'
   description: ''
   trigger:
-  - platform: time_pattern
-    minutes: /2
-  condition:
-  - condition: state
+  - platform: state
     entity_id: lock.audi_e_tron_sportback_55_door_lock_2
-    state: 'unlocked'
+    to: 'unlocked'
     for:
       hours: 0
       minutes: 2
       seconds: 0
-      milliseconds: 0
+  condition:
   - condition: state
     entity_id: device_tracker.bart_s10
     state: 0
@@ -345,6 +343,11 @@ automation:
       seconds: 0
       milliseconds: 0
   action:
+  - service: audiconnect.refresh_data
+    data:
+      vin: WAUZZZGE6MB019131
+  - delay:
+      minutes: 2      
   - service: notify.bart_phone
     data:
       message: 🚙 Auto niet op slot! (veeg omlaag voor acties)
@@ -354,7 +357,7 @@ automation:
         color: red
         actions:
         - action: lock_car
-          title: SLUIT AUTO
+          title: sluit auto
         - action: URI
           title: meer info
           uri: /eikenbos-dashboard/e-tron          
@@ -367,7 +370,7 @@ automation:
         color: red
         actions:
         - action: lock_car
-          title: SLUIT AUTO          
+          title: sluit auto          
         - action: URI
           title: meer info
           uri: /eikenbos-dashboard/e-tron
