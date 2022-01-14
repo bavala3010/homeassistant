@@ -64,7 +64,8 @@ automation:
   - service: notify.bart_phone
     data:
       title: Veel vocht in master bedroom. Raam is {{states('sensor.master_bedroom_raam')}}.
-      message: "Vocht is {{states('sensor.master_bedroom_humidity')}}%. Zet eventueel machine aan."
+      message: "Vocht is {{states('sensor.master_bedroom_humidity')}}% en {{states('sensor.master_bedroom_thermal_absolutehumidity')}} gram
+            water /m³.<br>Zet eventueel machine aan."
       data:
         color: "#0E86D4"
         channel: Vocht
