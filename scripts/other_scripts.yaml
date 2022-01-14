@@ -1,4 +1,3 @@
-
 'smart_home_info':
   alias: smart home info
   sequence:
@@ -103,3 +102,4 @@ publish_electricity_usage:
   - service: rest_command.energie_id_set_electricity_usage
     data:
       usage: "{{ states('input_number.electricity_usage') | int }}"
+

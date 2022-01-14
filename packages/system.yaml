@@ -28,9 +28,15 @@ automation:
   condition: []
   action:
   - service: notify.bart_phone
-    data:
-      title: Raspberry PI temperatuur
-      message: Temperatuur Raspberry Pi CPU is {{states('sensor.processor_temperature')}}. CPU werkt op {{states('sensor.processor_use_percent')}}%.
+    data_template:
+      title: Raspberry Pi CPU
+      message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}% en temperatuur is {{states('sensor.processor_temperature')}}°C.
+      data:
+        color: red
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/netwerk
   mode: single
   
 - alias: 🚀 Pi CPU > 50% = melding
@@ -44,9 +50,15 @@ automation:
   condition: []
   action:
   - service: notify.bart_phone
-    data:
+    data_template:
       title: Raspberry Pi CPU
-      message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}% en temperatuur is {{states('sensor.processor_temperature')}}.
+      message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}% en temperatuur is {{states('sensor.processor_temperature')}}°C.
+      data:
+        color: red
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/netwerk
   mode: single
 
 - alias: 🚀 HA stopt

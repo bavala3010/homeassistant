@@ -1,0 +1,37 @@
+automation:
+
+# Als een raam wordt opengedaan, bewaar het huidige vochtpercentage om nadien te kunnen berekenen hoeveel het vocht gezakt is door het raam open te doen.
+
+- alias: "master bedroom raam open = bewaar huidige vochtigheidsgraad"
+  id: 'aa3622f0-ec0f-4935-a978-74a15725f3c9'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.master_bedroom_raam_kantel
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.master_bedroom_initial_humidity_percentage
+    data:
+      value: "{{states('sensor.master_bedroom_humidity') | float }}"
+  mode: single
+  
+- alias: "badkamer raam open = bewaar huidige vochtigheidsgraad (in package)"
+  id: '41186efe-931b-497e-aff5-3f68cffb39b4'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.badkamer_raam_kantel
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.badkamer_initial_humidity_percentage
+    data:
+      value: "{{states('sensor.badkamer_humidity')  | float }}"
+  mode: single

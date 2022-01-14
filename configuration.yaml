@@ -366,41 +366,41 @@ sensor:
         device_class: humidity
         unit_of_measurement: 'g/m³'
         icon_template: mdi:water
-        value_template: "{{ ((states('sensor.gram_water_gang') | float) - (states('sensor.gram_water_outside')|float)) | round(1) }}"
+        value_template: "{{ ((states('sensor.gram_water_gang') | float) - (states('sensor.gram_water_outside') |float )) | round(1) }}"
 
       gram_water_kamer_alunya_diff_outside:
         friendly_name: 'verschil gram vocht per m³ in kamer Alunya en buiten'
         device_class: humidity
         unit_of_measurement: 'g/m³'
         icon_template: mdi:water
-        value_template: "{{ ((states('sensor.gram_water_kamer_alunya') | float) - (states('sensor.gram_water_outside')|float)) | round(1) }}"
+        value_template: "{{ ((states('sensor.gram_water_kamer_alunya') | float) - (states('sensor.gram_water_outside') |float )) | round(1) }}"
 
       gram_water_master_bedroom_diff_outside:
         friendly_name: 'verschil gram vocht per m³ in master bedroom en buiten'
         device_class: humidity
         unit_of_measurement: 'g/m³'
         icon_template: mdi:water
-        value_template: "{{ ((states('sensor.gram_water_master_bedroom') | float) - (states('sensor.gram_water_outside')|float)) | round(1) }}"
+        value_template: "{{ ((states('sensor.gram_water_master_bedroom') | float) - (states('sensor.gram_water_outside') |float )) | round(1) }}"
 
       outside_enthalpy:
         friendly_name: 'enthalpy buiten'
         unit_of_measurement: KJ/kg      
-        value_template: "{{ (1.006 * (states('sensor.temp_leuven24_wunderground') | float) ) + ( (states('sensor.outside_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.temp_leuven24_wunderground') | float))) | round (2) }}" 
+        value_template: "{{ (1.006 * (states('sensor.temp_leuven24_wunderground') | float )) + ( (states('sensor.outside_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.temp_leuven24_wunderground') | float(default=0) ))) | round (2) }}" 
 
       veranda_enthalpy:
         friendly_name: 'enthalpy veranda'
         unit_of_measurement: KJ/kg      
-        value_template: "{{ (1.006 * (states('sensor.veranda_temperature') | float) ) + ( (states('sensor.veranda_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.veranda_temperature') | float))) | round (2) }}" 
+        value_template: "{{ (1.006 * (states('sensor.veranda_temperature') | float )) + ( (states('sensor.veranda_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.veranda_temperature') | float ))) | round (2) }}" 
 
       master_bedroom_enthalpy:
         friendly_name: 'enthalpy master bedroom'
         unit_of_measurement: KJ/kg      
-        value_template: "{{ (1.006 * (states('sensor.master_bedroom_temperature') | float) ) + ( (states('sensor.master_bedroom_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.master_bedroom_temperature') | float))) | round (2) }}" 
+        value_template: "{{ (1.006 * (states('sensor.master_bedroom_temperature') | float) ) + ( (states('sensor.master_bedroom_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.master_bedroom_temperature') | float ))) | round (2) }}" 
 
       car_range_per_10percent:
         friendly_name: 'range per 10%'
         unit_of_measurement: km
-        value_template: "{{ (10 * states('sensor.audi_e_tron_sportback_55_primary_engine_range') | float / states('sensor.audi_e_tron_sportback_55_state_of_charge') | float ) | round (1) }}" 
+        value_template: "{{ (10 * states('sensor.audi_e_tron_sportback_55_primary_engine_range') | float(default=0) / states('sensor.audi_e_tron_sportback_55_state_of_charge') | float(default=0) ) | round (1) }}" 
 
 ###############################################################################
 # Powercalc measures the power consumption of lights 
@@ -472,21 +472,6 @@ sensor:
       -  entity_id: light.alunya_bol
       -  entity_id: light.alunya_staande_lamp
       -  entity_id: light.alunya_wasbak
-
-  - platform: powercalc
-    entity_id: light.alunya_bol
-    manufacturer: signify
-    model: LCT015
-    
-  - platform: powercalc
-    entity_id: light.alunya_staande_lamp
-    manufacturer: signify
-    model: LCT007
-
-  - platform: powercalc
-    entity_id: light.alunya_wasbak
-    manufacturer: signify
-    model: LCT015
 
   - platform: powercalc
     create_group: master bedroom alle lichten
@@ -984,7 +969,7 @@ sensor:
     source: sensor.ontvochtiger_power
     name: ontvochtiger energieverbruik
     unit_prefix: k
-    method: left
+    method: right
     round: 2
 
   - platform: integration

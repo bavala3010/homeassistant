@@ -9,10 +9,10 @@ gezin:
     - person.madouce
     - person.amilya
     - person.alunya
-#   - device_tracker.bart_samsung_s10_plus
-#   - device_tracker.madouce_samsung_s20
+    - device_tracker.bart_samsung_s10_plus
+    - device_tracker.madouce_samsung_s20
 #   - device_tracker.amilya_iphone_xs
-#   - device_tracker.alunya_samsung_galaxy_a71
+    - device_tracker.alunya_samsung_galaxy_a71
 
 alleen_bart:
   name: not_bart
@@ -182,6 +182,13 @@ badkamer_lichten:
     - light.badkamer_wasbak_links
     - light.badkamer_wasbak_rechts
     
+berging_lichten:
+  name: berging
+  entities:
+    - light.berging_spot_1
+    - light.berging_spot_2
+    - light.berging_spot_3
+  
 buiten_lichten:
   name: buiten
   entities:
@@ -189,6 +196,15 @@ buiten_lichten:
     - light.buiten_voordeur
     - light.terras_verstraler
     - light.tuin_verstraler
+
+tuin_spot_lichten:
+  name: tuin spots
+  entities:
+    - light.tuin_spot_1
+    - light.tuin_spot_2
+    - light.tuin_spot_3
+    - light.tuin_spot_4
+    - light.tuin_spot_5
 
 #######################################################################
 # plugs

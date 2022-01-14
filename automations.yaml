@@ -17,7 +17,6 @@
       message: TTS
       title: Bart, je bent alleen thuis!
   mode: single
-
 - alias: RecycleApp notificaties
   id: 50cbd530-9e44-4283-95f9-24f8ca182701
   trigger:
@@ -49,18 +48,17 @@
         - action: recycle_done
           title: Ik heb het buiten gezet!
   variables:
-    title: "{% if state_attr('sensor.recycleapp_gft', 'Days_until') == 1 %}Morgen
-      groene bak {%elif state_attr('sensor.recycleapp_restafval', 'Days_until')
-      == 1 %}Morgen ophaling bruine zak. {%elif state_attr('sensor.recycleapp_pmd', 'Days_until')
-      == 1 %}Morgen ophaling blauwe zak. {%elif state_attr('sensor.recycleapp_papier', 'Days_until')
-      == 1 %}Morgen ophaling oud papier. {%endif%}"
-    message: "{% if state_attr('sensor.recycleapp_gft', 'Days_until') == 1 %}
-      Zet de groene bak aan straat. {%elif state_attr('sensor.recycleapp_restafval',
-      'Days_until') == 1 %}Zet de bruine zak aan straat. {%elif state_attr('sensor.recycleapp_pmd',
-      'Days_until') == 1 %}Zet de blauwe zak aan straat. {%elif state_attr('sensor.recycleapp_papier',
-      'Days_until') == 1 %}Zet het oud papier aan straat. {%endif%}"
+    title: '{% if state_attr(''sensor.recycleapp_gft'', ''Days_until'') == 1 %}Morgen
+      groene bak {%elif state_attr(''sensor.recycleapp_restafval'', ''Days_until'')
+      == 1 %}Morgen ophaling bruine zak. {%elif state_attr(''sensor.recycleapp_pmd'',
+      ''Days_until'') == 1 %}Morgen ophaling blauwe zak. {%elif state_attr(''sensor.recycleapp_papier'',
+      ''Days_until'') == 1 %}Morgen ophaling oud papier. {%endif%}'
+    message: '{% if state_attr(''sensor.recycleapp_gft'', ''Days_until'') == 1 %}
+      Zet de groene bak aan straat. {%elif state_attr(''sensor.recycleapp_restafval'',
+      ''Days_until'') == 1 %}Zet de bruine zak aan straat. {%elif state_attr(''sensor.recycleapp_pmd'',
+      ''Days_until'') == 1 %}Zet de blauwe zak aan straat. {%elif state_attr(''sensor.recycleapp_papier'',
+      ''Days_until'') == 1 %}Zet het oud papier aan straat. {%endif%}'
   mode: single
-
 - alias: recycle_done
   id: 761e33f9-8fad-4537-8bf3-361aba8f5638
   trigger:
@@ -79,3 +77,37 @@
       message: clear_notification
       data:
         tag: recycle
+- id: '1641998033404'
+  alias: test
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.master_bedroom_raam_kantel
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.badkamer_initial_humidity_percentage
+    data:
+      value:
+        '[object Object]':
+  mode: single
+- id: '1641999927000'
+  alias: badkamer raam open = bewaar huidige vochtigheidsgraad
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.badkamer_raam_kantel
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.badkamer_initial_humidity_percentage
+    data:
+      value:
+        '[object Object]':
+  mode: single

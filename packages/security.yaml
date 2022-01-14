@@ -316,27 +316,36 @@ automation:
     entity_id: binary_sensor.voordeur
     from: 'off'
     to: 'on'
-    for: 00:05:00
+    for: 00:03:00
   condition: []
   action:
+  - service: notify.bart_phone
+    data:
+      title: Voordeur staat al lang open! 
+      message: "Open sinds {{ as_timestamp(states.binary_sensor.voordeur.last_changed | timestamp_custom('%H:%M:%S') }}."
+      data:
+        color: red
+        tag: voordeur_staat_open
   - repeat:
       while:
       - condition: state
         entity_id: binary_sensor.voordeur
         state: 'on'
       sequence:
+      - delay:
+          minutes: 1
       - service: notify.bart_phone      
         data:
-          title: "Voordeur al lang open"
+          title: Voordeur staat al lang open!
           message: "Staat al {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.voordeur.last_changed)) / 60 )| int() }} minuten open."
           data:
             color: red
             tag: voordeur_staat_open
-      - delay:
-          minutes: 2
+            alert_once: true
   - service: notify.bart_phone
     data:
-      message: "Voordeur is nu terug dicht."
+      title: "Voordeur is nu terug dicht."
+      message: "Stond {{ ((as_timestamp(now()) - state_attr('input_datetime.tuin_motion_first_trigger', 'timestamp')) / 60 )| round(1) }} minuten open."      
       data:
         tag: voordeur_staat_open
   mode: single
@@ -375,13 +384,14 @@ automation:
   - service: media_player.turn_off
     entity_id: media_player.living_speaker
   mode: single
+  max_exceeded: silent
 
 - alias: 👀 beweging op terras = melding speaker
   id: '1317b64b-1a0a-4a6a-848d-e3feb029ab22'
   description: "Beweging op terras = melding op living & veranda speaker"
   trigger:
   - platform: state
-    entity_id: binary_sensor.terras_motion
+    entity_id: binary_sensor.terras_detector_motion
     from: 'off'
     to: 'on'
   condition: []
@@ -405,7 +415,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.tuin_motion
+    entity_id: binary_sensor.tuin_detector_motion
     from: 'off'
     to: 'on'
   condition: []
@@ -417,10 +427,15 @@ automation:
       data:
         color: red
         tag: beweging_in_tuin
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.tuin_motion_first_trigger
+    data:
+      timestamp: "{{ now().timestamp() }}"
   - repeat:
       while:
       - condition: state
-        entity_id: binary_sensor.tuin_motion
+        entity_id: binary_sensor.tuin_detector_motion
         state: 'on'
       sequence:
       - delay:
@@ -428,26 +443,37 @@ automation:
       - service: notify.bart_phone      
         data:
           title: Beweging in tuin!
-          message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }} en duurt al {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.tuin_motion.last_changed)) / 60 )| round(1) }} min."
+          message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }} en duurt al {{((as_timestamp(now()) - state_attr('input_datetime.tuin_motion_first_trigger', 'timestamp')) / 60 )| round(1)  }} min."
           data:
             color: red
             tag: beweging_in_tuin
             alert_once: true
+            actions:
+            - action: tuin_detector_pause_1u
+              title: pauzeer detector 1u
+            - action: tuin_detector_pause_2u
+              title: pauzeer detector 2u
   - service: notify.bart_phone      
     data:
-      title: "Geen beweging in tuin meer. ({{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }})"
-      message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }} en duurde {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.tuin_motion.last_changed)) / 60 )| round(1) }} min."
+      title: "Geen beweging in tuin meer."
+      message: "Beweging begon om {{ state_attr('input_datetime.tuin_motion_first_trigger', 'timestamp') | timestamp_custom('%H:%M:%S') }} en duurde {{((as_timestamp(now()) - state_attr('input_datetime.tuin_motion_first_trigger', 'timestamp')) / 60 )| round(1) }} min."
       data:
         color: red
         tag: beweging_in_tuin
+        actions:
+        - action: tuin_detector_pause_1u
+          title: pauzeer detector 1u
+        - action: tuin_detector_pause_2u
+          title: pauzeer detector 2u
   mode: single
+  max_exceeded: silent
 
 - alias: 👀 beweging op terras = melding smartphone
   id: '554afe6c-1cde-4bbd-93e2-dc4851424fc6'
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.terras_motion
+    entity_id: binary_sensor.terras_detector_motion
     from: 'off'
     to: 'on'
   condition: []
@@ -455,14 +481,19 @@ automation:
   - service: notify.bart_phone
     data:
       title: Beweging op terras! 
-      message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }}"
+      message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }}."
       data:
         color: red
         tag: beweging_op_terras
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.terras_motion_first_trigger
+    data:
+      timestamp: "{{ now().timestamp() }}"        
   - repeat:
       while:
       - condition: state
-        entity_id: binary_sensor.terras_motion
+        entity_id: binary_sensor.terras_detector_motion
         state: 'on'
       sequence:
       - delay:
@@ -470,16 +501,119 @@ automation:
       - service: notify.bart_phone      
         data:
           title: Beweging op terras!
-          message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }} en duurt al {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.terras_motion.last_changed)) / 60 )| round(1) }} min."
+          message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }} en duurt al {{((as_timestamp(now()) - state_attr('input_datetime.terras_motion_first_trigger', 'timestamp')) / 60 )| round(1)  }} min."
           data:
             color: red
             tag: beweging_op_terras
             alert_once: true
+            actions:
+            - action: terras_detector_pause_1u
+              title: pauzeer detector 1u
+            - action: terras_detector_pause_2u
+              title: pauzeer detector 2u
   - service: notify.bart_phone      
     data:
-      title: "Geen beweging op terras meer. ({{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }})"
-      message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }} en duurde {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.terras_motion.last_changed)) / 60 )| round(1) }} min."
+      title: "Geen beweging op terras meer."
+      message: "Beweging begon om {{ state_attr('input_datetime.terras_motion_first_trigger', 'timestamp') | timestamp_custom('%H:%M:%S') }} en duurde {{((as_timestamp(now()) - state_attr('input_datetime.terras_motion_first_trigger', 'timestamp')) / 60 )| round(1) }} min."
       data:
         color: red
         tag: beweging_op_terras
+        actions:
+        - action: terras_detector_pause_1u
+          title: pauzeer detector 1u
+        - action: terras_detector_pause_2u
+          title: pauzeer detector 2u        
+  mode: single
+  max_exceeded: silent  
+
+- alias: terras_detector_pause_1u
+  id: '6f475717-a594-4024-8407-4c15dd75201d'
+  description: ''
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: terras_detector_pause_1u
+  condition: []    
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.terras_detector_motion
+  - wait_template: ''
+    timeout: 01:00:00
+  - service: switch.turn_on
+    target:
+      entity_id: switch.terras_detector_motion
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.terras_detector_pause
+  mode: single
+
+- alias: terras_detector_pause_2u
+  id: '7a3b00ef-69b3-4f22-97ff-7d2b9068fcae'
+  description: ''
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: terras_detector_pause_2u
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.terras_detector_motion
+  - wait_template: ''
+    timeout: 02:00:00
+  - service: switch.turn_on
+    target:
+      entity_id: switch.terras_detector_motion    
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.terras_detector_pause
+  mode: single      
+
+- alias: tuin_detector_pause_1u
+  id: '082ea053-c093-45b6-ae7f-c5f5494b474c'
+  description: ''
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: tuin_detector_pause_1u
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.tuin_detector_motion
+  - wait_template: ''
+    timeout: 01:00:00
+  - service: switch.turn_on
+    target:
+      entity_id: switch.tuin_detector_motion    
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.tuin_detector_pause
+  mode: single
+
+- alias: tuin_detector_pause_2u
+  id: '1130caee-1ecf-4ef9-922c-51e7aaf2f357'
+  description: ''
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: tuin_detector_pause_2u
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.tuin_detector_motion
+  - wait_template: ''
+    timeout: 02:00:00
+  - service: switch.turn_on
+    target:
+      entity_id: switch.tuin_detector_motion    
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.tuin_detector_pause
   mode: single
