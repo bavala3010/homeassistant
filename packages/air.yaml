@@ -394,7 +394,7 @@ automation:
       - switch.toilet_douche_ventilatie
   mode: single
 
-- alias: 💨 30 sec. licht in douche = ventilator aan gedurende 10 minuten
+- alias: 💨 licht in douche = ventilator aan zolang licht brandt + 10 minuten
   id: 'c4f8b201-16f1-41db-a285-7fb33b277343'
   description: ''
   trigger:
@@ -407,10 +407,16 @@ automation:
     after: '6:30:0'
     before: '23:30:00'
   action:
-  - service: switch.turn_on
-    target:
-      entity_id:
-      - switch.toilet_douche_ventilatie
+  - repeat:
+      while:
+      - condition: state
+        entity_id: light.badkamer_douche
+        state: 'on'
+      sequence:
+      - service: switch.turn_on
+        target:
+          entity_id:
+          - switch.toilet_douche_ventilatie
   - delay:
       hours: 0
       minutes: 10

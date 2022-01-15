@@ -167,7 +167,7 @@ automation:
   
 - alias: 🚨 alarm bij beweging
   id: 'f4cc29aa-ef63-411b-a755-343f97a9b721'
-  description: NOK
+  description: ''
   trigger:
   - platform: state
     entity_id:
@@ -177,7 +177,6 @@ automation:
     - binary_sensor.keldertrap_sensor_motion
     - binary_sensor.trap_boven_motion_motion
     - binary_sensor.toilet_motion_sensor_motion
-    - binary_sensor.terras_motion_sensor
     # raam sensoren
     - binary_sensor.kamer_alunya_raam
     - binary_sensor.kamer_alunya_schuifraam
@@ -199,7 +198,7 @@ automation:
   action:
   - service: input_text.set_value
     data_template:
-      entity_id: input_text.trigger_source
+      entity_id: input_text.alarm_trigger_source
       value: '{{ trigger.to_state.attributes.friendly_name }}'
   - service: alarm_control_panel.alarm_trigger
     entity_id: alarm_control_panel.home_alarm
@@ -228,15 +227,15 @@ automation:
         channel: alarm
   - service: notify.bart_phone
     data:
-      message: 'Alarm in Eikenbos: beweging aan {{ states(''input_text.trigger_source'')}}'
       title: '🚨 Alarm!'
+      message: 'Alarm in Eikenbos: beweging aan {{ states(''input_text.alarm_trigger_source'')}}'
       data:
         color: red
         channel: alarm
   - service: notify.madouce_phone
     data:
-      message: 'Alarm in Eikenbos: beweging aan {{ states(''input_text.trigger_source'')}}'
       title: '🚨 Alarm!'
+      message: 'Alarm in Eikenbos: beweging aan {{ states(''input_text.alarm_trigger_source'')}}'
       data:
         color: red
         channel: alarm
@@ -386,31 +385,7 @@ automation:
   mode: single
   max_exceeded: silent
 
-- alias: 👀 beweging op terras = melding speaker
-  id: '1317b64b-1a0a-4a6a-848d-e3feb029ab22'
-  description: "Beweging op terras = melding op living & veranda speaker"
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.terras_detector_motion
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - service: media_player.volume_set
-    data:
-      entity_id: media_player.living_speaker
-      volume_level: 0.5
-  - service: tts.google_say
-    data:
-      entity_id: media_player.living_speaker
-      message: Beweging op terras!
-  - service: tts.google_say
-    data:
-      entity_id: media_player.veranda_speaker
-      message: Beweging op terras! 
-  mode: single
-  
-- alias: 👀 beweging in tuin = melding smartphone
+- alias: 👀 beweging in tuin en alarm ingeschakeld = melding smartphone
   id: '28641c60-8f5e-4856-96a9-e69ceb8c9cc8'
   description: ''
   trigger:
@@ -418,7 +393,13 @@ automation:
     entity_id: binary_sensor.tuin_detector_motion
     from: 'off'
     to: 'on'
-  condition: []
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_away
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_home  
   action:
   - service: notify.bart_phone
     data:
@@ -468,7 +449,7 @@ automation:
   mode: single
   max_exceeded: silent
 
-- alias: 👀 beweging op terras = melding smartphone
+- alias: 👀 beweging op terras en alarm ingeschakeld = melding smartphone
   id: '554afe6c-1cde-4bbd-93e2-dc4851424fc6'
   description: ''
   trigger:
@@ -476,11 +457,17 @@ automation:
     entity_id: binary_sensor.terras_detector_motion
     from: 'off'
     to: 'on'
-  condition: []
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_away
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_home
   action:
   - service: notify.bart_phone
     data:
-      title: Beweging op terras! 
+      title: 🚨 Beweging op terras! 
       message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }}."
       data:
         color: red
@@ -500,7 +487,7 @@ automation:
           seconds: 15
       - service: notify.bart_phone      
         data:
-          title: Beweging op terras!
+          title: 🚨 Beweging op terras!
           message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }} en duurt al {{((as_timestamp(now()) - state_attr('input_datetime.terras_motion_first_trigger', 'timestamp')) / 60 )| round(1)  }} min."
           data:
             color: red

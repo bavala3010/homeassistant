@@ -77,37 +77,3 @@
       message: clear_notification
       data:
         tag: recycle
-- id: '1641998033404'
-  alias: test
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.master_bedroom_raam_kantel
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - service: input_number.set_value
-    target:
-      entity_id: input_number.badkamer_initial_humidity_percentage
-    data:
-      value:
-        '[object Object]':
-  mode: single
-- id: '1641999927000'
-  alias: badkamer raam open = bewaar huidige vochtigheidsgraad
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.badkamer_raam_kantel
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - service: input_number.set_value
-    target:
-      entity_id: input_number.badkamer_initial_humidity_percentage
-    data:
-      value:
-        '[object Object]':
-  mode: single

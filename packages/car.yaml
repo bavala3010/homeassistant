@@ -158,8 +158,10 @@ automation:
   action:
   - service: notify.bart_phone
     data:
-      message: 🚙 Auto is aan het laden. Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%.
+      title: 🚙 Auto is aan het laden.
+      message: Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%.
         Nog {{states('sensor.audi_e_tron_sportback_55_remaining_charge_time')}} laden.
+        Nu {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km.
       data:
         color: green
         tag: auto_laden

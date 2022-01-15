@@ -131,7 +131,27 @@ automation:
       title: Probleem met internettoegang thuis.
       message: Google servers konden niet worden bereikt.
       data:
-        color: red      
+        color: red
+        actions:
+        - action: reboot_wifi
+          title: herstart wifi
+  mode: single
+
+- alias: wifi herstarten
+  id: 'c2176a54-1f37-4923-b61e-9bbe33d093dc'
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: reboot_wifi
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Wifi router wordt nu opnieuw gestart.
+      message: Het wifi-netwerk zal enkele minuten onbereikbaar zijn.  
+  - service: googlewifi.reset
+    data:
+      entity_id: binary_sensor.wifi_access_point
   mode: single
 
 - alias: 🚀 Google servers terug bereikbaar = melding sturen

@@ -387,6 +387,26 @@ automation:
     target:
       entity_id: light.toilet
   mode: single
+  
+- alias: 💡 licht toilet overdag helder
+  id: 94fb34e5-4b03-49b9-9586-f922960cb5c0
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: light.toilet
+    to: 'on'
+  condition:
+  - condition: time
+    after: '7:00:0'
+    before: '23:00:00'
+  action:
+  - service: light.turn_on
+    data:
+      kelvin: 2500
+      brightness_pct: 100
+    target:
+      entity_id: light.toilet
+  mode: single  
 
 - alias: 💡 licht gang na zonsondergang gedempt
   id: 151c0615-8998-408b-a0ab-0a31af6c3ea8

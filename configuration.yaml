@@ -107,7 +107,6 @@ recorder:
       - sensor.madouce_s20_druksensor
       - sensor.madouce_s20_aantal_actieve_meldingen
       - sensor.madouce_s20_app_geheugen
-      - binary_sensor.google_server
       - sensor.google_wifi_system_aaaaabzipgy_upload_traffic
       - sensor.google_wifi_system_aaaaabzipgy_download_traffic
       - sensor.network_in_eth0
@@ -969,7 +968,8 @@ sensor:
     source: sensor.ontvochtiger_power
     name: ontvochtiger energieverbruik
     unit_prefix: k
-    method: right
+    # apparaten die bij het starten pieken veroorzaken, moeten de left methode gebruiken
+    method: left
     round: 2
 
   - platform: integration
