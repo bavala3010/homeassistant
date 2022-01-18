@@ -17,7 +17,7 @@ automation:
   condition:
   - condition: state
     entity_id: binary_sensor.voordeur_nuki
-    state: 'on'
+    state: 'off'
   action:
   - service: lock.lock
     target:
@@ -50,7 +50,10 @@ automation:
   condition:
   - condition: state
     entity_id: binary_sensor.voordeur_nuki
-    state: 'on'
+    state: 'off'
+  - condition: state
+    entity_id: group.kinderen
+    state: 'home'
   action:
   - service: lock.lock
     target:

@@ -97,7 +97,7 @@ automation:
             water /m³ en {{states('sensor.badkamer_humidity')}}% vocht."
           data:
             color: "#0E86D4"
-            tag: badkamer_vocht
+            tag: window_badkamer
             channel: vocht
             actions:
             - action: URI
@@ -110,7 +110,7 @@ automation:
             water /m³ en {{states('sensor.badkamer_humidity')}}% vocht."
           data:
             color: "#0E86D4"
-            tag: badkamer_vocht
+            tag: window_badkamer
             channel: vocht
             actions:
             - action: URI

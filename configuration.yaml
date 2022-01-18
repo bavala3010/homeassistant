@@ -537,6 +537,33 @@ sensor:
     type: time
     start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
     end: '{{ now() }}'
+
+#####################################################################
+# historiek laptops
+#####################################################################
+  - platform: history_stats
+    name: "Chromebook Bart/Madouce aan vandaag"
+    entity_id: switch.bart_chromebook_chromeos_device
+    state: "on"
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+    
+  - platform: history_stats
+    name: "Laptop Bart Fortis aan vandaag"
+    entity_id: switch.bart_laptop_fortis_brum05007458
+    state: "on"
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+    
+  - platform: history_stats
+    name: "Windows laptop aan vandaag"
+    entity_id: switch.bart_utraland_notebook_wifi_windows_device
+    state: "on"
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
     
 #####################################################################
 # historiek lichten
@@ -971,29 +998,34 @@ sensor:
     # apparaten die bij het starten pieken veroorzaken, moeten de left methode gebruiken
     method: left
     round: 2
+    # creates a sensor called sensor.ontvochtiger_energieverbruik
 
   - platform: integration
     source: sensor.living_tv_powerconsumption
     name: living tv energieverbruik
     unit_prefix: k
+    method: left
     round: 2
-    # creates sensor called: sensor.living_tv_energieverbruik
+    # creates sensor called sensor.living_tv_energieverbruik
 
   - platform: integration
     source: sensor.master_bedroom_tv_powerconsumption
     name: master bedroom tv energieverbruik
+    method: left
     unit_prefix: k
     round: 2
 
   - platform: integration
     source: sensor.amilya_tv_powerconsumption
     name: Amilya tv energieverbruik
+    method: left
     unit_prefix: k
     round: 2
 
   - platform: integration
     source: sensor.alunya_tv_powerconsumption
     name: Alunya tv energieverbruik
+    method: left
     unit_prefix: k
     round: 2
 
@@ -1268,7 +1300,7 @@ notify:
   - name: bart_phone
     platform: group
     services:
-      - service: mobile_app_bart_s10
+      - service: mobile_app_sm_g975f
 
   - name: madouce_phone
     platform: group

@@ -15,7 +15,7 @@ automation:
   action:
   - service: cover.close_cover
     target:
-      entity_id: cover.garagepoort_door
+      entity_id: cover.garagepoort
   mode: single
   
 - alias: "button garagepoort: long press = open garagepoort"
@@ -31,7 +31,7 @@ automation:
   action:
   - service: cover.open_cover
     target:
-      entity_id: cover.garagepoort_door
+      entity_id: cover.garagepoort
   - service: media_player.volume_set
     data:
       entity_id: media_player.veranda_speaker

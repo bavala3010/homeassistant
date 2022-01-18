@@ -55,6 +55,40 @@ automation:
       message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}% en temperatuur is {{states('sensor.processor_temperature')}}°C.
       data:
         color: red
+        tag: raspberry_cpu
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/netwerk
+  - repeat:
+      while:
+      - condition: numeric_state
+        entity_id: sensor.processor_use_percent
+        above: '50'
+      sequence:
+  - service: notify.bart_phone
+    data_template:
+      title: Raspberry Pi CPU
+      message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}% en temperatuur is {{states('sensor.processor_temperature')}}°C.
+      data:
+        color: red
+        tag: raspberry_cpu
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/netwerk
+  - delay:
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0          
+  - service: notify.bart_phone
+    data_template:
+      title: Raspberry Pi CPU terug normaal.
+      message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}% en temperatuur is {{states('sensor.processor_temperature')}}°C.
+      data:
+        color: red
+        tag: raspberry_cpu
         actions:
         - action: URI
           title: meer info

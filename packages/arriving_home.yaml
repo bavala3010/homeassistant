@@ -123,7 +123,7 @@ automation:
   action:
   - service: cover.open_cover
     target:
-      entity_id: cover.garagepoort_door
+      entity_id: cover.garagepoort
   mode: single
   
 - alias: Open voordeur
@@ -137,4 +137,35 @@ automation:
   - service: lock.unlock
     target:
       entity_id: lock.voordeur
+  mode: single
+
+- alias: 🏡 Madouce is bijna thuis 
+  id: '9d978857-e649-455d-8144-1e5dad99eb23'
+  description: '9d978857-e649-455d-8144-1e5dad99eb23'
+  trigger:
+  - platform: device
+    device_id: d434bc1199aafa4c5d9e448b1fd55e30
+    domain: device_tracker
+    entity_id: device_tracker.madouce_s20
+    type: enters
+    zone: zone.home
+  condition:
+  - condition: state
+    entity_id: person.bart
+    state: home
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0    
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Madouce is bijna thuis.
+      message: Hoera.
+      data:
+        color: red
+  - service: notify.bart_phone
+    data:
+      message: TTS
+      title: Madouce is bijna thuis.
   mode: single
