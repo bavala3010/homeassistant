@@ -160,7 +160,7 @@ automation:
       entity_id: fan.xiaomi_air_purifier_3h
   mode: single
 
-- alias: 💨 not home = Air purifier off
+- alias: 💨 not home = Air purifier uit
   id: '0c3adcca-2586-4ee3-a3bc-a78f38f65937'
   description: ''
   trigger:
@@ -168,6 +168,19 @@ automation:
     entity_id: group.gezin
     to: 'not_home'
     for: 00:05:00
+  condition: []
+  action:
+  - service: fan.turn_off
+    target:
+      entity_id: fan.xiaomi_air_purifier_3h
+  mode: single
+
+- alias: 💨 om 23u00 = Air purifier uit
+  id: 'c046f93d-d49a-4db3-8dbf-4e3231374926'
+  description: ''
+  trigger:
+  - platform: time
+    at: '23:00:00'
   condition: []
   action:
   - service: fan.turn_off

@@ -34,7 +34,7 @@ check_auto_op_slot:
 #    start_preheater
 #    start_charger
 
-auto_start_climatisation_nu:
+auto_start_climatisatie_nu:
   alias: auto start climatisatie
   sequence:
   - service: timer.start
@@ -92,7 +92,7 @@ auto_start_climatisation_nu:
           title: meer info
           uri: /lovelace/e-tron
 
-auto_start_climatisation_30min:
+auto_start_climatisatie_30min:
   alias: auto start climatisatie na 30 min
   sequence:
   - delay:
@@ -155,7 +155,7 @@ auto_start_climatisation_30min:
           title: meer info
           uri: /lovelace/e-tron
 
-auto_start_climatisation_60min:
+auto_start_climatisatie_60min:
   alias: auto start climatisatie na 60 min
   sequence:
   - delay:
@@ -218,7 +218,7 @@ auto_start_climatisation_60min:
           title: meer info
           uri: /lovelace/e-tron
 
-auto_start_climatisation_90min:
+auto_start_climatisatie_90min:
   alias: auto start climatisatie na 90 min
   sequence:
   - delay:
@@ -281,7 +281,7 @@ auto_start_climatisation_90min:
           title: meer info
           uri: /lovelace/e-tron
 
-auto_start_climatisation_120min:
+auto_start_climatisatie_120min:
   alias: auto start climatisatie na 120 min
   sequence:
   - delay:
@@ -344,7 +344,7 @@ auto_start_climatisation_120min:
           title: meer info
           uri: /lovelace/e-tron
 
-auto_start_climatisation_150min:
+auto_start_climatisatie_150min:
   alias: auto start climatisatie na 150 min
   sequence:
   - delay:
@@ -407,7 +407,7 @@ auto_start_climatisation_150min:
           title: meer info
           uri: /lovelace/e-tron
 
-auto_stop_climatisation:
+auto_stop_climatisatie:
   alias: auto stop climatisatie
   sequence:
   - service: timer.cancel

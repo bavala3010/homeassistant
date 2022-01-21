@@ -254,3 +254,19 @@ automation:
     target:
       entity_id: counter.toilet_counter
   mode: single
+
+- alias: switch ventilator niet beschikbaar
+  id: 'ffae2d1a-cdf6-4dae-8227-eeb699e6ecf0'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.toilet_douche_ventilatie
+    to: 'unavailable'
+    for: '00:15:00'
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Switch van ventilator onbereikbaar.
+      message: "Herstart switch op zolder."
+  mode: single    
