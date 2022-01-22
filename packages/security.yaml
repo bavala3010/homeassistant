@@ -302,7 +302,8 @@ automation:
           minutes: 2
   - service: notify.bart_phone
     data:
-      message: "Garage is nu terug dicht."
+      title: "Garage is nu terug dicht."
+      message: "Stond {{((as_timestamp(now()) - as_timestamp(states.cover.garagepoort.last_changed)) / 60 )| int() }} minuten open."
       data:
         tag: garage_staat_open
   mode: single
@@ -344,7 +345,7 @@ automation:
   - service: notify.bart_phone
     data:
       title: "Voordeur is nu terug dicht."
-      message: "Stond {{ ((as_timestamp(now()) - state_attr('input_datetime.tuin_motion_first_trigger', 'timestamp')) / 60 )| round(1) }} minuten open."      
+      message: "Stond {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.voordeur.last_changed)) / 60 )| int() }} minuten open."
       data:
         tag: voordeur_staat_open
   mode: single
