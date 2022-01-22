@@ -466,3 +466,49 @@ automation:
       entity_id:
       - switch.toilet_douche_ventilatie
   mode: single
+
+  
+##############################
+# ontvochtiger
+##############################
+- alias: ontvochtiger staat al 15 min. aan
+  id: 'd3cc5e83-aa32-4a58-a297-504866802e98'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.ontvochtiger_current
+    above: 0
+    for: 00:15:00
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Ontvochtiger staat al tijdje aan.
+      message: "Staat aan sinds {{ as_timestamp(states.sensor.ontvochtiger_current.last_changed | timestamp_custom('%H:%M:%S') }}."
+      data:
+        tag: ontvochtiger
+  - repeat:
+      while:
+      - condition: numeric_state
+        entity_id: sensor.ontvochtiger_current
+        above: 0
+      sequence:
+      - delay:
+          minutes: 5
+      - service: notify.bart_phone      
+        data:
+          title: Ontvochtiger staat al tijdje aan.
+          message: "Staat al {{((as_timestamp(now()) - as_timestamp(states.sensor.ontvochtiger_current.last_changed)) / 60 )| int() }} minuten aan."
+          data:
+            tag: ontvochtiger
+  - service: notify.bart_phone
+    data:
+      title: "Ontvochtiger staat nu uit."
+      message: "Stond {{((as_timestamp(now()) - as_timestamp(states.sensor.ontvochtiger_current.last_changed)) / 60 )| int() }} minuten aan."
+      data:
+        tag: ontvochtiger
+  mode: single
+
+  
+  
+  
