@@ -394,7 +394,7 @@ automation:
     entity_id: input_boolean.car_climatisation_timer
     state: 'on'
   action:
-   - service: script.auto_start_climatisation
+   - service: script.auto_start_climatisatie_nu
   mode: restart
 
 - alias: 🚗 Om 19u in Waarschoot en koud = vraag auto voorverwarmen

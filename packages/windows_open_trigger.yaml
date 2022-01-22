@@ -2,6 +2,104 @@ automation:
 
 # Als een raam wordt opengedaan, bewaar het huidige vochtpercentage om nadien te kunnen berekenen hoeveel het vocht gezakt is door het raam open te doen.
 
+- alias: "living raam open = bewaar huidige vochtigheidsgraad"
+  id: 'bfa74347-4be7-4a74-a797-0a9a15bd319a'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.keuken_raam
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.living_oprit_raam
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.living_tuin_raam
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.living_initial_humidity_percentage
+    data:
+      value: "{{states('sensor.living_humidity')  | float }}"
+  mode: single
+
+- alias: "kamer Amilya raam open = bewaar huidige vochtigheidsgraad"
+  id: 'cd7cca43-bb95-4038-a8b2-9c7a8e80df7b'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.kamer_amilya_raam
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.kamer_amilya_initial_humidity_percentage
+    data:
+      value: "{{states('sensor.kamer_amilya_humidity')  | float }}"
+  mode: single
+
+- alias: "veranda raam open = bewaar huidige vochtigheidsgraad"
+  id: '8a473c6a-59ba-4ac6-a577-a8926963e20c'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.veranda_schuifraam
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.veranda_initial_humidity_percentage
+    data:
+      value: "{{states('sensor.veranda_humidity')  | float }}"
+  mode: single
+
+- alias: "badkamer raam open = bewaar huidige vochtigheidsgraad"
+  id: '41186efe-931b-497e-aff5-3f68cffb39b4'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.badkamer_raam_kantel
+    from: 'off'
+    to: 'on'
+    for: "00:01:00"
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.badkamer_initial_humidity_percentage
+    data:
+      value: "{{states('sensor.badkamer_humidity')  | float }}"
+  mode: single
+
+- alias: "kamer Alunya raam open = bewaar huidige vochtigheidsgraad"
+  id: 'e3c06d9c-0db7-4649-a7ad-2503ff1b9e50'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.kamer_alunya_raam
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.kamer_alunya_schuifraam
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.kamer_alunya_initial_humidity_percentage
+    data:
+      value: "{{states('sensor.kamer_alunya_humidity')  | float }}"
+  mode: single
+  
 - alias: "master bedroom raam open = bewaar huidige vochtigheidsgraad"
   id: 'aa3622f0-ec0f-4935-a978-74a15725f3c9'
   description: ''
@@ -10,6 +108,8 @@ automation:
     entity_id: binary_sensor.master_bedroom_raam_kantel
     from: 'off'
     to: 'on'
+    for: "00:01:00"
+    # 1 minuut vertraging, zodat de routine niet loopt (en de teller reset) als het raam van kantel naar wijd wordt gezet
   condition: []
   action:
   - service: input_number.set_value
@@ -19,19 +119,3 @@ automation:
       value: "{{states('sensor.master_bedroom_humidity') | float }}"
   mode: single
   
-- alias: "badkamer raam open = bewaar huidige vochtigheidsgraad (in package)"
-  id: '41186efe-931b-497e-aff5-3f68cffb39b4'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.badkamer_raam_kantel
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - service: input_number.set_value
-    target:
-      entity_id: input_number.badkamer_initial_humidity_percentage
-    data:
-      value: "{{states('sensor.badkamer_humidity')  | float }}"
-  mode: single
