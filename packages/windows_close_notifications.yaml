@@ -226,7 +226,8 @@ automation:
     message: "Vocht sinds openen raam: {{ ((states('sensor.badkamer_humidity') | float) - ((states('input_number.badkamer_initial_humidity_percentage') | float))) | round(1)}}% verschil.<br>Vocht  badkamer: {{states('sensor.gram_water_badkamer')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Vocht badkamer: {{states('sensor.badkamer_humidity')}} %. Buiten: {{states('sensor.humidity_leuven24_wunderground')}} %.<br>Temp badkamer: {{states('sensor.badkamer_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
     tag: "window_badkamer"
     action_window_pause: "badkamer_window_pause"
-    reason: "{% if states('sensor.badkamer_temperature') | float < 14 %} Wordt te koud binnen: {{states('sensor.badkamer_temperature')}} °C.
+    reason: "{% if states('sensor.badkamer_temperature') | float < 16 %} Wordt te koud binnen: {{states('sensor.badkamer_temperature')}} °C.
+      {% elif states('sensor.gram_water_badkamer') | float < 9 %} Vochtniveau binnen is OK: {{states('sensor.gram_water_badkamer')}}.
       {% elif states('sensor.gram_water_badkamer_diff_outside') | float < 0.5 %} Te vochtig buiten.
       {% endif %}"
   mode: single

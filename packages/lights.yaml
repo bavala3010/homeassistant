@@ -242,8 +242,9 @@ automation:
     entity_id: media_player.master_bedroom_tv
     to: 'playing'
   condition:
-  - condition: time
-    after: '22:00'
+  - condition: state
+    entity_id: sun.sun
+    state: below_horizon
   action:
   - service: light.turn_on
     target:

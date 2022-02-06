@@ -17,7 +17,8 @@ automation:
   condition:
   - condition: state
     entity_id: binary_sensor.voordeur_nuki
-    state: 'on'
+    state: 'off'
+    # off = voordeur is niet vergrendeld
   action:
   - service: lock.lock
     target:
@@ -50,7 +51,8 @@ automation:
   condition:
   - condition: state
     entity_id: binary_sensor.voordeur_nuki
-    state: 'on'
+    state: 'off'
+    # off = voordeur is niet vergrendeld    
   - condition: state
     entity_id: group.kinderen
     state: 'home'

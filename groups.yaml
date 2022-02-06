@@ -30,8 +30,8 @@ bart_madouce:
 kinderen:
   name: kinderen
   entities:
-    - device_tracker.amilya_iphone_xs
-    - device_tracker.alunya_samsung_galaxy_a71
+    - person.amilya
+    - person.alunya
     
 #######################################################################
 # speaker groups

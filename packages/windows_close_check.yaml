@@ -199,6 +199,8 @@ automation:
   # - condition: template
   #   value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float) < 10 }}"
     - condition: template
+      value_template: "{{ states('sensor.gram_water_badkamer') | float < 9 }}"  
+    - condition: template
       value_template: "{{ states('sensor.gram_water_badkamer_diff_outside') | float < 0.5 }}"             
   action:
   - service: input_boolean.turn_on

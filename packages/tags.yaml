@@ -196,25 +196,25 @@ automation:
           Het is nu {{ as_timestamp(now()) |timestamp_custom('%H') }} uur {{
           as_timestamp(now()) |timestamp_custom('%M') }}. Buiten is het
           {{states('sensor.temp_leuven24_wunderground')}} graden.
-    - delay:
-        seconds: 8
+    - delay: '00:00:02'
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
     - service: tts.google_say
       data:
         entity_id: media_player.master_bedroom_speaker
         message: >-
           Nog {{states('sensor.anniversary_huwelijk_madouce_bart')}} dagen voor
-          jullie huwelijk. {{("Het begint nu echt wel te korten!", "Dat is eigenlijk niet zo lang meer!", "Proficiat alvast!", "Heb je de ringen al?", "Het kostuum mag nu toch gaan komen.", "Spannend hé?", "Ik kijk er zelf ook al naar uit!"
+          jullie huwelijk. {{("Dat is binnenkort!", "Proficiat alvast!", "Heb je de ringen al?", "Het kostuum mag nu toch gaan komen.", "Spannend hé?", "Ik kijk er zelf ook al naar uit!", "Je gaat toch jaa zeggen, hé?", "Ik ben benieuwd naar het kleur van het kleed.", "Trouwen is houwen hé!" , "Zeker dat de marktverkenning goed was?"
               )|random }}
-    - delay:
-        seconds: 10
+    - delay: '00:00:02'
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
     - service: tts.google_say
       data:
         entity_id: media_player.master_bedroom_speaker
         message: >-
           {% if is_state('lock.audi_e_tron_sportback_55_door_lock_2', 'unlocked')
           %} De auto is niet op slot. {% else %} De auto is op slot. {% endif %}
-    - delay:
-        seconds: 2
+    - delay: '00:00:02'
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
     - service: tts.google_say
       data:
         entity_id: media_player.master_bedroom_speaker
@@ -224,8 +224,8 @@ automation:
           {% if is_state('sensor.audi_e_tron_sportback_55_plug_state',
           'connected') %} en de laadkabel is verbonden. {%else%} maar de laadkabel
           is niet verbonden. {% endif %}
-    - delay:
-        seconds: 7
+    - delay: '00:00:02'
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
     - service: tts.google_say
       data:
         entity_id: media_player.master_bedroom_speaker
@@ -233,8 +233,8 @@ automation:
         message: >-
           {% if is_state('lock.voordeur', 'unlocked') %} De voordeur is niet op
           slot. {% else %} De voordeur is op slot. {% endif %}
-    - delay:
-        seconds: 3
+    - delay: '00:00:02'
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
     - service: tts.google_say
       data:
         entity_id: media_player.master_bedroom_speaker
@@ -256,4 +256,35 @@ automation:
           states.binary_sensor.veranda_schuifraam)
           |selectattr('state','eq','on') | map(attribute='name')| list }} {% endif
           %}
+    - delay: '00:00:02'
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
+    - service: tts.google_say
+      data:
+        entity_id: media_player.master_bedroom_speaker
+        cache: false
+        message: >-
+          {% if now().strftime("%H")|int > 20 %} Slaap lekker straks.
+          {% elif now().strftime("%H")|int > 23 %} Het is bijna tijd om te slapen.
+          {% elif now().strftime("%H")|int < 12 %} Nog een prettige dag.
+          {% endif %}
+  mode: single
+
+- id: '0172f32d-699c-438f-94c3-3d1aff190475'
+  alias: Tag test veranda wordt gescand
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: 3abfc087-bf45-467c-9f85-4379d8edb786
+  condition: []
+  action:
+  - service: tts.google_say
+    data:
+      entity_id: media_player.veranda_speaker
+      message: Dit is gewoon een test bij het scannen van een tag. Ik mag hopen dat alles gewoon werkt zoals het moet.
+  - delay: '00:00:02'
+  - wait_template: "{{ is_state('media_player.veranda_speaker', 'idle')}}"
+  - service: tts.google_say
+    data:
+      entity_id: media_player.veranda_speaker
+      message: En dit is het vervolg.
   mode: single

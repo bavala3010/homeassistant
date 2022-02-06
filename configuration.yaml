@@ -697,18 +697,6 @@ sensor:
 # 
 ###############################################################################
 
-  - platform: history_stats
-    name: pagina's vandaag geprint
-    entity_id: sensor.dcp_l8410cdw_duplex_unit_pages_counter
-    state: "on"
-    type: count
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-###############################################################################
-# 
-###############################################################################
-
   - platform: afvalbeheer
     wastecollector: RecycleApp
     resources:

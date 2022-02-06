@@ -440,6 +440,7 @@ automation:
       entity_id: switch.toilet_douche_ventilatie
   mode: single
 
+
 ##############################
 # ventilator (algemeen)
 ##############################
@@ -476,7 +477,7 @@ automation:
   description: ''
   trigger:
   - platform: numeric_state
-    entity_id: sensor.ontvochtiger_current
+    entity_id: sensor.ontvochtiger_power
     above: 0
     for: 00:15:00
   condition: []
@@ -484,13 +485,13 @@ automation:
   - service: notify.bart_phone
     data:
       title: Ontvochtiger staat al tijdje aan.
-      message: "Staat aan sinds {{ as_timestamp(states.sensor.ontvochtiger_current.last_changed | timestamp_custom('%H:%M:%S') }}."
+      message: "Staat aan sinds {{ as_timestamp(states.sensor.ontvochtiger_power.last_changed | timestamp_custom('%H:%M:%S') }}."
       data:
         tag: ontvochtiger
   - repeat:
       while:
       - condition: numeric_state
-        entity_id: sensor.ontvochtiger_current
+        entity_id: sensor.ontvochtiger_power
         above: 0
       sequence:
       - delay:
@@ -498,13 +499,13 @@ automation:
       - service: notify.bart_phone      
         data:
           title: Ontvochtiger staat al tijdje aan.
-          message: "Staat al {{((as_timestamp(now()) - as_timestamp(states.sensor.ontvochtiger_current.last_changed)) / 60 )| int() }} minuten aan."
+          message: "Staat al {{((as_timestamp(now()) - as_timestamp(states.sensor.ontvochtiger_power.last_changed)) / 60 )| int() }} minuten aan."
           data:
             tag: ontvochtiger
   - service: notify.bart_phone
     data:
       title: "Ontvochtiger staat nu uit."
-      message: "Stond {{((as_timestamp(now()) - as_timestamp(states.sensor.ontvochtiger_current.last_changed)) / 60 )| int() }} minuten aan."
+      message: "Stond {{((as_timestamp(now()) - as_timestamp(states.sensor.ontvochtiger_power.last_changed)) / 60 )| int() }} minuten aan."
       data:
         tag: ontvochtiger
   mode: single
