@@ -16,7 +16,7 @@ default_config:
 # An integration sensor isuseful in energy billing scenarios since energy is generally billed in kWh and many sensors provide power in W (Watts).
 # If you have a sensor that provides you with power readings in Watts (uses W as unit_of_measurement), then you can use the integration sensor to track how much energy is being spent.
 
-#   Examples    
+#   Examples
 #   value_template: '{{ (value| float)}}'
 #   value_template: '{{ (value.rstrip(" °C") | float) }}'
 #   value_template: '{{ (value.rstrip(" %") | float) }}'
@@ -1293,7 +1293,7 @@ notify:
   - name: madouce_phone
     platform: group
     services:
-      - service: mobile_app_madouce_s20
+      - service: mobile_app_sm_g986b
 
   - name: alunya_phone
     platform: group

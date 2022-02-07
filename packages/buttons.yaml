@@ -1,6 +1,13 @@
 automation:
 
-# 
+# You can find the device_id of the Aqara mini switch via the Developer options / Events. The "listen" to "deconz_event" events (fill in deconz_event and click on the start to listen button)
+# Then click on the (physical) Aquara mini switch. A report will be displayed in the listener, including the device_id
+
+# buttons supports: single click, double click, long press
+# remote_button_short_press
+# remote_button_long_press
+# remote_button_long_release
+
 
 - alias: "button garagepoort: single press = sluit garagepoort"
   id: '02226be6-e34d-4185-9839-3f05db02063d'
@@ -57,3 +64,152 @@ automation:
       entity_id: media_player.living_speaker
       volume_level: 0.4
   mode: single       
+  
+- alias: button nachtkastje Bart
+  id: 'e5b8829b-92b1-400d-aacb-4cd71f93052f'
+  description: ''
+  trigger:
+  # Bart nachtkastje
+  - device_id: eff0e9bdff49d94c3646cefe55f8d941
+    domain: deconz
+    platform: device
+    type: remote_button_short_press
+    subtype: turn_on
+  condition: []
+  action:
+    - service: tts.google_say
+      data:
+        entity_id: media_player.master_bedroom_speaker
+        cache: false
+        message: >-
+          Het is nu {{ as_timestamp(now()) |timestamp_custom('%H') }} uur {{
+          as_timestamp(now()) |timestamp_custom('%M') }}. Buiten is het
+          {{states('sensor.temp_leuven24_wunderground')}} graden.
+    - delay: '00:00:02'
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
+    - service: tts.google_say
+      data:
+        entity_id: media_player.master_bedroom_speaker
+        message: >-
+          Nog {{states('sensor.anniversary_huwelijk_madouce_bart')}} dagen voor
+          jullie huwelijk. {{("Dat is binnenkort!", "Proficiat alvast!", "Ik vind de ringen ook heel mooi!", "Het kostuum mag nu toch gaan komen.", "Spannend hé?", "Ik kijk er zelf ook al naar uit!", "Je gaat toch jaa zeggen, hé?", "Ik ben benieuwd naar het kleur van het kleed.", "Trouwen is houwen hé!" , "Zeker dat de marktverkenning goed was?"
+              )|random }}
+    - delay: '00:00:02'
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
+    - service: tts.google_say
+      data:
+        entity_id: media_player.master_bedroom_speaker
+        message: >-
+          {% if is_state('lock.audi_e_tron_sportback_55_door_lock_2', 'unlocked')
+          %} De auto is niet op slot. {% else %} De auto is op slot. {% endif %}
+    - delay: '00:00:02'
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
+    - service: tts.google_say
+      data:
+        entity_id: media_player.master_bedroom_speaker
+        message: >-
+          De auto is
+          {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% geladen
+          {% if is_state('sensor.audi_e_tron_sportback_55_plug_state',
+          'connected') %} en de laadkabel is verbonden. {%else%} maar de laadkabel
+          is niet verbonden. {% endif %}
+    - delay: '00:00:02'
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
+    - service: tts.google_say
+      data:
+        entity_id: media_player.master_bedroom_speaker
+        cache: false
+        message: >-
+          {% if is_state('lock.voordeur_nuki', 'unlocked') %} De voordeur is niet op
+          slot. {% else %} De voordeur is op slot. {% endif %}
+    - delay: '00:00:02'
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
+    - service: tts.google_say
+      data:
+        entity_id: media_player.master_bedroom_speaker
+        cache: false
+        message: >-
+          {% if is_state('group.alle_raam_sensoren', 'off') %} Alle ramen zijn
+          dicht! {% else %} De volgende ramen staan nog open:
+          {{expand(states.binary_sensor.kamer_amilya_raam,
+          states.binary_sensor.kamer_alunya_raam,
+          states.binary_sensor.kamer_alunya_schuifraam,
+          states.binary_sensor.badkamer_raam_kantel,
+          states.binary_sensor.badkamer_raam_wijd,
+          states.binary_sensor.berging_raam,
+          states.binary_sensor.keuken_raam,
+          states.binary_sensor.living_oprit_raam,
+          states.binary_sensor.living_tuin_raam,
+          states.binary_sensor.master_bedroom_raam_kantel,
+          states.binary_sensor.master_bedroom_raam_wijd,
+          states.binary_sensor.veranda_schuifraam)
+          |selectattr('state','eq','on') | map(attribute='name')| list }} {% endif
+          %}
+    - delay: '00:00:02'
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
+    - service: tts.google_say
+      data:
+        entity_id: media_player.master_bedroom_speaker
+        cache: false
+        message: >-
+          {% if now().strftime("%H")|int > 20 %} Slaap lekker straks.
+          {% elif now().strftime("%H")|int > 23 %} Het is bijna tijd om te slapen.
+          {% elif now().strftime("%H")|int < 12 %} Nog een prettige dag.
+          {% endif %}
+  mode: single
+  
+- alias: button nachtkastje Madouce (short press)
+  id: 'c2d4f8a2-3f38-40f2-8d8a-816813c65c59'
+  description: ''
+  trigger:
+  # Madouce nachtkastje  
+  - device_id: 4ac6dc3329bc8cf31a1a294af788ac50
+    domain: deconz
+    platform: device
+    type: remote_button_short_press
+    subtype: turn_on
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.smart_power_strip_4
+  - condition: time
+    after: '09:00:00'
+    before: '23:00:00'
+  - service: tts.google_say
+    data:
+      entity_id: media_player.master_bedroom_speaker
+      cache: false
+      message: >-
+        {% if is_state('switch.smart_power_strip_4', 'off') %} De matras was al uit. 
+        {% else %} De matras wordt uitgeschakeld.
+        {% endif %}
+  mode: single
+  
+- alias: button nachtkastje Madouce (long press)
+  id: '5339a7c4-6300-4169-ae2a-eb698d1dae39'
+  description: ''
+  trigger:
+  # Madouce nachtkastje  
+  - device_id: 4ac6dc3329bc8cf31a1a294af788ac50
+    domain: deconz
+    platform: device
+    type: remote_button_long_press
+    subtype: turn_on
+  condition: []
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.smart_power_strip_4
+  - condition: time
+    after: '09:00:00'
+    before: '23:00:00'
+  - service: tts.google_say
+    data:
+      entity_id: media_player.master_bedroom_speaker
+      cache: false
+      message: >-
+        {% if is_state('switch.smart_power_strip_4', 'on') %} De matras was al aan. Was het nog niet warm genoeg?
+        {% else %} De matras wordt ingeschakeld. Geniet van de warmte.
+        {% endif %}
+  mode: single
