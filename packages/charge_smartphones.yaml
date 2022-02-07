@@ -12,7 +12,85 @@
 
 automation:
 
-- alias: 🔌 S20+ Madouce 90% geladen = stekker uit
+- alias: 🔌 Madouce gsm <90% om 22:00 = gsm-lader inschakelen
+  id: 'e216612c-07ac-4974-a227-ebb1e6777049'
+  description: ''
+  trigger:
+  - platform: time
+    at: 22:00:00
+  condition:
+  - condition: and
+    conditions:
+    - condition: numeric_state
+      entity_id: sensor.sm_g986b_battery_level
+      below: 90
+    - condition: state
+      entity_id: person.madouce
+      state: 'home'
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.smart_power_strip_3
+  mode: single
+
+- alias: 🔌 Bart gsm <90% om 22:00 = gsm-lader inschakelen
+  id: 'e216612c-07ac-4974-a227-ebb1e6777049'
+  description: ''
+  trigger:
+  - platform: time
+    at: 22:00:00
+  condition:
+  - condition: and
+    conditions:
+    - condition: numeric_state
+      entity_id: sensor.sm_g975f_battery_level
+      below: 90
+    - condition: state
+      entity_id: person.bart
+      state: 'home'
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.bart_gsm
+  mode: single
+  
+- alias: 🔌 Bij thuiskomst Madouce na 22u00 = gsm-lader inschakelen
+  id: 54b0e916-ef62-450a-9bb1-aca2bd332b93
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: person.madouce
+    from: 'not_home'
+    to: 'home'
+  condition:
+  - condition: time
+    after: '22:00'
+    before: '02:00'
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.smart_power_strip_3
+  mode: single
+
+- alias: 🔌 Bij thuiskomst Bart na 22u00 = gsm-lader inschakelen
+  id: 33aff76b-adf4-4108-8d57-ec89f99467f7
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: person.bart
+    from: 'not_home'
+    to: 'home'
+  condition:
+  - condition: time
+    after: '22:00'
+    before: '02:00'
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.bart_gsm
+  mode: single
+
+- alias: 🔌 Madouce gsm 90% geladen = stekker uit
   id: '0103219c-07a8-4e3f-b103-2df77aaa464e'
   description: ''
   trigger:
@@ -22,14 +100,14 @@ automation:
   condition:
   - condition: time
     after: '23:00:00'
-    before: 06:00:00
+    before: '06:00:00'
   action:
   - service: switch.turn_off
     target:
       entity_id: switch.smart_power_strip_3
   mode: single
 
-- alias: 🔌 S10+ Bart 90% geladen = stekker uit
+- alias: 🔌 Bart gsm 90% geladen = stekker uit
   id: 'e5696f69-3c20-4419-af56-b79f207a319b'
   description: ''
   trigger:
@@ -46,28 +124,7 @@ automation:
       entity_id: switch.bart_gsm
   mode: single
 
-- alias: 🔌 's morgens Bart S10+ nog bijladen
-  id: 'c08edfeb-aa74-43a4-9f31-656346c79a9c'
-  description: ''
-  trigger:
-  - platform: time
-    at: 06:00:00
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.sm_g975f_battery_level
-    below: 95
-  action:
-  - service: switch.turn_on
-    target:
-      entity_id: switch.bart_gsm
-  - wait_template: ''
-    timeout: 02:00:00
-  - service: switch.turn_off
-    target:
-      entity_id: switch.bart_gsm
-  mode: single
-
-- alias: 🔌 's morgens Madouce S20+ nog bijladen
+- alias: 🔌 's morgens Madouce gsm nog bijladen
   id: '67cc86a4-4fff-4c86-ac81-c5dcacaf1893'
   description: ''
   trigger:
@@ -88,25 +145,25 @@ automation:
       entity_id: switch.smart_power_strip_3
   mode: single
   
-- alias: 🔌 Lader terug aanzetten als batterij gsm Madouce laag is (tussen 22:00 en 24:00)
-  id: 'e216612c-07ac-4974-a227-ebb1e6777049'
+- alias: 🔌 's morgens Bart gsm nog bijladen
+  id: 'c08edfeb-aa74-43a4-9f31-656346c79a9c'
   description: ''
   trigger:
-  - platform: state
-    entity_id: switch.smart_power_strip_3
-    from: 'on'
-    to: 'off'
+  - platform: time
+    at: 06:00:00
   condition:
-  - condition: and
-    conditions:
-    - condition: time
-      before: '00:00'
-      after: '22:00'
-    - condition: numeric_state
-      entity_id: sensor.madouce_s20_batterijniveau
-      below: 90
+  - condition: numeric_state
+    entity_id: sensor.sm_g975f_battery_level
+    below: 95
   action:
   - service: switch.turn_on
     target:
-      entity_id: switch.smart_power_strip_3
+      entity_id: switch.bart_gsm
+  - wait_template: ''
+    timeout: 02:00:00
+  - service: switch.turn_off
+    target:
+      entity_id: switch.bart_gsm
   mode: single
+
+
