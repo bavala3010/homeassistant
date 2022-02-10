@@ -1,9 +1,9 @@
-- alias: 🏡 Bart is alleen thuis
-  id: 02b63f41-9ea3-48eb-97aa-242a618f3400
+- id: 02b63f41-9ea3-48eb-97aa-242a618f3400
+  alias: 🏡 Bart is alleen thuis
   description: ''
   trigger:
   - platform: state
-    entity_id: group.group_not_bart
+    entity_id: group.not_bart
     from: home
     to: not_home
     for: 00:03:00
@@ -77,3 +77,23 @@
       message: clear_notification
       data:
         tag: recycle
+- id: '1644270791368'
+  alias: 🔌 Madouce gsm < 90% om 22:00 = gsm-lader inschakelen
+  description: ''
+  trigger:
+  - platform: time
+    at: '22:00:00'
+  condition:
+  - condition: and
+    conditions:
+    - condition: numeric_state
+      entity_id: sensor.sm_g986b_battery_level
+      below: 90
+    - condition: state
+      entity_id: person.madouce
+      state: home
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.smart_power_strip_3
+  mode: single

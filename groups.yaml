@@ -9,17 +9,17 @@ gezin:
     - person.madouce
     - person.amilya
     - person.alunya
-    - device_tracker.bart_samsung_s10_plus
-    - device_tracker.madouce_samsung_s20
-#   - device_tracker.amilya_iphone_xs
-    - device_tracker.alunya_samsung_galaxy_a71
+    - device_tracker.bart_s10
+    - device_tracker.madouce_s20
+    - device_tracker.amilya_iphone_xs
+    - device_tracker.alunya_a61
 
 alleen_bart:
   name: not_bart
   entities:
-    - device_tracker.madouce_samsung_s20
+    - device_tracker.madouce_s20
     - device_tracker.amilya_iphone_xs
-    - device_tracker.alunya_samsung_galaxy_a71
+    - device_tracker.alunya_a61
 
 bart_madouce:
   name: bart_madouce

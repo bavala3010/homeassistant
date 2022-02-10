@@ -13,6 +13,10 @@
 #     Auto 10 min. niet op slot = melding
 #
 
+
+# bluetooth address Etron: 98:49:14:C1:37:0B
+
+
 ############################ Automations ################################## 
 automation:
 
@@ -257,7 +261,7 @@ automation:
       message: 🚙 Er wordt nu geprobeerd om de auto te sluiten.
       data:
         channel: Important
-        tag: slot_auto
+        tag: auto_sluiten
         color: red
         actions:
         - action: URI
@@ -269,7 +273,7 @@ automation:
       message: 🚙 Er wordt nu geprobeerd om de auto te sluiten.
       data:
         channel: Important
-        tag: slot_auto
+        tag: auto_sluiten
         color: red
         actions:
         - action: URI
@@ -306,12 +310,12 @@ automation:
     data:
       message: "clear_notification"
       data:
-        tag: slot_auto
+        tag: auto_sluiten
   - service: notify.madouce_phone
     data:
       message: "clear_notification"
       data:
-        tag: slot_auto        
+        tag: auto_sluiten        
   mode: single
 
 - alias: 🚗 Auto 2 min. niet op slot = refresh & melding
@@ -355,7 +359,7 @@ automation:
       message: 🚙 Auto niet op slot! (veeg omlaag voor acties)
       data:
         channel: Important
-        tag: slot_auto
+        tag: auto_sluiten
         color: red
         actions:
         - action: lock_car
@@ -368,7 +372,7 @@ automation:
       message: 🚙 Auto niet op slot! (veeg omlaag voor acties)
       data:
         channel: Important
-        tag: slot_auto
+        tag: auto_sluiten
         color: red
         actions:
         - action: lock_car
@@ -425,6 +429,7 @@ automation:
     data:
       message: 🚙 Moet de auto worden voorverwamd?
       data:
+        tag: auto_verwarmen
         color: green
         actions:
         - action: URI
@@ -432,40 +437,112 @@ automation:
           uri: /eikenbos-dashboard/e-tron-heater
   mode: single
 
-- alias: 🚗 Madouce bij mama Madouce = vraag auto voorverwarmen
-  id: '8fa06ed3-7c9f-453d-80d4-a246df6633f8'
+- alias: 🚗 Bart verlaat auto
+  id: '63ee4ac0-2944-4531-bc17-a2a6d60ff341'
   description: ''
   trigger:
-  - condition: state
-    entity_id: person.madouce
-    state: "mama Madouce"
-    for:
-      hours: 1
-      minutes: 0 
-      seconds: 0
-      milliseconds: 0
+    - platform: state
+      entity_id: binary_sensor.bart_phone_connected_to_car
+      from: 'on'
+      to: 'off'
+      for: "00:00:10"
   condition:
-  - condition: numeric_state
-    entity_id: weather.eikenbos
-    attribute: temperature
-    below: 15
-  - condition: state
-    entity_id: device_tracker.madouce_s20
-    state: 0
-    attribute: speed
-    for:
-      hours: 0
-      minutes: 2
-      seconds: 0
-      milliseconds: 0
+    - condition: numeric_state
+      entity_id: weather.eikenbos
+      attribute: temperature
+      below: 15
   action:
-  - service: notify.madouce_phone
-    data:
-      message: 🚙 Moet de auto worden voorverwamd?
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: person.bart
+        state: "home"
+      sequence:
+    - conditions:
+      - condition: state
+        entity_id: person.bart
+        state: "sauna elzenhof"
+      sequence:
+      - service: notify.bart_phone
+        data:
+          title: 🚙 Moet de auto straks worden voorverwamd?
+          message: Geniet van de sauna :)
+    - conditions:
+        - condition: or
+          conditions:
+            - condition: state
+              entity_id: person.bart
+              state: "aldi bierbeek"
+            - condition: state
+              entity_id: person.bart
+              state: "action bierbeek"
+            - condition: state
+              entity_id: person.bart
+              state: "ah zaventem"
+            - condition: state
+              entity_id: person.bart
+              state: "lidl sterrebeek"
+            - condition: state
+              entity_id: person.bart
+              state: "test locatie"        
+      sequence:
+      - service: script.auto_start_climatisatie_nu
+    # Locaties met lange verblijfsduur
+    - conditions:
+        - condition: or
+          conditions:
+            - condition: state
+              entity_id: person.bart
+              state: "waarschoot"
+            - condition: state
+              entity_id: person.bart
+              state: "koen_katiana"
+      sequence:
+      - service: notify.bart_phone
+        data:
+          title: 🚙 Moet de auto straks worden voorverwamd?
+          message: Ik vraag het over een uurtje nog eens.
+          data:
+            tag: auto_verwarmen      
+            color: green
+            actions:
+            - action: URI
+              title: zo ja, klik hier
+              uri: /eikenbos-dashboard/e-tron-heater
+      - wait_template: ''
+        timeout: '01:00:00'
+      - service: notify.bart_phone
+        data:
+          message: 🚙 Moet de auto worden voorverwamd?
+          data:
+            tag: auto_verwarmen      
+            color: green
+            actions:
+            - action: URI
+              title: zo ja, klik hier
+              uri: /eikenbos-dashboard/e-tron-heater
+    # Andere locaties
+    default:
+    - service: notify.bart_phone
       data:
-        color: green
-        actions:
-        - action: URI
-          title: zo ja, klik hier
-          uri: /eikenbos-dashboard/e-tron-heater
-  mode: single
+        title: 🚙 Moet de auto straks worden voorverwamd?
+        message: Ik vraag het over een uurtje nog eens.
+        data:
+          tag: auto_verwarmen
+          color: green
+          actions:
+          - action: URI
+            title: zo ja, klik hier
+            uri: /eikenbos-dashboard/e-tron-heater
+    - wait_template: ''
+      timeout: '01:00:00'
+    - service: notify.bart_phone
+      data:
+        message: 🚙 Moet de auto worden voorverwamd?
+        data:
+          tag: auto_verwarmen      
+          color: green
+          actions:
+          - action: URI
+            title: zo ja, klik hier
+            uri: /eikenbos-dashboard/e-tron-heater

@@ -12,18 +12,18 @@
 
 automation:
 
-- alias: 🔌 Madouce gsm <90% om 22:00 = gsm-lader inschakelen
-  id: 'e216612c-07ac-4974-a227-ebb1e6777049'
+- alias: 🔌 Madouce gsm < 90% om 22:00 = gsm-lader inschakelen
+  id: 'b0286695-67f8-44fb-8115-4eb1b5b06a13'
   description: ''
   trigger:
   - platform: time
-    at: 22:00:00
+    at: '22:00'
   condition:
   - condition: and
     conditions:
     - condition: numeric_state
       entity_id: sensor.sm_g986b_battery_level
-      below: 90
+      below: '90'
     - condition: state
       entity_id: person.madouce
       state: 'home'
@@ -33,18 +33,18 @@ automation:
       entity_id: switch.smart_power_strip_3
   mode: single
 
-- alias: 🔌 Bart gsm <90% om 22:00 = gsm-lader inschakelen
-  id: 'e216612c-07ac-4974-a227-ebb1e6777049'
+- alias: 🔌 Bart gsm < 90% om 22:00 = gsm-lader inschakelen
+  id: 'f143efee-5738-467c-9287-912c24eac954'
   description: ''
   trigger:
   - platform: time
-    at: 22:00:00
+    at: '22:00'
   condition:
   - condition: and
     conditions:
     - condition: numeric_state
       entity_id: sensor.sm_g975f_battery_level
-      below: 90
+      below: '90'
     - condition: state
       entity_id: person.bart
       state: 'home'

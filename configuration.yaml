@@ -1202,6 +1202,31 @@ binary_sensor:
         friendly_name: "in master bedroom warmer dan buiten"
         value_template: "{{ states('sensor.master_bedroom_temperature') > states('sensor.temp_leuven24_wunderground') }}"
 
+      bart_phone_connected_to_car:
+        friendly_name: 'Telefoon Bart verbonden met auto'
+        device_class: connectivity
+        icon_template: >-
+          {% if is_state('binary_sensor.bart_phone_connected_to_car', 'on') %}
+            mdi:car-connected
+          {% else %}
+            mdi:car
+          {% endif %}
+        value_template: "{{ '98:49:14:C1:37:0B' in state_attr('sensor.sm_g975f_bluetooth_connection', 'connected_paired_devices') }}"    
+        # do not forget to activate the bluetooth sensor in the Home Assistant companion app on smartphone
+
+      madouce_phone_connected_to_car:
+        friendly_name: 'Telefoon Mardouce verbonden met auto'
+        device_class: connectivity
+        icon_template: >-
+          {% if is_state('binary_sensor.madouce_phone_connected_to_car', 'on') %}
+            mdi:car-connected
+          {% else %}
+            mdi:car
+          {% endif %}
+        value_template: "{{ '98:49:14:C1:37:0B' in state_attr('sensor.sm_g986b_bluetooth_connection', 'connected_paired_devices') }}"    
+        # do not forget to activate the bluetooth sensor in the Home Assistant companion app on smartphone
+
+
   - platform: trend
     sensors:
 
@@ -1315,4 +1340,18 @@ rest_command:
 # Deze code hieronder in automatisaties gebruiken    
 # service: rest_command.energie_id_set_electricity_usage
 #  data:
-#    usage: "{{ states('input_number.electricity_usage') | int }}"     
+#    usage: "{{ states('input_number.electricity_usage') | int }}"  
+
+proximity:
+  bart_home:
+    devices:
+      - device_tracker.bart_s10
+    tolerance: 50
+    unit_of_measurement: km
+    
+  madouce_home:
+    devices:
+      - device_tracker.madouce_s20
+    tolerance: 50
+    unit_of_measurement: km
+    

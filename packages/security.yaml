@@ -316,7 +316,7 @@ automation:
     entity_id: binary_sensor.voordeur
     from: 'off'
     to: 'on'
-    for: 00:03:00
+    for: '00:03:00'
   condition: []
   action:
   - service: notify.bart_phone

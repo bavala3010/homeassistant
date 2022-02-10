@@ -1,6 +1,6 @@
 automation:
 
-- alias: ⚡  stekker living uit om middernacht of nieamand thuis
+- alias: ⚡stekker living uit om middernacht of nieamand thuis
   id: 'df3e3a84-96d7-4201-ae3d-6ad86a3842f9'
   description: ''
   trigger:
@@ -16,7 +16,7 @@ automation:
       entity_id: switch.switch_1
   mode: single
   
-- alias: ⚡stekker living aan om 7u of bij thuiskomst
+- alias: ⚡ stekker living aan om 7u of bij thuiskomst
   id: '15579822-c648-4309-8676-da47d24802fb'
   description: ''
   trigger:
