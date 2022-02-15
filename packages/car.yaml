@@ -445,7 +445,7 @@ automation:
       entity_id: binary_sensor.bart_phone_connected_to_car
       from: 'on'
       to: 'off'
-      for: "00:00:10"
+      for: "00:00:05"
   condition:
     - condition: numeric_state
       entity_id: weather.eikenbos
@@ -453,55 +453,70 @@ automation:
       below: 15
   action:
   - choose:
+    # indien aankomst thuis, niets doen
     - conditions:
       - condition: state
         entity_id: person.bart
         state: "home"
       sequence:
+    # indien aankomst bij sauna, onmiddellijk vragen
     - conditions:
-      - condition: state
-        entity_id: person.bart
-        state: "sauna elzenhof"
+        - condition: or
+          conditions:
+            - condition: state
+              entity_id: person.bart
+              state: "Sauna Elzenhof"
+            - condition: state
+              entity_id: person.bart
+              state: "Sauna Hezemeer"
+            - condition: state
+              entity_id: person.bart
+              state: "Sauna Boetfort"
       sequence:
       - service: notify.bart_phone
         data:
           title: 🚙 Moet de auto straks worden voorverwamd?
           message: Geniet van de sauna :)
+          data:
+            tag: auto_verwarmen      
+            color: green
+            actions:
+            - action: URI
+              title: zo ja, klik hier
+              uri: /eikenbos-dashboard/e-tron-heater          
+    # indien aankomst bij winkel, niets vragen en blijven verwarmen
     - conditions:
         - condition: or
           conditions:
             - condition: state
               entity_id: person.bart
-              state: "aldi bierbeek"
+              state: "Aldi Bierbeek"
             - condition: state
               entity_id: person.bart
-              state: "action bierbeek"
+              state: "Action Bierbeek"
             - condition: state
               entity_id: person.bart
-              state: "ah zaventem"
+              state: "AH Zaventem"
             - condition: state
               entity_id: person.bart
-              state: "lidl sterrebeek"
-            - condition: state
-              entity_id: person.bart
-              state: "test locatie"        
+              state: "Lidl Sterrebeek"
       sequence:
       - service: script.auto_start_climatisatie_nu
-    # Locaties met lange verblijfsduur
+    # indien aankomst bij plaats met lang verblijf, vragen 
     - conditions:
         - condition: or
           conditions:
             - condition: state
               entity_id: person.bart
-              state: "waarschoot"
+              state: "Waarschoot"
             - condition: state
               entity_id: person.bart
-              state: "koen_katiana"
+              state: "Koen & Katiana"
       sequence:
       - service: notify.bart_phone
         data:
-          title: 🚙 Moet de auto straks worden voorverwamd?
-          message: Ik vraag het over een uurtje nog eens.
+          title: 🚙 Auto straks voorverwamen?
+          message: Een warme auto is altijd lekkerder.
           data:
             tag: auto_verwarmen      
             color: green
@@ -521,12 +536,12 @@ automation:
             - action: URI
               title: zo ja, klik hier
               uri: /eikenbos-dashboard/e-tron-heater
-    # Andere locaties
+    # alle andere locaties
     default:
     - service: notify.bart_phone
       data:
-        title: 🚙 Moet de auto straks worden voorverwamd?
-        message: Ik vraag het over een uurtje nog eens.
+        title: 🚙 Auto straks voorverwamen?
+        message: Een warme auto is altijd lekkerder.
         data:
           tag: auto_verwarmen
           color: green
@@ -545,4 +560,203 @@ automation:
           actions:
           - action: URI
             title: zo ja, klik hier
+            uri: /eikenbos-dashboard/e-tron-heate
+  mode: restart          
+
+- alias: 🚗 Madouce verlaat auto
+  id: '24b7df67-875f-48f9-8a96-4960bb91687a'
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.madouce_phone_connected_to_car
+      from: 'on'
+      to: 'off'
+      for: "00:00:05"
+  condition:
+    - condition: numeric_state
+      entity_id: weather.eikenbos
+      attribute: temperature
+      below: 15
+  action:
+  - choose:
+    # indien aankomst thuis, niets doen
+    - conditions:
+      - condition: state
+        entity_id: person.madouce
+        state: "home"
+      sequence:
+    # indien aankomst bij sauna, onmiddellijk vragen
+    - conditions:
+        - condition: or
+          conditions:
+            - condition: state
+              entity_id: person.madouce
+              state: "Sauna Elzenhof"
+            - condition: state
+              entity_id: person.madouce
+              state: "Sauna Hezemeer"
+            - condition: state
+              entity_id: person.madouce
+              state: "Sauna Boetfort"
+      sequence:
+      - service: notify.madouce_phone
+        data:
+          title: 🚙 Moet de auto straks worden voorverwamd?
+          message: Geniet van de sauna :)
+          data:
+            tag: auto_verwarmen      
+            color: green
+            actions:
+            - action: URI
+              title: zo ja, klik hier
+              uri: /eikenbos-dashboard/e-tron-heater          
+    # indien aankomst bij winkel, niets vragen en blijven verwarmen
+    - conditions:
+        - condition: or
+          conditions:
+            - condition: state
+              entity_id: person.madouce
+              state: "Aldi Bierbeek"
+            - condition: state
+              entity_id: person.madouce
+              state: "Action bierbeek"
+            - condition: state
+              entity_id: person.madouce
+              state: "AH Zaventem"
+            - condition: state
+              entity_id: person.madouce
+              state: "Lidl Sterrebeek"
+      sequence:
+      - service: script.auto_start_climatisatie_nu
+    # indien aankomst bij plaats met lang verblijf, vragen 
+    - conditions:
+        - condition: or
+          conditions:
+            - condition: state
+              entity_id: person.madouce
+              state: "waarschoot"
+            - condition: state
+              entity_id: person.madouce
+              state: "Koen & Katiana"
+      sequence:
+      - service: notify.madouce_phone
+        data:
+          title: 🚙 Auto straks voorverwamen?
+          message: Een warme auto is altijd lekkerder.
+          data:
+            tag: auto_verwarmen      
+            color: green
+            actions:
+            - action: URI
+              title: zo ja, klik hier
+              uri: /eikenbos-dashboard/e-tron-heater
+      - wait_template: ''
+        timeout: '01:00:00'
+      - service: notify.madouce_phone
+        data:
+          message: 🚙 Moet de auto worden voorverwamd?
+          data:
+            tag: auto_verwarmen      
+            color: green
+            actions:
+            - action: URI
+              title: zo ja, klik hier
+              uri: /eikenbos-dashboard/e-tron-heater
+    # alle andere locaties
+    default:
+    - service: notify.madouce_phone
+      data:
+        title: 🚙 Auto straks voorverwamen?
+        message: Een warme auto is altijd lekkerder.
+        data:
+          tag: auto_verwarmen
+          color: green
+          actions:
+          - action: URI
+            title: zo ja, klik hier
             uri: /eikenbos-dashboard/e-tron-heater
+    - wait_template: ''
+      timeout: '01:00:00'
+    - service: notify.madouce_phone
+      data:
+        message: 🚙 Moet de auto worden voorverwamd?
+        data:
+          tag: auto_verwarmen      
+          color: green
+          actions:
+          - action: URI
+            title: zo ja, klik hier
+            uri: /eikenbos-dashboard/e-tron-heate
+  mode: restart
+  
+- alias: 🚗 Auto verwarmen na werkdag bij Toyota Evere
+  id: '2e05b1aa-1980-4c0d-b3a7-ee1df7fef055'
+  description: ''
+  trigger:
+  - platform: time
+    at: '16:20'
+  condition:
+  - condition: numeric_state
+    entity_id: weather.eikenbos
+    attribute: temperature
+    below: 15
+  - condition: state
+    entity_id: person.madouce
+    state: "Toyota Evere"
+  action:
+  - service: notify.madouce_phone
+    data:
+      message: 🚙 De auto wordt nu voorverwarmd.
+      data:
+        tag: auto_verwarmen
+        color: green
+        actions:
+        - action: URI
+          title: Voor meer info, klik hier
+          uri: /eikenbos-dashboard/e-tron-heater
+  - service: script.auto_start_climatisatie_nu          
+  mode: single
+
+ 
+#########################
+# Status auto verversen
+#########################   
+
+
+- alias: Bart 3 km van thuis = verversen status auto
+  id: '37cfe751-fb7d-4f9b-9a1e-772eeba15f64'
+  trigger:
+  - platform: numeric_state
+    entity_id:
+      - proximity.bart_home
+    below: 3
+  condition:
+  - condition: template
+    value_template: '{{ trigger.to_state.attributes.dir_of_travel  == "towards" }}'
+  action:
+  - service: audiconnect.refresh_data
+    data:
+      vin: WAUZZZGE6MB019131
+  - service: notify.bart_phone
+    data:
+      message: 🚙 Bijna thuis. De status van de auto wordt ververst.      
+  mode: single
+  
+- alias: Madouce 3 km van thuis = verversen status auto
+  id: '533ee396-e37b-450b-a5e6-c981a9696b31'
+  trigger:
+  - platform: numeric_state
+    entity_id:
+      - proximity.madouce_home
+    below: 3
+  condition:
+  - condition: template
+    value_template: '{{ trigger.to_state.attributes.dir_of_travel  == "towards" }}'
+  action:
+  - service: audiconnect.refresh_data
+    data:
+      vin: WAUZZZGE6MB019131
+  - service: notify.bart_phone
+    data:
+      message: 🚙 Madouce rijdt richting huis. De status van de auto wordt ververst.      
+  mode: single  

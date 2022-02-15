@@ -216,7 +216,7 @@ automation:
     data:
       entity_id: media_player.living_speaker
       volume_level: 0.5      
-  - service: tts.google_say
+  - service: tts.cloud_say
     data:
       entity_id: media_player.living_speaker
       message: Laat het dadelijk smaken! Ik zorg voor de zuivere lucht.  
@@ -244,7 +244,7 @@ automation:
     target:
       entity_id: fan.xiaomi_air_purifier_3h
     data: {}
-  - service: tts.google_say
+  - service: tts.cloud_say
     data:
       entity_id: media_player.living_speaker
       message: De kooksessie is gedaan. Hopelijk heeft het gesmaakt.

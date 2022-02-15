@@ -16,23 +16,18 @@ automation:
     to: not_home
   condition:
   - condition: state
-    entity_id: binary_sensor.voordeur_nuki
-    state: 'off'
-    # off = voordeur is niet vergrendeld
+    entity_id: lock.voordeur_nuki
+    state: 'unlocked'
   action:
   - service: lock.lock
     target:
       entity_id: lock.voordeur_nuki
   - service: notify.bart_phone
     data:
-      title: Voordeur
-      message: Niemand thuis. Gelukkig heb ik de voordeur voor jou op slot gedaan.
+      title: Voordeur 
+      message: Niemand thuis. Gelukkig heb ik de voordeur voor jou op slot gedaan. 
       data:
         color: red
-  - service: notify.bart_phone
-    data:
-      message: TTS
-      title: Ik heb voor jou de voordeur op slot gedaan!
   - service: notify.madouce_phone
     data:
       title: Voordeur
@@ -50,9 +45,8 @@ automation:
     to: not_home
   condition:
   - condition: state
-    entity_id: binary_sensor.voordeur_nuki
-    state: 'off'
-    # off = voordeur is niet vergrendeld    
+    entity_id: lock.voordeur_nuki
+    state: 'unlocked'
   - condition: state
     entity_id: group.kinderen
     state: 'home'
@@ -62,22 +56,45 @@ automation:
       entity_id: lock.voordeur_nuki
   - service: notify.bart_phone
     data:
-      title: Voordeur
-      message: Ik heb de voordeur voor jou op slot gedaan.
+      title: Ik heb de voordeur voor jou op slot gedaan.
+      message: >-
+          {% if is_state('person.amilya', 'home') and is_state('person.alunya', 'home') %}Amilya en Alunya zijn alleen thuis.
+          {% elif is_state('person.amilya', 'home') %}Amilya is alleen thuis.
+          {% elif is_state('person.alunya', 'home') %}Alunya is alleen thuis.
+          {% endif %}
       data:
         color: red
+  - service: notify.madouce_phone
+    data:
+      title: Ik heb de voordeur voor jou op slot gedaan.
+      message: >-
+          {% if is_state('person.amilya', 'home') and is_state('person.alunya', 'home') %}Amilya en Alunya zijn alleen thuis.
+          {% elif is_state('person.amilya', 'home') %}Amilya is alleen thuis.
+          {% elif is_state('person.alunya', 'home') %}Alunya is alleen thuis.
+          {% endif %}
+      data:
+        color: red
+  mode: single
+  
+- alias: Bart alleen thuis = voordeur op slot doen
+  id: '77234403-213e-41a5-ad01-a159f3b0978c'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.alleen_bart
+    to: not_home
+  condition:
+  - condition: state
+    entity_id: lock.voordeur_nuki
+    state: 'unlocked'
+  action:
+  - service: lock.lock
+    target:
+      entity_id: lock.voordeur_nuki
   - service: notify.bart_phone
     data:
-      message: TTS
       title: Ik heb de voordeur voor jou op slot gedaan.
-  - service: notify.madouce_phone
-    data:
-      title: Voordeur
-      message: Ik heb de voordeur voor jou op slot gedaan.
+      message: Bart, je bent alleen thuis.
       data:
         color: red
-  - service: notify.madouce_phone
-    data:
-      message: TTS
-      title: Ik heb de voordeur voor jou op slot gedaan.
-  mode: single
+  mode: single  

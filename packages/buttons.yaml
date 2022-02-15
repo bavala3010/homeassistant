@@ -47,11 +47,11 @@ automation:
     data:
       entity_id: media_player.living_speaker
       volume_level: 0.6
-  - service: tts.google_say
+  - service: tts.cloud_say
     data:
       entity_id: media_player.veranda_speaker
       message: Garagepoort gaat open!
-  - service: tts.google_say
+  - service: tts.cloud_say
     data:
       entity_id: media_player.living_speaker
       message: Garagepoort gaat open!
@@ -77,7 +77,7 @@ automation:
     subtype: turn_on
   condition: []
   action:
-    - service: tts.google_say
+    - service: tts.cloud_say
       data:
         entity_id: media_player.master_bedroom_speaker
         cache: false
@@ -87,7 +87,7 @@ automation:
           {{states('sensor.temp_leuven24_wunderground')}} graden.
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.google_say
+    - service: tts.cloud_say
       data:
         entity_id: media_player.master_bedroom_speaker
         message: >-
@@ -96,7 +96,7 @@ automation:
               )|random }}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.google_say
+    - service: tts.cloud_say
       data:
         entity_id: media_player.master_bedroom_speaker
         message: >-
@@ -104,7 +104,7 @@ automation:
           %} De auto is niet op slot. {% else %} De auto is op slot. {% endif %}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.google_say
+    - service: tts.cloud_say
       data:
         entity_id: media_player.master_bedroom_speaker
         message: >-
@@ -115,7 +115,7 @@ automation:
           is niet verbonden. {% endif %}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.google_say
+    - service: tts.cloud_say
       data:
         entity_id: media_player.master_bedroom_speaker
         cache: false
@@ -124,7 +124,7 @@ automation:
           slot. {% else %} De voordeur is op slot. {% endif %}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.google_say
+    - service: tts.cloud_say
       data:
         entity_id: media_player.master_bedroom_speaker
         cache: false
@@ -147,7 +147,7 @@ automation:
           %}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.google_say
+    - service: tts.cloud_say
       data:
         entity_id: media_player.master_bedroom_speaker
         cache: false
@@ -176,7 +176,7 @@ automation:
   - condition: time
     after: '09:00:00'
     before: '23:00:00'
-  - service: tts.google_say
+  - service: tts.cloud_say
     data:
       entity_id: media_player.master_bedroom_speaker
       cache: false
@@ -204,7 +204,7 @@ automation:
   - condition: time
     after: '09:00:00'
     before: '23:00:00'
-  - service: tts.google_say
+  - service: tts.cloud_say
     data:
       entity_id: media_player.master_bedroom_speaker
       cache: false

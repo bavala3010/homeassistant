@@ -50,6 +50,7 @@ auto_start_climatisatie_nu:
     data:
       message: Climatisatie auto gestart
       data:
+        tag: auto_verwarmen
         timeout: 18000  # 1800 seconden = half uur
         actions:
         - action: URI
@@ -59,6 +60,7 @@ auto_start_climatisatie_nu:
     data:
       message: Climatisatie auto gestart
       data:
+        tag: auto_verwarmen
         timeout: 180000  # half uur
         actions:
         - action: URI
@@ -77,6 +79,7 @@ auto_start_climatisatie_nu:
     data:
       message: Climatisatie auto gestopt
       data:
+        tag: auto_verwarmen
         timeout: 6000  # 10 minuten
         actions:
         - action: URI
@@ -86,6 +89,7 @@ auto_start_climatisatie_nu:
     data:
       message: Climatisatie auto gestopt
       data:
+        tag: auto_verwarmen
         timeout: 6000  # 10 minuten
         actions:
         - action: URI
@@ -113,6 +117,7 @@ auto_start_climatisatie_30min:
     data:
       message: Climatisatie auto gestart
       data:
+        tag: auto_verwarmen
         timeout: 18000  # 1800 seconden = half uur
         actions:
         - action: URI
@@ -122,6 +127,7 @@ auto_start_climatisatie_30min:
     data:
       message: Climatisatie auto gestart
       data:
+        tag: auto_verwarmen
         timeout: 180000  # half uur
         actions:
         - action: URI
@@ -140,6 +146,7 @@ auto_start_climatisatie_30min:
     data:
       message: Climatisatie auto gestopt
       data:
+        tag: auto_verwarmen
         timeout: 6000  # 10 minuten
         actions:
         - action: URI
@@ -149,6 +156,7 @@ auto_start_climatisatie_30min:
     data:
       message: Climatisatie auto gestopt
       data:
+        tag: auto_verwarmen
         timeout: 6000  # 10 minuten
         actions:
         - action: URI
@@ -176,6 +184,7 @@ auto_start_climatisatie_60min:
     data:
       message: Climatisatie auto gestart
       data:
+        tag: auto_verwarmen
         timeout: 18000  # 1800 seconden = half uur
         actions:
         - action: URI
@@ -185,6 +194,7 @@ auto_start_climatisatie_60min:
     data:
       message: Climatisatie auto gestart
       data:
+        tag: auto_verwarmen
         timeout: 180000  # half uur
         actions:
         - action: URI
@@ -203,6 +213,7 @@ auto_start_climatisatie_60min:
     data:
       message: Climatisatie auto gestopt
       data:
+        tag: auto_verwarmen
         timeout: 6000  # 10 minuten
         actions:
         - action: URI
@@ -212,6 +223,7 @@ auto_start_climatisatie_60min:
     data:
       message: Climatisatie auto gestopt
       data:
+        tag: auto_verwarmen
         timeout: 6000  # 10 minuten
         actions:
         - action: URI
@@ -239,6 +251,7 @@ auto_start_climatisatie_90min:
     data:
       message: Climatisatie auto gestart
       data:
+        tag: auto_verwarmen
         timeout: 18000  # 1800 seconden = half uur
         actions:
         - action: URI
@@ -248,6 +261,7 @@ auto_start_climatisatie_90min:
     data:
       message: Climatisatie auto gestart
       data:
+        tag: auto_verwarmen
         timeout: 180000  # half uur
         actions:
         - action: URI
@@ -266,6 +280,7 @@ auto_start_climatisatie_90min:
     data:
       message: Climatisatie auto gestopt
       data:
+        tag: auto_verwarmen
         timeout: 6000  # 10 minuten
         actions:
         - action: URI
@@ -302,6 +317,7 @@ auto_start_climatisatie_120min:
     data:
       message: Climatisatie auto gestart
       data:
+        tag: auto_verwarmen
         timeout: 18000  # 1800 seconden = half uur
         actions:
         - action: URI
@@ -311,6 +327,7 @@ auto_start_climatisatie_120min:
     data:
       message: Climatisatie auto gestart
       data:
+        tag: auto_verwarmen
         timeout: 180000  # half uur
         actions:
         - action: URI
@@ -329,6 +346,7 @@ auto_start_climatisatie_120min:
     data:
       message: Climatisatie auto gestopt
       data:
+        tag: auto_verwarmen
         timeout: 6000  # 10 minuten
         actions:
         - action: URI
@@ -338,6 +356,7 @@ auto_start_climatisatie_120min:
     data:
       message: Climatisatie auto gestopt
       data:
+        tag: auto_verwarmen
         timeout: 6000  # 10 minuten
         actions:
         - action: URI
@@ -365,6 +384,7 @@ auto_start_climatisatie_150min:
     data:
       message: Climatisatie auto gestart
       data:
+        tag: auto_verwarmen
         timeout: 18000  # 1800 seconden = half uur
         actions:
         - action: URI
@@ -374,6 +394,7 @@ auto_start_climatisatie_150min:
     data:
       message: Climatisatie auto gestart
       data:
+        tag: auto_verwarmen
         timeout: 180000  # half uur
         actions:
         - action: URI
@@ -392,6 +413,7 @@ auto_start_climatisatie_150min:
     data:
       message: Climatisatie auto gestopt
       data:
+        tag: auto_verwarmen
         timeout: 6000  # 10 minuten
         actions:
         - action: URI
@@ -401,6 +423,7 @@ auto_start_climatisatie_150min:
     data:
       message: Climatisatie auto gestopt
       data:
+        tag: auto_verwarmen
         timeout: 6000  # 10 minuten
         actions:
         - action: URI
@@ -424,6 +447,7 @@ auto_stop_climatisatie:
     data:
       message: Climatisatie auto gestopt
       data:
+        tag: auto_verwarmen
         timeout: 6000 # 10 minuten
         actions:
         - action: URI
@@ -433,9 +457,11 @@ auto_stop_climatisatie:
     data:
       message: Climatisatie auto gestopt
       data:
+        tag: auto_verwarmen
         timeout: 6000   # 10 minuten
         actions:
         - action: URI
           title: meer info
           uri: /eikenbos-dashboard/e-tron
+
 

@@ -8,7 +8,7 @@ automation:
     entity_id: input_text.tts_synthesis
   condition: []
   action:
-  - service: tts.google_say
+  - service: tts.cloud_say
     data_template:
       entity_id: >
           {% if is_state("input_select.chromecast_speaker", "Living") %} media_player.living_speaker

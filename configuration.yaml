@@ -34,6 +34,10 @@ tts:
     base_url: http://192.168.86.101:8123
     service_name: google_say
     language: 'nl'
+    
+  - platform: google_cloud
+    language: nl-BE
+    gender: male
 
 group: !include groups.yaml
 automation: !include automations.yaml

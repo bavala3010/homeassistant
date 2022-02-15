@@ -117,7 +117,7 @@ automation:
     data:
       entity_id: media_player.living_speaker
       volume_level: 0.7
-  - service: tts.google_say
+  - service: tts.cloud_say
     data:
       entity_id: media_player.living_speaker
       message: "Alarm ingeschakeld!
@@ -154,7 +154,7 @@ automation:
     data:
       entity_id: media_player.living_speaker
       volume_level: 0.8
-  - service: tts.google_say
+  - service: tts.cloud_say
     data:
       entity_id: media_player.living_speaker
       message: Alarm uitgeschakeld!
@@ -274,82 +274,6 @@ automation:
       entity_id: alarm_control_panel.home_alarm
   mode: single
   
-- alias: Garagepoort staat lang open
-  id: '2afaab2f-0aee-4dea-a340-be690d593fca'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: cover.garagepoort
-    from: 'closed'
-    to: 'open'
-    for: 00:05:00
-  condition: []
-  action:
-  - repeat:
-      while:
-      - condition: state
-        entity_id: cover.garagepoort
-        state: 'open'
-      sequence:
-      - service: notify.bart_phone      
-        data:
-          title: "Garage staat al lang open."
-          message: "Staat al {{((as_timestamp(now()) - as_timestamp(states.cover.garagepoort.last_changed)) / 60 )| int() }} minuten open."
-          data:
-            color: red
-            tag: garage_staat_open
-      - delay:
-          minutes: 2
-  - service: notify.bart_phone
-    data:
-      title: "Garage is nu terug dicht."
-      message: "Stond {{((as_timestamp(now()) - as_timestamp(states.cover.garagepoort.last_changed)) / 60 )| int() }} minuten open."
-      data:
-        tag: garage_staat_open
-  mode: single
-
-- alias: Voordeur staat lang open
-  id: '76d0bc44-085e-4a6f-bb8d-22d46f5f2ad5'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.voordeur
-    from: 'off'
-    to: 'on'
-    for: '00:03:00'
-  condition: []
-  action:
-  - service: notify.bart_phone
-    data:
-      title: Voordeur staat al lang open! 
-      message: "Open sinds {{ as_timestamp(states.binary_sensor.voordeur.last_changed | timestamp_custom('%H:%M:%S') }}."
-      data:
-        color: red
-        tag: voordeur_staat_open
-  - repeat:
-      while:
-      - condition: state
-        entity_id: binary_sensor.voordeur
-        state: 'on'
-      sequence:
-      - delay:
-          minutes: 1
-      - service: notify.bart_phone      
-        data:
-          title: Voordeur staat al lang open!
-          message: "Staat al {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.voordeur.last_changed)) / 60 )| int() }} minuten open."
-          data:
-            color: red
-            tag: voordeur_staat_open
-            alert_once: true
-  - service: notify.bart_phone
-    data:
-      title: "Voordeur is nu terug dicht."
-      message: "Stond {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.voordeur.last_changed)) / 60 )| int() }} minuten open."
-      data:
-        tag: voordeur_staat_open
-  mode: single
-
 - alias: 👀 beweging op oprit
   id: 'c9b40a57-f31d-424f-80fb-c2a8c25c4d21'
   description: Beweging op oprit = melding op living speaker
@@ -364,11 +288,11 @@ automation:
     data:
       entity_id: media_player.living_speaker
       volume_level: 0.5
-  - service: tts.google_say
+  - service: tts.cloud_say
     data:
       entity_id: media_player.living_speaker
       message: Beweging op oprit!
-  - service: tts.google_say
+  - service: tts.cloud_say
     data:
       entity_id: media_player.veranda_speaker
       message: Beweging op oprit! 
@@ -616,4 +540,85 @@ automation:
   - service: input_boolean.turn_off
     target:
       entity_id: input_boolean.tuin_detector_pause
+  mode: single
+
+
+###########################################
+# Garagepport en voordeur
+###########################################
+
+- alias: Garagepoort staat lang open
+  id: '2afaab2f-0aee-4dea-a340-be690d593fca'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: cover.garagepoort
+    from: 'closed'
+    to: 'open'
+    for: '00:05:00'
+  condition: []
+  action:
+  - repeat:
+      while:
+      - condition: state
+        entity_id: cover.garagepoort
+        state: 'open'
+      sequence:
+      - service: notify.bart_phone      
+        data:
+          title: "Garage staat al lang open."
+          message: "Staat al {{((as_timestamp(now()) - as_timestamp(states.cover.garagepoort.last_changed)) / 60 )| int() }} minuten open."
+          data:
+            color: red
+            tag: garage_staat_open
+      - delay:
+          minutes: 2
+  - service: notify.bart_phone
+    data:
+      title: "Garage is nu terug dicht."
+      message: "Stond {{((as_timestamp(now()) - as_timestamp(states.cover.garagepoort.last_changed)) / 60 )| int() }} minuten open."
+      data:
+        tag: garage_staat_open
+  mode: single
+
+- alias: Voordeur staat lang open
+  id: '76d0bc44-085e-4a6f-bb8d-22d46f5f2ad5'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.voordeur
+    from: 'off'
+    to: 'on'
+    for: '00:03:00'
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Voordeur staat al lang open! 
+      message: "Open sinds {{ as_timestamp(states.binary_sensor.voordeur.last_changed | timestamp_custom('%H:%M:%S') }}."
+      data:
+        color: red
+        tag: voordeur_staat_open
+  - repeat:
+      while:
+      - condition: state
+        entity_id: binary_sensor.voordeur
+        state: 'on'
+      sequence:
+      - delay:
+          minutes: 1
+      - service: notify.bart_phone      
+        data:
+          title: Voordeur staat al lang open!
+          message: "Staat al {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.voordeur.last_changed)) / 60 )| int() }} minuten open."
+          data:
+            color: red
+            tag: voordeur_staat_open
+            alert_once: true
+  - service: notify.bart_phone
+    data:
+      title: "Voordeur is nu terug dicht."
+      message: "Stond {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.voordeur.last_changed)) / 60 )| int() }} minuten open."
+      data:
+        tag: voordeur_staat_open
   mode: single

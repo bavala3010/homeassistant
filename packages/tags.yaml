@@ -100,7 +100,7 @@ automation:
     device_id: !secret id_nfc_bart
   condition: []
   action:
-  - service: tts.google_say
+  - service: tts.cloud_say
     data:
       entity_id: media_player.living_speaker
       message: Bart scant garagepoort.
@@ -132,7 +132,7 @@ automation:
     device_id: !secret id_nfc_madouce
   condition: []
   action:
-  - service: tts.google_say
+  - service: tts.cloud_say
     data:
       entity_id: media_player.living_speaker
       message: Madouce scant garagepoort.
@@ -157,7 +157,7 @@ automation:
     device_id: !secret id_nfc_alunya
   condition: []
   action:
-  - service: tts.google_say
+  - service: tts.cloud_say
     data:
       entity_id: media_player.living_speaker
       message: Alunya scant garagepoort.

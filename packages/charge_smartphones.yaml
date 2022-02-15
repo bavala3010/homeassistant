@@ -95,7 +95,7 @@ automation:
   description: ''
   trigger:
   - platform: numeric_state
-    entity_id: sensor.madouce_s20_batterijniveau
+    entity_id: sensor.sm_g986b_battery_level
     above: 90
   condition:
   - condition: time
