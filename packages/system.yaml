@@ -205,11 +205,12 @@ automation:
   mode: single
 
 - alias: 🚀 Nieuwe versie Home Assistant beschikbaar
-  id: 27f3b3f5-aad9-4aaf-a37b-461e1a856935
+  id: '3a8a47a3-6df3-4ffa-a2f3-71db3ce80938'
   description: ''
   trigger:
   - platform: state
     entity_id: binary_sensor.updater
+    from: 'off'
     to: 'on'
   condition: []
   action:
@@ -270,3 +271,5 @@ automation:
       title: Switch van ventilator onbereikbaar.
       message: "Herstart switch op zolder."
   mode: single    
+
+
