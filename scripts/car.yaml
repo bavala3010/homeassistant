@@ -464,4 +464,36 @@ auto_stop_climatisatie:
           title: meer info
           uri: /eikenbos-dashboard/e-tron
 
+auto_start_laden_nu:
+  alias: auto start laden nu
+  sequence:
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: start_charger
+  - service: audiconnect.refresh_data
+    data:
+      vin: WAUZZZGE6MB019131
+      
+auto_start_laden_timer:
+  alias: auto start laden nu
+  sequence:
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: start_timed_charger
+  - service: audiconnect.refresh_data
+    data:
+      vin: WAUZZZGE6MB019131
 
+auto_stop_laden:
+  alias: auto stop laden
+  sequence:
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: stop_charging
+  - service: audiconnect.refresh_data
+    data:
+      vin: WAUZZZGE6MB019131      
+      
