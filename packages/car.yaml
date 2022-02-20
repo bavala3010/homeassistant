@@ -409,8 +409,7 @@ automation:
     at: '19:00'
   condition:
   - condition: numeric_state
-    entity_id: weather.eikenbos
-    attribute: temperature
+    entity_id: sensor.audi_e_tron_sportback_55_outdoor_temperature
     below: 15
   - condition: state
     entity_id: person.bart
@@ -448,8 +447,7 @@ automation:
       for: "00:00:05"
   condition:
     - condition: numeric_state
-      entity_id: weather.eikenbos
-      attribute: temperature
+      entity_id: sensor.audi_e_tron_sportback_55_outdoor_temperature
       below: 15
   action:
   - choose:
@@ -574,8 +572,7 @@ automation:
       for: "00:00:05"
   condition:
     - condition: numeric_state
-      entity_id: weather.eikenbos
-      attribute: temperature
+      entity_id: sensor.audi_e_tron_sportback_55_outdoor_temperature
       below: 15
   action:
   - choose:
@@ -697,8 +694,7 @@ automation:
     at: '16:20'
   condition:
   - condition: numeric_state
-    entity_id: weather.eikenbos
-    attribute: temperature
+    entity_id: sensor.audi_e_tron_sportback_55_outdoor_temperature
     below: 15
   - condition: state
     entity_id: person.madouce

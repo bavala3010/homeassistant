@@ -476,7 +476,7 @@ auto_start_laden_nu:
       vin: WAUZZZGE6MB019131
       
 auto_start_laden_timer:
-  alias: auto start laden nu
+  alias: auto start laden timer
   sequence:
   - service: audiconnect.execute_vehicle_action
     data:

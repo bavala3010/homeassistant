@@ -97,3 +97,51 @@
     target:
       entity_id: switch.smart_power_strip_3
   mode: single
+- id: '1645356388702'
+  alias: Elek timer wasmachine zetten (2 uren)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.elec_wasmachine_busy
+    to: 'on'
+  condition: []
+  action:
+  - service: input_datetime.set_datetime
+    data_template:
+      datetime: '{{ ((as_timestamp(now())  + (120 * 60)) |timestamp_custom(''%Y-%m-%d
+        %H:%M:%S'')) }}'
+    target:
+      entity_id: input_datetime.elec_wasmachine_end
+  mode: single
+- id: '1645359198579'
+  alias: Elek timer vaatwasser zetten (1,5 uren)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.elec_vaatwasser_busy
+    to: 'on'
+  condition: []
+  action:
+  - service: input_datetime.set_datetime
+    data_template:
+      datetime: '{{ ((as_timestamp(now())  + (90 * 60)) |timestamp_custom(''%Y-%m-%d
+        %H:%M:%S'')) }}'
+    target:
+      entity_id: input_datetime.elec_vaatwasser_end
+  mode: single
+- id: '1645359477977'
+  alias: Elek timer droger zetten (2 uren)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.elec_droger_busy
+    to: 'on'
+  condition: []
+  action:
+  - service: input_datetime.set_datetime
+    data_template:
+      datetime: '{{ ((as_timestamp(now())  + (120 * 60)) |timestamp_custom(''%Y-%m-%d
+        %H:%M:%S'')) }}'
+    target:
+      entity_id: input_datetime.elec_droger_end
+  mode: single
