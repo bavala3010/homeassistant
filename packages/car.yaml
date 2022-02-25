@@ -71,6 +71,101 @@ automation:
           uri: /eikenbos-dashboard/e-tron        
   mode: single
 
+- alias: 🚗 batterij <20% en niet verbonden (naar werk Madouce)
+  id: 'd0f3ee18-055b-4983-8f4b-2941fbaed6a3'
+  description: ''
+  trigger:
+  - platform: time
+    at: '21:31'
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - sun
+  - condition: template
+    value_template: "{% if states('sensor.audi_e_tron_sportback_55_state_of_charge') | float < 40.0 %} true {% endif %}"
+  - condition: state
+    entity_id: device_tracker.audi_e_tron_sportback_55_position
+    state: home
+  - condition: state
+    entity_id: sensor.audi_e_tron_sportback_55_plug_state
+    state: disconnected
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Auto laden?
+      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km. Niet genoeg batterij om naar Toyota Diest te rijden (40% nodig heen en terug). Wel genoeg voor Toyota Evere."
+      data:
+        color: green
+        tag: auto_laden
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/e-tron        
+  - service: notify.madouce_phone
+    data:
+      title: Auto laden?
+      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km. Niet genoeg batterij om naar Toyota Diest te rijden (40% nodig heen en terug). Wel genoeg voor Toyota Evere."
+      data:
+        color: green
+        tag: auto_laden
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/e-tron        
+  mode: single  
+
+- alias: 🚗 batterij <40% en niet verbonden (naar werk Madouce)
+  id: 'ac9ef76d-d8dc-4ad4-9f69-f00fd0825a19'
+  description: ''
+  trigger:
+  - platform: time
+    at: '21:31'
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - sun
+  - condition: template
+    value_template: "{% if states('sensor.audi_e_tron_sportback_55_state_of_charge') | float < 40.0 %} true {% endif %}"
+  - condition: state
+    entity_id: device_tracker.audi_e_tron_sportback_55_position
+    state: home
+  - condition: state
+    entity_id: sensor.audi_e_tron_sportback_55_plug_state
+    state: disconnected
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Auto laden?
+      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km. Niet genoeg batterij om naar Toyota Diest te rijden (40% nodig heen en terug). Wel genoeg voor Toyota Evere."
+      data:
+        color: green
+        tag: auto_laden
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/e-tron        
+  - service: notify.madouce_phone
+    data:
+      title: Auto laden?
+      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km. Niet genoeg batterij om naar Toyota Diest te rijden (40% nodig heen en terug). Wel genoeg voor Toyota Evere."
+      data:
+        color: green
+        tag: auto_laden
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/e-tron        
+  mode: single  
+  
+
 - alias: 🚗 batterij <80% en niet verbonden (weekend)
   id: '30ea35b4-3f2a-4702-9df4-323965d8bf70'
   description: ''
@@ -702,7 +797,8 @@ automation:
   action:
   - service: notify.madouce_phone
     data:
-      message: 🚙 De auto wordt nu voorverwarmd.
+      title: 🚙 De auto wordt nu voorverwarmd.
+      message: Een warme auto is altijd lekkerder. Veilige rit dadelijk.
       data:
         tag: auto_verwarmen
         color: green
@@ -713,6 +809,34 @@ automation:
   - service: script.auto_start_climatisatie_nu          
   mode: single
 
+- alias: 🚗 Auto verwarmen na werkdag bij Toyota Diest
+  id: '7c5f1cfa-b20a-4b5b-be63-8ad01ec4e57f'
+  description: ''
+  trigger:
+  - platform: time
+    at: '16:20'
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.audi_e_tron_sportback_55_outdoor_temperature
+    below: 15
+  - condition: state
+    entity_id: person.madouce
+    state: "Toyota Diest"
+  action:
+  - service: notify.madouce_phone
+    data:
+      title: 🚙 De auto wordt nu voorverwarmd.
+      message: Een warme auto is altijd lekkerder. Veilige rit dadelijk.
+      data:
+        tag: auto_verwarmen
+        color: green
+        actions:
+        - action: URI
+          title: Voor meer info, klik hier
+          uri: /eikenbos-dashboard/e-tron-heater
+  - service: script.auto_start_climatisatie_nu          
+  mode: single 
+ 
  
 #########################
 # Status auto verversen
@@ -733,9 +857,6 @@ automation:
   - service: audiconnect.refresh_data
     data:
       vin: WAUZZZGE6MB019131
-  - service: notify.bart_phone
-    data:
-      message: 🚙 Bijna thuis. De status van de auto wordt ververst.      
   mode: single
   
 - alias: Madouce 3 km van thuis = verversen status auto
@@ -752,7 +873,4 @@ automation:
   - service: audiconnect.refresh_data
     data:
       vin: WAUZZZGE6MB019131
-  - service: notify.bart_phone
-    data:
-      message: 🚙 Madouce rijdt richting huis. De status van de auto wordt ververst.      
   mode: single  
