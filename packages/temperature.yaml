@@ -3,6 +3,7 @@
 ########################################################################### 
 
 automation:
+
 - alias: te warm in kamer Amilya - open raam (Bart)
   id: 'ae5bbb04-af4b-42e2-ba7a-5d57a411c6bc'
   description: ''

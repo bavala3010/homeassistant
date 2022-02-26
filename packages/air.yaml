@@ -16,8 +16,7 @@ automation:
     target:
       entity_id: input_datetime.max_dagtemperatuur_uur
     data:
-      time:
-        sensor.day_max_temp_datetime
+      time: "{{ states('sensor.day_max_temp_datetime') }}"
   mode: single
   
 - alias: max temperatuur van de dag bereikt = melding
@@ -30,8 +29,8 @@ automation:
   action:
   - service: notify.bart_phone
     data:
-      title: Nu is het warmste deel van de dag.
-      message: Nu is het warmste deel van de dag.
+      title: Nu is het warmste moment van de dag.
+      message: Nu is het warmste moment van de dag.
   mode: single
 
 - alias: 🪟 raam Amilya openen op warmste moment van de dag
@@ -42,9 +41,9 @@ automation:
     at: input_datetime.max_dagtemperatuur_uur
   condition:
   - condition: template
-    value_template: "{{ ('sensor.amilya_raam_open_vandaag')| int(2) | float(default=0) == 0 }}"
+    value_template: "{{ states('sensor.amilya_raam_open_vandaag') | round() == 0}}"
   - condition: template
-    value_template: "{{ ('sensor.kamer_amilya_heating')| int(2) | float(default=0) == 0 }}"
+    value_template: "{{ ('sensor.kamer_amilya_heating') | float(default=0) == 0 }}"
   action:
   - service: input_boolean.turn_on
     target:
@@ -69,9 +68,9 @@ automation:
     at: input_datetime.max_dagtemperatuur_uur
   condition:
   - condition: template
-    value_template: "{{ ('sensor.alunya_raam_open_vandaag')| int(2) | float(default=0) == 0 }}"
+    value_template: "{{ states('sensor.alunya_raam_open_vandaag') | round() == 0}}"
   - condition: template
-    value_template: "{{ ('sensor.kamer_alunya_heating')| int(2) |float(default=0) == 0 }}"
+    value_template: "{{ ('sensor.kamer_alunya_heating') | float(default=0) == 0 }}"
   action:
   - service: input_boolean.turn_on
     target:
@@ -96,23 +95,23 @@ automation:
     at: input_datetime.max_dagtemperatuur_uur
   condition:
   - condition: template
-    value_template: "{{ ('sensor.keuken_raam_open_vandaag')| int(2) | float(default=0) == 0 }}"
+    value_template: "{{ states('sensor.keuken_raam_open_vandaag') | round() == 0}}"
   - condition: template
-    value_template: "{{ ('sensor.living_room_heating')| int(2) | float(default=0) == 0 }}"
+    value_template: "{{ ('sensor.living_heating') | float(default=0) == 0 }}"
   action:
   - service: input_boolean.turn_on
     target:
-      entity_id: input_boolean.living_room_raam_moet_open  
+      entity_id: input_boolean.living_raam_moet_open  
   - service: script.notify_bart_windows
     data_template:
       title: "Zet keukenraam nu even open. Beste moment van de dag."
-      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C. Vocht living: {{states('sensor.living_room_humidity')}}%.<br>Raam is vandaag nog niet open geweest."
-      tag: "window_living_room"
+      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C. Vocht living: {{states('sensor.living_humidity')}}%.<br>Raam is vandaag nog niet open geweest."
+      tag: "window_living"
   - service: script.notify_madouce_windows
     data_template:
       title: "Zet keukenraam nu even open. Beste moment van de dag."
-      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C. Vocht living: {{states('sensor.living_room_humidity')}}%.<br>Raam is vandaag nog niet open geweest."
-      tag: "window_living_room"
+      message: "Temp buiten: {{states('sensor.temp_leuven24_wunderground')}} °C. Vocht living: {{states('sensor.living_humidity')}}%.<br>Raam is vandaag nog niet open geweest."
+      tag: "window_living"
   mode: single
 
 

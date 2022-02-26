@@ -165,7 +165,6 @@ automation:
           uri: /eikenbos-dashboard/e-tron        
   mode: single  
   
-
 - alias: 🚗 batterij <80% en niet verbonden (weekend)
   id: '30ea35b4-3f2a-4702-9df4-323965d8bf70'
   description: ''
@@ -329,7 +328,7 @@ automation:
     at: '22:30:00'
   condition:
   - condition: state
-    entity_id: lock.audi_e_tron_sportback_55_door_lock_2
+    entity_id: lock.audi_e_tron_sportback_55_door_lock
     state: unlocked
   - condition: state
     entity_id: device_tracker.bart_s10
@@ -376,7 +375,7 @@ automation:
           uri: /eikenbos-dashboard/e-tron        
   - service: lock.lock
     target:
-      entity_id: lock.audi_e_tron_sportback_55_door_lock_2
+      entity_id: lock.audi_e_tron_sportback_55_door_lock
   mode: single
 
 - alias: auto sluiten
@@ -389,7 +388,7 @@ automation:
   action:
   - service: lock.lock
     target:
-      entity_id: lock.audi_e_tron_sportback_55_door_lock_2
+      entity_id: lock.audi_e_tron_sportback_55_door_lock
   mode: single
 
 - alias: 🚗 auto is op slot (clear_notification)
@@ -397,7 +396,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: lock.audi_e_tron_sportback_55_door_lock_2
+    entity_id: lock.audi_e_tron_sportback_55_door_lock
     to: 'locked'
   condition: []
   action:
@@ -418,7 +417,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: lock.audi_e_tron_sportback_55_door_lock_2
+    entity_id: lock.audi_e_tron_sportback_55_door_lock
     to: 'unlocked'
     for:
       hours: 0

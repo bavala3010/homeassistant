@@ -1,3 +1,10 @@
+###########################################
+#  The following functions are not allowed by Audi Etron:
+#    start_window_heating
+#    start_preheater
+#    start_charger
+
+
 auto_status_verversen:
   alias: audi_refresh
   sequence:
@@ -28,11 +35,10 @@ check_auto_op_slot:
         - action: lock_car
           title: SLUIT AUTO
 
-###########################################
-#  The following functions are not allowed by Audi Etron:
-#    start_window_heating
-#    start_preheater
-#    start_charger
+
+###########################
+# auto climatisatie
+###########################
 
 auto_start_climatisatie_nu:
   alias: auto start climatisatie
@@ -463,6 +469,11 @@ auto_stop_climatisatie:
         - action: URI
           title: meer info
           uri: /eikenbos-dashboard/e-tron
+
+
+###########################
+# auto laden
+###########################
 
 auto_start_laden_nu:
   alias: auto start laden nu

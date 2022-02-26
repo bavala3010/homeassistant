@@ -1,11 +1,11 @@
 automation:
 
-- alias: 🛌 Madouce thuis en <15° buiten = matras aan om 22u15
+- alias: 🛌 Madouce thuis en <15° buiten = matras aan om 22u00
   id: d71eddad-0ba8-45b3-84e7-8be3589de0fc
   description: ''
   trigger:
   - platform: time
-    at: '22:15'
+    at: '22:00'
   condition:
   - condition: state
     entity_id: person.madouce
