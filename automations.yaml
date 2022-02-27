@@ -1,5 +1,6 @@
-- id: 02b63f41-9ea3-48eb-97aa-242a618f3400
-  alias: 🏡 Bart is alleen thuis
+
+- alias: 🏡 Bart is alleen thuis
+  id: 02b63f41-9ea3-48eb-97aa-242a618f3400
   description: ''
   trigger:
   - platform: state
@@ -17,6 +18,7 @@
       message: TTS
       title: Bart, je bent alleen thuis!
   mode: single
+
 - alias: RecycleApp notificaties
   id: 50cbd530-9e44-4283-95f9-24f8ca182701
   trigger:
@@ -59,6 +61,7 @@
       ''Days_until'') == 1 %}Zet de blauwe zak aan straat. {%elif state_attr(''sensor.recycleapp_papier'',
       ''Days_until'') == 1 %}Zet het oud papier aan straat. {%endif%}'
   mode: single
+  
 - alias: recycle_done
   id: 761e33f9-8fad-4537-8bf3-361aba8f5638
   trigger:
@@ -77,8 +80,10 @@
       message: clear_notification
       data:
         tag: recycle
-- id: '1644270791368'
-  alias: 🔌 Madouce gsm < 90% om 22:00 = gsm-lader inschakelen
+        
+
+- alias: 🔌 Madouce gsm < 90% om 22:00 = gsm-lader inschakelen
+  id: '1644270791368'
   description: ''
   trigger:
   - platform: time
@@ -97,8 +102,9 @@
     target:
       entity_id: switch.smart_power_strip_3
   mode: single
-- id: '1645356388702'
-  alias: Elek timer wasmachine zetten (2u00)
+  
+- alias: Elek timer wasmachine zetten (2u00)
+  id: '1645356388702'
   description: ''
   trigger:
   - platform: state
@@ -113,8 +119,9 @@
     target:
       entity_id: input_datetime.elec_wasmachine_end
   mode: single
-- id: '1645359198579'
-  alias: Elek timer vaatwasser zetten (1u40)
+  
+- alias: Elek timer vaatwasser zetten (1u40)
+  id: '1645359198579'
   description: ''
   trigger:
   - platform: state
@@ -129,8 +136,9 @@
     target:
       entity_id: input_datetime.elec_vaatwasser_end
   mode: single
-- id: '1645359477977'
-  alias: Elek timer droger zetten (2u00)
+
+- alias: Elek timer droger zetten (2u00)  
+  id: '1645359477977'
   description: ''
   trigger:
   - platform: state
@@ -145,130 +153,4 @@
     target:
       entity_id: input_datetime.elec_droger_end
   mode: single
-- id: '1645807985587'
-  alias: Car sim km veranderd
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_number.car_sim_km
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 0
-  condition: []
-  action:
-  - service: input_number.set_value
-    target:
-      entity_id: input_number.car_sim_batteryprocent
-    data:
-      value: '{{ ((states(''input_number.car_sim_km'') | float * 10 ) / (states(''sensor.car_range_per_10percent'')
-        | float)) | round(1) }}'
-  mode: single
-- id: '1645820905175'
-  alias: auto laden - week 6u-8u -> lader op timer
-  description: ''
-  trigger:
-  - platform: time
-    at: 06:00
-  condition:
-  - condition: time
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-  action:
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: WAUZZZGE6MB019131
-      action: start_timed_charger
-  - service: audiconnect.refresh_data
-    data:
-      vin: WAUZZZGE6MB019131
-  - delay: 02:00:00
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: WAUZZZGE6MB019131
-      action: start_charger
-  - service: audiconnect.refresh_data
-    data:
-      vin: WAUZZZGE6MB019131
-  mode: single
-- id: '1645821020931'
-  alias: auto laden - zaterdag 7u-9u -> lader op timer
-  description: ''
-  trigger:
-  - platform: time
-    at: 07:00
-  condition:
-  - condition: time
-    weekday:
-    - sat
-  action:
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: WAUZZZGE6MB019131
-      action: start_timed_charger
-  - service: audiconnect.refresh_data
-    data:
-      vin: WAUZZZGE6MB019131
-  - delay: 02:00:00
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: WAUZZZGE6MB019131
-      action: start_charger
-  - service: audiconnect.refresh_data
-    data:
-      vin: WAUZZZGE6MB019131
-  mode: single
-- id: '1645821143250'
-  alias: auto laden - zondag 8u-12u -> lader op timer
-  description: ''
-  trigger:
-  - platform: time
-    at: 08:00
-  condition:
-  - condition: time
-    weekday:
-    - sun
-  action:
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: WAUZZZGE6MB019131
-      action: start_timed_charger
-  - service: audiconnect.refresh_data
-    data:
-      vin: WAUZZZGE6MB019131
-  - delay: 04:00:00
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: WAUZZZGE6MB019131
-      action: start_charger
-  - service: audiconnect.refresh_data
-    data:
-      vin: WAUZZZGE6MB019131
-  mode: single
-- id: '1645823071639'
-  alias: auto laden - op timer zetten als laaddoel bereikt is + melding sturen
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: sensor.audi_e_tron_sportback_55_state_of_charge
-  condition:
-  - condition: template
-    value_template: '{{ states(''sensor.audi_e_tron_sportback_55_state_of_charge'')|
-      int(2) >= (states(''input_number.auto_lader_doel_procent'') | int(2)) }}'
-  action:
-  - service: notify.bart_phone
-    data:
-      message: laaddoel bereikt
-      title: Goed
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: WAUZZZGE6MB019131
-      action: start_timed_charger
-  - service: audiconnect.refresh_data
-    data:
-      vin: WAUZZZGE6MB019131
-  mode: single
+

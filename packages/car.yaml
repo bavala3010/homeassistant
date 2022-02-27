@@ -873,3 +873,126 @@ automation:
     data:
       vin: WAUZZZGE6MB019131
   mode: single  
+  
+  
+- alias: Car sim km veranderd
+  id: '0813a89b-64b9-4fa8-934e-7e4ee91ee033'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_number.car_sim_km
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.car_sim_batteryprocent
+    data:
+      value: '{{ ((states(''input_number.car_sim_km'') | float * 10 ) / (states(''sensor.car_range_per_10percent'')
+        | float)) | round(1) }}'
+  mode: single
+  
+######################################
+# car smart charging
+######################################
+  
+- alias: "auto laden - red hours: week 6u-8u -> lader op timer"
+  id: '0a0bce79-42d8-4184-9dab-9ed54f30f3bf'  
+  description: ''
+  trigger:
+  - platform: time
+    at: 06:00
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  action:
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: start_timed_charger
+  - delay: 02:00:00
+  - condition: state
+    entity_id: input_boolean.car_smartcharging_busy
+    state: 'on'  
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: start_charger
+  mode: single
+  
+- alias: "auto laden - red hours: zaterdag 7u-9u -> lader op timer"
+  id: '31e6ff24-3423-4332-b4f9-da785af82b26'
+  description: ''
+  trigger:
+  - platform: time
+    at: 07:00
+  condition:
+  - condition: time
+    weekday:
+    - sat
+  action:
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: start_timed_charger
+  - delay: 02:00:00
+  - condition: state
+    entity_id: input_boolean.car_smartcharging_busy
+    state: 'on'
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: start_charger
+  mode: single
+
+- alias: "auto laden - red hours: zondag 8u-12u -> lader op timer"
+  id: '81cb1458-debb-4378-9313-d34f4029f693'
+  description: ''
+  trigger:
+  - platform: time
+    at: 08:00
+  condition:
+  - condition: time
+    weekday:
+    - sun
+  action:
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: start_timed_charger
+  - delay: 04:00:00
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: start_charger
+  mode: single
+  
+- alias: "auto laden - laaddoel bereikt = smart charging stoppen + melding sturen"
+  id: 'b7a22897-2c7b-4e07-bf71-380271658908'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.audi_e_tron_sportback_55_state_of_charge
+  condition:
+  - condition: template
+    value_template: "{{ states('sensor.audi_e_tron_sportback_55_state_of_charge')|
+      int(2) >= (states(''input_number.car_smartcharging_target_percentage'') | int(2)) }}"
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.car_smartcharging_busy
+  - service: notify.bart_phone
+    data:
+      message: Laaddoel bereikt!
+      title: "Laaddoel bereikt: {{states('input_number.car_smartcharging_target_percentage') }}%. Nu: states('sensor.audi_e_tron_sportback_55_state_of_charge')"
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: start_timed_charger
+  mode: single
+  

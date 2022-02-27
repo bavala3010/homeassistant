@@ -478,24 +478,28 @@ auto_stop_climatisatie:
 auto_start_laden_nu:
   alias: auto start laden nu
   sequence:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.car_start_nu_time
+    data:
+      time: "{{ now().timestamp() | timestamp_custom('%H:%M') }}"
   - service: audiconnect.execute_vehicle_action
     data:
       vin: WAUZZZGE6MB019131
       action: start_charger
-  - service: audiconnect.refresh_data
-    data:
-      vin: WAUZZZGE6MB019131
-      
+
 auto_start_laden_timer:
   alias: auto start laden timer
   sequence:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.car_start_timer_time
+    data:
+      time: "{{ now().timestamp() | timestamp_custom('%H:%M') }}"
   - service: audiconnect.execute_vehicle_action
     data:
       vin: WAUZZZGE6MB019131
       action: start_timed_charger
-  - service: audiconnect.refresh_data
-    data:
-      vin: WAUZZZGE6MB019131
 
 auto_stop_laden:
   alias: auto stop laden
@@ -504,7 +508,5 @@ auto_stop_laden:
     data:
       vin: WAUZZZGE6MB019131
       action: stop_charging
-  - service: audiconnect.refresh_data
-    data:
-      vin: WAUZZZGE6MB019131      
+  
       
