@@ -483,6 +483,10 @@ auto_start_laden_nu:
       entity_id: input_datetime.car_start_nu_time
     data:
       time: "{{ now().timestamp() | timestamp_custom('%H:%M') }}"
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.car_command_sent      
   - service: audiconnect.execute_vehicle_action
     data:
       vin: WAUZZZGE6MB019131
@@ -496,6 +500,10 @@ auto_start_laden_timer:
       entity_id: input_datetime.car_start_timer_time
     data:
       time: "{{ now().timestamp() | timestamp_custom('%H:%M') }}"
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.car_command_sent
   - service: audiconnect.execute_vehicle_action
     data:
       vin: WAUZZZGE6MB019131

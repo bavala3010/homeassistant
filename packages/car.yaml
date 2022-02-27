@@ -995,4 +995,25 @@ automation:
       vin: WAUZZZGE6MB019131
       action: start_timed_charger
   mode: single
-  
+
+- alias: "smart charging - laadkabel ingeplugd en thuis = op timer zetten"
+  id: '6fc148ce-a035-4699-bffd-dc4eb83e52a5'
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: sensor.audi_e_tron_sportback_55_plug_state
+      to: connected
+  condition:
+    - condition: state
+      entity_id: device_tracker.audi_e_tron_sportback_55_position
+      state: home
+  action:
+  - service: notify.bart_phone
+    data:
+      message: Autolader op timer gezet.
+      title: "Smart charging"
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: start_timed_charger
+  mode: single    
