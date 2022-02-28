@@ -1,4 +1,3 @@
-
 - alias: 🏡 Bart is alleen thuis
   id: 02b63f41-9ea3-48eb-97aa-242a618f3400
   description: ''
@@ -18,7 +17,6 @@
       message: TTS
       title: Bart, je bent alleen thuis!
   mode: single
-
 - alias: RecycleApp notificaties
   id: 50cbd530-9e44-4283-95f9-24f8ca182701
   trigger:
@@ -61,7 +59,6 @@
       ''Days_until'') == 1 %}Zet de blauwe zak aan straat. {%elif state_attr(''sensor.recycleapp_papier'',
       ''Days_until'') == 1 %}Zet het oud papier aan straat. {%endif%}'
   mode: single
-  
 - alias: recycle_done
   id: 761e33f9-8fad-4537-8bf3-361aba8f5638
   trigger:
@@ -80,8 +77,6 @@
       message: clear_notification
       data:
         tag: recycle
-        
-
 - alias: 🔌 Madouce gsm < 90% om 22:00 = gsm-lader inschakelen
   id: '1644270791368'
   description: ''
@@ -102,7 +97,6 @@
     target:
       entity_id: switch.smart_power_strip_3
   mode: single
-  
 - alias: Elek timer wasmachine zetten (2u00)
   id: '1645356388702'
   description: ''
@@ -119,7 +113,6 @@
     target:
       entity_id: input_datetime.elec_wasmachine_end
   mode: single
-  
 - alias: Elek timer vaatwasser zetten (1u40)
   id: '1645359198579'
   description: ''
@@ -136,8 +129,7 @@
     target:
       entity_id: input_datetime.elec_vaatwasser_end
   mode: single
-
-- alias: Elek timer droger zetten (2u00)  
+- alias: Elek timer droger zetten (2u00)
   id: '1645359477977'
   description: ''
   trigger:
@@ -153,4 +145,3 @@
     target:
       entity_id: input_datetime.elec_droger_end
   mode: single
-

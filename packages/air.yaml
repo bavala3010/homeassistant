@@ -4,12 +4,12 @@ automation:
 # verluchting kamers
 ##############################
 
-- alias: Om 6 uur bepaal max dagtemperatuur uur
+- alias: Om 11 uur bepaal max dagtemperatuur uur
   id: 'ed9969de-ed32-4d1d-94ed-48e3622c94b4'
   description: ''
   trigger:
   - platform: time
-    at: 06:00
+    at: 11:00
   condition: []
   action:
   - service: input_datetime.set_datetime

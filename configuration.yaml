@@ -1050,6 +1050,12 @@ template:
             gesloten
           {% endif %}
 
+      - name: "car smart charging start time"
+        state: >
+          {% set nog_te_laden_procent = (states('input_number.car_smart_charging_target_percentage') | float ) - (states('sensor.audi_e_tron_sportback_55_state_of_charge') | float(default=0) ) %}
+          {% set nog_te_laden_minuten = nog_te_laden_procent * 9.54 | round(2) %}
+          {{ (as_timestamp(states('input_datetime.car_smart_charging_target_time')) - (nog_te_laden_minuten | float(default=0) * 60)) |timestamp_custom('%H:%M', false) }}
+
 ###############################################################################
 #
 # adaptive lightning
