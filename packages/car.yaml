@@ -20,194 +20,6 @@
 ############################ Automations ################################## 
 automation:
 
-#########################
-# Auto laden
-#########################
-
-- alias: 🚗 batterij <60% en niet verbonden (week)
-  id: '19c7cda6-2abb-4e28-9025-0ea5c4e1caa1'
-  description: ''
-  trigger:
-  - platform: time
-    at: '21:30'
-  condition:
-  - condition: time
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - sun
-  - condition: template
-    value_template: "{% if states('sensor.audi_e_tron_sportback_55_state_of_charge') | float < 60.0 %} true {% endif %}"
-  - condition: state
-    entity_id: device_tracker.audi_e_tron_sportback_55_position
-    state: home
-  - condition: state
-    entity_id: sensor.audi_e_tron_sportback_55_plug_state
-    state: disconnected
-  action:
-  - service: notify.bart_phone
-    data:
-      title: Auto laden?
-      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
-      data:
-        color: green
-        tag: auto_laden
-        actions:
-        - action: URI
-          title: meer info
-          uri: /eikenbos-dashboard/e-tron        
-  - service: notify.madouce_phone
-    data:
-      title: Auto laden?
-      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
-      data:
-        color: green
-        tag: auto_laden
-        actions:
-        - action: URI
-          title: meer info
-          uri: /eikenbos-dashboard/e-tron        
-  mode: single
-
-- alias: 🚗 batterij <20% en niet verbonden (naar werk Madouce)
-  id: 'd0f3ee18-055b-4983-8f4b-2941fbaed6a3'
-  description: ''
-  trigger:
-  - platform: time
-    at: '21:31'
-  condition:
-  - condition: time
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - sun
-  - condition: template
-    value_template: "{% if states('sensor.audi_e_tron_sportback_55_state_of_charge') | float < 40.0 %} true {% endif %}"
-  - condition: state
-    entity_id: device_tracker.audi_e_tron_sportback_55_position
-    state: home
-  - condition: state
-    entity_id: sensor.audi_e_tron_sportback_55_plug_state
-    state: disconnected
-  action:
-  - service: notify.bart_phone
-    data:
-      title: Auto laden?
-      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km. Niet genoeg batterij om naar Toyota Diest te rijden (40% nodig heen en terug). Wel genoeg voor Toyota Evere."
-      data:
-        color: green
-        tag: auto_laden
-        actions:
-        - action: URI
-          title: meer info
-          uri: /eikenbos-dashboard/e-tron        
-  - service: notify.madouce_phone
-    data:
-      title: Auto laden?
-      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km. Niet genoeg batterij om naar Toyota Diest te rijden (40% nodig heen en terug). Wel genoeg voor Toyota Evere."
-      data:
-        color: green
-        tag: auto_laden
-        actions:
-        - action: URI
-          title: meer info
-          uri: /eikenbos-dashboard/e-tron        
-  mode: single  
-
-- alias: 🚗 batterij <40% en niet verbonden (naar werk Madouce)
-  id: 'ac9ef76d-d8dc-4ad4-9f69-f00fd0825a19'
-  description: ''
-  trigger:
-  - platform: time
-    at: '21:31'
-  condition:
-  - condition: time
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - sun
-  - condition: template
-    value_template: "{% if states('sensor.audi_e_tron_sportback_55_state_of_charge') | float < 40.0 %} true {% endif %}"
-  - condition: state
-    entity_id: device_tracker.audi_e_tron_sportback_55_position
-    state: home
-  - condition: state
-    entity_id: sensor.audi_e_tron_sportback_55_plug_state
-    state: disconnected
-  action:
-  - service: notify.bart_phone
-    data:
-      title: Auto laden?
-      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km. Niet genoeg batterij om naar Toyota Diest te rijden (40% nodig heen en terug). Wel genoeg voor Toyota Evere."
-      data:
-        color: green
-        tag: auto_laden
-        actions:
-        - action: URI
-          title: meer info
-          uri: /eikenbos-dashboard/e-tron        
-  - service: notify.madouce_phone
-    data:
-      title: Auto laden?
-      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km. Niet genoeg batterij om naar Toyota Diest te rijden (40% nodig heen en terug). Wel genoeg voor Toyota Evere."
-      data:
-        color: green
-        tag: auto_laden
-        actions:
-        - action: URI
-          title: meer info
-          uri: /eikenbos-dashboard/e-tron        
-  mode: single  
-  
-- alias: 🚗 batterij <80% en niet verbonden (weekend)
-  id: '30ea35b4-3f2a-4702-9df4-323965d8bf70'
-  description: ''
-  trigger:
-  - platform: time
-    at: '21:45'
-  condition:
-  - condition: time
-    weekday:
-    - fri
-    - sat
-  - condition: template
-    value_template: "{% if states('sensor.audi_e_tron_sportback_55_state_of_charge') | float < 80.0 %} true {% endif %}"
-  - condition: state
-    entity_id: device_tracker.audi_e_tron_sportback_55_position
-    state: home
-  - condition: state
-    entity_id: sensor.audi_e_tron_sportback_55_plug_state
-    state: disconnected
-  action:
-  - service: notify.bart_phone
-    data:
-      title: Auto laden voor het weekend?
-      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
-      data:
-        color: green
-        tag: auto_laden
-        actions:
-        - action: URI
-          title: meer info
-          uri: /eikenbos-dashboard/e-tron        
-  - service: notify.madouce_phone
-    data:
-      title: Auto laden voor het weekend?
-      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
-      data:
-        color: green
-        tag: auto_laden
-        actions:
-        - action: URI
-          title: meer info
-          uri: /eikenbos-dashboard/e-tron        
-  mode: single
 
 #########################
 # Auto op slot
@@ -673,6 +485,64 @@ automation:
             uri: /eikenbos-dashboard/e-tron-heate
   mode: restart
   
+- alias: 🚗 Auto verwarmen bij begin werkdag bij Toyota Diest
+  id: '4ed1d4be-1e9b-42b0-90b9-e32d9f584de0'
+  description: ''
+  trigger:
+  - platform: time
+    at: '07:00'
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.audi_e_tron_sportback_55_outdoor_temperature
+    below: 15
+  - condition: template
+    value_template: >
+      {% set car_use_day = 'input_select.car_use_day' ~ now().isoweekday() %}
+      {%if states(car_use_day) == "Toyota Diest"%} true {% endif %}
+  action:
+  - service: notify.madouce_phone
+    data:
+      title: 🚙 De auto wordt nu voorverwarmd.
+      message:  Geniet van de warme rit naar Diest.
+      data:
+        tag: auto_verwarmen
+        color: green
+        actions:
+        - action: URI
+          title: Voor meer info, klik hier
+          uri: /eikenbos-dashboard/e-tron-heater
+  - service: script.auto_start_climatisatie_nu
+  mode: single 
+ 
+- alias: 🚗 Auto verwarmen bij begin werkdag bij Toyota Evere
+  id: 'caf13c49-2daa-4e8c-b275-a6811621cf50'
+  description: ''
+  trigger:
+  - platform: time
+    at: '07:30'
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.audi_e_tron_sportback_55_outdoor_temperature
+    below: 15
+  - condition: template
+    value_template: >
+      {% set car_use_day = 'input_select.car_use_day' ~ now().isoweekday() %}
+      {%if states(car_use_day) == "Toyota Evere"%} true {% endif %}
+  action:
+  - service: notify.madouce_phone
+    data:
+      title: 🚙 De auto wordt nu voorverwarmd.
+      message:  Geniet van de warme rit naar Evere.
+      data:
+        tag: auto_verwarmen
+        color: green
+        actions:
+        - action: URI
+          title: Voor meer info, klik hier
+          uri: /eikenbos-dashboard/e-tron-heater
+  - service: script.auto_start_climatisatie_nu
+  mode: single 
+
 - alias: 🚗 Auto verwarmen na werkdag bij Toyota Evere
   id: '2e05b1aa-1980-4c0d-b3a7-ee1df7fef055'
   description: ''
@@ -728,12 +598,12 @@ automation:
           uri: /eikenbos-dashboard/e-tron-heater
   - service: script.auto_start_climatisatie_nu          
   mode: single 
- 
+
+
  
 #########################
 # Status auto verversen
 #########################   
-
 
 - alias: Bart 3 km van thuis = verversen status auto
   id: '37cfe751-fb7d-4f9b-9a1e-772eeba15f64'
@@ -896,12 +766,152 @@ automation:
           uri: /eikenbos-dashboard/e-tron
   mode: single
 
+
+#######################################
+# Check lading 's avonds
+######################################
+  
+- alias: 🚗 morgen naar Toyota Evere = check 21u30 voldoende geladen?
+  id: 'e03b771a-c1d0-49ed-a0d7-8e833e3c228e'
+  description: ''
+  trigger:
+  - platform: time
+    at: '21:30:00'  
+  condition:
+  - condition: template
+    value_template: >
+      {% set car_use_day = 'input_select.car_use_day' ~ (now().isoweekday() +1) %}
+      {%if states(car_use_day) == "Toyota Evere"%} true {% endif %}
+  action:
+  - service: notify.madouce_phone
+    data:
+      title: Morgen naar Toyota Evere
+      message: "Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_55_state_of_charge') |round() > 24 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen.{% endif %}"
+  - service: notify.bart_phone
+    data:
+      title: Morgen naar Toyota Evere
+      message: "Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_55_state_of_charge') |round() > 24 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen.{% endif %}"
+  mode: single
+  
+- alias: 🚗 morgen naar Toyota Diest = check 21u30 voldoende geladen?
+  id: 'dfb0156e-1033-4259-82d0-08c5bc687860'
+  description: ''
+  trigger:
+  - platform: time
+    at: '21:30:00'  
+  condition:
+  - condition: template
+    value_template: >
+      {% set car_use_day = 'input_select.car_use_day' ~ (now().isoweekday() +1) %}
+      {%if states(car_use_day) == "Toyota Diest"%} true {% endif %}
+  action:
+  - service: notify.madouce_phone
+    data:
+      title: Morgen naar Toyota Evere
+      message: "Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_55_state_of_charge') |round() > 38 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen.{% endif %}"
+  - service: notify.bart_phone
+    data:
+      title: Morgen naar Toyota Evere
+      message: "Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_55_state_of_charge') |round() > 38 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen.{% endif %}"
+  mode: single
+
+- alias: 🚗 batterij <60% en niet verbonden (week)
+  id: '19c7cda6-2abb-4e28-9025-0ea5c4e1caa1'
+  description: ''
+  trigger:
+  - platform: time
+    at: '21:30'
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - sun
+  - condition: template
+    value_template: "{% if states('sensor.audi_e_tron_sportback_55_state_of_charge') | float < 60.0 %} true {% endif %}"
+  - condition: state
+    entity_id: device_tracker.audi_e_tron_sportback_55_position
+    state: home
+  - condition: state
+    entity_id: sensor.audi_e_tron_sportback_55_plug_state
+    state: disconnected
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Auto laden?
+      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
+      data:
+        color: green
+        tag: auto_laden
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/e-tron        
+  - service: notify.madouce_phone
+    data:
+      title: Auto laden?
+      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
+      data:
+        color: green
+        tag: auto_laden
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/e-tron        
+  mode: single
+
+- alias: 🚗 batterij <80% en niet verbonden (weekend)
+  id: '30ea35b4-3f2a-4702-9df4-323965d8bf70'
+  description: ''
+  trigger:
+  - platform: time
+    at: '21:45'
+  condition:
+  - condition: time
+    weekday:
+    - fri
+    - sat
+  - condition: template
+    value_template: "{% if states('sensor.audi_e_tron_sportback_55_state_of_charge') | float < 80.0 %} true {% endif %}"
+  - condition: state
+    entity_id: device_tracker.audi_e_tron_sportback_55_position
+    state: home
+  - condition: state
+    entity_id: sensor.audi_e_tron_sportback_55_plug_state
+    state: disconnected
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Auto laden voor het weekend?
+      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
+      data:
+        color: green
+        tag: auto_laden
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/e-tron        
+  - service: notify.madouce_phone
+    data:
+      title: Auto laden voor het weekend?
+      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
+      data:
+        color: green
+        tag: auto_laden
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/e-tron        
+  mode: single
+
   
 ######################################
 # car smart charging
 ######################################
 
-- alias: "smart charging - laadkabel zopas ingeplugd = op timer zetten (enkel thuis)"
+- alias: "🔋 smart charging - laadkabel zopas ingeplugd = op timer zetten (enkel thuis)"
   # bij het inpluggen begint de lader eerst bijna 2 minuten direct te laden want het duurt een tijdje vooraleer het commando om op timer te laden geactiveerd wordt
   id: '6fc148ce-a035-4699-bffd-dc4eb83e52a5'
   description: ''
@@ -924,7 +934,7 @@ automation:
       action: start_timed_charger
   mode: single    
 
-- alias: "smart charging - check om 21u30: laadkabel ingeplugd en klaar om te laden ? (enkel thuis)"
+- alias: "🔋 smart charging - check om 21u30: laadkabel ingeplugd en klaar om te laden ? (enkel thuis)"
   id: '9e669417-e750-4999-a8ae-ae89468be922'
   trigger:
   - platform: time
@@ -943,13 +953,17 @@ automation:
       message: Volgens de smart charging planning zou er moeten worden geladen.
   mode: single    
 
-- alias: "smart charging - starten op berekend start uur"
+- alias: "🔋 smart charging - starten op berekend start uur"
   description: ''
   trigger:
   - platform: template
     value_template: "{% if states('sensor.car_smart_charging_start_time') == as_timestamp(now()) | timestamp_custom('%H:%M') %}true{% endif %}"
   condition: []
   action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.car_smart_charging_busy  
   - service: audiconnect.execute_vehicle_action
     data:
       vin: WAUZZZGE6MB019131
@@ -960,7 +974,7 @@ automation:
       message: "Nu: {{states('sensor.audi_e_tron_sportback_55_state_of_charge') | round()}}%. Laden tot {{states('input_number.car_smart_charging_target_percentage') | round() }}%. "
   mode: single
 
-- alias: "smart charging - laaddoel bereikt = smart charging stoppen + melding sturen"
+- alias: "🔋 smart charging - laaddoel bereikt = smart charging stoppen + melding sturen"
   id: 'b7a22897-2c7b-4e07-bf71-380271658908'
   description: ''
   trigger:
@@ -969,6 +983,9 @@ automation:
   condition:
   - condition: template
     value_template: "{{ states('sensor.audi_e_tron_sportback_55_state_of_charge')| int(2) >= (states('input_number.car_smart_charging_target_percentage') | int(2)) }}"
+  - condition: state
+    entity_id: input_boolean.car_smart_charging_busy
+    state: 'on'
   action:
   - service: switch.turn_off
     data: {}
@@ -984,7 +1001,7 @@ automation:
       action: start_timed_charger
   mode: single
   
-- alias: "smart charging - red hours: week 6u-8u -> lader op timer (enkel thuis)"
+- alias: "🔋 smart charging - red hours: week 6u-8u -> lader op timer (enkel thuis)"
   id: '0a0bce79-42d8-4184-9dab-9ed54f30f3bf'  
   description: ''
   trigger:
@@ -1016,7 +1033,7 @@ automation:
       action: start_charger
   mode: single
   
-- alias: "smart charging - red hours: zaterdag 7u-9u -> lader op timer (enkel thuis)"
+- alias: "🔋 smart charging - red hours: zaterdag 7u-9u -> lader op timer (enkel thuis)"
   id: '31e6ff24-3423-4332-b4f9-da785af82b26'
   description: ''
   trigger:
@@ -1044,7 +1061,7 @@ automation:
       action: start_charger
   mode: single
 
-- alias: "smart charging - red hours: zondag 8u-12u -> lader op timer (enkel thuis)"
+- alias: "🔋 smart charging - red hours: zondag 8u-12u -> lader op timer (enkel thuis)"
   id: '81cb1458-debb-4378-9313-d34f4029f693'
   description: ''
   trigger:
@@ -1068,3 +1085,71 @@ automation:
       vin: WAUZZZGE6MB019131
       action: start_charger
   mode: single
+
+- alias: "🔋 smart charging - laaddoeluur bereikt = verzetten naar 's anderendaags"
+  id: '94c89ef0-a331-4a74-a2bc-d03289b73354'
+  description: ''
+  trigger:
+  - platform: template
+    value_template: "{% if states('input_datetime.car_smart_charging_target_time') == as_timestamp(now()) %}true{% endif %}"
+  condition: []
+  action:
+  - service: input_datetime.set_datetime
+    data_template:
+      datetime: "{{ (as_timestamp(now())  + (24 * 60 * 60) ) | timestamp_custom('%Y-%m-%d %H:%M:%S') }}"
+    target:
+      entity_id: input_datetime.car_smart_charging_target_time
+  mode: single
+
+#######################################
+# Reistijd
+######################################
+
+- alias: Meld reistijd naar Toyota Evere (bij ochtendwekker + 7u15 en 7u45)
+  id: '0195b18e-5fd6-48a8-ae22-ca0e692fde6c'
+  description: ''
+  trigger:
+  - platform: time
+    at: sensor.sm_g986b_next_alarm  
+  - platform: time
+    at: '07:15'
+  - platform: time
+    at: '07:45'
+  condition:
+  - condition: template
+    value_template: >
+      {% set car_use_day = 'input_select.car_use_day' ~ now().isoweekday() %}
+      {%if states(car_use_day) == "Toyota Evere"%} true {% endif %}
+  action:
+  - service: notify.madouce_phone
+    data:
+      title: Goede morgen, schat!
+      message: "Reistijd naar Toyota Evere is {{states('sensor.waze_travel_time_huis_toyota_evere')}} minuten."
+      data:
+        tag: auto_laden
+  mode: single
+  
+- alias: Meld reistijd naar Toyota Diest (bij ochtendwekker + 7u15 en 7u45)
+  id: '5d976c12-4cdf-4534-821f-332dc180e65d'
+  description: ''
+  trigger:
+  - platform: time
+    at: sensor.sm_g986b_next_alarm  
+  - platform: time
+    at: '07:15'
+  - platform: time
+    at: '07:45'
+  condition:
+  - condition: template
+    value_template: >
+      {% set car_use_day = 'input_select.car_use_day' ~ now().isoweekday() %}
+      {%if states(car_use_day) == "Toyota Diest"%} true {% endif %}
+  action:
+  - service: notify.madouce_phone
+    data:
+      title: Goede morgen, schat!
+      message: "Reistijd naar Toyota Diest is {{states('sensor.waze_travel_time_huis_toyota_diest')}} minuten."
+      data:
+        tag: auto_laden
+  mode: single  
+

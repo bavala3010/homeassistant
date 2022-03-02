@@ -131,22 +131,22 @@ recorder:
 # Defines the Xiaomi devices (2 fans + 1 air purifier)
 ###############################################################################
 
-fan:
-  - platform: xiaomi_miio_fan
-    name: Xiaomi Smart Fan 3C
-    host: 192.168.86.29
-    token: !secret fan_3C_token
-    
-  - platform: xiaomi_miio_fan
-    name: Xiaomi Smart Fan 1C
-    host: 192.168.86.28
-    token: !secret fan_1C_token
-    
-  - platform: xiaomi_miio_airpurifier
-    name: Xiaomi Air Purifier 3H
-    host: 192.168.86.247
-    token: !secret purifier_3H_token
-    model: zhimi.airpurifier.mb3
+#fan:
+#  - platform: xiaomi_miio_fan
+#    name: Xiaomi Smart Fan 3C
+#    host: 192.168.86.29
+#    token: !secret fan_3C_token
+#    
+#  - platform: xiaomi_miio_fan
+#    name: Xiaomi Smart Fan 1C
+#    host: 192.168.86.28
+#    token: !secret fan_1C_token
+#    
+#  - platform: xiaomi_miio_airpurifier
+#    name: Xiaomi Air Purifier 3H
+#    host: 192.168.86.247
+#    token: !secret purifier_3H_token
+#    model: zhimi.airpurifier.mb3
 
 netatmo:
 # create client_id and client_secret at https://dev.netatmo.com/apps
