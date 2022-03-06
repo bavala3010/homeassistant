@@ -2,12 +2,12 @@
 default_config:
 
 # useful links
+# https://www.uuidgenerator.net/
+# https://emojidb.org/
 # https://pictogrammers.github.io/@mdi/font/5.3.45/
 # https://materialdesignicons.com/
 # https://mdi.bessarabov.com/
-# https://emojidb.org/
 # https://www.zapsplat.com/sound-effect-category/sirens-and-alarms/
-# https://www.uuidgenerator.net/
 # https://app.diagrams.net/
 # https://demo.home-assistant.io/#/energy
 
@@ -733,6 +733,7 @@ sensor:
     display_options:
       - 'time'
       - 'date'
+      - "date_time"
 
   - platform: min_max
     type: mean
@@ -1052,9 +1053,11 @@ template:
 
       - name: "car smart charging start time"
         state: >
-          {% set nog_te_laden_procent = (states('input_number.car_smart_charging_target_percentage') | float ) - (states('sensor.audi_e_tron_sportback_55_state_of_charge') | float(default=0) ) %}
-          {% set nog_te_laden_minuten = nog_te_laden_procent * 9.54 | round(2) %}
-          {{ (as_timestamp(states('input_datetime.car_smart_charging_target_time')) - (nog_te_laden_minuten | float(default=0) * 60)) |timestamp_custom('%H:%M', false) }}
+          {% set target = states('input_number.car_smart_charging_target_percentage') | float(default=0) %}
+          {% set soc = states('sensor.audi_e_tron_sportback_55_state_of_charge') | float(default=0) %}
+          {% set nog_te_laden_procent = [target - soc, 0] | max %}
+          {% set nog_te_laden_minuten = nog_te_laden_procent * 8.5 | round(2) %}
+          {{ strptime((as_timestamp(states('input_datetime.car_smart_charging_target_time')) - (nog_te_laden_minuten | float(default=0) * 60) )| timestamp_custom('%Y-%m-%d %H:%M',false), '%Y-%m-%d %H:%M') }}
 
 ###############################################################################
 #
@@ -1309,6 +1312,7 @@ binary_sensor:
         # 4% increase per hour = 4/(60x60) = 0.00111111111
         device_class: moisture
 
+
 # Enables a map showing the location of tracked devices
 map:
 
@@ -1365,3 +1369,5 @@ proximity:
     tolerance: 50
     unit_of_measurement: km
     
+
+        

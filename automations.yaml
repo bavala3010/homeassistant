@@ -145,3 +145,17 @@
     target:
       entity_id: input_datetime.elec_droger_end
   mode: single
+- alias: Persoon gedetecteerd aan voordeur
+  id: '1646236825543'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.netatmo_motion_human
+    to: 'on'
+  condition: []
+  action:
+  - service: tts.google_say
+    data:
+      entity_id: media_player.veranda_speaker
+      message: Persoon gedetecteerd aan voordeur.
+  mode: single

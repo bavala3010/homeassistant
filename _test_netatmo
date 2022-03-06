@@ -1,0 +1,39 @@
+template:
+# Netatmo human
+  - trigger:
+      - platform: event
+        event_type: netatmo_event
+        event_data:
+          type: human
+    binary_sensor:
+      - name: netatmo_motion_human
+        unique_id: f5b9c5eb-d2ee-46d3-ad6f-dbc9ba917ee9
+        # We use auto_off, so just set it to true on each trigger
+        state: "true"
+        device_class: motion
+        # Automatically turn off 120 seconds after the last event
+        auto_off: 120
+  # Netatmo vehicle
+  - trigger:
+      - platform: event
+        event_type: netatmo_event
+        event_data:
+          type: vehicle
+    binary_sensor:
+      - name: netatmo_motion_vehicle
+        unique_id: e334e36b-9405-40a8-ac32-e212c73381e2
+        state: "true"
+        device_class: motion
+        auto_off: 120
+  # Netatmo animal
+  - trigger:
+      - platform: event
+        event_type: netatmo_event
+        event_data:
+          type: animal
+    binary_sensor:
+      - name: netatmo_motion_animal
+        unique_id: 12fe2e12-2aab-4409-8fbf-e4d7144db271
+        state: "true"
+        device_class: motion
+        auto_off: 120

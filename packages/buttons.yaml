@@ -92,7 +92,7 @@ automation:
         entity_id: media_player.master_bedroom_speaker
         message: >-
           Nog {{states('sensor.anniversary_huwelijk_madouce_bart')}} dagen voor
-          jullie huwelijk. {{("Dat is binnenkort!", "Proficiat alvast!", "Ik vind de ringen ook heel mooi!", "Het kostuum mag nu toch gaan komen.", "Spannend hé?", "Ik kijk er zelf ook al naar uit!", "Je gaat toch jaa zeggen, hé?", "Ik ben benieuwd naar het kleur van het kleed.", "Trouwen is houwen hé!" , "Zeker dat de marktverkenning goed was?"
+          jullie huwelijk. {{("Dat is nog maar een paar keren slapen!", "Gefeliciteerd met jullie huwelijk!", "Ik vind de ringen briljant!", "Het kostuum zal je voorbeeldig staan.", "Voel je de spanning ook al?", "Ik kijk er zelf ook al naar uit!", "Je gaat toch jaa zeggen, hé?", "Ik ben benieuwd naar het kleur van het kleed.", "Trouwen is houwen hé!" , "Zeker dat de marktverkenning goed was?"
               )|random }}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
@@ -109,7 +109,7 @@ automation:
         entity_id: media_player.master_bedroom_speaker
         message: >-
           De auto is
-          {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% geladen
+          {{states('sensor.audi_e_tron_sportback_55_state_of_charge') | int }}% geladen
           {% if is_state('sensor.audi_e_tron_sportback_55_plug_state',
           'connected') %} en de laadkabel is verbonden. {%else%} maar de laadkabel
           is niet verbonden. {% endif %}

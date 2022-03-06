@@ -911,6 +911,24 @@ automation:
 # car smart charging
 ######################################
 
+- alias: "verandering batterij% en niet aan het laden = smart charging start uur veranderen"
+  id: '5620b903-da15-45dc-8769-70e9e7e3cfb0'
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: sensor.audi_e_tron_sportback_55_state_of_charge
+  condition:
+    - condition: state
+      entity_id: sensor.audi_e_tron_sportback_55_charging_state
+      state: 'off'
+  action:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.smart_charging_start_time
+    data:
+      time: "{{ states('sensor.car_smart_charging_start_time') }}"
+  mode: single
+
 - alias: "🔋 smart charging - laadkabel zopas ingeplugd = op timer zetten (enkel thuis)"
   # bij het inpluggen begint de lader eerst bijna 2 minuten direct te laden want het duurt een tijdje vooraleer het commando om op timer te laden geactiveerd wordt
   id: '6fc148ce-a035-4699-bffd-dc4eb83e52a5'
@@ -926,39 +944,26 @@ automation:
   action:
   - service: notify.bart_phone
     data:
-      title: "Smart charging"
-      message: Autolader op timer gezet.
+      title: "Smart charging staat nu klaar."
+      message: "De laadkabel is zopas ingeplugd. Smart charging zal starten om {{ states('sensor.car_smart_charging_start_time') | timestamp_custom('%m-%d %H:%M', false)}}"
   - service: audiconnect.execute_vehicle_action
     data:
       vin: WAUZZZGE6MB019131
       action: start_timed_charger
   mode: single    
 
-- alias: "🔋 smart charging - check om 21u30: laadkabel ingeplugd en klaar om te laden ? (enkel thuis)"
-  id: '9e669417-e750-4999-a8ae-ae89468be922'
-  trigger:
-  - platform: time
-    at: '21:30:00'
-  condition:
-  - condition: state
-    entity_id: sensor.audi_e_tron_sportback_55_plug_state
-    state: disconnected
-  - condition: state
-    entity_id: device_tracker.audi_e_tron_sportback_55_position
-    state: home    
-  action:
-  - service: notify.bart_phone
-    data:
-      title: De laadkabel van de auto is niet verbonden.
-      message: Volgens de smart charging planning zou er moeten worden geladen.
-  mode: single    
-
-- alias: "🔋 smart charging - starten op berekend start uur"
+- alias: "🔋 smart charging - starten op datum en uur van smart charging start time"
+  id: '7bcf7836-3149-4eb2-9d40-f0f3f309a249'
   description: ''
   trigger:
   - platform: template
-    value_template: "{% if states('sensor.car_smart_charging_start_time') == as_timestamp(now()) | timestamp_custom('%H:%M') %}true{% endif %}"
-  condition: []
+    value_template: "{% if as_timestamp(states('sensor.car_smart_charging_start_time')) | timestamp_custom('%Y-%m-%d %H:%M',false)  == as_timestamp(now()) | timestamp_custom('%Y-%m-%d %H:%M') %}true{% endif %}"
+  # Only run routine if smart charging has not yet started (input_boolean.car_smart_charging_busy = off)
+  # Because the calculated start time continuously moves while charging, this routine would continously be triggered
+  condition:
+  - condition: state
+    entity_id: input_boolean.car_smart_charging_busy
+    state: 'off'
   action:
   - service: switch.turn_on
     data: {}
@@ -971,10 +976,10 @@ automation:
   - service: notify.bart_phone
     data:
       title: Smart charging gestart.
-      message: "Nu: {{states('sensor.audi_e_tron_sportback_55_state_of_charge') | round()}}%. Laden tot {{states('input_number.car_smart_charging_target_percentage') | round() }}%. "
+      message: "Nu: {{states('sensor.audi_e_tron_sportback_55_state_of_charge') | round()}}%. Laden tot {{states('input_number.car_smart_charging_target_percentage') | round() }}%.<br>Doeluur: {{states('input_datetime.car_smart_charging_target_time') | timestamp_custom('%m-%d %H:%M') }}"
   mode: single
 
-- alias: "🔋 smart charging - laaddoel bereikt = smart charging stoppen + melding sturen"
+- alias: "🔋 smart charging - laaddoel bereikt = smart charging stoppen + melding sturen + timer dag later"
   id: 'b7a22897-2c7b-4e07-bf71-380271658908'
   description: ''
   trigger:
@@ -995,6 +1000,12 @@ automation:
     data:
       title: Laaddoel bereikt!
       message: "Laaddoel bereikt: {{states('input_number.car_smart_charging_target_percentage') | round() }}%. Nu: {{states('sensor.audi_e_tron_sportback_55_state_of_charge') | round()}}%"
+  # targtet time op dag later zetten
+  - service: input_datetime.set_datetime
+    data_template:
+      datetime: "{{ (as_timestamp(now())  + (24 * 60 * 60) ) | timestamp_custom('%Y-%m-%d %H:%M:%S') }}"
+    target:
+      entity_id: input_datetime.car_smart_charging_target_time
   - service: audiconnect.execute_vehicle_action
     data:
       vin: WAUZZZGE6MB019131
@@ -1091,7 +1102,7 @@ automation:
   description: ''
   trigger:
   - platform: template
-    value_template: "{% if states('input_datetime.car_smart_charging_target_time') == as_timestamp(now()) %}true{% endif %}"
+    value_template: "{% if as_timestamp(states('input_datetime.car_smart_charging_target_time')) | timestamp_custom('%Y-%m-%d %H:%M',false) == as_timestamp(now()) | timestamp_custom('%Y-%m-%d %H:%M') %}true{% endif %}"
   condition: []
   action:
   - service: input_datetime.set_datetime
@@ -1101,6 +1112,64 @@ automation:
       entity_id: input_datetime.car_smart_charging_target_time
   mode: single
 
+- alias: "🔋 smart charging - om 10u en 20u check of laadkabel ingeplugd is voor smart charging binnen de volgende 10 uren "
+  id: '995d850b-435f-46a6-9e5a-9ab89701ddf4'
+  description: ''
+  trigger:
+  - platform: time
+    at: '10:00'
+  - platform: time
+    at: '20:20'    
+  condition:
+  - condition: state
+    entity_id: device_tracker.audi_e_tron_sportback_55_position
+    state: home    
+  - condition: state
+    entity_id: sensor.audi_e_tron_sportback_55_plug_state
+    state: 'disconnected'
+  # voorwaarde: als start tijd < nu + 10 uren (dus starttijd voor 20u)
+  - condition: template
+    value_template: "{% if (states('sensor.car_smart_charging_start_time') | timestamp_custom('%y-%m-%d %H:%M', false) ) < ((as_timestamp(now())  + (10 * 60 * 60)) | timestamp_custom('%Y-%m-%d %H:%M:%S')) %}true{% endif %}"
+  action:
+  - service: notify.bart_phone
+    data:
+      title: "Plug de laadkabel in."
+      message: "De auto zou moeten laden om {{ states('sensor.car_smart_charging_start_time') | timestamp_custom('%m-%d %H:%M', false)}} maar de kabel steekt niet in."
+  mode: single
+  
+- alias: "🔋 smart charging - toggle direct charging mode"
+  id: '65cc5ca4-bc1d-40a2-a30e-e006893f95f8'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.smart_charging_mode_direct
+      to: 'on'
+  condition: []
+  action:
+    - service: input_boolean.turn_off
+      data: {}
+      target:
+        entity_id: input_boolean.smart_charging_mode_timer
+    - service: script.auto_start_laden_nu
+      data: {}  
+  mode: single
+  
+- alias: "🔋 smart charging - toggle direct charging mode"
+  id: '9ce596ba-aaab-4cb4-8324-34a6a788b401'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.smart_charging_mode_timer
+      to: 'on'
+  condition: []
+  action:
+    - service: input_boolean.turn_off
+      data: {}
+      target:
+        entity_id: input_boolean.smart_charging_mode_direct
+    - service: script.auto_start_laden_timer
+      data: {}
+  mode: single
+  
+  
 #######################################
 # Reistijd
 ######################################

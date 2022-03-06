@@ -501,9 +501,9 @@ automation:
     entity_id: input_boolean.kamer_alunya_window_pause
     to: 'on'
   condition:
-  - condition: state
-    entity_id: input_boolean.kamer_alunya_raam_moet_open
-    state: 'on'
+  # - condition: state
+  #  entity_id: input_boolean.kamer_alunya_raam_moet_open
+  #  state: 'on'
   action:
   - service: notify.bart_phone
     data:
