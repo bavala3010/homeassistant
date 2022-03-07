@@ -911,24 +911,6 @@ automation:
 # car smart charging
 ######################################
 
-- alias: "verandering batterij% en niet aan het laden = smart charging start uur veranderen"
-  id: '5620b903-da15-45dc-8769-70e9e7e3cfb0'
-  description: ''
-  trigger:
-    - platform: state
-      entity_id: sensor.audi_e_tron_sportback_55_state_of_charge
-  condition:
-    - condition: state
-      entity_id: sensor.audi_e_tron_sportback_55_charging_state
-      state: 'off'
-  action:
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.smart_charging_start_time
-    data:
-      time: "{{ states('sensor.car_smart_charging_start_time') }}"
-  mode: single
-
 - alias: "🔋 smart charging - laadkabel zopas ingeplugd = op timer zetten (enkel thuis)"
   # bij het inpluggen begint de lader eerst bijna 2 minuten direct te laden want het duurt een tijdje vooraleer het commando om op timer te laden geactiveerd wordt
   id: '6fc148ce-a035-4699-bffd-dc4eb83e52a5'
@@ -976,7 +958,7 @@ automation:
   - service: notify.bart_phone
     data:
       title: Smart charging gestart.
-      message: "Nu: {{states('sensor.audi_e_tron_sportback_55_state_of_charge') | round()}}%. Laden tot {{states('input_number.car_smart_charging_target_percentage') | round() }}%.<br>Doeluur: {{states('input_datetime.car_smart_charging_target_time') | timestamp_custom('%m-%d %H:%M') }}"
+      message: "Nu: {{states('sensor.audi_e_tron_sportback_55_state_of_charge') | round()}}%. Laden tot {{states('input_number.car_smart_charging_target_percentage') | round() }}%.<br>Doeluur: {{as_timestamp(states('input_datetime.car_smart_charging_target_time')) | timestamp_custom('%d/%m %Hu%M') }}"
   mode: single
 
 - alias: "🔋 smart charging - laaddoel bereikt = smart charging stoppen + melding sturen + timer dag later"

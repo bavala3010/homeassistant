@@ -31,3 +31,18 @@ automation:
     target:
       entity_id: switch.switch_1
   mode: single 
+  
+- alias: ⚡ check om 20u als laptop van het werk uit staat
+  id: 'd623e813-117a-485c-b7f1-ea50c8635010'
+  trigger:
+  - platform: time
+    at: "20:00"
+  condition:
+  - condition: state
+    entity_id: switch.bart_laptop_fortis_brum05007458
+    state: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: De laptop van het werk staat nog aan.
+  mode: single

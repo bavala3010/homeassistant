@@ -322,51 +322,6 @@ automation:
 ##############################
 # ventilatie badkamer
 ##############################
-- alias: 💨 beweging in douche = ventilator aan na 1,5 minuten
-  id: '26b154d2-b891-4df6-84c3-b954e639a08e'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.douche_sensor_motion
-    to: 'on'
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 30
-  # only trigger when there is more than 30 seconds of motion    
-  condition: []
-  action:
-  - service: switch.turn_on
-    target:
-      entity_id:
-      - switch.toilet_douche_ventilatie
-  - service: notify.bart_phone
-    data:
-      message: Ventilatie douche START nu.
-  mode: single
-
-- alias: 💨 Geen beweging meer in douche = ventilator uit na 10 minuten
-  id: 'b17903c4-7fb3-434e-9264-0f8c1f874731'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.douche_sensor_motion
-    to: 'off'
-    for:
-      hours: 0
-      minutes: 10
-      seconds: 0
-  # only trigger when there is no motion during 10 minutes    
-  condition: []
-  action:
-  - service: switch.turn_off
-    target:
-      entity_id:
-      - switch.toilet_douche_ventilatie
-  - service: notify.bart_phone
-    data:
-      message: Ventilatie douche STOPT nu.
-  mode: single
 
 - alias: 🪟 badkamer raam wijd open = ventilator uit
   id: '09185cc1-4293-4cc0-9f89-831f0be7a74e'
@@ -472,7 +427,7 @@ automation:
 # ontvochtiger
 ##############################
 - alias: ontvochtiger staat al 15 min. aan
-  id: 'd3cc5e83-aa32-4a58-a297-504866802e98'
+  id: '0bd10dde-0f91-479c-9ddb-ebc484c0178d'
   description: ''
   trigger:
   - platform: numeric_state

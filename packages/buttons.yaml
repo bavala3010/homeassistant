@@ -82,9 +82,8 @@ automation:
         entity_id: media_player.master_bedroom_speaker
         cache: false
         message: >-
-          Het is nu {{ as_timestamp(now()) |timestamp_custom('%H') }} uur {{
-          as_timestamp(now()) |timestamp_custom('%M') }}. Buiten is het
-          {{states('sensor.temp_leuven24_wunderground')}} graden.
+          Het is nu {{ as_timestamp(now()) |timestamp_custom('%-H') }} uur {{
+          as_timestamp(now()) |timestamp_custom('%-M') }}. Buiten is het {{states('sensor.temp_leuven24_wunderground')}} graden.
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
     - service: tts.cloud_say
@@ -92,7 +91,7 @@ automation:
         entity_id: media_player.master_bedroom_speaker
         message: >-
           Nog {{states('sensor.anniversary_huwelijk_madouce_bart')}} dagen voor
-          jullie huwelijk. {{("Dat is nog maar een paar keren slapen!", "Gefeliciteerd met jullie huwelijk!", "Ik vind de ringen briljant!", "Het kostuum zal je voorbeeldig staan.", "Voel je de spanning ook al?", "Ik kijk er zelf ook al naar uit!", "Je gaat toch jaa zeggen, hé?", "Ik ben benieuwd naar het kleur van het kleed.", "Trouwen is houwen hé!" , "Zeker dat de marktverkenning goed was?"
+          jullie huwelijk. {{("Dat is nog maar een paar keren slapen!", "Gefeliciteerd met jullie huwelijk!", "Ik vind de ringen briljant!", "Het kostuum zal je voorbeeldig staan.", "Voel je de spanning ook al?", "Ik kijk er zelf ook al naar uit!", "Je gaat toch jaa zeggen, hé?", "Ik ben benieuwd naar het kleur van het kleed.", "Trouwen is houwen hé!" , "Met mooie schoenen is het helemaal af!"
               )|random }}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
@@ -100,19 +99,19 @@ automation:
       data:
         entity_id: media_player.master_bedroom_speaker
         message: >-
-          {% if is_state('lock.audi_e_tron_sportback_55_door_lock_2', 'unlocked')
-          %} De auto is niet op slot. {% else %} De auto is op slot. {% endif %}
+          {% if is_state('lock.audi_e_tron_sportback_55_door_lock_2', 'unlocked') %} De auto is niet op slot.
+          {% else %} De auto is op slot.
+          {% endif %}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
     - service: tts.cloud_say
       data:
         entity_id: media_player.master_bedroom_speaker
         message: >-
-          De auto is
-          {{states('sensor.audi_e_tron_sportback_55_state_of_charge') | int }}% geladen
-          {% if is_state('sensor.audi_e_tron_sportback_55_plug_state',
-          'connected') %} en de laadkabel is verbonden. {%else%} maar de laadkabel
-          is niet verbonden. {% endif %}
+          De auto is {{states('sensor.audi_e_tron_sportback_55_state_of_charge') | int }}% geladen
+          {% if is_state('sensor.audi_e_tron_sportback_55_plug_state','connected') %} en de laadkabel is verbonden.
+          {% else %} maar de laadkabel is niet verbonden.
+          {% endif %}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
     - service: tts.cloud_say
@@ -130,7 +129,8 @@ automation:
         cache: false
         message: >-
           {% if is_state('group.alle_raam_sensoren', 'off') %} Alle ramen zijn
-          dicht! {% else %} De volgende ramen staan nog open:
+          dicht!
+          {% else %} De volgende ramen staan nog open:
           {{expand(states.binary_sensor.kamer_amilya_raam,
           states.binary_sensor.kamer_alunya_raam,
           states.binary_sensor.kamer_alunya_schuifraam,
@@ -143,8 +143,8 @@ automation:
           states.binary_sensor.master_bedroom_raam_kantel,
           states.binary_sensor.master_bedroom_raam_wijd,
           states.binary_sensor.veranda_schuifraam)
-          |selectattr('state','eq','on') | map(attribute='name')| list }} {% endif
-          %}
+          |selectattr('state','eq','on') | map(attribute='name')| list }}
+          {% endif %}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
     - service: tts.cloud_say
@@ -153,7 +153,7 @@ automation:
         cache: false
         message: >-
           {% if now().strftime("%H")|int > 20 %} Slaap lekker straks.
-          {% elif now().strftime("%H")|int > 23 %} Het is bijna tijd om te slapen.
+          {% elif now().strftime("%H")|int > 22 %} Het is bijna tijd om te slapen.
           {% elif now().strftime("%H")|int < 12 %} Nog een prettige dag.
           {% endif %}
   mode: single
