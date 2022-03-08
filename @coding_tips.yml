@@ -6,3 +6,6 @@ name: |
     if (states["timer.clean_cycle"].state == 'idle') return states['sensor.pump_on_today'].state + " h";
     else return "."
   ]]]
+  
+  
+strptime(string, format) parses a string based on a format and returns a datetime object. If that fails, returns the default value, or if omitted the unprocessed input value.  

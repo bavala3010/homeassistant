@@ -265,7 +265,7 @@ automation:
       action_window_pause: '{{action_window_pause}}' 
       reason: '{{reason}}'
   variables:  
-    message: "Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
+    message: "Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br><br>Vocht kamer Alunya: {{states('sensor.kamer_alunya_humidity')}} %. Buiten: {{states('sensor.humidity_leuven24_wunderground')}} %<br>Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C."
     title: "Open het raam van Alunya!"
     tag: "window_kamer_alunya"
     action_window_pause: "kamer_alunya_window_pause"
@@ -315,21 +315,21 @@ automation:
   id: '86ec8dc8-381e-460a-af44-3afe02f69147'
   description: ''
   trigger:
-  - platform: state
-    entity_id: input_boolean.badkamer_raam_moet_open
-    to: 'on'
+    - platform: state
+      entity_id: light.badkamer_douche
+      to: 'off'
   condition:
-  - condition: state
-    entity_id: binary_sensor.badkamer_raam_kantel
-    state: 'off'
-  - condition: state
-    entity_id: light.badkamer_douche
-    state: 'on'
+    - condition: state
+      entity_id: binary_sensor.badkamer_raam_kantel
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.badkamer_raam_moet_open
+      state: 'on'
   action:
-  - service: tts.cloud_say
-    data:
-      entity_id: media_player.badkamer_speaker
-      message: "Het raam mag open. Er is {{states('sensor.badkamer_humidity')}}% vocht."
+    - service: tts.cloud_say
+      data:
+        entity_id: media_player.badkamer_speaker
+        message: Het raam mag open. Er is {{states('sensor.badkamer_humidity')}}% vocht.
   mode: single
 
 

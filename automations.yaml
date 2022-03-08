@@ -159,3 +159,64 @@
       entity_id: media_player.veranda_speaker
       message: Persoon gedetecteerd aan voordeur.
   mode: single
+- id: '1646669816438'
+  alias: licht in garage
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.garage_sensor_light_level
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+    above: '4'
+  condition: []
+  action:
+  - repeat:
+      while:
+      - condition: numeric_state
+        entity_id: sensor.garage_sensor_light_level
+        above: '4'
+      sequence:
+      - service: notify.bart_phone
+        data:
+          message: Licht in garage brandt al {{ as_timestamp(now()) - as_timestamp(state_attr('automation.licht_in_garage'),'last_triggered')
+            | int }} minuten.
+          title: Licht in garage
+          data:
+            color: blue
+            tag: garage_licht
+      - delay:
+          minutes: 5
+  - service: notify.bart_phone
+    data:
+      message: clear_notification
+      data:
+        tag: garage_licht
+  - service: notify.madouce_phone
+    data:
+      message: clear_notification
+      data:
+        tag: garage_licht
+  mode: single
+- id: '1646672234662'
+  alias: 🪟 ramen - open raam badkamer (melding op speaker)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: light.badkamer_douche
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.badkamer_raam_kantel
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.badkamer_raam_moet_open
+    state: 'on'
+  action:
+  - service: tts.cloud_say
+    data:
+      entity_id: media_player.badkamer_speaker
+      message: Het raam mag open. Er is {{states('sensor.badkamer_humidity')}}% vocht.
+  mode: single

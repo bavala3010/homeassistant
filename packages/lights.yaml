@@ -311,7 +311,7 @@ automation:
       sequence:
       - service: notify.bart_phone
         data:
-          message: "Licht in garage brandt al {{ as_timestamp(now()) - as_timestamp(state_attr('automation.licht_in_garage'),'last_triggered') | int }} minuten."
+          message: "Licht in garage brandt al {{ as_timestamp(now()) - as_timestamp(state_attr('automation.licht_in_garage','last_triggered')) | int }} minuten."
           title: Licht in garage
           data:
             color: blue
@@ -369,7 +369,7 @@ automation:
       - light.toilet
   mode: single
 
-- alias: 💡 licht toilet 's nachts gedempt
+- alias: 💡 licht toilet 's nachts gedimd
   id: be544a45-af8d-4b1a-b5d9-69c5591f44d6
   description: ''
   trigger:
@@ -383,7 +383,7 @@ automation:
   action:
   - service: light.turn_on
     data:
-      kelvin: 2500
+      kelvin: 1500
       brightness_pct: 40
     target:
       entity_id: light.toilet
@@ -409,7 +409,7 @@ automation:
       entity_id: light.toilet
   mode: single  
 
-- alias: 💡 licht gang na zonsondergang gedempt
+- alias: 💡 licht gang na zonsondergang gedimd
   id: 151c0615-8998-408b-a0ab-0a31af6c3ea8
   description: ''
   trigger:
@@ -423,7 +423,7 @@ automation:
   action:
   - service: light.turn_on
     data:
-      kelvin: 2500
+      kelvin: 1500
       brightness_pct: 40
     target:
       entity_id: light.gang

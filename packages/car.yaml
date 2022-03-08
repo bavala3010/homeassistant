@@ -807,11 +807,11 @@ automation:
   action:
   - service: notify.madouce_phone
     data:
-      title: Morgen naar Toyota Evere
+      title: Morgen naar Toyota Diest
       message: "Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_55_state_of_charge') |round() > 38 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen.{% endif %}"
   - service: notify.bart_phone
     data:
-      title: Morgen naar Toyota Evere
+      title: Morgen naar Toyota Diest
       message: "Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_55_state_of_charge') |round() > 38 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen.{% endif %}"
   mode: single
 
@@ -1101,7 +1101,7 @@ automation:
   - platform: time
     at: '10:00'
   - platform: time
-    at: '20:20'    
+    at: '20:00'    
   condition:
   - condition: state
     entity_id: device_tracker.audi_e_tron_sportback_55_position
@@ -1111,12 +1111,12 @@ automation:
     state: 'disconnected'
   # voorwaarde: als start tijd < nu + 10 uren (dus starttijd voor 20u)
   - condition: template
-    value_template: "{% if (states('sensor.car_smart_charging_start_time') | timestamp_custom('%y-%m-%d %H:%M', false) ) < ((as_timestamp(now())  + (10 * 60 * 60)) | timestamp_custom('%Y-%m-%d %H:%M:%S')) %}true{% endif %}"
+    value_template: "{% if as_timestamp(states('sensor.car_smart_charging_start_time')) | timestamp_custom('%Y-%m-%d %H:%M', false) < ((as_timestamp(now())  + (10 * 60 * 60)) | timestamp_custom('%Y-%m-%d %H:%M')) %}true{% endif %}"
   action:
   - service: notify.bart_phone
     data:
       title: "Plug de laadkabel in."
-      message: "De auto zou moeten laden om {{ states('sensor.car_smart_charging_start_time') | timestamp_custom('%m-%d %H:%M', false)}} maar de kabel steekt niet in."
+      message: "De auto zou moeten laden om {{ as_timestamp(states('sensor.car_smart_charging_start_time')) | timestamp_custom('%a %-Hu%M', false) }} maar de kabel steekt niet in."
   mode: single
   
 - alias: "🔋 smart charging - toggle direct charging mode"

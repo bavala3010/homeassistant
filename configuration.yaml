@@ -1370,4 +1370,50 @@ proximity:
     unit_of_measurement: km
     
 
-        
+modbus:
+  - name: laadpaal
+    type: tcp
+    host: 192.168.xxx.yyy
+    port: 502
+    sensors:
+      - name: laadpaal_name
+        slave: 200
+        address: 100
+        count: 17
+        data_type: string
+      - name: laadpaal_temperature
+        slave: 200
+        address: 1102
+        data_type: float32
+        unit_of_measurement: °C
+      - name: laadpaal_active_max_current
+        slave: 200
+        address: 1100
+        data_type: float32
+        unit_of_measurement: A
+      - name: laadpaal_real_power_sum
+        slave: 1
+        address: 344
+        data_type: float32
+        unit_of_measurement: W
+      - name: laadpaal_mode3_state
+        slave: 1
+        address: 1201
+        count: 5
+        data_type: string
+        scan_interval: 5
+      - name: laadpaal_actual_applied_maxcurrent
+        slave: 1
+        address: 1206
+        data_type: float32
+        unit_of_measurement: A
+      - name: laadpaal_modbus_maxcurrent
+        slave: 1
+        address: 1210
+        data_type: float32
+        unit_of_measurement: A
+      - name: laadpaal_socket1_current_valid_time
+        slave: 1
+        address: 1208
+        data_type: uint32
+        unit_of_measurement: s
