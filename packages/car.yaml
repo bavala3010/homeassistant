@@ -981,7 +981,7 @@ automation:
     entity_id: sensor.audi_e_tron_sportback_55_charging_state
     state: 'off'
   action:
-  - service: switch.turn_on
+  - service: input_boolean.turn_on
     data: {}
     target:
       entity_id: input_boolean.car_smart_charging_busy  
@@ -1010,7 +1010,7 @@ automation:
     entity_id: sensor.audi_e_tron_sportback_55_charging_state
     state: 'on'    
   action:
-  - service: switch.turn_off
+  - service: input_boolean.turn_on
     data: {}
     target:
       entity_id: input_boolean.car_smart_charging_busy
@@ -1132,7 +1132,6 @@ automation:
       entity_id: input_datetime.car_smart_charging_target_time
   mode: single
 
-  
 - alias: "🔋 smart charging - toggle direct charging mode"
   id: '65cc5ca4-bc1d-40a2-a30e-e006893f95f8'
   trigger:

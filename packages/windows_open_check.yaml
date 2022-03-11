@@ -35,7 +35,7 @@ automation:
     entity_id: sensor.living_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float) >= 15 }}"     
+    value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float(default=0) >= 15 }}"     
   - condition: or
     conditions:    
       - condition: and
@@ -44,14 +44,14 @@ automation:
             entity_id: binary_sensor.gram_water_outside_rising
             state: 'off'
           - condition: template
-            value_template: "{{ states('sensor.gram_water_living_diff_outside') | float >= 0.5 }}"
+            value_template: "{{ states('sensor.gram_water_living_diff_outside') | float(default=0) >= 0.5 }}"
       - condition: and
         conditions:
           - condition: state
             entity_id: binary_sensor.gram_water_outside_rising
             state: 'on'
           - condition: template
-            value_template: "{{ states('sensor.gram_water_living_diff_outside') | float >= 1 }}"
+            value_template: "{{ states('sensor.gram_water_living_diff_outside') | float(default=0) >= 1 }}"
   action:
   - service: input_boolean.turn_on
     target:
@@ -84,7 +84,7 @@ automation:
     entity_id: sensor.kamer_amilya_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float) >= 15 }}"     
+    value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float(default=0) >= 15 }}"     
   - condition: or
     conditions:    
       - condition: and
@@ -93,14 +93,14 @@ automation:
             entity_id: binary_sensor.gram_water_outside_rising
             state: 'off'
           - condition: template
-            value_template: "{{ states('sensor.gram_water_kamer_amilya_diff_outside') | float >= 0.5 }}"    
+            value_template: "{{ states('sensor.gram_water_kamer_amilya_diff_outside') | float(default=0) >= 0.5 }}"    
       - condition: and
         conditions:
           - condition: state
             entity_id: binary_sensor.gram_water_outside_rising
             state: 'on'
           - condition: template
-            value_template: "{{ states('sensor.gram_water_kamer_amilya_diff_outside') | float >= 1 }}"
+            value_template: "{{ states('sensor.gram_water_kamer_amilya_diff_outside') | float(default=0) >= 1 }}"
   action:
   - service: input_boolean.turn_on
     target:
@@ -134,7 +134,7 @@ automation:
     entity_id: sensor.veranda_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float) >= 16 }}"     
+    value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float(default=0)) >= 16 }}"     
   - condition: or
     conditions:
       # first possible case
@@ -144,7 +144,7 @@ automation:
             entity_id: binary_sensor.gram_water_outside_rising
             state: 'off'
           - condition: template
-            value_template: "{{ states('sensor.gram_water_veranda_diff_outside') | float >= 0.5 }}"    
+            value_template: "{{ states('sensor.gram_water_veranda_diff_outside') | float(default=0) >= 0.5 }}"    
       # second possible case
       - condition: and
         conditions:
@@ -152,7 +152,7 @@ automation:
             entity_id: binary_sensor.gram_water_outside_rising
             state: 'on'
           - condition: template
-            value_template: "{{ states('sensor.gram_veranda_diff_outside') | float >= 1 }}"
+            value_template: "{{ states('sensor.gram_veranda_diff_outside') | float(default=0) >= 1 }}"
   - service: input_boolean.turn_on
     target:
       entity_id: input_boolean.veranda_schuifraam_moet_open
@@ -184,7 +184,7 @@ automation:
     entity_id: sensor.berging_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float) >= 16 }}"     
+    value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float(default=0)) >= 16 }}"     
   - condition: or
     conditions:    
       # first possible case
@@ -194,7 +194,7 @@ automation:
             entity_id: binary_sensor.gram_water_outside_rising
             state: 'off'
           - condition: template
-            value_template: "{{ states('sensor.gram_water_berging_diff_outside') | float >= 0.5 }}"
+            value_template: "{{ states('sensor.gram_water_berging_diff_outside') | float(default=0) >= 0.5 }}"
           - condition: numeric_state
             entity_id: sensor.berging_temperature
             above: '16.5'             
@@ -205,7 +205,7 @@ automation:
             entity_id: binary_sensor.gram_water_outside_rising
             state: 'on'
           - condition: template
-            value_template: "{{ states('sensor.gram_berging_diff_outside') | float >= 1 }}"
+            value_template: "{{ states('sensor.gram_berging_diff_outside') | float(default=0) >= 1 }}"
           - condition: numeric_state
             entity_id: sensor.berging_temperature
             above: '16.5'
@@ -242,7 +242,7 @@ automation:
     below: '0.1'
   # test: not taking into account the outside temperature, but only the inside temperature. 
   # - condition: template
-  #  value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float) >= 10 }}"     
+  #  value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float(default=0)) >= 10 }}"     
   - condition: or
     conditions:    
       - condition: and
@@ -251,14 +251,14 @@ automation:
             entity_id: binary_sensor.gram_water_outside_rising
             state: 'off'
           - condition: template
-            value_template: "{{ states('sensor.gram_water_badkamer_diff_outside') | float >= 0.5 }}"    
+            value_template: "{{ states('sensor.gram_water_badkamer_diff_outside') | float(default=0) >= 0.5 }}"    
       - condition: and
         conditions:
           - condition: state
             entity_id: binary_sensor.gram_water_outside_rising
             state: 'on'
           - condition: template
-            value_template: "{{ states('sensor.gram_badkamer_diff_outside') | float >= 1 }}"
+            value_template: "{{ states('sensor.gram_badkamer_diff_outside') | float(default=0) >= 1 }}"
   action:
     - service: input_boolean.turn_on
       target:
@@ -291,7 +291,7 @@ automation:
     entity_id: sensor.gang_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float) >= 16 }}"     
+    value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float(default=0)) >= 16 }}"     
   - condition: or
     conditions:    
       # first possible case
@@ -301,7 +301,7 @@ automation:
             entity_id: binary_sensor.gram_water_outside_rising
             state: 'off'
           - condition: template
-            value_template: "{{ states('sensor.gram_water_gang_diff_outside') | float >= 0.5 }}"
+            value_template: "{{ states('sensor.gram_water_gang_diff_outside') | float(default=0) >= 0.5 }}"
           - condition: numeric_state
             entity_id: sensor.gang_temperature
             above: '16.5'             
@@ -312,7 +312,7 @@ automation:
             entity_id: binary_sensor.gram_water_outside_rising
             state: 'on'
           - condition: template
-            value_template: "{{ states('sensor.gram_gang_diff_outside') | float >= 1 }}"
+            value_template: "{{ states('sensor.gram_gang_diff_outside') | float(default=0) >= 1 }}"
           - condition: numeric_state
             entity_id: sensor.gang_temperature
             above: '16.5'
@@ -348,7 +348,7 @@ automation:
     entity_id: sensor.kamer_alunya_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float) >= 15 }}"     
+    value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float(default=0)) >= 15 }}"     
   - condition: or
     conditions:    
       - condition: and
@@ -357,14 +357,14 @@ automation:
             entity_id: binary_sensor.gram_water_outside_rising
             state: 'off'
           - condition: template
-            value_template: "{{ states('sensor.gram_water_kamer_alunya_diff_outside') | float >= 0.5 }}"    
+            value_template: "{{ states('sensor.gram_water_kamer_alunya_diff_outside') | float(default=0) >= 0.5 }}"    
       - condition: and
         conditions:
           - condition: state
             entity_id: binary_sensor.gram_water_outside_rising
             state: 'on'
           - condition: template
-            value_template: "{{ states('sensor.gram_kamer_alunya_diff_outside') | float >= 1 }}"
+            value_template: "{{ states('sensor.gram_kamer_alunya_diff_outside') | float(default=0) >= 1 }}"
   action:
     - service: input_boolean.turn_on
       target:
@@ -397,7 +397,7 @@ automation:
     entity_id: sensor.master_bedroom_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float) >= 10 }}"
+    value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float(default=0)) >= 10 }}"
   - condition: or
     conditions:
       # first possible case: vocht buiten stijgt niet + binnen minstens 0.4 gram vocht meer dan buiten + temp binnen hoger dan 16.5 + temperatuurverschil binnen/buiten minder dan 10°
@@ -407,7 +407,7 @@ automation:
             entity_id: binary_sensor.gram_water_outside_rising
             state: 'off'
           - condition: template
-            value_template: "{{ states('sensor.gram_water_master_bedroom_diff_outside') | float >= 0.5 }}"    
+            value_template: "{{ states('sensor.gram_water_master_bedroom_diff_outside') | float(default=0) >= 0.5 }}"    
       # second possible case: vocht buiten stijgt wel + binnen minstens 1 gram vocht meer dan buiten + temp binnen hoger dan 16.5 + temperatuurverschil binnen/buiten minder dan 10°
       - condition: and
         conditions:
@@ -415,7 +415,7 @@ automation:
             entity_id: binary_sensor.gram_water_outside_rising
             state: 'on'
           - condition: template
-            value_template: "{{ states('sensor.gram_master_bedroom_diff_outside') | float >= 1 }}"
+            value_template: "{{ states('sensor.gram_master_bedroom_diff_outside') | float(default=0) >= 1 }}"
   action:
   - service: input_boolean.turn_on
     target:
