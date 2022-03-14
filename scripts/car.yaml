@@ -22,7 +22,7 @@ check_auto_op_slot:
       vin: WAUZZZGE6MB019131
   - delay: 00:05:00
   - condition: state
-    entity_id: lock.audi_e_tron_sportback_55_door_lock_2
+    entity_id: lock.audi_e_tron_sportback_door_lock_2
     state: unlocked
   - service: notify.mobile_app_bart_s10
     data:

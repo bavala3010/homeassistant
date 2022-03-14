@@ -35,10 +35,6 @@ tts:
     service_name: google_say
     language: 'nl'
     
-  - platform: google_cloud
-    language: nl-BE
-    gender: male
-
 group: !include groups.yaml
 automation: !include automations.yaml
 # script: !include scripts.yaml
@@ -403,7 +399,7 @@ sensor:
       car_range_per_10percent:
         friendly_name: 'range per 10%'
         unit_of_measurement: km
-        value_template: "{{ (10 * states('sensor.audi_e_tron_sportback_55_primary_engine_range') | float(default=0) / states('sensor.audi_e_tron_sportback_55_state_of_charge') | float(default=0) ) | round (1) }}" 
+        value_template: "{{ (10 * states('sensor.audi_e_tron_sportback_primary_engine_range') | float(default=0) / states('sensor.audi_e_tron_sportback_state_of_charge') | float(default=0) ) | round (1) }}" 
 
 ###############################################################################
 # Powercalc measures the power consumption of lights 
@@ -1054,7 +1050,7 @@ template:
       - name: "car smart charging start time"
         state: >
           {% set target = states('input_number.car_smart_charging_target_percentage') | float(default=0) %}
-          {% set soc = states('sensor.audi_e_tron_sportback_55_state_of_charge') | float(default=0) %}
+          {% set soc = states('sensor.audi_e_tron_sportback_state_of_charge') | float(default=0) %}
           {% set nog_te_laden_procent = [target - soc, 0] | max %}
           {% set nog_te_laden_minuten = nog_te_laden_procent * 8.5 | round(2) %}
           {{ strptime((as_timestamp(states('input_datetime.car_smart_charging_target_time')) - (nog_te_laden_minuten | float(default=0) * 60) )| timestamp_custom('%Y-%m-%d %H:%M',false), '%Y-%m-%d %H:%M') }}
@@ -1145,12 +1141,6 @@ anniversaries:
   - name: verjaardag Bart
     date: '05-03'
 
-counter:
-  toilet_counter:
-    name: toilet bezoek
-    initial: 0
-    step: 1 
-    
 binary_sensor:
   - platform: ping
     name: google_server
@@ -1417,3 +1407,12 @@ modbus:
         address: 1208
         data_type: uint32
         unit_of_measurement: s
+        
+# Add Portainer to Home Assistant navigation menu
+panel_iframe:
+  portainer:
+    title: "Portainer"
+    url: "http://192.168.86.101:9000/"
+    icon: mdi:docker
+    require_admin: true
+

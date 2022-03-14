@@ -33,7 +33,7 @@ automation:
     at: '21:30:00'
   condition:
   - condition: state
-    entity_id: lock.audi_e_tron_sportback_55_door_lock
+    entity_id: lock.audi_e_tron_sportback_door_lock
     state: unlocked
   - condition: state
     entity_id: device_tracker.bart_s10
@@ -80,7 +80,7 @@ automation:
           uri: /eikenbos-dashboard/e-tron        
   - service: lock.lock
     target:
-      entity_id: lock.audi_e_tron_sportback_55_door_lock
+      entity_id: lock.audi_e_tron_sportback_door_lock
   mode: single
 
 - alias: auto sluiten
@@ -93,7 +93,7 @@ automation:
   action:
   - service: lock.lock
     target:
-      entity_id: lock.audi_e_tron_sportback_55_door_lock
+      entity_id: lock.audi_e_tron_sportback_door_lock
   mode: single
 
 - alias: 🚗 auto is op slot (clear_notification)
@@ -101,7 +101,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: lock.audi_e_tron_sportback_55_door_lock
+    entity_id: lock.audi_e_tron_sportback_door_lock
     to: 'locked'
   condition: []
   action:
@@ -122,7 +122,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: lock.audi_e_tron_sportback_55_door_lock
+    entity_id: lock.audi_e_tron_sportback_door_lock
     to: 'unlocked'
     for:
       hours: 0
@@ -208,7 +208,7 @@ automation:
     at: '19:00'
   condition:
   - condition: numeric_state
-    entity_id: sensor.audi_e_tron_sportback_55_outdoor_temperature
+    entity_id: sensor.audi_e_tron_sportback_outdoor_temperature
     below: 15
   - condition: state
     entity_id: person.bart
@@ -246,7 +246,7 @@ automation:
       for: "00:00:05"
   condition:
     - condition: numeric_state
-      entity_id: sensor.audi_e_tron_sportback_55_outdoor_temperature
+      entity_id: sensor.audi_e_tron_sportback_outdoor_temperature
       below: 15
   action:
   - choose:
@@ -371,7 +371,7 @@ automation:
       for: "00:00:05"
   condition:
     - condition: numeric_state
-      entity_id: sensor.audi_e_tron_sportback_55_outdoor_temperature
+      entity_id: sensor.audi_e_tron_sportback_outdoor_temperature
       below: 15
   action:
   - choose:
@@ -493,7 +493,7 @@ automation:
     at: '07:00'
   condition:
   - condition: numeric_state
-    entity_id: sensor.audi_e_tron_sportback_55_outdoor_temperature
+    entity_id: sensor.audi_e_tron_sportback_outdoor_temperature
     below: 15
   - condition: template
     value_template: >
@@ -522,7 +522,7 @@ automation:
     at: '07:30'
   condition:
   - condition: numeric_state
-    entity_id: sensor.audi_e_tron_sportback_55_outdoor_temperature
+    entity_id: sensor.audi_e_tron_sportback_outdoor_temperature
     below: 15
   - condition: template
     value_template: >
@@ -551,7 +551,7 @@ automation:
     at: '16:20'
   condition:
   - condition: numeric_state
-    entity_id: sensor.audi_e_tron_sportback_55_outdoor_temperature
+    entity_id: sensor.audi_e_tron_sportback_outdoor_temperature
     below: 15
   - condition: state
     entity_id: person.madouce
@@ -579,7 +579,7 @@ automation:
     at: '16:20'
   condition:
   - condition: numeric_state
-    entity_id: sensor.audi_e_tron_sportback_55_outdoor_temperature
+    entity_id: sensor.audi_e_tron_sportback_outdoor_temperature
     below: 15
   - condition: state
     entity_id: person.madouce
@@ -663,16 +663,16 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: sensor.audi_e_tron_sportback_55_plug_state
+    entity_id: sensor.audi_e_tron_sportback_plug_state
     to: 'connected'
   condition:
   - condition: template
-    value_template: "{{ states('device_tracker.audi_e_tron_sportback_55_position') != 'home' }}"
+    value_template: "{{ states('device_tracker.audi_e_tron_sportback_position') != 'home' }}"
   action:
   - service: notify.bart_phone
     data:
       title: "🚙 Autolader is verbonden." 
-      message: "Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%. Nog {{states('sensor.audi_e_tron_sportback_55_remaining_charge_time')}} laden."
+      message: "Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}%. Nog {{states('sensor.audi_e_tron_sportback_remaining_charge_time')}} laden."
       data:
         color: green
         tag: auto_laden
@@ -683,7 +683,7 @@ automation:
           uri: /eikenbos-dashboard/e-tron        
   - service: notify.madouce_phone
     data:
-      message: "🚙 Autolader is verbonden. Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%."
+      message: "🚙 Autolader is verbonden. Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}%."
       data:
         color: green
         tag: auto_laden
@@ -699,18 +699,18 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: sensor.audi_e_tron_sportback_55_charging_state
+    entity_id: sensor.audi_e_tron_sportback_charging_state
     from: 'off'
     to: 'charging'
   condition:
   - condition: template
-    value_template: "{{ states('device_tracker.audi_e_tron_sportback_55_position') != 'home' }}"
+    value_template: "{{ states('device_tracker.audi_e_tron_sportback_position') != 'home' }}"
   action:
   - service: notify.bart_phone
     data:
       title: 🚙 Auto is aan het laden.
-      message: Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km.
-        Nog {{states('sensor.audi_e_tron_sportback_55_remaining_charge_time')}} laden.
+      message: Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_primary_engine_range')}} km.
+        Nog {{states('sensor.audi_e_tron_sportback_remaining_charge_time')}} laden.
       data:
         color: green
         tag: auto_laden
@@ -721,8 +721,8 @@ automation:
           uri: /eikenbos-dashboard/e-tron
   - service: notify.madouce_phone
     data:
-      message: Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km.
-        Nog {{states('sensor.audi_e_tron_sportback_55_remaining_charge_time')}} laden.
+      message: Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_primary_engine_range')}} km.
+        Nog {{states('sensor.audi_e_tron_sportback_remaining_charge_time')}} laden.
       data:
         color: green
         tag: auto_laden
@@ -738,13 +738,13 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: sensor.audi_e_tron_sportback_55_charging_state
+    entity_id: sensor.audi_e_tron_sportback_charging_state
     to: 'completed'
   condition: []
   action:
   - service: notify.bart_phone
     data:
-      message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%. {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
+      message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}%. {{states('sensor.audi_e_tron_sportback_primary_engine_range')}} km."
       data:
         color: green
         tag: auto_laden
@@ -755,7 +755,7 @@ automation:
           uri: /eikenbos-dashboard/e-tron
   - service: notify.madouce_phone
     data:
-      message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%. {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
+      message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}%. {{states('sensor.audi_e_tron_sportback_primary_engine_range')}} km."
       data:
         color: green
         tag: auto_laden
@@ -786,11 +786,11 @@ automation:
   - service: notify.madouce_phone
     data:
       title: Morgen naar Toyota Evere
-      message: "Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_55_state_of_charge') |round() > 24 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen.{% endif %}"
+      message: "Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_state_of_charge') |round() > 24 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen.{% endif %}"
   - service: notify.bart_phone
     data:
       title: Morgen naar Toyota Evere
-      message: "Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_55_state_of_charge') |round() > 24 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen.{% endif %}"
+      message: "Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_state_of_charge') |round() > 24 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen.{% endif %}"
   mode: single
   
 - alias: 🚗 morgen naar Toyota Diest = check 21u30 voldoende geladen?
@@ -808,11 +808,11 @@ automation:
   - service: notify.madouce_phone
     data:
       title: Morgen naar Toyota Diest
-      message: "Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_55_state_of_charge') |round() > 38 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen.{% endif %}"
+      message: "Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_state_of_charge') |round() > 38 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen.{% endif %}"
   - service: notify.bart_phone
     data:
       title: Morgen naar Toyota Diest
-      message: "Nu {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_55_state_of_charge') |round() > 38 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen.{% endif %}"
+      message: "Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_state_of_charge') |round() > 38 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen.{% endif %}"
   mode: single
 
 - alias: 🚗 batterij <60% en niet verbonden (week)
@@ -830,18 +830,18 @@ automation:
     - thu
     - sun
   - condition: template
-    value_template: "{% if states('sensor.audi_e_tron_sportback_55_state_of_charge') | float < 60.0 %} true {% endif %}"
+    value_template: "{% if states('sensor.audi_e_tron_sportback_state_of_charge') | float < 60.0 %} true {% endif %}"
   - condition: state
-    entity_id: device_tracker.audi_e_tron_sportback_55_position
+    entity_id: device_tracker.audi_e_tron_sportback_position
     state: home
   - condition: state
-    entity_id: sensor.audi_e_tron_sportback_55_plug_state
+    entity_id: sensor.audi_e_tron_sportback_plug_state
     state: disconnected
   action:
   - service: notify.bart_phone
     data:
       title: Auto laden?
-      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
+      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_primary_engine_range')}} km."
       data:
         color: green
         tag: auto_laden
@@ -852,7 +852,7 @@ automation:
   - service: notify.madouce_phone
     data:
       title: Auto laden?
-      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
+      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_primary_engine_range')}} km."
       data:
         color: green
         tag: auto_laden
@@ -874,18 +874,18 @@ automation:
     - fri
     - sat
   - condition: template
-    value_template: "{% if states('sensor.audi_e_tron_sportback_55_state_of_charge') | float < 80.0 %} true {% endif %}"
+    value_template: "{% if states('sensor.audi_e_tron_sportback_state_of_charge') | float < 80.0 %} true {% endif %}"
   - condition: state
-    entity_id: device_tracker.audi_e_tron_sportback_55_position
+    entity_id: device_tracker.audi_e_tron_sportback_position
     state: home
   - condition: state
-    entity_id: sensor.audi_e_tron_sportback_55_plug_state
+    entity_id: sensor.audi_e_tron_sportback_plug_state
     state: disconnected
   action:
   - service: notify.bart_phone
     data:
       title: Auto laden voor het weekend?
-      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
+      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_primary_engine_range')}} km."
       data:
         color: green
         tag: auto_laden
@@ -896,7 +896,7 @@ automation:
   - service: notify.madouce_phone
     data:
       title: Auto laden voor het weekend?
-      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_55_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_55_primary_engine_range')}} km."
+      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_primary_engine_range')}} km."
       data:
         color: green
         tag: auto_laden
@@ -923,10 +923,10 @@ automation:
     at: '22:00'
   condition:
   - condition: state
-    entity_id: device_tracker.audi_e_tron_sportback_55_position
+    entity_id: device_tracker.audi_e_tron_sportback_position
     state: home    
   - condition: state
-    entity_id: sensor.audi_e_tron_sportback_55_plug_state
+    entity_id: sensor.audi_e_tron_sportback_plug_state
     state: 'disconnected'
   # voorwaarde: als start tijd < nu + 10 uren (dus starttijd voor 20u)
   - condition: template
@@ -946,11 +946,11 @@ automation:
   description: ''
   trigger:
     - platform: state
-      entity_id: sensor.audi_e_tron_sportback_55_plug_state
+      entity_id: sensor.audi_e_tron_sportback_plug_state
       to: connected
   condition:
     - condition: state
-      entity_id: device_tracker.audi_e_tron_sportback_55_position
+      entity_id: device_tracker.audi_e_tron_sportback_position
       state: home
   action:
   - service: notify.bart_phone
@@ -978,7 +978,7 @@ automation:
     entity_id: input_boolean.car_smart_charging_busy
     state: 'off'
   - condition: state
-    entity_id: sensor.audi_e_tron_sportback_55_charging_state
+    entity_id: sensor.audi_e_tron_sportback_charging_state
     state: 'off'
   action:
   - service: input_boolean.turn_on
@@ -992,7 +992,7 @@ automation:
   - service: notify.bart_phone
     data:
       title: Smart charging gestart.
-      message: "Nu: {{states('sensor.audi_e_tron_sportback_55_state_of_charge') | round()}}%. Laden tot {{states('input_number.car_smart_charging_target_percentage') | round() }}%.<br>Doeluur: {{as_timestamp(states('input_datetime.car_smart_charging_target_time')) | timestamp_custom('%a %-d/%-m %-Hu%M',false) }}"
+      message: "Nu: {{states('sensor.audi_e_tron_sportback_state_of_charge') | round()}}%. Laden tot {{states('input_number.car_smart_charging_target_percentage') | round() }}%.<br>Doeluur: {{as_timestamp(states('input_datetime.car_smart_charging_target_time')) | timestamp_custom('%a %-d/%-m %-Hu%M',false) }}"
       data:
         tag: smart_charging
   mode: single
@@ -1002,12 +1002,12 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: sensor.audi_e_tron_sportback_55_state_of_charge
+    entity_id: sensor.audi_e_tron_sportback_state_of_charge
   condition:
   - condition: template
-    value_template: "{{ states('sensor.audi_e_tron_sportback_55_state_of_charge')| int(2) >= (states('input_number.car_smart_charging_target_percentage') | int(2)) }}"
+    value_template: "{{ states('sensor.audi_e_tron_sportback_state_of_charge')| int(2) >= (states('input_number.car_smart_charging_target_percentage') | int(2)) }}"
   - condition: state
-    entity_id: sensor.audi_e_tron_sportback_55_charging_state
+    entity_id: sensor.audi_e_tron_sportback_charging_state
     state: 'on'    
   action:
   - service: input_boolean.turn_on
@@ -1017,7 +1017,7 @@ automation:
   - service: notify.bart_phone
     data:
       title: Laaddoel bereikt!
-      message: "Laaddoel bereikt: {{states('input_number.car_smart_charging_target_percentage') | round() }}%. Nu: {{states('sensor.audi_e_tron_sportback_55_state_of_charge') | round()}}%"
+      message: "Laaddoel bereikt: {{states('input_number.car_smart_charging_target_percentage') | round() }}%. Nu: {{states('sensor.audi_e_tron_sportback_state_of_charge') | round()}}%"
       data:
         tag: smart_charging
   # targtet time op dag later zetten
@@ -1047,7 +1047,7 @@ automation:
     - thu
     - fri
   - condition: state
-    entity_id: device_tracker.audi_e_tron_sportback_55_position
+    entity_id: device_tracker.audi_e_tron_sportback_position
     state: home    
   action:
   - service: audiconnect.execute_vehicle_action
@@ -1075,7 +1075,7 @@ automation:
     weekday:
     - sat
   - condition: state
-    entity_id: device_tracker.audi_e_tron_sportback_55_position
+    entity_id: device_tracker.audi_e_tron_sportback_position
     state: home    
   action:
   - service: audiconnect.execute_vehicle_action
@@ -1103,7 +1103,7 @@ automation:
     weekday:
     - sun
   - condition: state
-    entity_id: device_tracker.audi_e_tron_sportback_55_position
+    entity_id: device_tracker.audi_e_tron_sportback_position
     state: home    
   action:
   - service: audiconnect.execute_vehicle_action

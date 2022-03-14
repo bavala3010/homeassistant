@@ -367,10 +367,6 @@ automation:
     from: 'on'
     to: 'off'
   - platform: state
-    entity_id: binary_sensor.kamer_amilya_schuifraam
-    from: 'on'
-    to: 'off'
-  - platform: state
     entity_id: input_boolean.kamer_amilya_window_pause
     from: 'off'
     to: 'on'    
@@ -413,11 +409,11 @@ automation:
       message: "clear_notification"
       data:
         tag: window_veranda
-  - service: notify.bart_phone
+  - service: notify.madouce_phone
     data:
       message: "clear_notification"
       data:
-        tag: window_berging        
+        tag: window_veranda        
   mode: single
 
 - alias: 🪟 ramen - sluit raam berging - clear notification (Bart en Madouce)

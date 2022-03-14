@@ -143,12 +143,11 @@ automation:
   id: '9d978857-e649-455d-8144-1e5dad99eb23'
   description: '9d978857-e649-455d-8144-1e5dad99eb23'
   trigger:
-  - platform: device
-    device_id: d434bc1199aafa4c5d9e448b1fd55e30
-    domain: device_tracker
-    entity_id: device_tracker.madouce_s20
-    type: enters
-    zone: zone.home
+  trigger:
+  - platform: numeric_state
+    entity_id:
+      - proximity.madouce_home
+    below: 2
   condition:
   - condition: state
     entity_id: person.bart

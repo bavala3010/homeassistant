@@ -444,7 +444,7 @@ automation:
   - service: light.turn_on
     data:
       kelvin: 2500
-      brightness_pct: 100
+      brightness_pct: 60
     target:
       entity_id: light.gang
   mode: single
