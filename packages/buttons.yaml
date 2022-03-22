@@ -47,11 +47,11 @@ automation:
     data:
       entity_id: media_player.living_speaker
       volume_level: 0.6
-  - service: tts.cloud_say
+  - service: tts.google_say
     data:
       entity_id: media_player.veranda_speaker
       message: Garagepoort gaat open!
-  - service: tts.cloud_say
+  - service: tts.google_say
     data:
       entity_id: media_player.living_speaker
       message: Garagepoort gaat open!
@@ -77,7 +77,7 @@ automation:
     subtype: turn_on
   condition: []
   action:
-    - service: tts.cloud_say
+    - service: tts.google_say
       data:
         entity_id: media_player.master_bedroom_speaker
         cache: false
@@ -86,7 +86,7 @@ automation:
           as_timestamp(now()) |timestamp_custom('%-M') }}. Buiten is het {{states('sensor.temp_leuven24_wunderground')}} graden.
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.cloud_say
+    - service: tts.google_say
       data:
         entity_id: media_player.master_bedroom_speaker
         message: >-
@@ -95,26 +95,26 @@ automation:
               )|random }}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.cloud_say
+    - service: tts.google_say
       data:
         entity_id: media_player.master_bedroom_speaker
         message: >-
-          {% if is_state('lock.audi_e_tron_sportback_55_door_lock_2', 'unlocked') %} De auto is niet op slot.
+          {% if is_state('lock.audi_e_tron_sportback_door_lock_2', 'unlocked') %} De auto is niet op slot.
           {% else %} De auto is op slot.
           {% endif %}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.cloud_say
+    - service: tts.google_say
       data:
         entity_id: media_player.master_bedroom_speaker
         message: >-
-          De auto is {{states('sensor.audi_e_tron_sportback_55_state_of_charge') | int }}% geladen
-          {% if is_state('sensor.audi_e_tron_sportback_55_plug_state','connected') %} en de laadkabel is verbonden.
+          De auto is {{states('sensor.audi_e_tron_sportback_state_of_charge') | int }}% geladen
+          {% if is_state('sensor.audi_e_tron_sportback_plug_state','connected') %} en de laadkabel is verbonden.
           {% else %} maar de laadkabel is niet verbonden.
           {% endif %}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.cloud_say
+    - service: tts.google_say
       data:
         entity_id: media_player.master_bedroom_speaker
         cache: false
@@ -123,7 +123,7 @@ automation:
           slot. {% else %} De voordeur is op slot. {% endif %}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.cloud_say
+    - service: tts.google_say
       data:
         entity_id: media_player.master_bedroom_speaker
         cache: false
@@ -147,7 +147,7 @@ automation:
           {% endif %}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.cloud_say
+    - service: tts.google_say
       data:
         entity_id: media_player.master_bedroom_speaker
         cache: false
@@ -176,7 +176,7 @@ automation:
   - condition: time
     after: '09:00:00'
     before: '23:00:00'
-  - service: tts.cloud_say
+  - service: tts.google_say
     data:
       entity_id: media_player.master_bedroom_speaker
       cache: false
@@ -204,7 +204,7 @@ automation:
   - condition: time
     after: '09:00:00'
     before: '23:00:00'
-  - service: tts.cloud_say
+  - service: tts.google_say
     data:
       entity_id: media_player.master_bedroom_speaker
       cache: false

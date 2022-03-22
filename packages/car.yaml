@@ -808,11 +808,11 @@ automation:
   - service: notify.madouce_phone
     data:
       title: Morgen naar Toyota Diest
-      message: "Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_state_of_charge') |round() > 38 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen.{% endif %}"
+      message: "Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_state_of_charge') |round() > 38 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen. Best +/- 40%.{% endif %}"
   - service: notify.bart_phone
     data:
       title: Morgen naar Toyota Diest
-      message: "Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_state_of_charge') |round() > 38 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen.{% endif %}"
+      message: "Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_state_of_charge') |round() > 38 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen. Best +/- 40%.{% endif %}"
   mode: single
 
 - alias: 🚗 batterij <60% en niet verbonden (week)

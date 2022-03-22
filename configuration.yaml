@@ -1416,3 +1416,9 @@ panel_iframe:
     icon: mdi:docker
     require_admin: true
 
+  duplicati:
+    title: "Duplicati"
+    url: "http://192.168.86.101:8200/"
+    icon: mdi:backup-restore
+    require_admin: true
+    

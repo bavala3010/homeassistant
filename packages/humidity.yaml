@@ -68,6 +68,7 @@ automation:
             water /m³.<br>Zet eventueel machine aan."
       data:
         color: "#0E86D4"
+        tag: window_master_bedroom
         channel: Vocht
         actions:
         - action: URI
@@ -152,7 +153,7 @@ automation:
             water /m³ en {{states('sensor.master_bedroom_humidity')}}% vocht."
           data:
             color: "#0E86D4"
-            tag: master_bedroom_vocht
+            tag: window_master_bedroom
             channel: vocht
             actions:
             - action: URI
@@ -165,7 +166,7 @@ automation:
             water /m³ en {{states('sensor.master_bedroom_humidity')}}% vocht."
           data:
             color: "#0E86D4"
-            tag: master_bedroom_vocht
+            tag: window_master_bedroom
             channel: vocht
             actions:
             - action: URI

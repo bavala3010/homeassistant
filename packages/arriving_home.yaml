@@ -26,7 +26,7 @@ automation:
   - service: notify.bart_phone
     data:
       message: TTS
-      title: "Welkom thuis Bart! De auto batterij is {{states('sensor.audi_e_tron_sportback_55_state_of_charge') | round (0)}}%."
+      title: "Welkom thuis Bart! De auto batterij is {{states('sensor.audi_e_tron_sportback_state_of_charge') | round (0)}}%."
       data:
         channel: alarm_stream
   - service: notify.bart_phone
@@ -60,7 +60,7 @@ automation:
   - service: notify.madouce_phone
     data:
       message: TTS
-      title: "Welkom thuis Madouce! De auto batterij is {{states('sensor.audi_e_tron_sportback_55_state_of_charge') | round (0)}}%."
+      title: "Welkom thuis Madouce! De auto batterij is {{states('sensor.audi_e_tron_sportback_state_of_charge') | round (0)}}%."
       data:
         channel: alarm_stream
   - service: notify.madouce_phone
@@ -142,7 +142,6 @@ automation:
 - alias: 🏡 Madouce is bijna thuis 
   id: '9d978857-e649-455d-8144-1e5dad99eb23'
   description: '9d978857-e649-455d-8144-1e5dad99eb23'
-  trigger:
   trigger:
   - platform: numeric_state
     entity_id:
