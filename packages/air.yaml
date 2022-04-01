@@ -215,7 +215,7 @@ automation:
     data:
       entity_id: media_player.living_speaker
       volume_level: 0.5      
-  - service: tts.cloud_say
+  - service: tts.google_say
     data:
       entity_id: media_player.living_speaker
       message: '{{ ("Laat het dadelijk smaken! Ik zorg voor de zuivere lucht.", "Zullen we deze week ook nog eens frietjes eten?", "Meisjes, dek de tafel maar alvast!", "Moet ik helpen met koken?", "Voor mij een steak met frietjes graag.", "Wanneer eten we nog eens spaghetti?", "Vergeet de groentjes niet voor de vitaminen!") |random }}'
@@ -243,7 +243,7 @@ automation:
     target:
       entity_id: fan.mi_air
     data: {}
-  - service: tts.cloud_say
+  - service: tts.google_say
     data:
       entity_id: media_player.living_speaker
       message: De kooksessie is gedaan. Hopelijk heeft het gesmaakt.

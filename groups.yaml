@@ -188,7 +188,14 @@ berging_lichten:
     - light.berging_spot_1
     - light.berging_spot_2
     - light.berging_spot_3
-  
+
+veranda_lichten:
+  name: veranda
+  entities:
+    - light.veranda
+    - light.veranda_staande_lamp
+
+
 buiten_lichten:
   name: buiten
   entities:

@@ -151,10 +151,12 @@ automation:
     entity_id: sensor.temp_leuven24_wunderground
     below: '20'
   action:
-  - type: turn_on
-    device_id: a0297c6061546a2108b2d33e01ed449d
-    entity_id: light.living_links_3
-    domain: light
+  - service: light.turn_on
+    data:
+      transition: 10
+      brightness: 26
+    target:
+      device_id: a0297c6061546a2108b2d33e01ed449d 
   mode: single
 
 - alias: 💡 TV aan + zon onder = TV strip aan
@@ -170,11 +172,12 @@ automation:
     entity_id: sun.sun
     state: below_horizon
   action:
-  - type: turn_on
-    device_id: d5ef9b4f569a408660e7e445331abfcc
-    entity_id: light.tv_strip
-    domain: light
-    brightness_pct: 25
+  - service: light.turn_on
+    data:
+      transition: 10
+      brightness: 26
+    target:
+      device_id: d5ef9b4f569a408660e7e445331abfcc
   mode: single
 
 - alias: 💡 Google TV living playing + zon onder = Hue sync aan
@@ -208,6 +211,8 @@ automation:
   condition: []
   action:
   - service: light.turn_off
+    data:
+      transition: 10
     target:
       entity_id:
       -  light.tv_strip

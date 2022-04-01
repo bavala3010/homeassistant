@@ -220,27 +220,3 @@
       entity_id: media_player.badkamer_speaker
       message: Het raam mag open. Er is {{states('sensor.badkamer_humidity')}}% vocht.
   mode: single
-- id: '1647682736113'
-  alias: Nieuwe automatisering
-  description: ''
-  trigger:
-  - platform: time
-    at: '19:00:00'
-  condition: []
-  action:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.living_speaker
-    data:
-      media_content_id: media-source://camera/camera.netatmo_eikenbos_oprit
-      media_content_type: application/vnd.apple.mpegurl
-    metadata:
-      title: Netatmo Eikenbos oprit
-      thumbnail: /api/camera_proxy/camera.netatmo_eikenbos_oprit
-      media_class: video
-      children_media_class:
-      navigateIds:
-      - {}
-      - media_content_type: app
-        media_content_id: media-source://camera
-  mode: single

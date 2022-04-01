@@ -326,7 +326,7 @@ automation:
       entity_id: input_boolean.badkamer_raam_moet_open
       state: 'on'
   action:
-    - service: tts.cloud_say
+    - service: tts.google_say
       data:
         entity_id: media_player.badkamer_speaker
         message: Het raam mag open. Er is {{states('sensor.badkamer_humidity')}}% vocht.

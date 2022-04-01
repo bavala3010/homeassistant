@@ -75,9 +75,8 @@ http:
   use_x_forwarded_for: true
   trusted_proxies:
     - 192.168.86.0/24 # the IP address of the proxy server
-    - 172.20.0.0/24
-    - 172.17.0.0/24
-    - 172.0.0.0/24
+  ip_ban_enabled: true          # use this to enable auto IP ban
+  login_attempts_threshold: 3   # set the number of allowed login attempts
 
 #pi_hole:
 #  host: 192.168.86.101:8081
@@ -180,6 +179,13 @@ utility_meter:
   monthly_energy:
     source: sensor.ty02820620a4cf12eb80b8_2
     cycle: monthly
+
+
+###############################################################################
+###############################################################################
+# A long list of sensors
+###############################################################################
+###############################################################################
 
 sensor:
 
@@ -1025,6 +1031,12 @@ sensor:
     file_paths:
       - /config/home-assistant_v2.db
 
+###############################################################################
+###############################################################################
+# template / sensor
+###############################################################################
+###############################################################################
+
 template:
   - sensor:
       - name: "badkamer raam"
@@ -1054,6 +1066,22 @@ template:
           {% set nog_te_laden_procent = [target - soc, 0] | max %}
           {% set nog_te_laden_minuten = nog_te_laden_procent * 8.5 | round(2) %}
           {{ strptime((as_timestamp(states('input_datetime.car_smart_charging_target_time')) - (nog_te_laden_minuten | float(default=0) * 60) )| timestamp_custom('%Y-%m-%d %H:%M',false), '%Y-%m-%d %H:%M') }}
+
+
+      ###############################################################################
+      # sensors for Alfen Eve Pro charging point 
+      ###############################################################################
+
+      - name: mode3_sanitized
+        state: "{{states('sensor.laadpaal_mode3_state').replace('\0','') }}"
+      - name: chargepoint_status
+        state: >
+          {% set m3 = states('sensor.mode3_sanitized') %}
+          {% if m3 in ['A', 'E'] %} available
+          {% elif m3 in ['B1', 'B2', 'C1', 'D1'] %} connected
+          {% elif m3 in ['C2', 'D2'] %} charging
+          {% else %} {{ m3 }}
+          {% endif %}
 
 ###############################################################################
 #
@@ -1363,7 +1391,7 @@ proximity:
 modbus:
   - name: laadpaal
     type: tcp
-    host: 192.168.xxx.yyy
+    host: 192.168.1.4
     port: 502
     sensors:
       - name: laadpaal_name
@@ -1421,4 +1449,6 @@ panel_iframe:
     url: "http://192.168.86.101:8200/"
     icon: mdi:backup-restore
     require_admin: true
-    
+
+shell_command:
+  raspi_maintenance: ssh -i /config/ssh/id_rsa -o 'StrictHostKeyChecking=no' bart@192.168.86.101 '~/sys_maintenance'

@@ -21,7 +21,10 @@ automation:
     entity_id: device_tracker.bart_s10
     type: enters
     zone: zone.home
-  condition: []
+  condition:
+  - condition: state
+    entity_id: binary_sensor.bart_phone_connected_to_car
+    state: 'on'
   action:
   - service: notify.bart_phone
     data:
@@ -55,7 +58,10 @@ automation:
     entity_id: device_tracker.madouce_s20
     type: enters
     zone: zone.home
-  condition: []
+  condition:
+  - condition: state
+    entity_id: binary_sensor.madouce_phone_connected_to_car
+    state: 'on'
   action:
   - service: notify.madouce_phone
     data:
@@ -167,3 +173,33 @@ automation:
       message: TTS
       title: Madouce is bijna thuis.
   mode: single
+
+- alias: 🏡 Bart is bijna thuis 
+  id: '50eab11b-f89a-41b3-82ad-e1110b9b0738'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id:
+      - proximity.bart_home
+    below: 2
+  condition:
+  - condition: state
+    entity_id: person.madouce
+    state: home
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0    
+  action:
+  - service: notify.madouce_phone
+    data:
+      title: Bart is bijna thuis.
+      message: Hoera.
+      data:
+        color: red
+  - service: notify.madouce_phone
+    data:
+      message: TTS
+      title: Bart is bijna thuis.
+  mode: single
+  

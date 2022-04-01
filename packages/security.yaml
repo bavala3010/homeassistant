@@ -117,7 +117,7 @@ automation:
     data:
       entity_id: media_player.living_speaker
       volume_level: 0.7
-  - service: tts.cloud_say
+  - service: tts.google_say
     data:
       entity_id: media_player.living_speaker
       message: "Alarm ingeschakeld!
@@ -154,7 +154,7 @@ automation:
     data:
       entity_id: media_player.living_speaker
       volume_level: 0.8
-  - service: tts.cloud_say
+  - service: tts.google_say
     data:
       entity_id: media_player.living_speaker
       message: Alarm uitgeschakeld!
@@ -288,11 +288,11 @@ automation:
     data:
       entity_id: media_player.living_speaker
       volume_level: 0.5
-  - service: tts.cloud_say
+  - service: tts.google_say
     data:
       entity_id: media_player.living_speaker
       message: Beweging op oprit!
-  - service: tts.cloud_say
+  - service: tts.google_say
     data:
       entity_id: media_player.veranda_speaker
       message: Beweging op oprit! 

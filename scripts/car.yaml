@@ -475,9 +475,29 @@ auto_stop_climatisatie:
 # auto laden
 ###########################
 
+car_charging_set_smart_modus:
+  alias: zet laadmodus op smart charging
+  sequence:
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.smart_charging_mode_timer
+
+car_charging_set_direct_modus:
+  alias: zet laadmodus op direct laden
+  sequence:
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.smart_charging_mode_direct
+
 auto_start_laden_nu:
   alias: auto start laden nu
   sequence:
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.smart_charging_mode_direct  
   - service: input_datetime.set_datetime
     target:
       entity_id: input_datetime.car_smart_charging_command_sent_time
@@ -516,5 +536,3 @@ auto_stop_laden:
     data:
       vin: WAUZZZGE6MB019131
       action: stop_charging
-  
-      
