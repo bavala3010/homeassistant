@@ -134,7 +134,7 @@ automation:
     entity_id: sensor.veranda_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ states('sensor.temp_leuven24_wunderground') | float(default=0)) >= 16 }}"     
+    value_template: "{{ states('sensor.temp_leuven24_wunderground') | float(default=0) >= 16 }}"     
   - condition: or
     conditions:
       # first possible case
@@ -184,7 +184,7 @@ automation:
     entity_id: sensor.berging_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ states('sensor.temp_leuven24_wunderground') | float(default=0)) >= 16 }}"     
+    value_template: "{{ states('sensor.temp_leuven24_wunderground') | float(default=0) >= 16 }}"     
   - condition: or
     conditions:    
       # first possible case
@@ -242,7 +242,7 @@ automation:
     below: '0.1'
   # test: not taking into account the outside temperature, but only the inside temperature. 
   # - condition: template
-  #  value_template: "{{ (states('sensor.temp_leuven24_wunderground') | float(default=0)) >= 10 }}"     
+  #  value_template: "{{ states('sensor.temp_leuven24_wunderground') | float(default=0) >= 10 }}"     
   - condition: or
     conditions:    
       - condition: and
@@ -291,7 +291,7 @@ automation:
     entity_id: sensor.gang_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ states('sensor.temp_leuven24_wunderground') | float(default=0)) >= 16 }}"     
+    value_template: "{{ states('sensor.temp_leuven24_wunderground') | float(default=0) >= 16 }}"     
   - condition: or
     conditions:    
       # first possible case
@@ -348,7 +348,7 @@ automation:
     entity_id: sensor.kamer_alunya_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ states('sensor.temp_leuven24_wunderground') | float(default=0)) >= 15 }}"     
+    value_template: "{{ states('sensor.temp_leuven24_wunderground') | float(default=0) >= 15 }}"     
   - condition: or
     conditions:    
       - condition: and
@@ -397,7 +397,7 @@ automation:
     entity_id: sensor.master_bedroom_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ states('sensor.temp_leuven24_wunderground') | float(default=0)) >= 10 }}"
+    value_template: "{{ states('sensor.temp_leuven24_wunderground') | float(default=0) >= 10 }}"
   - condition: or
     conditions:
       # first possible case: vocht buiten stijgt niet + binnen minstens 0.4 gram vocht meer dan buiten + temp binnen hoger dan 16.5 + temperatuurverschil binnen/buiten minder dan 10°

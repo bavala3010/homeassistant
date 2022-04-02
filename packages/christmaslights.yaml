@@ -25,10 +25,10 @@ automation:
     target:
       entity_id: switch.kerstverlichting
   - service: notify.bart_phone
-    data_template:
+    data:
       message: '{{ ["Joehoe, de kerstverlichting brandt weer!","Jingle bells", "Merry Christmas with lots of love.", "Kerst is leuker met lichtjes.", "Wishing you a Christmas that is merry and bright!"] | random }}'
   - service: notify.madouce_phone
-    data_template:
+    data:
       message: '{{ ["Joehoe, de kerstverlichting brandt weer!","Jingle bells", "Merry Christmas with lots of love.", "Kerst is leuker met lichtjes.", "Wishing you a Christmas that is merry and bright!"] | random }}'
   mode: single
   

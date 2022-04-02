@@ -8,7 +8,7 @@
       entity_id: person.bart
       zone: zone.home
     - service: notify.bart_phone
-      data_template:
+      data:
         title: " {{ title }}"
         message: "{{ reason }}<br>{{ message }}"
         data:
@@ -34,7 +34,7 @@
       entity_id: person.madouce
       zone: zone.home
     - service: notify.madouce_phone
-      data_template:
+      data:
         title: " {{ title }}"
         message: "{{ reason }}<br>{{ message }}"
         data:
@@ -60,7 +60,7 @@
       entity_id: person.alunya
       zone: zone.home
     - service: notify.alunya_phone
-      data_template:
+      data:
         title: " {{ title }}"
         message: "{{ reason }}<br>{{ message }}"
         data:

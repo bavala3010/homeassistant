@@ -658,7 +658,7 @@ automation:
 # gewoon laden (niet thuis)
 ######################################
 
-- alias: 🚗 autolader is verbonden (geen smart charging)
+- alias: 🚗 autolader is verbonden (niet thuis) = melding
   id: 'cdd4783a-a810-4b0a-b46d-1b1bf58eb80e'
   description: ''
   trigger:
@@ -694,7 +694,7 @@ automation:
           uri: /eikenbos-dashboard/e-tron        
   mode: single
 
-- alias: 🚗 auto laadt = melding (geen smart charging)
+- alias: 🚗 auto laadt (niet thuis) = melding
   id: '10f06a54-7eea-4d86-9bf8-2ef07549a4d6'
   description: ''
   trigger:
@@ -733,7 +733,7 @@ automation:
           uri: /eikenbos-dashboard/e-tron
   mode: single
 
-- alias: 🚗 auto gedaan met laden (geen smart charging) = melding
+- alias: 🚗 auto gedaan met laden (niet thuis) = melding
   id: '23ebfe4a-e944-49dc-aa3f-e8a1983e8a56'
   description: ''
   trigger:
@@ -906,9 +906,48 @@ automation:
           uri: /eikenbos-dashboard/car-charging        
   mode: single
 
+
+#######################################
+# Charging modus toggle
+######################################
+
+- alias: "🔋 smart charging - toggle charging mode"
+  id: '49d1aea0-e3b2-4a80-83ba-b2d68d3a3e22'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.smart_charging_mode_timer
+  - platform: state
+    entity_id: input_boolean.smart_charging_mode_direct
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.smart_charging_mode_timer
+        state: 'on'
+      sequence:
+      - service: input_boolean.turn_off
+        data: {}
+        target:
+          entity_id: input_boolean.smart_charging_mode_direct
+      - service: script.auto_start_laden_timer
+        data: {}
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.smart_charging_mode_direct
+        state: 'on'
+      sequence:
+      - service: input_boolean.turn_off
+        data: {}
+        target:
+          entity_id: input_boolean.smart_charging_mode_timer
+      - service: script.auto_start_laden_nu
+        data: {}       
+  mode: restart
+
   
 ######################################
-# car smart charging
+# car smart charging (enkel thuis)
 ######################################
 
 - alias: "🔋 smart charging - om 10u, 20u en 22u check of laadkabel ingeplugd is voor smart charging binnen de volgende 10 uren "
@@ -1002,6 +1041,9 @@ automation:
   # Because the calculated start time continuously moves while charging, this routine would continously be triggered
   condition:
   - condition: state
+    entity_id: input_boolean.smart_charging_mode_timer
+    state: 'on'
+  - condition: state
     entity_id: input_boolean.car_smart_charging_busy
     state: 'off'
   - condition: state
@@ -1026,10 +1068,38 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/car-charging        
+          uri: /eikenbos-dashboard/car-charging
   mode: single
 
-- alias: "🔋 smart charging - laaddoel bereikt = smart charging stoppen + melding sturen + timer dag later (enkel thuis)"
+- alias: "🔋 smart charging - direct laden gestart"
+  id: '242e4f5f-1396-4774-911a-be6e7b685c82'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.smart_charging_mode_direct
+    to: 'on'
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Direct laden gestart.
+      message: >
+        {% set target = states('input_number.car_smart_charging_target_percentage') | float(default=0) %}
+        {% set soc = states('sensor.audi_e_tron_sportback_state_of_charge') | float(default=0) %}
+        {% set nog_te_laden_procent = [target - soc, 0] | max %}
+        {% set nog_te_laden_minuten = nog_te_laden_procent * 8.5 | round(2) %}      
+        Nu: {{states('sensor.audi_e_tron_sportback_state_of_charge') | round()}}%.
+        Laden tot {{states('input_number.car_smart_charging_target_percentage') | round() }}%.<br>
+        Laden gedaan op {{ (as_timestamp(now()) + (nog_te_laden_minuten | float(default=0) * 60)) | timestamp_custom('%a %d %b %-Hu%M') }}
+      data:
+        tag: smart_charging
+        color: green
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car-charging
+  mode: single
+
+- alias: "🔋 smart charging - laaddoel bereikt (zowel timer als direct)= laden stoppen + melding sturen + timer dag later (enkel thuis)"
   id: 'b7a22897-2c7b-4e07-bf71-380271658908'
   description: ''
   trigger:
@@ -1062,8 +1132,8 @@ automation:
           uri: /eikenbos-dashboard/car-charging        
   # targtet time op dag later zetten
   - service: input_datetime.set_datetime
-    data_template:
-      datetime: "{{ (as_timestamp(now())  + (24 * 60 * 60) ) | timestamp_custom('%Y-%m-%d %H:%M:%S',default) }}"
+    data:
+      datetime: "{{ (as_timestamp(now())  + (24 * 60 * 60) ) | timestamp_custom('%Y-%m-%d %H:%M:%S') }}"
     target:
       entity_id: input_datetime.car_smart_charging_target_time
   - service: audiconnect.execute_vehicle_action
@@ -1166,76 +1236,13 @@ automation:
   condition: []
   action:
   - service: input_datetime.set_datetime
-    data_template:
+    data:
       datetime: "{{ (as_timestamp(now())  + (24 * 60 * 60) ) | timestamp_custom('%Y-%m-%d %H:%M:%S') }}"
     target:
       entity_id: input_datetime.car_smart_charging_target_time
   mode: single
+  
 
-- alias: "🔋 smart charging - toggle charging mode direct"
-  id: '49d1aea0-e3b2-4a80-83ba-b2d68d3a3e22'
-  trigger:
-  - platform: state
-    entity_id: input_boolean.smart_charging_mode_direct
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: input_boolean.smart_charging_mode_direct
-        state: 'on'
-      sequence:
-      - service: input_boolean.turn_off
-        data: {}
-        target:
-          entity_id: input_boolean.smart_charging_mode_timer
-      - service: script.auto_start_laden_nu
-        data: {}
-    - conditions:
-      - condition: state
-        entity_id: input_boolean.smart_charging_mode_direct
-        state: 'off'
-      sequence:
-      - service: input_boolean.turn_on
-        data: {}
-        target:
-          entity_id: input_boolean.smart_charging_mode_timer
-      - service: script.auto_start_laden_timer
-        data: {}
-  mode: restart
-  
-- alias: "🔋 smart charging - toggle smart charging mode timer"
-  id: 'dc3e46a4-56c3-4feb-b68c-894922fd5d0c'
-  trigger:
-  - platform: state
-    entity_id: input_boolean.smart_charging_mode_timer
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: input_boolean.smart_charging_mode_timer
-        state: 'on'
-      sequence:
-      - service: input_boolean.turn_off
-        data: {}
-        target:
-          entity_id: input_boolean.smart_charging_mode_direct
-      - service: script.auto_start_laden_timer
-        data: {}
-    - conditions:
-      - condition: state
-        entity_id: input_boolean.smart_charging_mode_timer
-        state: 'off'
-      sequence:
-      - service: input_boolean.turn_on
-        data: {}
-        target:
-          entity_id: input_boolean.smart_charging_mode_direct
-      - service: script.auto_start_laden_nu
-        data: {}
-  mode: restart
-  
 #######################################
 # Reistijd
 ######################################

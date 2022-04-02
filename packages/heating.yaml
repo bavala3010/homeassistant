@@ -82,7 +82,7 @@ automation:
       hvac_mode: auto
   mode: single
 
-- alias: ">20 °C gevraagd in kamer Amilya overdag = chauffage op 19"
+- alias: "♨️ >20 °C gevraagd in kamer Amilya overdag = chauffage op 19"
   id: '434ae070-ac26-40a4-8700-7d5a86b7c2c9'
   description: ''
   trigger:
@@ -97,7 +97,7 @@ automation:
   action:
   - service: notify.bart_phone
     data:
-      message: Kamer Amilya op 20° of meer gezet (overdag) = herzet naar 19°.
+      message: Kamer Amilya op {{state_attr('climate.kamer_amilya', 'temperature') }} gezet (overdag) = herzet naar 19°.
   - service: climate.set_temperature
     data:
       temperature: 19

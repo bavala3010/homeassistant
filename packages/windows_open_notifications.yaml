@@ -50,14 +50,14 @@ automation:
     state: 'off'
   action:
   - service: script.notify_bart_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}' 
       reason: '{{reason}}'
   - service: script.notify_madouce_windows
-    data_template:  
+    data:  
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
@@ -92,14 +92,14 @@ automation:
     zone: zone.home
   action:
   - service: script.notify_bart_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}' 
       reason: '{{reason}}'
   - service: script.notify_madouce_windows
-    data_template:  
+    data:  
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
@@ -131,14 +131,14 @@ automation:
     state: 'off'
   action:
   - service: script.notify_bart_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}' 
       reason: '{{reason}}'
   - service: script.notify_madouce_windows
-    data_template:  
+    data:  
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
@@ -170,14 +170,14 @@ automation:
     state: 'off'
   action:
   - service: script.notify_bart_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}' 
       reason: '{{reason}}'
   - service: script.notify_madouce_windows
-    data_template:  
+    data:  
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
@@ -209,14 +209,14 @@ automation:
     state: 'off'
   action:
   - service: script.notify_bart_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}' 
       reason: '{{reason}}'
   - service: script.notify_madouce_windows
-    data_template:  
+    data:  
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
@@ -251,14 +251,14 @@ automation:
     state: 'off'
   action:
   - service: script.notify_bart_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}' 
       reason: '{{reason}}'
   - service: script.notify_madouce_windows
-    data_template:  
+    data:  
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
@@ -290,14 +290,14 @@ automation:
     state: 'off'
   action:
   - service: script.notify_bart_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}' 
       reason: '{{reason}}'
   - service: script.notify_madouce_windows
-    data_template:  
+    data:  
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'

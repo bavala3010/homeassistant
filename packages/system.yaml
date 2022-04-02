@@ -28,7 +28,7 @@ automation:
   condition: []
   action:
   - service: notify.bart_phone
-    data_template:
+    data:
       title: Raspberry Pi CPU
       message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}% en temperatuur is {{states('sensor.processor_temperature')}}°C.
       data:
@@ -50,7 +50,7 @@ automation:
   condition: []
   action:
   - service: notify.bart_phone
-    data_template:
+    data:
       title: Raspberry Pi CPU
       message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}% en temperatuur is {{states('sensor.processor_temperature')}}°C.
       data:
@@ -67,7 +67,7 @@ automation:
         above: '50'
       sequence:
   - service: notify.bart_phone
-    data_template:
+    data:
       title: Raspberry Pi CPU
       message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}% en temperatuur is {{states('sensor.processor_temperature')}}°C.
       data:
@@ -83,7 +83,7 @@ automation:
       seconds: 0
       milliseconds: 0          
   - service: notify.bart_phone
-    data_template:
+    data:
       title: Raspberry Pi CPU terug normaal.
       message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}% en temperatuur is {{states('sensor.processor_temperature')}}°C.
       data:

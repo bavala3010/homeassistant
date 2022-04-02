@@ -494,19 +494,6 @@ car_charging_set_direct_modus:
 auto_start_laden_nu:
   alias: auto start laden nu
   sequence:
-  - service: input_boolean.turn_on
-    data: {}
-    target:
-      entity_id: input_boolean.smart_charging_mode_direct  
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.car_smart_charging_command_sent_time
-    data:
-      time: "{{ now().timestamp() | timestamp_custom('%H:%M') }}"
-  - service: input_boolean.turn_on
-    data: {}
-    target:
-      entity_id: input_boolean.car_smart_charging_command_sent
   - service: audiconnect.execute_vehicle_action
     data:
       vin: WAUZZZGE6MB019131
@@ -515,15 +502,6 @@ auto_start_laden_nu:
 auto_start_laden_timer:
   alias: auto start laden timer
   sequence:
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.car_smart_charging_command_sent_time
-    data:
-      time: "{{ now().timestamp() | timestamp_custom('%H:%M') }}"
-  - service: input_boolean.turn_on
-    data: {}
-    target:
-      entity_id: input_boolean.car_smart_charging_command_sent
   - service: audiconnect.execute_vehicle_action
     data:
       vin: WAUZZZGE6MB019131

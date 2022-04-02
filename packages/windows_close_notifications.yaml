@@ -52,14 +52,14 @@ automation:
     state: 'off'
   action:
   - service: script.notify_bart_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}' 
       reason: '{{reason}}'
   - service: script.notify_madouce_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
@@ -70,11 +70,11 @@ automation:
     title: "Sluit raam van living/keuken!"
     tag: "window_living"
     action_window_pause: "living_window_pause"
-    reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 16 %} Te koud buiten. {% endif %}"  
+    reason: "{% if states('sensor.temp_leuven24_wunderground') | float < 16 %} Te koud buiten. {% endif %}"  
   mode: single
 
 - alias: 🪟 ramen - sluit raam kamer Amilya (Bart en Madouce)
-  id: '47662219-10c5-4e7f-b319-e181eab91282'
+  id: 'cf1defe1-319e-4475-a2a8-308b99d65207'
   description: ''
   trigger:
   - platform: time_pattern
@@ -91,14 +91,14 @@ automation:
     state: 'off'
   action:
   - service: script.notify_bart_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}' 
       reason: '{{reason}}'
   - service: script.notify_madouce_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
@@ -109,7 +109,7 @@ automation:
     title: "Sluit het raam van Amilya!"
     tag: "window_kamer_amilya"
     action_window_pause: "kamer_amilya_window_pause"
-    reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 16 %} Te koud buiten. {% endif %}"  
+    reason: "{% if states('sensor.temp_leuven24_wunderground' | float) < 16 %} Te koud buiten. {% endif %}"  
   mode: single
 
 - alias: 🪟 ramen - sluit raam veranda (Bart en Madouce)
@@ -130,14 +130,14 @@ automation:
     state: 'off'    
   action:
   - service: script.notify_bart_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}' 
       reason: '{{reason}}'
   - service: script.notify_madouce_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
@@ -148,7 +148,7 @@ automation:
     title: "Sluit het raam van de veranda!"
     tag: "window_veranda"
     action_window_pause: "veranda_window_pause"
-    reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 16 %} Te koud buiten. {% endif %}"  
+    reason: "{% if states('sensor.temp_leuven24_wunderground') | float < 16 %} Te koud buiten. {% endif %}"  
   mode: single
 
 - alias: 🪟 ramen - sluit raam berging (Bart en Madouce)
@@ -169,14 +169,14 @@ automation:
     state: 'off'
   action:
   - service: script.notify_bart_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}' 
       reason: '{{reason}}'
   - service: script.notify_madouce_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
@@ -187,7 +187,7 @@ automation:
     title: "Sluit het raam van de berging!"
     tag: "window_berging"
     action_window_pause: "berging_window_pause"
-    reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 16 %} Te koud buiten. {% endif %}"
+    reason: "{% if states('sensor.temp_leuven24_wunderground') | float < 16 %} Te koud buiten. {% endif %}"
   mode: single
 
 - alias: 🪟 ramen - sluit raam badkamer (Bart en Madouce)
@@ -208,14 +208,14 @@ automation:
     state: 'off'
   action:
   - service: script.notify_bart_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}' 
       reason: '{{reason}}'
   - service: script.notify_madouce_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
@@ -255,14 +255,14 @@ automation:
     state: 'off'
   action:
   - service: script.notify_bart_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}' 
       reason: '{{reason}}'
   - service: script.notify_madouce_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
@@ -273,7 +273,7 @@ automation:
       title: "Sluit het raam van Alunya!"
       tag: "window_kamer_alunya"
       action_window_pause: "kamer_alunya_window_pause"
-      reason: "{% if (states('sensor.temp_leuven24_wunderground') | float) < 15 %} Het is koud buiten. {% endif %}"  
+      reason: "{% if states('sensor.temp_leuven24_wunderground') | float < 15 %} Het is koud buiten. {% endif %}"  
   mode: single
 
 - alias: 🪟 ramen - sluit raam master bedroom (Bart en Madouce)
@@ -294,14 +294,14 @@ automation:
     state: 'off'    
   action:
   - service: script.notify_bart_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}' 
       reason: '{{reason}}'
   - service: script.notify_madouce_windows
-    data_template:
+    data:
       title: '{{title}}'
       message: '{{message}}'
       tag: '{{tag}}'

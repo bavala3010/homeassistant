@@ -75,7 +75,7 @@ speak:
   sequence:
   - service: tts.google_say
     entity_id: media_player.veranda_speaker
-    data_template:
+    data:
       message: "{{ message }}"
   mode: queued
   

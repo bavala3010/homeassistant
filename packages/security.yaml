@@ -197,7 +197,7 @@ automation:
     state: armed_away
   action:
   - service: input_text.set_value
-    data_template:
+    data:
       entity_id: input_text.alarm_trigger_source
       value: '{{ trigger.to_state.attributes.friendly_name }}'
   - service: alarm_control_panel.alarm_trigger
