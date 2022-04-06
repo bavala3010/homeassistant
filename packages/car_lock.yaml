@@ -1,0 +1,100 @@
+############################ Table of Contents ############################ 
+# 
+#   Automations
+#
+#     Auto 's avonds op slot?
+#     auto sluiten
+#     auto op slot = melding wissen
+#     Auto 10 min. niet op slot = melding
+#
+
+
+# bluetooth address Etron: 98:49:14:C1:37:0B
+# VIN etron: WAUZZZGE6MB019131
+
+############################ Automations ################################## 
+automation:
+
+
+#########################
+# Auto op slot
+#########################
+
+- alias: 🚗 Auto 's avonds op slot?
+  id: 'b35dc129-9a89-4655-b8da-32e7798880c1'
+  description: Stuur een bericht als auto om 21u30 nog open is.
+  trigger:
+  - platform: time
+    at: '21:30:00'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.bart_phone_connected_to_car
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.madouce_phone_connected_to_car
+    state: 'off'
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Auto niet op slot!
+      message: 🚙 Er wordt nu geprobeerd om de auto te sluiten.
+      data:
+        channel: Important
+        tag: auto_sluiten
+        color: red
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/e-tron        
+  - service: notify.madouce_phone
+    data:
+      title: Auto niet op slot!
+      message: 🚙 Er wordt nu geprobeerd om de auto te sluiten.
+      data:
+        channel: Important
+        tag: auto_sluiten
+        color: red
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/e-tron        
+  - service: lock.lock
+    target:
+      entity_id: lock.audi_e_tron_sportback_door_lock
+  mode: single
+
+- alias: auto sluiten
+  id: 'ead368ce-23d8-4cd2-b63b-ad6cc916bae0'
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: lock_car
+  action:
+  - service: lock.lock
+    target:
+      entity_id: lock.audi_e_tron_sportback_door_lock
+  mode: single
+
+- alias: 🚗 auto is op slot (clear_notification)
+  id: 'aef6ff87-883d-40ed-b638-a59c6eb66837'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: lock.audi_e_tron_sportback_door_lock
+    to: 'locked'
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: auto_sluiten
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: auto_sluiten        
+  mode: single
+
+- alias: 🚗 Auto 2 min. niet op slot = refresh & melding

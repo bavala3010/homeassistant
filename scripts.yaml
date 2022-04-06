@@ -1,0 +1,46 @@
+'1649009772721':
+  alias: laadpaal - zet max. op 8 A (script orig)
+  sequence:
+  - service: modbus.write_register
+    data:
+      address: 1210
+      unit: 1
+      hub: laadpaal
+      value:
+      - 16640
+      - 0
+  mode: single
+'1649010605478':
+  alias: laadpaal - zet max. op 9 A
+  sequence:
+  - service: modbus.write_register
+    data:
+      address: 1210
+      unit: 1
+      hub: laadpaal
+      value:
+      - 16656
+      - 0
+'1649010657729':
+  alias: laadpaal - zet max. op 9 A
+  sequence:
+  - service: modbus.write_register
+    data:
+      address: 1210
+      unit: 1
+      hub: laadpaal
+      value:
+      - 16656
+      - 0
+'1649012874521':
+  alias: laadpaal - zet max. op 9 A (in orig script)
+  sequence:
+  - service: modbus.write_register
+    data:
+      address: 1210
+      unit: 1
+      hub: laadpaal
+      value:
+      - 16656
+      - 0
+  mode: single

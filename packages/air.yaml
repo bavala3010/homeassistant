@@ -335,6 +335,14 @@ automation:
       minutes: 0
       seconds: 30
       milliseconds: 0
+  - platform: state
+    entity_id: binary_sensor.badkamer_raam_kantel
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0    
   condition: []
   action:
   - service: switch.turn_off

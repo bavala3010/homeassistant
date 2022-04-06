@@ -514,3 +514,68 @@ auto_stop_laden:
     data:
       vin: WAUZZZGE6MB019131
       action: stop_charging
+
+set_charger_to_6_a:
+  alias: "laadpaal - zet max. op 6 A"
+  sequence:
+  - service: modbus.write_register
+    data:
+      address: 1210
+      unit: 1
+      hub: laadpaal
+      value: [0x40c0, 0x0000]
+
+set_charger_to_7_a:
+  alias: "laadpaal - zet max. op 7 A"
+  sequence:
+  - service: modbus.write_register
+    data:
+      address: 1210
+      unit: 1
+      hub: laadpaal
+      value: [0x40e0, 0x0000]
+
+set_charger_to_8_a:
+  alias: "laadpaal - zet max. op 8 A"
+  sequence:
+  - service: modbus.write_register
+    data:
+      address: 1210
+      unit: 1
+      hub: laadpaal
+      value: [0x4100, 0x0000]
+
+set_charger_to_9_a:
+  alias: "laadpaal - zet max. op 9 A"
+  sequence:
+  - service: modbus.write_register
+    data:
+      address: 1210
+      unit: 1
+      hub: laadpaal
+      value: [0x4110, 0x0000]
+
+set_charger_to_10_a:
+  alias: "laadpaal - zet max. op 10 A"
+  sequence:
+  - service: modbus.write_register
+    data:
+      address: 1210
+      unit: 1
+      hub: laadpaal
+      value: [0x4120, 0x0000]
+
+set_modbus_maxcurrent:
+  alias: Set modbus maxcurrent
+  variables:
+    value_msb: 16768
+    value_lsb: 0
+  sequence:
+  - service: modbus.write_register
+    data:
+      address: 1210
+      unit: 1
+      hub: laadpaal
+      value:
+        - '{{ value_msb }}'
+        - '{{ value_lsb }}'

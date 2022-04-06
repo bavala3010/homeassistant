@@ -55,7 +55,7 @@
   sequence:
     - condition: time
       after: '7:0:0'
-      before: '22:45:00'
+      before: '22:30:00'
     - condition: zone
       entity_id: person.alunya
       zone: zone.home

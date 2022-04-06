@@ -48,6 +48,7 @@ frontend:
   themes: !include_dir_merge_named themes
   extra_module_url:
     - /hacsfiles/hass-hue-icons/hass-hue-icons.js
+    - /hacsfiles/lovelace-card-mod/card-mod.js
 
 homeassistant:
   allowlist_external_dirs:
@@ -75,7 +76,7 @@ http:
   use_x_forwarded_for: true
   trusted_proxies:
     - 192.168.86.0/24 # the IP address of the proxy server
-  ip_ban_enabled: true          # use this to enable auto IP ban
+  ip_ban_enabled: false          # use this to enable auto IP ban
   login_attempts_threshold: 3   # set the number of allowed login attempts
 
 #pi_hole:
@@ -402,10 +403,27 @@ sensor:
         unit_of_measurement: KJ/kg      
         value_template: "{{ (1.006 * (states('sensor.master_bedroom_temperature') | float) ) + ( (states('sensor.master_bedroom_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.master_bedroom_temperature') | float ))) | round (2) }}" 
 
+###############################################################################
+# sensors voor laden auto 
+###############################################################################
+
       car_range_per_10percent:
         friendly_name: 'range per 10%'
         unit_of_measurement: km
-        value_template: "{{ (10 * states('sensor.audi_e_tron_sportback_primary_engine_range') | float(default=0) / states('sensor.audi_e_tron_sportback_state_of_charge') | float(default=0) ) | round (1) }}" 
+        value_template: "{{ (10 * states('sensor.audi_e_tron_sportback_primary_engine_range') | float(default=0) / states('sensor.audi_e_tron_sportback_state_of_charge') | float(default=0) ) | round (1) }}"
+
+      car_range_at_target_percentage:
+        friendly_name: 'rijbereik bij doelpercentage'
+        unit_of_measurement: km
+        value_template: "{{ ( states('input_number.car_smart_charging_target_percentage') | float(default=0) * ( states('sensor.car_range_per_10percent') | float(default=0)) / 10 ) | int }}"
+
+      car_remaining_charging_minutes:
+        friendly_name: 'resterende laadminuten'
+        value_template: >
+          {% set target = states('input_number.car_smart_charging_target_percentage') | float(default=0) %}
+          {% set soc = states('sensor.audi_e_tron_sportback_state_of_charge') | float(default=0) %}
+          {% set nog_te_laden_procent = [target - soc, 0] | max %}
+          {{ nog_te_laden_procent * 8.5 | round(2) }}        
 
 ###############################################################################
 # Powercalc measures the power consumption of lights 
@@ -499,6 +517,22 @@ sensor:
     manufacturer: signify
     model: LCT015     # model 1744630P7 not found
     multiply_factor: 2
+
+
+###############################################################################
+# auto batterij en zonnepanelen
+###############################################################################
+  
+  - platform: powercalc
+    name: unload_battery
+    daily_fixed_energy:
+      value: 0.00
+
+  - platform: powercalc
+    name: zonnepanelen_sim
+    daily_fixed_energy:
+      value: 0.00
+
 
 ###############################################################################
 # historiek TV
@@ -987,6 +1021,12 @@ sensor:
 #    round: 2
   
   - platform: integration
+    source: sensor.laadpaal_real_power_sum
+    name: LaadpaalTotaal
+    unit_prefix: k
+    unit_time: h
+
+  - platform: integration
     source: sensor.ontvochtiger_power
     name: ontvochtiger energieverbruik
     unit_prefix: k
@@ -1020,6 +1060,13 @@ sensor:
   - platform: integration
     source: sensor.alunya_tv_powerconsumption
     name: Alunya tv energieverbruik
+    method: left
+    unit_prefix: k
+    round: 2
+
+  - platform: integration
+    source: sensor.laadpaal_real_power_sum
+    name: laadpaal energieverbruik
     method: left
     unit_prefix: k
     round: 2
@@ -1435,6 +1482,18 @@ modbus:
         address: 1208
         data_type: uint32
         unit_of_measurement: s
+      - name: laadpaal_energy_delivered
+        slave: 1
+        address: 374
+        count: 4
+        data_type: float64
+        unit_of_measurement: Wh
+        device_class: energy
+        state_class: total_increasing
+      - name: laadpaal_modbus_slave_received_setpoint_accounted_for_test
+        slave: 1
+        address: 1214
+        data_type: uint16        
         
 # Add Portainer to Home Assistant navigation menu
 panel_iframe:
@@ -1452,3 +1511,12 @@ panel_iframe:
 
 shell_command:
   raspi_maintenance: ssh -i /config/ssh/id_rsa -o 'StrictHostKeyChecking=no' bart@192.168.86.101 '~/sys_maintenance'
+
+battery_sim:
+  auto_batterij:
+    name: auto batterij
+    import_sensor: sensor.laadpaal_real_power_sum
+    export_sensor: sensor.unload_battery
+    max_discharge_rate_kw: 11.0
+    size_kwh: 90.0
+    energy_tariff: 0.30

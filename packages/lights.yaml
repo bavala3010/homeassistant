@@ -44,8 +44,8 @@ automation:
         - light.amilya_strip
   mode: single
   
-- alias: 💡 Amilya licht badkamer brandt langer dan 20 minuten
-  id: db73f94a-536a-4d6f-9f5b-ce2757587b20
+- alias: 💡 Amilya licht badkamer brandt langer dan 20 minuten -> licht flashen
+  id: 3e894234-e24b-4c8c-a497-87a05abc3453
   description: ''
   trigger:
   - platform: state
@@ -58,6 +58,12 @@ automation:
       milliseconds: 0
   condition: []
   action:
+  - service: light.turn_on
+    entity_id: light.amilya_badkamer
+    data:
+      flash: short
+      rgb_color: [252,3,3]
+  - delay: 5
   - service: light.turn_off
     target:
       entity_id: light.amilya_badkamer
