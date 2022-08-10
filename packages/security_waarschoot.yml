@@ -1,0 +1,15 @@
+automation:
+
+- alias: alarm in Waarschoot
+  id: 'bee0ac70-c28c-40b8-8b14-e6743f83d709'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: siren.waarschoot_alarm_sirene_siren
+    to: on
+  - service: notify.bart_phone
+    data:
+      title: Alarm in Waarschoot
+      message: Sirene gaat af.
+      data:
+        color: red

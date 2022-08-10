@@ -66,22 +66,22 @@ automation:
         entity_id: sensor.processor_use_percent
         above: '50'
       sequence:
-  - service: notify.bart_phone
-    data:
-      title: Raspberry Pi CPU
-      message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}% en temperatuur is {{states('sensor.processor_temperature')}}°C.
-      data:
-        color: red
-        tag: raspberry_cpu
-        actions:
-        - action: URI
-          title: meer info
-          uri: /eikenbos-dashboard/netwerk
-  - delay:
-      hours: 0
-      minutes: 15
-      seconds: 0
-      milliseconds: 0          
+      - service: notify.bart_phone
+        data:
+          title: Raspberry Pi CPU
+          message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}% en temperatuur is {{states('sensor.processor_temperature')}}°C.
+          data:
+            color: red
+            tag: raspberry_cpu
+            actions:
+            - action: URI
+              title: meer info
+              uri: /eikenbos-dashboard/netwerk
+      - delay:
+          hours: 0
+          minutes: 15
+          seconds: 0
+          milliseconds: 0          
   - service: notify.bart_phone
     data:
       title: Raspberry Pi CPU terug normaal.
@@ -209,51 +209,15 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.updater
-    from: 'off'
+    entity_id: update.home_assistant_core_update
     to: 'on'
   condition: []
   action:
   - service: notify.bart_phone
     data:
       title: Er is een update van Home Assistant beschikbaar.
-      message: "Nieuwe versie: {{ state_attr('binary_sensor.updater', 'newest_version') }}"
-  mode: single
-
-- alias: '⏱ toiletteller: beweging = + 1'
-  id: toiletteller
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.toilet_motion_sensor_motion
-    to: 'on'
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 30    
-  condition: []
-  action:
-  - service: counter.increment
-    target:
-      entity_id: counter.toilet_counter
-  - delay:
-      hours: 0
-      minutes: 2
-      seconds: 0
-      milliseconds: 0
-  mode: single    
-
-- alias: '⏱ toiletteller: reset om middernacht'
-  id: 'toiletteller: reset om middernacht'
-  description: ''
-  trigger:
-  - platform: time
-    at: 00:00:00
-  condition: []
-  action:
-  - service: counter.reset
-    target:
-      entity_id: counter.toilet_counter
+      message: "Nieuwe versie: {{ state_attr('update.home_assistant_core_update',
+        'latest_version') }} "
   mode: single
 
 - alias: switch ventilator niet beschikbaar

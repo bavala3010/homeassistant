@@ -1,0 +1,70 @@
+alunya:
+  sort_order: 20
+amilya_badkamer:
+  sort_order: 10
+amilya_bureau:
+  sort_order: 12
+amilya_living_room:
+  sort_order: 11
+amilya_plafond:
+  sort_order: 35
+amilya_staande_lamp:
+  sort_order: 33
+auto:
+  sort_order: 24
+badkamer:
+  sort_order: 6
+berging:
+  sort_order: 21
+buiten:
+  sort_order: 13
+gang:
+  sort_order: 8
+garage:
+  sort_order: 27
+hue_go:
+  sort_order: 19
+inkomhal:
+  sort_order: 9
+kamer_alunya:
+  sort_order: 15
+kamer_amilya:
+  sort_order: 14
+keldertrap:
+  sort_order: 7
+kerstverlichting:
+  sort_order: 23
+keuken:
+  sort_order: 4
+living_bol:
+  sort_order: 32
+living_links:
+  sort_order: 2
+living_rechts:
+  sort_order: 3
+living_room:
+  sort_order: 1
+living_tv:
+  sort_order: 5
+master_bedroom:
+  sort_order: 16
+netwerk:
+  sort_order: 28
+terras:
+  sort_order: 26
+toilet:
+  sort_order: 18
+trap_boven:
+  sort_order: 22
+tuin:
+  sort_order: 29
+tuin_spots:
+  sort_order: 34
+tuin_verstraler:
+  sort_order: 31
+veranda:
+  sort_order: 17
+waarschoot:
+  sort_order: 25
+zonne_energie:
+  sort_order: 30

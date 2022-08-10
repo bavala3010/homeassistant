@@ -58,11 +58,33 @@ automation:
     target:
       entity_id: input_number.car_sim_batteryprocent
     data:
-      value: '{{ ((states(''input_number.car_sim_km'') | float * 10 ) / (states(''sensor.car_range_per_10percent'')
-        | float)) | round(1) }}'
+      value: >
+        {{ ((states('input_number.car_sim_km') | float * 10 ) / (states('sensor.car_range_per_10percent')
+        | float(default=0))) | round(1) }}
+  - wait_template: ''
+    timeout: '00:00:02'
   mode: single
 
-#######################################
+- alias: Car sim batterij veranderd
+  id: '85f8fbeb-4132-41f4-ad9b-5662d75946e2'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_number.car_sim_batteryprocent
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.car_sim_km
+    data:
+      value: >
+        {{ ( (states('input_number.car_sim_batteryprocent') | float(default=0)) * (states('sensor.car_range_per_10percent')
+        | float(default=0) / 10 ) ) | round(1) }}
+  - wait_template: ''
+    timeout: '00:00:02'
+  mode: single
+
+######################################
 # Reistijd
 ######################################
 
@@ -79,7 +101,7 @@ automation:
   condition:
   - condition: template
     value_template: >
-      {% set car_use_day = 'input_select.car_use_day' ~ now().isoweekday() %}
+      {% set car_use_day = 'input_select.car_use_day_' ~ now().isoweekday() %}
       {%if states(car_use_day) == "Toyota Evere"%} true {% endif %}
   action:
   - service: notify.madouce_phone
@@ -103,7 +125,7 @@ automation:
   condition:
   - condition: template
     value_template: >
-      {% set car_use_day = 'input_select.car_use_day' ~ now().isoweekday() %}
+      {% set car_use_day = 'input_select.car_use_day_' ~ now().isoweekday() %}
       {%if states(car_use_day) == "Toyota Diest"%} true {% endif %}
   action:
   - service: notify.madouce_phone
@@ -114,3 +136,17 @@ automation:
         tag: auto_laden
   mode: single  
 
+
+######################################
+# A Better Route Planner (ABPR)
+######################################
+
+- alias: Stuur auto info naar A Better Route Planner
+  id: '3301406f-a0d7-4ef8-b0dc-3edfa4aad868'
+  trigger:
+  # at every change of the SOC
+    - platform: state
+      entity_id: sensor.audi_e_tron_sportback_primary_engine_range
+      to:
+  action:
+    - service: rest_command.update_abrp

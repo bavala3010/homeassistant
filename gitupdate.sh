@@ -3,7 +3,7 @@
 cd /home/bart/homeassistant/config
 
 #you need to configure the next line
-source srv/homeassistant/bin/activate
+source /home/bart/homeassistant/bin/activate
 
 hass --script check_config
 

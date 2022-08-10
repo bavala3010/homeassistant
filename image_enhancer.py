@@ -1,0 +1,26 @@
+# make sure that Pillow is installed
+# to install, use the following command
+# pip3 install --upgrade Pillow
+
+from PIL import Image, ImageEnhance, ImageFilter
+import os
+
+path = "huwelijk orig" # folder for unedited images
+pathOut = "/huwelijk edited" # folder for edited images
+
+for filename in os.listdir(path):
+    img = Image.open(f"{path}/{filename}")
+
+    # sharpening, BW
+    edit = img.filter(ImageFilter.SHARPEN).convert('L')
+
+    # contrast
+    factor = 1.5
+    enhancer = ImageEnhance.Contrast(edit)
+    edit = enhancer.enhance(factor)
+
+    # ADD MORE EDITS FROM DOCUMENTATION https://pillow.readthedocs.io/en/stable/
+
+    clean_name = os.path.splitext(filename)[0]
+
+    edit.save(f'.{pathOut}/{clean_name}_edited.jpg')

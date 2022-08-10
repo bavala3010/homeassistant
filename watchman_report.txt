@@ -1,0 +1,248 @@
+-== Watchman Report ==- 
+
+-== Missing 5 service(s) from 63 found in your config:
++--------------------------------+---------+--------------------------------------------------------------+
+| Service ID                     | State   | Location                                                     |
++--------------------------------+---------+--------------------------------------------------------------+
+| huesyncbox.set_sync_state      | missing | packages/lights.yaml:194                                     |
+| notify.mobile_app_alunya_a71   | missing | packages/arriving_home.yaml:103,109                          |
+| script.stop_charger_by_setting | missing | packages/car_charging.yaml:314                               |
+| _5_a                           |         |                                                              |
+| googlewifi.reset               | missing | packages/system.yaml:186                                     |
+| spotcast.start                 | missing | scripts/google_home_resume.yaml:1096,1102                    |
++--------------------------------+---------+--------------------------------------------------------------+
+
+-== Missing 121 entity(ies) from 628 found in your config:
++--------------------------------+---------+--------------------------------------------------------------+
+| Entity ID                      | State   | Location                                                     |
++--------------------------------+---------+--------------------------------------------------------------+
+| switch.master_bedroom_tv_chrom | unavail | scenes.yaml:86                                               |
+| ecast_chromecast ('Master      |         |                                                              |
+| bedroom TV Chromecast (Google  |         |                                                              |
+| Android device)')              |         |                                                              |
+| person.amilya ('Amilya')       | unknown | groups.yaml:10,40                                            |
+| device_tracker.amilya_iphone_x | unavail | groups.yaml:14,21,28                                         |
+| s ('Amilya iPhone XS new')     |         |                                                              |
+| sensor.amilya_living_power     | unavail | groups.yaml:133                                              |
+| ('Amilya living power')        |         |                                                              |
+| sensor.badkamer_wasbak_links_p | missing | groups.yaml:135                                              |
+| ower                           |         |                                                              |
+| sensor.badkamer_wasbak_rechts_ | unavail | groups.yaml:136                                              |
+| power ('wasbak rechts power')  |         |                                                              |
+| sensor.badkamer_douche_power   | unavail | groups.yaml:137                                              |
+| ('douche power')               |         |                                                              |
+| sensor.badkamer_bad_power      | unavail | groups.yaml:138                                              |
+| ('bad power')                  |         |                                                              |
+| light.amilya_plafond_1         | unavail | groups.yaml:170                                              |
+| ('Amilya plafond 1')           |         |                                                              |
+| light.amilya_plafond_2         | unavail | groups.yaml:171                                              |
+| ('Amilya plafond 2')           |         |                                                              |
+| light.badkamer_bad ('bad')     | unavail | groups.yaml:197                                              |
+| light.badkamer_douche          | unavail | groups.yaml:198                                              |
+| ('douche')                     |         |                                                              |
+| light.badkamer_wasbak_links    | missing | groups.yaml:199                                              |
+| light.badkamer_wasbak_rechts   | unavail | groups.yaml:200                                              |
+| ('wasbak rechts')              |         |                                                              |
+| light.veranda ('veranda')      | unavail | groups.yaml:212                                              |
+| light.tuin_spot_1 ('tuin spot  | unavail | groups.yaml:227                                              |
+| 1')                            |         |                                                              |
+| light.tuin_spot_2 ('tuin spot  | unavail | groups.yaml:228                                              |
+| 2')                            |         |                                                              |
+| light.tuin_spot_3 ('tuin spot  | unavail | groups.yaml:229                                              |
+| 3')                            |         |                                                              |
+| light.tuin_spot_4 ('tuin spot  | unavail | groups.yaml:230                                              |
+| 4')                            |         |                                                              |
+| light.tuin_spot_5 ('tuin spot  | unavail | groups.yaml:231                                              |
+| 5')                            |         |                                                              |
+| switch.plug_1                  | missing | groups.yaml:239                                              |
+| switch.plug_2                  | missing | groups.yaml:240                                              |
+| binary_sensor.alunya_a71_appar | missing | configuration.yaml:98                                        |
+| aat_vergrendeld                |         |                                                              |
+| binary_sensor.alunya_a71_inter | missing | configuration.yaml:99                                        |
+| actief                         |         |                                                              |
+| binary_sensor.sm_g975f_interac | missing | configuration.yaml:100                                       |
+| tive                           |         |                                                              |
+| sensor.google_wifi_system_aaaa | unavail | configuration.yaml:101                                       |
+| abzipgy_upload_traffic         |         |                                                              |
+| ('Google Wifi System           |         |                                                              |
+| AAAAABZIpGY Upload Traffic')   |         |                                                              |
+| sensor.google_wifi_system_aaaa | unavail | configuration.yaml:102                                       |
+| abzipgy_download_traffic       |         |                                                              |
+| ('Google Wifi System           |         |                                                              |
+| AAAAABZIpGY Download Traffic') |         |                                                              |
+| sensor.ty02820620a4cf12eb80b8_ | missing | configuration.yaml:181,184                                   |
+| 2                              |         |                                                              |
+| fan.xiaomi_air_purifier_3h     | missing | configuration.yaml:267                                       |
+| light.wasbak_rechts            | missing | configuration.yaml:515                                       |
+| light.douche                   | missing | configuration.yaml:520                                       |
+| light.bad                      | missing | configuration.yaml:525                                       |
+| media_player.amilya_tv         | unavail | configuration.yaml:592,1337                                  |
+| ('Amilya TV')                  |         |                                                              |
+| media_player.alunya_tv         | unavail | configuration.yaml:600,1329                                  |
+| ('Alunya TV')                  |         |                                                              |
+| switch.bart_chromebook_chromeo | unavail | configuration.yaml:627                                       |
+| s_device ('Bart Chromebook     |         |                                                              |
+| (ChromeOS device)')            |         |                                                              |
+| switch.bart_laptop_fortis_brum | unavail | configuration.yaml:635                                       |
+| 05007458 ('Bart Laptop Fortis  |         |                                                              |
+| BRUM05007458')                 |         |                                                              |
+| switch.bart_utraland_notebook_ | unavail | configuration.yaml:643                                       |
+| wifi_windows_device ('Bart     |         |                                                              |
+| Utraland notebook wifi         |         |                                                              |
+| (Windows device)')             |         |                                                              |
+| group.all_lights_power         | missing | configuration.yaml:931                                       |
+| switch.adaptive_lighting_defau | missing | custom_components/adaptive_lighting/services.yaml:6,30       |
+| lt                             |         |                                                              |
+| light.bedroom_ceiling          | missing | custom_components/adaptive_lighting/services.yaml:9,36       |
+| fan.xiaomi_smart_fan           | missing | custom_components/xiaomi_miio_fan/services.yaml:6,13,20,27,3 |
+|                                |         | 4,44,51,58,68                                                |
+| light.yeelight_living_e92c     | missing | custom_components/xiaomi_miot/services.yaml:6                |
+| climate.xiaomi_mc5_374e        | missing | custom_components/xiaomi_miot/services.yaml:35,58,81         |
+| media_player.xiaoai_x08c       | missing | custom_components/xiaomi_miot/services.yaml:116,156,192      |
+| sensor.xiaomi_lock             | missing | custom_components/xiaomi_miot/services.yaml:215              |
+| sensor.lywsd03mmc_temperature  | missing | custom_components/xiaomi_miot/services.yaml:290              |
+| sensor.xiaomi_device           | missing | custom_components/xiaomi_miot/services.yaml:305              |
+| binary_sensor.this_access_poin | missing | custom_components/googlewifi/services.yaml:6                 |
+| t                              |         |                                                              |
+| switch.iPhone ('Unnamed        | unavail | custom_components/googlewifi/services.yaml:13,23             |
+| device')                       |         |                                                              |
+| sensor.googlewifi_system_uploa | missing | custom_components/googlewifi/services.yaml:30                |
+| d_speed                        |         |                                                              |
+| sensor.kitchen_device          | missing | custom_components/google_home/services.yaml:9                |
+| sensor.kitchen_alarms          | missing | custom_components/google_home/services.yaml:20               |
+| sensor.kitchen_timers          | missing | custom_components/google_home/services.yaml:38               |
+| binary_sensor.trap_boven_senso | missing | packages/security.yaml:178                                   |
+| r_motion                       |         |                                                              |
+| binary_sensor.toilet_motion_se | unknown | packages/security.yaml:179                                   |
+| nsor_motion ('toilet sensor')  |         |                                                              |
+| input_select.car_use_day_      | missing | packages/car.yaml:104,128                                    |
+| fan.xiaomi_smart_fan_3c        | unavail | packages/temperature.yaml:96,111                             |
+| ('Xiaomi Smart Fan 3C')        |         |                                                              |
+| light.toilet ('toilet')        | unavail | packages/air.yaml:299                                        |
+| device_tracker.alunya_samsung_ | unavail | packages/lights.yaml:99                                      |
+| galaxy_a71 ('Alunya Samsung    |         |                                                              |
+| Galaxy A71')                   |         |                                                              |
+| media_player.google_tv         | missing | packages/lights.yaml:187                                     |
+| media_player.sync_box ('Sync   | unavail | packages/lights.yaml:196                                     |
+| Box')                          |         |                                                              |
+| light.master_bedroom_halve_bol | missing | packages/lights.yaml:259                                     |
+| automation.licht_in_garage     | unavail | packages/lights.yaml:334                                     |
+| ('licht in garage')            |         |                                                              |
+| input_number.car_target_soc_da | missing | packages/arriving_home.yaml:34                               |
+| y_                             |         |                                                              |
+| switch.kerstverlichting        | missing | packages/christmaslights.yaml:26,57,71,89                    |
+| switch.kerstboom ('kerstboom') | unavail | packages/christmaslights.yaml:120,142,155,182                |
+| binary_sensor.wifi_access_poin | unavail | packages/system.yaml:188                                     |
+| t ('Wifi Access Point')        |         |                                                              |
+| binary_sensor.updater          | unavail | packages/system.yaml:212,220                                 |
+| ('Updater')                    |         |                                                              |
+| media_player.huis_groep        | missing | scripts/google_home_resume.yaml:48                           |
+| media_player.keuken_hub        | missing | scripts/google_home_resume.yaml:49,63                        |
+| media_player.slaapkamer_hub    | missing | scripts/google_home_resume.yaml:50,58                        |
+| media_player.pepijn_mini       | missing | scripts/google_home_resume.yaml:51,57                        |
+| media_player.woonkamer_mini    | missing | scripts/google_home_resume.yaml:52,64                        |
+| media_player.zolder_mini_marle | missing | scripts/google_home_resume.yaml:53,59,66                     |
+| en                             |         |                                                              |
+| media_player.zolder_mini_marti | missing | scripts/google_home_resume.yaml:54,60,67                     |
+| jn                             |         |                                                              |
+| media_player.floris_mini       | missing | scripts/google_home_resume.yaml:55,61                        |
+| media_player.boven_groep       | missing | scripts/google_home_resume.yaml:56                           |
+| media_player.beneden_groep     | missing | scripts/google_home_resume.yaml:62                           |
+| media_player.zolder_groep      | missing | scripts/google_home_resume.yaml:65                           |
+| media_player.vlc_telnet        | missing | scripts/google_home_resume.yaml:69                           |
+| media_player.spotify_          | missing | scripts/google_home_resume.yaml:117,380                      |
+| group.resume_active_ghresume   | missing | scripts/google_home_resume.yaml:411,1179                     |
+| group.resume_action_false_ghre | missing | scripts/google_home_resume.yaml:416,1151                     |
+| sume                           |         |                                                              |
+| group.resume_active            | missing | scripts/google_home_resume.yaml:897,979,1160,1281,1290       |
+| group.resume_script_target_    | missing | scripts/google_home_resume.yaml:1011                         |
+| script.auto_start_climatisatio | missing | scripts/car_climate.yaml:420                                 |
+| n                              |         |                                                              |
+| binary_sensor.google_wifi_syst | unavail | scripts/other_scripts.yaml:25                                |
+| em_aaaaabzipgy ('Google Wifi   |         |                                                              |
+| System AAAAABZIpGY')           |         |                                                              |
+| sensor.date_time_iso           | missing | blueprints/automation/sbyx/wake-up-light-alarm-with-sunrise- |
+|                                |         | effect.yaml:115                                              |
+| switch.tybf63f00ae2a50e05faytr | missing | .storage/lovelace.lovelace_waarschoot:41                     |
+| 8                              |         |                                                              |
+| binary_sensor.ty20401777500291 | missing | .storage/lovelace.lovelace_waarschoot:48                     |
+| cf20ff_2                       |         |                                                              |
+| binary_sensor.ty18857573dc4f22 | missing | .storage/lovelace:474                                        |
+| b78e02                         |         |                                                              |
+| binary_sensor.living_room_opri | missing | .storage/lovelace:486                                        |
+| t_raam                         |         |                                                              |
+| binary_sensor.living_room_tuin | missing | .storage/lovelace:492                                        |
+| _raam                          |         |                                                              |
+| light.tybf9568c425ed730da13isb | missing | .storage/lovelace:701                                        |
+| fan.xiaomi_smart_fan_1         | unavail | .storage/lovelace:862,4574                                   |
+| ('Xiaomi Smart Fan 1C')        |         |                                                              |
+| sensor.amilya_bureau_power     | unavail | .storage/lovelace:897                                        |
+| ('Amilya bureau power')        |         |                                                              |
+| light.extended_color_light_3   | unavail | .storage/lovelace:1202                                       |
+| ('Alunya ledbalk')             |         |                                                              |
+| light.extended_color_light_4   | unavail | .storage/lovelace:1209                                       |
+| ('Alunya ledstrip')            |         |                                                              |
+| light.halve_bol ('halve bol')  | unavail | .storage/lovelace:1437                                       |
+| sensor.living_room_temperature | missing | .storage/lovelace:2130,4187,4204                             |
+| sensor.buienalarm_next_rain_fo | unknown | .storage/lovelace:4865                                       |
+| recast ('buienalarm Next rain  |         |                                                              |
+| forecast')                     |         |                                                              |
+| camera.netatmo                 | missing | .storage/lovelace.eikenbos_dashboard:42                      |
+| camera.indoor_camera ('Indoor  | unavail | .storage/lovelace.eikenbos_dashboard:51                      |
+| camera')                       |         |                                                              |
+| lock.eikenbos_deur             | missing | .storage/lovelace.eikenbos_dashboard:124                     |
+| binary_sensor.netatmo_motion_a | unknown | .storage/lovelace.eikenbos_dashboard:262                     |
+| nimal                          |         |                                                              |
+| ('netatmo_motion_animal')      |         |                                                              |
+| binary_sensor.netatmo_motion_v | unknown | .storage/lovelace.eikenbos_dashboard:263                     |
+| ehicle                         |         |                                                              |
+| ('netatmo_motion_vehicle')     |         |                                                              |
+| sensor.gerealiseerde_zonneprod | missing | .storage/lovelace.eikenbos_dashboard:751                     |
+| uctie_vandaag                  |         |                                                              |
+| sensor.google_wifi_system_aaaa | unavail | .storage/lovelace.eikenbos_dashboard:1906                    |
+| abzipgy_connected_devices      |         |                                                              |
+| ('Google Wifi System           |         |                                                              |
+| AAAAABZIpGY Connected          |         |                                                              |
+| Devices')                      |         |                                                              |
+| sensor.google_wifi_system_aaaa | unavail | .storage/lovelace.eikenbos_dashboard:1918                    |
+| abzipgy_download_speed         |         |                                                              |
+| ('Google Wifi System           |         |                                                              |
+| AAAAABZIpGY Download Speed')   |         |                                                              |
+| sensor.google_wifi_system_aaaa | unavail | .storage/lovelace.eikenbos_dashboard:1922                    |
+| abzipgy_upload_speed ('Google  |         |                                                              |
+| Wifi System AAAAABZIpGY Upload |         |                                                              |
+| Speed')                        |         |                                                              |
+| sensor.recorder_top_events     | missing | .storage/lovelace.eikenbos_dashboard:1987,2013               |
+| sensor.tgtg_proxy_delhaize_waa | unavail | .storage/lovelace.eikenbos_dashboard:2216,2300               |
+| rschoot ('TGTG Proxy Delhaize  |         |                                                              |
+| - Waarschoot')                 |         |                                                              |
+| sensor.tgtg_quali_drinks_non_a | unavail | .storage/lovelace.eikenbos_dashboard:2217,2303               |
+| lcoholisch_pakket ('TGTG Quali |         |                                                              |
+| Drinks (Non-Alcoholisch        |         |                                                              |
+| pakket)')                      |         |                                                              |
+| sensor.tgtg_spar_kessel_lo     | unavail | .storage/lovelace.eikenbos_dashboard:2218,2306               |
+| ('TGTG SPAR - Kessel-Lo')      |         |                                                              |
+| sensor.audi_e_tron_sportback_c | unavail | .storage/lovelace.eikenbos_dashboard:2395                    |
+| harging_power ('Audi e-tron    |         |                                                              |
+| Sportback Charging power')     |         |                                                              |
+| sensor.audi_e_tron_sportback_c | unavail | .storage/lovelace.eikenbos_dashboard:2396                    |
+| harging_rate ('Audi e-tron     |         |                                                              |
+| Sportback Charging rate')      |         |                                                              |
+| sensor.audi_e_tron_sportback_s | unavail | .storage/lovelace.eikenbos_dashboard:2418                    |
+| hortterm_trip_data ('Audi      |         |                                                              |
+| e-tron Sportback ShortTerm     |         |                                                              |
+| Trip Data')                    |         |                                                              |
+| sensor.audi_e_tron_sportback_s | unavail | .storage/lovelace.eikenbos_dashboard:2419                    |
+| hortterm_trip_user_reset       |         |                                                              |
+| ('Audi e-tron Sportback        |         |                                                              |
+| ShortTerm Trip User Reset')    |         |                                                              |
+| sensor.madouce_s20_gegeocodeer | missing | .storage/lovelace.eikenbos_dashboard:2462                    |
+| de_locatie                     |         |                                                              |
+| sensor.alunya_a71_gegeocodeerd | missing | .storage/lovelace.eikenbos_dashboard:2469                    |
+| e_locatie                      |         |                                                              |
+| sensor.g986b_geocoded_location | missing | .storage/lovelace.eikenbos_dashboard:2558                    |
++--------------------------------+---------+--------------------------------------------------------------+
+
+-== Report created on 10 May 2022 16:20:31
+-== Parsed 85 files in 3.01s., ignored 0 files 
+-== Generated in: 0.09s. Validated in: 0.01s.

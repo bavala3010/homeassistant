@@ -89,7 +89,7 @@
       friendly_name: Master bedroom TV Chromecast (Google Android device)
       icon: mdi:wifi
       state: unavailable
-    light.play_bart:
+    light.master_bedroom_play_bart:
       min_mireds: 153
       max_mireds: 500
       effect_list:
@@ -114,7 +114,7 @@
       friendly_name: Play Bart
       supported_features: 63
       state: 'on'
-    light.play_madouce:
+    light.master_bedroom_play_madouce:
       min_mireds: 153
       max_mireds: 500
       effect_list:

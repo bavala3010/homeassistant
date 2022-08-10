@@ -24,10 +24,10 @@ automation:
     entity_id: input_boolean.car_climatisation_timer
     state: 'on'
   action:
-   - service: script.auto_start_climatisatie_nu
+  - service: script.auto_start_climatisatie_nu
   mode: restart
 
-- alias: 🚗 Om 19u in Waarschoot en koud = vraag auto voorverwarmen
+- alias: 🚗 Om 19u in Waarschoot en koud = vraag auto climatiseren
   id: '8fa06ed3-7c9f-453d-80d4-a246df6633f8'
   description: ''
   trigger:
@@ -52,9 +52,9 @@ automation:
   action:
   - service: notify.bart_phone
     data:
-      message: 🚙 Moet de auto worden voorverwamd?
+      message: 🚙 Moet de auto geclimatiseerd worden?
       data:
-        tag: auto_verwarmen
+        tag: auto_climatisatie
         color: green
         actions:
         - action: URI
@@ -72,9 +72,13 @@ automation:
       to: 'off'
       for: "00:00:05"
   condition:
-    - condition: numeric_state
-      entity_id: sensor.audi_e_tron_sportback_outdoor_temperature
-      below: 15
+    or:
+      - condition: numeric_state
+        entity_id: sensor.audi_e_tron_sportback_outdoor_temperature
+        below: 15
+      - condition: numeric_state
+        entity_id: sensor.temp_leuven24_wunderground
+        below: 15
   action:
   - choose:
     # indien aankomst thuis, niets doen
@@ -99,16 +103,16 @@ automation:
       sequence:
       - service: notify.bart_phone
         data:
-          title: 🚙 Moet de auto straks worden voorverwamd?
+          title: 🚙 Moet de auto straks geclimatiseerd worden?
           message: Geniet van de sauna :)
           data:
-            tag: auto_verwarmen      
+            tag: auto_climatisatie   
             color: green
             actions:
             - action: URI
               title: zo ja, klik hier
               uri: /eikenbos-dashboard/e-tron-heater          
-    # indien aankomst bij winkel, niets vragen en blijven verwarmen
+    # indien aankomst bij winkel, niets vragen en climatisatie blijven houden
     - conditions:
         - condition: or
           conditions:
@@ -139,10 +143,10 @@ automation:
       sequence:
       - service: notify.bart_phone
         data:
-          title: 🚙 Auto straks voorverwamen?
+          title: 🚙 Auto straks climatiseren?
           message: Een warme auto is altijd lekkerder.
           data:
-            tag: auto_verwarmen      
+            tag: auto_climatisatie 
             color: green
             actions:
             - action: URI
@@ -152,9 +156,9 @@ automation:
         timeout: '01:00:00'
       - service: notify.bart_phone
         data:
-          message: 🚙 Moet de auto worden voorverwamd?
+          message: 🚙 Moet de auto geclimatiseerd worden?
           data:
-            tag: auto_verwarmen      
+            tag: auto_climatisatie      
             color: green
             actions:
             - action: URI
@@ -164,10 +168,10 @@ automation:
     default:
     - service: notify.bart_phone
       data:
-        title: 🚙 Auto straks voorverwamen?
+        title: 🚙 Auto straks climatiseren?
         message: Een warme auto is altijd lekkerder.
         data:
-          tag: auto_verwarmen
+          tag: auto_climatisatie
           color: green
           actions:
           - action: URI
@@ -177,9 +181,9 @@ automation:
       timeout: '01:00:00'
     - service: notify.bart_phone
       data:
-        message: 🚙 Moet de auto worden voorverwamd?
+        message: 🚙 Moet de auto worden geclimatiseerd?
         data:
-          tag: auto_verwarmen      
+          tag: auto_climatisatie      
           color: green
           actions:
           - action: URI
@@ -197,9 +201,13 @@ automation:
       to: 'off'
       for: "00:00:05"
   condition:
-    - condition: numeric_state
-      entity_id: sensor.audi_e_tron_sportback_outdoor_temperature
-      below: 15
+    or:
+      - condition: numeric_state
+        entity_id: sensor.audi_e_tron_sportback_outdoor_temperature
+        below: 15
+      - condition: numeric_state
+        entity_id: sensor.temp_leuven24_wunderground
+        below: 15
   action:
   - choose:
     # indien aankomst thuis, niets doen
@@ -224,16 +232,16 @@ automation:
       sequence:
       - service: notify.madouce_phone
         data:
-          title: 🚙 Moet de auto straks worden voorverwamd?
+          title: 🚙 Moet de auto straks geclimatiseerd worden?
           message: Geniet van de sauna :)
           data:
-            tag: auto_verwarmen      
+            tag: auto_climatisatie      
             color: green
             actions:
             - action: URI
               title: zo ja, klik hier
               uri: /eikenbos-dashboard/e-tron-heater          
-    # indien aankomst bij winkel, niets vragen en blijven verwarmen
+    # indien aankomst bij winkel, niets vragen en climatisatie laten aanstaan
     - conditions:
         - condition: or
           conditions:
@@ -264,10 +272,10 @@ automation:
       sequence:
       - service: notify.madouce_phone
         data:
-          title: 🚙 Auto straks voorverwamen?
+          title: 🚙 Auto straks climatiseren?
           message: Een warme auto is altijd lekkerder.
           data:
-            tag: auto_verwarmen      
+            tag: auto_climatisatie      
             color: green
             actions:
             - action: URI
@@ -277,9 +285,9 @@ automation:
         timeout: '01:00:00'
       - service: notify.madouce_phone
         data:
-          message: 🚙 Moet de auto worden voorverwamd?
+          message: 🚙 Moet de auto worden geclimatiseerd?
           data:
-            tag: auto_verwarmen      
+            tag: auto_climatisatie      
             color: green
             actions:
             - action: URI
@@ -289,10 +297,10 @@ automation:
     default:
     - service: notify.madouce_phone
       data:
-        title: 🚙 Auto straks voorverwamen?
+        title: 🚙 Auto straks climatiseren?
         message: Een warme auto is altijd lekkerder.
         data:
-          tag: auto_verwarmen
+          tag: auto_climatisatie
           color: green
           actions:
           - action: URI
@@ -302,65 +310,43 @@ automation:
       timeout: '01:00:00'
     - service: notify.madouce_phone
       data:
-        message: 🚙 Moet de auto worden voorverwamd?
+        message: 🚙 Moet de auto worden geclimatiseerd?
         data:
-          tag: auto_verwarmen      
+          tag: auto_climatisatie      
           color: green
           actions:
           - action: URI
             title: zo ja, klik hier
             uri: /eikenbos-dashboard/e-tron-heate
   mode: restart
-- alias: 🚗 Auto verwarmen bij begin werkdag bij Toyota Diest
-  id: '4ed1d4be-1e9b-42b0-90b9-e32d9f584de0'
-  description: ''
-  trigger:
-  - platform: time
-    at: '07:00'
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.audi_e_tron_sportback_outdoor_temperature
-    below: 15
-  - condition: template
-    value_template: >
-      {% set car_use_day = 'input_select.car_use_day' ~ now().isoweekday() %}
-      {%if states(car_use_day) == "Toyota Diest"%} true {% endif %}
-  action:
-  - service: notify.madouce_phone
-    data:
-      title: 🚙 De auto wordt nu voorverwarmd.
-      message:  Geniet van de warme rit naar Diest.
-      data:
-        tag: auto_verwarmen
-        color: green
-        actions:
-        - action: URI
-          title: Voor meer info, klik hier
-          uri: /eikenbos-dashboard/e-tron-heater
-  - service: script.auto_start_climatisatie_nu
-  mode: single 
- 
-- alias: 🚗 Auto verwarmen bij begin werkdag bij Toyota Evere
+
+
+#########################
+# Werkdag Toyota Evere
+#########################
+
+- alias: 🚗 Auto climatisatie voor vertrek naar Toyota Evere
   id: 'caf13c49-2daa-4e8c-b275-a6811621cf50'
   description: ''
   trigger:
   - platform: time
     at: '07:30'
   condition:
-  - condition: numeric_state
-    entity_id: sensor.audi_e_tron_sportback_outdoor_temperature
-    below: 15
-  - condition: template
-    value_template: >
-      {% set car_use_day = 'input_select.car_use_day' ~ now().isoweekday() %}
-      {%if states(car_use_day) == "Toyota Evere"%} true {% endif %}
+    and:
+      - condition: template
+        value_template: >
+          {% set car_use_day = 'input_select.car_use_day_' ~ now().isoweekday() %}
+          {%if states(car_use_day) == "Toyota Evere"%} true {% endif %}
+      - condition: numeric_state
+        entity_id: sensor.temp_leuven24_wunderground
+        below: 15
   action:
   - service: notify.madouce_phone
     data:
-      title: 🚙 De auto wordt nu voorverwarmd.
+      title: 🚙 De temperatuur in de auto wordt nu aangepast.
       message:  Geniet van de warme rit naar Evere.
       data:
-        tag: auto_verwarmen
+        tag: auto_climatisatie
         color: green
         actions:
         - action: URI
@@ -369,26 +355,55 @@ automation:
   - service: script.auto_start_climatisatie_nu
   mode: single 
 
-- alias: 🚗 Auto verwarmen na werkdag bij Toyota Evere
+- alias: 🚗 Bij aankomst Toyota Evere starttijd bepalen voor climatisatie
+  id: '4ed1d4be-1e9b-42b0-90b9-e32d9f584de0'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: device_tracker.audi_e_tron_sportback_position
+    to: 'Toyota Evere'
+  condition:
+  - condition: template
+    value_template: >
+      {% set car_use_day = 'input_select.car_use_day_' ~ now().isoweekday() %}
+      {% if states(car_use_day) == "Toyota Evere"%} true {% endif %}
+  action:
+  - service: input_datetime.set_datetime
+    data:
+      time: "{{ (as_timestamp(now())  + (7.5 * 60 * 60) ) | timestamp_custom('%H:%M') }}"
+    target:
+      entity_id: input_datetime.toyota_evere_expected_leaving_time
+  - service: notify.madouce_phone
+    data:
+      message: TTS
+      data:
+        tts_text: Welkom in Evere. Een prettige werkdag.
+        ttl: 0
+        priority: high
+        media_stream: alarm_stream  
+  mode: single
+
+- alias: 🚗 Auto climatisatie op einde werkdag bij Toyota Evere
   id: '2e05b1aa-1980-4c0d-b3a7-ee1df7fef055'
   description: ''
   trigger:
   - platform: time
-    at: '16:20'
+    at: input_datetime.toyota_evere_expected_leaving_time
   condition:
-  - condition: numeric_state
-    entity_id: sensor.audi_e_tron_sportback_outdoor_temperature
-    below: 15
-  - condition: state
-    entity_id: person.madouce
-    state: "Toyota Evere"
+    or:
+      - condition: state
+        entity_id: person.madouce
+        state: "Toyota Evere"
+      - condition: state
+        entity_id: device_tracker.audi_e_tron_sportback_position
+        state: "Toyota Evere"
   action:
   - service: notify.madouce_phone
     data:
-      title: 🚙 De auto wordt nu voorverwarmd.
-      message: Een warme auto is altijd lekkerder. Veilige rit dadelijk.
+      title: 🚙 De temperatuur in de auto wordt nu aangepast.
+      message: Een koele/warme auto is altijd lekkerder. Veilige rit dadelijk.
       data:
-        tag: auto_verwarmen
+        tag: auto_climatisatie
         color: green
         actions:
         - action: URI
@@ -397,31 +412,94 @@ automation:
   - service: script.auto_start_climatisatie_nu          
   mode: single
 
-- alias: 🚗 Auto verwarmen na werkdag bij Toyota Diest
+
+#########################
+# Werkdag Toyota Diest
+#########################
+
+- alias: 🚗 Auto climatisatie voor vertrek naar Toyota Diest
+  id: 'a9955e82-bda5-452a-86d0-b8a320c0b837'
+  description: ''
+  trigger:
+  - platform: time
+    at: '07:30'
+  condition:
+    and:
+      - condition: template
+        value_template: >
+          {% set car_use_day = 'input_select.car_use_day_' ~ now().isoweekday() %}
+          {%if states(car_use_day) == "Toyota Diest"%} true {% endif %}
+      - condition: numeric_state
+        entity_id: sensor.temp_leuven24_wunderground
+        below: 15
+  action:
+  - service: notify.madouce_phone
+    data:
+      title: 🚙 De temperatuur in de auto wordt nu aangepast.
+      message:  Geniet van de rit naar Diest.
+      data:
+        tag: auto_climatisatie
+        color: green
+        actions:
+        - action: URI
+          title: Voor meer info, klik hier
+          uri: /eikenbos-dashboard/e-tron-heater
+  - service: script.auto_start_climatisatie_nu
+  mode: single
+
+- alias: 🚗 Bij aankomst Toyota Diest starttijd bepalen voor climatisatie
+  id: '0862a5c1-640f-48b9-b484-4bfc0f5efb41'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: device_tracker.audi_e_tron_sportback_position
+    to: 'Toyota Diest'
+  condition:
+  - condition: template
+    value_template: >
+      {% set car_use_day = 'input_select.car_use_day_' ~ now().isoweekday() %}
+      {%if states(car_use_day) == "Toyota Diest"%} true {% endif %}
+  action:
+  - service: input_datetime.set_datetime
+    data:
+      time: "{{ (as_timestamp(now())  + (7.25 * 60 * 60) ) | timestamp_custom('%H:%M') }}"
+    target:
+      entity_id: input_datetime.toyota_diest_expected_leaving_time
+  - service: notify.madouce_phone
+    data:
+      message: TTS
+      data:
+        tts_text: Welkom in Diest. Een prettige werkdag.
+        ttl: 0
+        priority: high
+        media_stream: alarm_stream
+  mode: single
+
+- alias: 🚗 Auto climatisatie op einde werkdag bij Toyota Diest
   id: '7c5f1cfa-b20a-4b5b-be63-8ad01ec4e57f'
   description: ''
   trigger:
   - platform: time
-    at: '16:20'
+    at: input_datetime.toyota_diest_expected_leaving_time
   condition:
-  - condition: numeric_state
-    entity_id: sensor.audi_e_tron_sportback_outdoor_temperature
-    below: 15
-  - condition: state
-    entity_id: person.madouce
-    state: "Toyota Diest"
+    or:
+      - condition: state
+        entity_id: person.madouce
+        state: "Toyota Diest"
+      - condition: state
+        entity_id: device_tracker.audi_e_tron_sportback_position
+        state: "Toyota Diest"
   action:
   - service: notify.madouce_phone
     data:
-      title: 🚙 De auto wordt nu voorverwarmd.
-      message: Een warme auto is altijd lekkerder. Veilige rit dadelijk.
+      title: 🚙 De temperatuur in de auto wordt nu aangepast.
+      message: Een koele/warme auto is altijd lekkerder. Veilige rit dadelijk.
       data:
-        tag: auto_verwarmen
+        tag: auto_climatisatie
         color: green
         actions:
         - action: URI
           title: Voor meer info, klik hier
           uri: /eikenbos-dashboard/e-tron-heater
   - service: script.auto_start_climatisatie_nu          
-  mode: single 
-
+  mode: single

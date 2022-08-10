@@ -9,17 +9,35 @@ gezin:
     - person.madouce
     - person.amilya
     - person.alunya
-    - device_tracker.bart_s10
-    - device_tracker.madouce_s20
-    - device_tracker.amilya_iphone_xs
-    - device_tracker.alunya_a61
+    # # via mobile app
+    # - device_tracker.bart_s10
+    # - device_tracker.madouce_s20
+    # - device_tracker.alunya_a71
+    # # via google wifi
+    # - device_tracker.bart_samsung_s10_plus
+    # - device_tracker.madouce_samsung_s20
+    # - device_tracker.alunya_samsung_galaxy_a71
+    # - device_tracker.amilya_iphone_xs
 
 alleen_bart:
   name: not_bart
   entities:
-    - device_tracker.madouce_s20
-    - device_tracker.amilya_iphone_xs
-    - device_tracker.alunya_a61
+    - person.madouce
+    - person.amilya
+    - person.alunya
+    # - device_tracker.madouce_s20
+    # - device_tracker.amilya_iphone_xs
+    # - device_tracker.alunya_a71
+
+alleen_madouce:
+  name: not_madouce
+  entities:
+    - person.bart
+    - person.amilya
+    - person.alunya
+    # - device_tracker.bart_s10
+    # - device_tracker.amilya_iphone_xs
+    # - device_tracker.alunya_a71
 
 bart_madouce:
   name: bart_madouce
@@ -51,7 +69,7 @@ living_veranda_speakers:
 #######################################################################
 
 alle_raam_sensoren:
-  name: alle_raam_sensoren
+  name: alle raam sensoren
   entities:
     - binary_sensor.badkamer_raam_kantel
     - binary_sensor.badkamer_raam_wijd
@@ -68,27 +86,37 @@ alle_raam_sensoren:
     - binary_sensor.voordeur
     - binary_sensor.voordeur_nuki
 
+alle_ramen_wijd_en_schuifdeuren:
+  name: alle ramen wijd en (schuif)deuren
+  entities:
+    - binary_sensor.badkamer_raam_wijd
+    - binary_sensor.kamer_alunya_schuifraam
+    - binary_sensor.master_bedroom_raam_wijd
+    - binary_sensor.veranda_schuifraam
+    - binary_sensor.voordeur
+    - binary_sensor.voordeur_nuki
+
 living_ramen:
-  name: living_ramen
+  name: living ramen
   entities:
     - binary_sensor.keuken_raam
     - binary_sensor.living_oprit_raam
     - binary_sensor.living_tuin_raam
     
 kamer_alunya_ramen:
-  name: kamer_alunya_ramen
+  name: kamer alunya ramen
   entities:
     - binary_sensor.kamer_alunya_raam
     - binary_sensor.kamer_alunya_schuifraam
 
 badkamer_ramen:
-  name: badkamer_ramen
+  name: badkamer ramen
   entities:
     - binary_sensor.badkamer_raam_kantel
     - binary_sensor.badkamer_raam_wijd
 
 master_bedroom_ramen:
-  name: master_bedroom_ramen
+  name: master bedroom ramen
   entities:
     - binary_sensor.badkamer_raam_kantel
     - binary_sensor.badkamer_raam_wijd
@@ -231,3 +259,20 @@ elec_huishoudtoestellen_busy:
     - input_boolean.elec_wasmachine_busy
     - input_boolean.elec_droger_busy
     - input_boolean.elec_vaatwasser_busy
+
+home_temp_rising:
+  name: temperatuur in huis stijgt
+  entities:
+  # zonder badkamer, omdat daar temperatuur soms stijgt door douchen
+    - binary_sensor.living_temp_rising
+    - binary_sensor.kamer_amilya_temp_rising
+    - binary_sensor.veranda_temp_rising
+    - binary_sensor.gang_temp_rising
+    - binary_sensor.kamer_alunya_temp_rising
+    - binary_sensor.master_bedroom_temp_rising
+
+
+car_1_position:
+  name: auto locatie 
+  entities:
+    - device_tracker.audi_e_tron_sportback_position

@@ -40,6 +40,7 @@
       ''Days_until'') == 1 %}Zet de blauwe zak aan straat. {%elif state_attr(''sensor.recycleapp_papier'',
       ''Days_until'') == 1 %}Zet het oud papier aan straat. {%endif%}'
   mode: single
+  
 - alias: recycle_done
   id: 761e33f9-8fad-4537-8bf3-361aba8f5638
   trigger:
@@ -58,28 +59,9 @@
       message: clear_notification
       data:
         tag: recycle
-- alias: 🔌 Madouce gsm < 90% om 22:00 = gsm-lader inschakelen
-  id: '1644270791368'
-  description: ''
-  trigger:
-  - platform: time
-    at: '22:00:00'
-  condition:
-  - condition: and
-    conditions:
-    - condition: numeric_state
-      entity_id: sensor.sm_g986b_battery_level
-      below: 90
-    - condition: state
-      entity_id: person.madouce
-      state: home
-  action:
-  - service: switch.turn_on
-    target:
-      entity_id: switch.smart_power_strip_3
-  mode: single
-- id: '1645356388702'
-  alias: Elek timer wasmachine zetten (2u00)
+
+- alias: Elek timer wasmachine zetten (2u00)
+  id: '1645356388702'
   description: ''
   trigger:
   - platform: state
@@ -94,8 +76,9 @@
     target:
       entity_id: input_datetime.elec_wasmachine_end
   mode: single
-- id: '1645359198579'
-  alias: Elek timer vaatwasser zetten (1u40)
+
+- alias: Elek timer vaatwasser zetten (1u40)
+  id: '1645359198579'
   description: ''
   trigger:
   - platform: state
@@ -110,8 +93,9 @@
     target:
       entity_id: input_datetime.elec_vaatwasser_end
   mode: single
-- id: '1645359477977'
-  alias: Elek timer droger zetten (2u00)
+
+- alias: Elek timer droger zetten (2u00)
+  id: '1645359477977'
   description: ''
   trigger:
   - platform: state
@@ -126,78 +110,50 @@
     target:
       entity_id: input_datetime.elec_droger_end
   mode: single
-- alias: Persoon gedetecteerd aan voordeur
-  id: '1646236825543'
+
+- alias: 'Waarschoot: alarm wordt uitgeschakeld (knop beneden)'
+  id: '1655128635738'
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.netatmo_motion_human
-    to: 'on'
-  condition: []
-  action:
-  - service: tts.google_say
-    data:
-      entity_id: media_player.veranda_speaker
-      message: Persoon gedetecteerd aan voordeur.
-  mode: single
-- id: '1646669816438'
-  alias: licht in garage
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.garage_sensor_light_level
-    for:
-      hours: 0
-      minutes: 10
-      seconds: 0
-      milliseconds: 0
-    above: '4'
-  condition: []
-  action:
-  - repeat:
-      while:
-      - condition: numeric_state
-        entity_id: sensor.garage_sensor_light_level
-        above: '4'
-      sequence:
-      - service: notify.bart_phone
-        data:
-          message: Licht in garage brandt al {{ as_timestamp(now()) - as_timestamp(state_attr('automation.licht_in_garage'),'last_triggered')
-            | int }} minuten.
-          title: Licht in garage
-          data:
-            color: blue
-            tag: garage_licht
-      - delay:
-          minutes: 5
-  - service: notify.bart_phone
-    data:
-      message: clear_notification
-      data:
-        tag: garage_licht
-  - service: notify.madouce_phone
-    data:
-      message: clear_notification
-      data:
-        tag: garage_licht
-  mode: single
-- id: '1646672234662'
-  alias: 🪟 ramen - open raam badkamer (melding op speaker)
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: light.badkamer_douche
+    entity_id:
+    - switch.waarschoot_living_alarmknop
     to: 'off'
   condition:
   - condition: state
-    entity_id: binary_sensor.badkamer_raam_kantel
-    state: 'off'
-  - condition: state
-    entity_id: input_boolean.badkamer_raam_moet_open
+    entity_id: input_boolean.waarschoot_holiday_modus
     state: 'on'
   action:
-  - service: tts.google_say
-    data:
-      entity_id: media_player.badkamer_speaker
-      message: Het raam mag open. Er is {{states('sensor.badkamer_humidity')}}% vocht.
+  - delay:
+      hours: 1
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.waarschoot_living_alarmknop
   mode: single
+
+- alias: Send a camera snapshot when motion is detected
+  id: '1657712996549'
+  description: ''
+  use_blueprint:
+    path: vorion/send-camera-snapshot-notification-on-motion.yaml
+    input:
+      motion_sensor: binary_sensor.buitensensor_deur_motion
+      camera: camera.netatmo_eikenbos_oprit
+      notify_device: b5d28be91fff8c03aece377f73b28dd2
+      notification_title: Beweging aan voordeur
+      delay: 0:0
+
+- alias: test blueprint (aangepast)
+  id: '1657809690542'
+  description: ''
+  use_blueprint:
+    path: vorion/send-camera-snapshot-notification-on-motion.yaml
+    input:
+      motion_sensor: camera.indoor_camera
+      camera: camera.indoor_camera
+      notify_device: b5d28be91fff8c03aece377f73b28dd2
+      delay: 0:0

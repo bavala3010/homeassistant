@@ -9,3 +9,11 @@ name: |
   
   
 strptime(string, format) parses a string based on a format and returns a datetime object. If that fails, returns the default value, or if omitted the unprocessed input value.  
+
+
+  date: '{{ now().strftime("%Y-%m-%d") }}'
+  time: '{{ (now()+timedelta(hours=1)).strftime("%H:%M") }}'
+
+
+https://community.home-assistant.io/t/the-epic-time-conversion-and-manipulation-thread/85786
+

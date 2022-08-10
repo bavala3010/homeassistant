@@ -18,20 +18,20 @@
 
 automation:
 
-- alias: "💧 Vocht in huis >75%"
+- alias: "💧 Vocht in huis >70%"
   id: '466f577f-83c4-4954-b17e-335ad7fa83f6'
   description: ''
   trigger:
     - platform: numeric_state
       entity_id: sensor.avg_inside_humidity
-      above: '75'
+      above: '70'
       for: '00:15'
   condition:
     - condition: state
       entity_id: person.bart
       state: home
     - condition: time
-      after: '7:0:0'
+      after: '07:00:00'
       before: '23:00:00'
   action:
     - service: notify.bart_phone

@@ -1,0 +1,11 @@
+Collecting tgtg
+  Downloading tgtg-0.11.1-py3-none-any.whl (7.0 kB)
+Collecting requests==2.27.1
+  Downloading requests-2.27.1-py2.py3-none-any.whl (63 kB)
+Collecting charset-normalizer~=2.0.0
+  Downloading charset_normalizer-2.0.12-py3-none-any.whl (39 kB)
+Requirement already satisfied: certifi>=2017.4.17 in /usr/lib/python3/dist-packages (from requests==2.27.1->tgtg) (2020.6.20)
+Requirement already satisfied: idna<4,>=2.5 in /usr/lib/python3/dist-packages (from requests==2.27.1->tgtg) (2.10)
+Requirement already satisfied: urllib3<1.27,>=1.21.1 in /usr/lib/python3/dist-packages (from requests==2.27.1->tgtg) (1.26.5)
+Installing collected packages: charset-normalizer, requests, tgtg
+Successfully installed charset-normalizer-2.0.12 requests-2.27.1 tgtg-0.11.1

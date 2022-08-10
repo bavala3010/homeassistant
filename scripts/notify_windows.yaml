@@ -1,0 +1,132 @@
+# These scripts do the actual sending of the notifications
+# The scripts receive parameters passed from other automations
+
+notify_bart_windows_close:
+  alias: notify_bart_windows_close
+  sequence:
+    - condition: time
+      after: '07:00:00'
+      before: '23:30:00'
+    - condition: zone
+      entity_id: person.bart
+      zone: zone.home
+    - service: notify.bart_phone
+      data:
+        title: " {{title}}"
+        message: "{{reason}}<br>{{message}}"
+        data:
+          color: red
+          channel: ramen
+          timeout: 3600
+          tag: " {{tag}}"
+          actions:
+          - action: "{{action_window_pause}}" 
+            title: stel meldingen 2 uren uit
+          - action: URI
+            title: meer info
+            uri: "{{uri}}"
+  mode: parallel  
+
+notify_bart_windows_open:
+  alias: notify_bart_windows_open
+  sequence:
+    - condition: time
+      after: '07:00:00'
+      before: '23:30:00'
+    - condition: zone
+      entity_id: person.bart
+      zone: zone.home
+    - service: notify.bart_phone
+      data:
+        title: " {{title}}"
+        message: "{{reason}}<br>{{message}}"
+        data:
+          color: green
+          channel: ramen
+          timeout: 3600
+          tag: "{{tag}}"
+          actions:
+          - action: "{{action_window_pause}}" 
+            title: stel meldingen 2 uren uit
+          - action: URI
+            title: meer info
+            uri: "{{uri}}"
+  mode: parallel  
+  
+notify_madouce_windows_close:
+  alias: notify_madouce_windows_close
+  sequence:
+    - condition: time
+      after: '07:00:00'
+      before: '23:30:00'
+    - condition: zone
+      entity_id: person.madouce
+      zone: zone.home
+    - service: notify.madouce_phone
+      data:
+        title: " {{title}}"
+        message: "{{reason}}<br>{{message}}"
+        data:
+          color: red
+          channel: ramen
+          timeout: 3600
+          tag: " {{tag}}"
+          actions:
+          - action: "{{action_window_pause}}" 
+            title: stel meldingen 2 uren uit
+          - action: URI
+            title: meer info
+            uri: "{{uri}}"
+  mode: parallel
+
+notify_madouce_windows_open:
+  alias: notify_madouce_windows_open
+  sequence:
+    - condition: time
+      after: '07:00:00'
+      before: '23:30:00'
+    - condition: zone
+      entity_id: person.madouce
+      zone: zone.home
+    - service: notify.madouce_phone
+      data:
+        title: " {{title}}"
+        message: "{{reason}}<br>{{message}}"
+        data:
+          color: green
+          channel: ramen
+          timeout: 3600
+          tag: " {{tag}}"
+          actions:
+          - action: "{{action_window_pause}}" 
+            title: stel meldingen 2 uren uit
+          - action: URI
+            title: meer info
+            uri: "{{uri}}"
+  mode: parallel
+
+notify_alunya_windows:
+  alias: notify_alunya_windows
+  sequence:
+    - condition: time
+      after: '07:00:00'
+      before: '22:30:00'
+    - condition: zone
+      entity_id: person.alunya
+      zone: zone.home
+    - service: notify.alunya_phone
+      data:
+        title: " {{title}}"
+        message: "{{reason}}<br>{{message}}"
+        data:
+          color: "#0E86D4"
+          channel: ramen
+          timeout: 3600
+          tag: " {{tag}}"
+          actions:
+          - action: "{{action_window_pause}}" 
+            title: stel meldingen 2 uren uit
+          - action: URI
+            title: meer info
+            uri: "{{uri}}"
+  mode: parallel

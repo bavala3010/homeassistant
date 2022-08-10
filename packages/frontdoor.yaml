@@ -1,13 +1,35 @@
 ############################ Table of Contents ############################ 
 # 
 #   Automations
-#     🏡 Niemand meer thuis = voordeur op slot doen
+#     🏡 Om 22u30 doe voordeur op slot
+#     🏡 Niemand meer thuis = doe voordeur op slot
+#     🏡 kind(eren) alleen thuis = doe voordeur op slot
+#     🏡 Bart alleen thuis = doe voordeur op slot
+#     🏡 Madouce alleen thuis = doe voordeur op slot
 #
 ############################ Automations ################################## 
 
 automation:
 
-- alias: Niemand meer thuis = voordeur op slot doen
+- alias: om 22u30, 23u00 en 24u00 doe voordeur op slot
+  id: '35bab60f-cbaf-4969-839c-46a117a46e50'
+  description: ""
+  mode: single
+  trigger:
+    - platform: time
+      at: "22:30:00"
+    - platform: time
+      at: "23:00:00"
+    - platform: time
+      at: "00:00:00"            
+  condition: []
+  action:
+    - service: lock.lock
+      data: {}
+      target:
+        entity_id: lock.voordeur_nuki
+
+- alias: Niemand meer thuis = doe voordeur op slot
   id: '97b2e13f-ab8c-4346-983a-970cfacb4c4e'
   description: ''
   trigger:
@@ -34,9 +56,10 @@ automation:
       message: Niemand thuis. Gelukkig heb ik de voordeur voor jou op slot gedaan.
       data:
         color: red
-  mode: single        
+  mode: single
+
         
-- alias: kind(eren) alleen thuis = voordeur op slot doen
+- alias: kind(eren) alleen thuis = doe voordeur op slot
   id: '70541658-6b67-46f1-8e90-64a0600c646d'
   description: ''
   trigger:
@@ -76,7 +99,7 @@ automation:
         color: red
   mode: single
   
-- alias: Bart alleen thuis = voordeur op slot doen
+- alias: Bart alleen thuis = doe voordeur op slot
   id: '77234403-213e-41a5-ad01-a159f3b0978c'
   description: ''
   trigger:
@@ -97,4 +120,27 @@ automation:
       message: Bart, je bent alleen thuis.
       data:
         color: red
-  mode: single  
+  mode: single
+
+- alias: Madouce alleen thuis = doe voordeur op slot
+  id: 'eb26f9a9-6603-4ab5-a224-e845e45790fd'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.alleen_madouce
+    to: not_home
+  condition:
+  - condition: state
+    entity_id: lock.voordeur_nuki
+    state: 'unlocked'
+  action:
+  - service: lock.lock
+    target:
+      entity_id: lock.voordeur_nuki
+  - service: notify.madouce_phone
+    data:
+      title: Ik heb de voordeur voor jou op slot gedaan.
+      message: Madouce, je bent alleen thuis.
+      data:
+        color: red
+  mode: single

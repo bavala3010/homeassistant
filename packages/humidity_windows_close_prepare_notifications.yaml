@@ -1,0 +1,383 @@
+############################ Table of Contents ############################ 
+#
+#   Prepare notifications to close windows 
+#   🪟 ramen - sluit raam living (Bart en Madouce)
+#   🪟 ramen - sluit raam kamer Amilya (Bart en Madouce)
+#   🪟 ramen - sluit raam veranda (Bart en Madouce)
+#   🪟 ramen - sluit raam berging (Bart en Madouce)
+#   🪟 ramen - sluit raam badkamer (Bart en Madouce)
+#   🪟 ramen - sluit raam kamer Alunya (Bart en Madouce)
+#   🪟 ramen - sluit raam master bedroom (Bart en Madouce)
+# 
+#############################################################################
+
+automation:
+
+- alias: 🪟 ramen - sluit raam living
+  id: 'cec1c79b-5c6a-46a3-a3c7-5f981f7e18b3'
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.living_raam_moet_dicht
+    state: 'on'
+  - condition: or
+    conditions:    
+    - condition: state
+      entity_id: binary_sensor.keuken_raam
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.living_oprit_raam
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.living_tuin_raam
+      state: 'on'
+  - condition: state
+    entity_id: input_boolean.living_window_pause
+    state: 'off'
+  action:
+  - service: script.notify_bart_windows_close
+    data:
+      title: '{{title}}'
+      message: '{{reason}}<br>{{message}}'
+      tag: '{{tag}}'
+      action_window_pause: '{{action_window_pause}}'
+  - service: script.notify_madouce_windows_close
+    data:
+      title: '{{title}}'
+      message: '{{reason}}<br>{{message}}'
+      tag: '{{tag}}'
+      action_window_pause: '{{action_window_pause}}'
+  variables:
+    message: >
+      Vocht sinds openen raam: {{ ((states('sensor.living_humidity') | float(default=0)) - ((states('input_number.living_initial_humidity_percentage') | float(default=0)))) | round(1)}}% verschil.<br>
+      Vocht living: {{states('sensor.gram_water_living')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
+      Vocht living: {{states('sensor.living_humidity')}}%. Buiten: {{states('sensor.humidity_leuven24_wunderground')}}%.<br>
+      Temp living: {{states('sensor.living_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.
+    title: "Sluit raam van living/keuken!"
+    tag: "window_living"
+    action_window_pause: "living_window_pause"
+    reason: >
+      {% set d = states('sensor.gram_water_living_diff_outside') | float(default=0) %}
+      {% set h = states('sensor.living_humidity') %}
+      {% if states('sensor.temp_forecast_4_hours') | float(default=0) < 16 %}Te koud buiten.
+      {% elif d <= 0 %}Buiten vochtiger dan binnen.
+      {% elif d < 0.5 %}Buiten maar iets minder vocht dan binnen.
+      {% endif %}
+  mode: single
+
+- alias: 🪟 ramen - sluit raam kamer Amilya
+  id: 'cf1defe1-319e-4475-a2a8-308b99d65207'
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.kamer_amilya_raam_moet_dicht
+    state: 'on'
+  - condition: state
+    entity_id: binary_sensor.kamer_amilya_raam
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.kamer_amilya_window_pause
+    state: 'off'
+  action:
+  - service: script.notify_bart_windows_close
+    data:
+      title: '{{title}}'
+      message: '{{reason}}<br>{{message}}'
+      tag: '{{tag}}'
+      action_window_pause: '{{action_window_pause}}'
+  - service: script.notify_madouce_windows_close
+    data:
+      title: '{{title}}'
+      message: '{{reason}}<br>{{message}}'
+      tag: '{{tag}}'
+      action_window_pause: '{{action_window_pause}}'
+  variables:
+    message: >
+      Vocht sinds openen raam: {{ ((states('sensor.kamer_amilya_humidity') | float(default=0)) - ((states('input_number.kamer_amilya_initial_humidity_percentage') | float(default=0)))) | round(1)}}% verschil.<br>
+      Vocht kamer Amilya: {{states('sensor.gram_water_kamer_amilya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
+      Vocht kamer Amilya: {{states('sensor.kamer_amilya_humidity')}}%. Buiten: {{states('sensor.humidity_leuven24_wunderground')}}%.<br>
+      Temp kamer Amilya: {{states('sensor.kamer_amilya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.
+    title: "Sluit het raam van Amilya!"
+    tag: "window_kamer_amilya"
+    action_window_pause: "kamer_amilya_window_pause"
+    reason: >
+      {% set d = states('sensor.gram_water_kamer_amilya_diff_outside') | float(default=0) %}
+      {% set h = states('sensor.kamer_amilya_humidity') %}
+      {% if states('sensor.temp_forecast_4_hours') | float(default=0) < 16 %}Te koud buiten.
+      {% elif d <= 0 %}Buiten vochtiger dan binnen.
+      {% elif d < 0.5 %}Buiten maar iets minder vocht dan binnen.
+      {% endif %}
+  mode: single
+
+- alias: 🪟 ramen - sluit raam veranda
+  id: '4c471c95-d235-4d41-bd08-490de91230df'
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.veranda_schuifraam_moet_dicht
+    state: 'on'
+  - condition: state
+    entity_id: binary_sensor.veranda_schuifraam
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.veranda_window_pause
+    state: 'off'    
+  action:
+  - service: script.notify_bart_windows_close
+    data:
+      title: '{{title}}'
+      message: '{{reason}}<br>{{message}}'
+      tag: '{{tag}}'
+      action_window_pause: '{{action_window_pause}}'
+  - service: script.notify_madouce_windows_close
+    data:
+      title: '{{title}}'
+      message: '{{reason}}<br>{{message}}'
+      tag: '{{tag}}'
+      action_window_pause: '{{action_window_pause}}'
+  variables:
+    message: >
+      Vocht sinds openen raam: {{ ((states('sensor.veranda_humidity') | float(default=0)) - ((states('input_number.veranda_initial_humidity_percentage') | float(default=0)))) | round(1)}}% verschil.<br>
+      Vocht veranda: {{states('sensor.gram_water_veranda')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
+      Vocht veranda: {{states('sensor.veranda_humidity')}}%. Buiten: {{states('sensor.humidity_leuven24_wunderground')}}%.<br>
+      Temp veranda: {{states('sensor.veranda_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.
+    title: "Sluit het raam van de veranda!"
+    tag: "window_veranda"
+    action_window_pause: "veranda_window_pause"
+    reason: >
+      {% set d = states('sensor.gram_water_veranda_diff_outside') | float(default=0) %}
+      {% set h = states('sensor.veranda_humidity') %}
+      {% if states('sensor.temp_forecast_4_hours') | float(default=0) < 16 %}Te koud buiten.
+      {% elif d <= 0 %}Buiten vochtiger dan binnen.
+      {% elif d < 0.5 %}Buiten maar iets minder vocht dan binnen.
+      {% endif %}
+  mode: single
+
+- alias: 🪟 ramen - sluit raam berging
+  id: 'b82e4252-8dae-4a6e-9a48-8ace11815aa1'
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.berging_raam_moet_dicht
+    state: 'on'
+  - condition: state
+    entity_id: binary_sensor.berging_raam
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.berging_window_pause
+    state: 'off'
+  action:
+  - service: script.notify_bart_windows_close
+    data:
+      title: '{{title}}'
+      message: '{{reason}}<br>{{message}}'
+      tag: '{{tag}}'
+      action_window_pause: '{{action_window_pause}}'
+  - service: script.notify_madouce_windows_close
+    data:
+      title: '{{title}}'
+      message: '{{reason}}<br>{{message}}'
+      tag: '{{tag}}'
+      action_window_pause: '{{action_window_pause}}'
+  variables:
+    message: >
+      Vocht berging: {{states('sensor.gram_water_berging')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
+      Vocht berging: {{states('sensor.berging_humidity')}}%. Buiten: {{states('sensor.humidity_leuven24_wunderground')}}%.<br>
+      Temp berging: {{states('sensor.berging_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.
+    title: "Sluit het raam van de berging!"
+    tag: "window_berging"
+    action_window_pause: "berging_window_pause"
+    reason: >
+      {% set d = states('sensor.gram_water_berging_diff_outside') | float(default=0) %}
+      {% set h = states('sensor.berging_humidity') %}
+      {% if states('sensor.temp_forecast_4_hours') | float(default=0) < 16 %}Te koud buiten.
+      {% elif d <= 0 %}Buiten vochtiger dan binnen.
+      {% elif d < 0.5 %}Buiten maar iets minder vocht dan binnen.
+      {% endif %}     
+  mode: single
+
+- alias: 🪟 ramen - sluit raam badkamer
+  id: 'b99dc88d-4bd9-486e-9a87-48bd09bcbd71'
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.badkamer_raam_moet_dicht
+    state: 'on'
+  - condition: state
+    entity_id: binary_sensor.badkamer_raam_kantel
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.badkamer_window_pause
+    state: 'off'
+  action:
+  - service: script.notify_bart_windows_close
+    data:
+      title: '{{title}}'
+      message: '{{reason}}<br>{{message}}'
+      tag: '{{tag}}'
+      action_window_pause: '{{action_window_pause}}'
+  - service: script.notify_madouce_windows_close
+    data:
+      title: '{{title}}'
+      message: '{{reason}}<br>{{message}}'
+      tag: '{{tag}}'
+      action_window_pause: '{{action_window_pause}}'
+  variables:
+    title: "Sluit badkamer raam ({{states('sensor.badkamer_raam')}})!"    
+    message: >
+      Vocht sinds openen raam: {{ ((states('sensor.badkamer_humidity') | float(default=0)) - ((states('input_number.badkamer_initial_humidity_percentage') | float(default=0)))) | round(1)}}% verschil.<br>
+      Vocht badkamer: {{states('sensor.gram_water_badkamer')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
+      Vocht badkamer: {{states('sensor.badkamer_humidity')}}%. Buiten: {{states('sensor.humidity_leuven24_wunderground')}}%.<br>
+      Temp badkamer: {{states('sensor.badkamer_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.
+    tag: "window_badkamer"
+    action_window_pause: "badkamer_window_pause"
+    reason: >
+      {% set d = states('sensor.gram_water_badkamer_diff_outside') | float(default=0) %}
+      {% set h = states('sensor.badkamer_humidity') %}
+      {% if states('sensor.temp_forecast_4_hours') | float(default=0) < 16 %}Te koud buiten.
+      {% elif d <= 0 %}Buiten vochtiger dan binnen.
+      {% elif d < 0.5 %}Buiten maar iets minder vocht dan binnen.
+      {% endif %}
+  mode: single
+
+- alias: 🪟 ramen - sluit raam kamer Alunya
+  id: '2cc50202-cd87-49d9-ad25-21627a175597'
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.kamer_alunya_raam_moet_dicht
+    state: 'on'
+  - condition: or
+    conditions:    
+    - condition: state
+      entity_id: binary_sensor.kamer_alunya_raam
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.kamer_alunya_schuifraam
+      state: 'on'
+  - condition: state
+    entity_id: input_boolean.kamer_alunya_window_pause
+    state: 'off'
+  action:
+  - service: script.notify_bart_windows_close
+    data:
+      title: '{{title}}'
+      message: '{{reason}}<br>{{message}}'
+      tag: '{{tag}}'
+      action_window_pause: '{{action_window_pause}}'
+  - service: script.notify_madouce_windows_close
+    data:
+      title: '{{title}}'
+      message: '{{reason}}<br>{{message}}'
+      tag: '{{tag}}'
+      action_window_pause: '{{action_window_pause}}'
+  variables:
+      message: >
+        Vocht sinds openen raam: {{ ((states('sensor.kamer_alunya_humidity') | float(default=0)) - ((states('input_number.kamer_alunya_initial_humidity_percentage') | float(default=0)))) | round(1)}}% verschil.<br>
+        Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
+        Vocht kamer Alunya: {{states('sensor.kamer_alunya_humidity')}}%. Buiten: {{states('sensor.humidity_leuven24_wunderground')}}%.<br>
+        Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.
+      title: "Sluit het raam van Alunya!"
+      tag: "window_kamer_alunya"
+      action_window_pause: "kamer_alunya_window_pause"
+      reason: >
+        {% set d = states('sensor.gram_water_kamer_alunya_diff_outside') | float(default=0) %}
+        {% set h = states('sensor.kamer_alunya_humidity') %}
+        {% if states('sensor.temp_forecast_4_hours') | float(default=0) < 16 %}Te koud buiten.
+        {% elif d <= 0 %}Buiten vochtiger dan binnen.
+        {% elif d < 0.5 %}Buiten maar iets minder vocht dan binnen.
+        {% endif %}
+  mode: single
+
+- alias: 🪟 ramen - sluit raam master bedroom
+  id: '851234af-52eb-4109-a2f0-415c410ce596'
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+  - condition: state
+    entity_id: input_boolean.master_bedroom_raam_moet_dicht
+    state: 'on'
+  - condition: state
+    entity_id: binary_sensor.master_bedroom_raam_kantel
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.master_bedroom_window_pause
+    state: 'off'    
+  action:
+  - service: script.notify_bart_windows_close
+    data:
+      title: '{{title}}'
+      message: '{{reason}}<br>{{message}}'
+      tag: '{{tag}}'
+      action_window_pause: '{{action_window_pause}}'
+  - service: script.notify_madouce_windows_close
+    data:
+      title: '{{title}}'
+      message: '{{reason}}<br>{{message}}'
+      tag: '{{tag}}'
+      action_window_pause: '{{action_window_pause}}'
+  variables:
+    title: "Sluit master bedroom raam ({{states('sensor.master_bedroom_raam')}})!"
+    message: >
+      Vocht sinds openen raam: {{ ((states('sensor.master_bedroom_humidity') | float(default=0)) - ((states('input_number.master_bedroom_initial_humidity_percentage') | float(default=0)))) | round(1)}}% verschil.<br>
+      Vocht master bedroom: {{states('sensor.gram_water_master_bedroom')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
+      Vocht master bedroom: {{states('sensor.master_bedroom_humidity')}}%. Buiten: {{states('sensor.humidity_leuven24_wunderground')}}%.<br>
+      Temp master bedroom: {{states('sensor.master_bedroom_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.
+    tag: "window_master_bedroom"
+    action_window_pause: "master_bedroom_window_pause"
+    reason: >
+      {% set d = states('sensor.gram_water_master_bedroom_diff_outside') | float(default=0) %}
+      {% set h = states('sensor.master_bedroom_humidity') %}
+      {% if states('sensor.temp_forecast_4_hours') | float(default=0) < 16 %}Te koud buiten.
+      {% elif d <= 0 %}Buiten vochtiger dan binnen.
+      {% elif d < 0.5 %}Buiten maar iets minder vocht dan binnen.
+      {% endif %}  
+  mode: single
+
+
+  id: 'ce55bb82-1faf-4867-84ee-e0bf45b5b4cc'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.master_bedroom_raam_kantel
+    to: 'off'
+  - platform: state
+    entity_id: input_boolean.master_bedroom_window_pause
+    from: 'off'
+    to: 'on'    
+  condition:
+  - condition: state
+    entity_id: input_boolean.master_bedroom_raam_moet_dicht
+    state: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_master_bedroom
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_master_bedroom
+  mode: single

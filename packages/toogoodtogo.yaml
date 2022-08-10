@@ -1,0 +1,75 @@
+automation:
+
+- alias: TGTG Bakkerij Gielis
+  id: 'e4a1bc24-04c4-4cf5-be83-5030c092ce38'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.tgtg_bakkerij_gielis_kessel_lo
+    from: '0'
+  condition:
+  - condition: template
+    value_template: "{{ states('sensor.tgtg_bakkerij_gielis_kessel_lo') | float >= 1}}"
+  action:
+  - service: notify.madouce_phone
+    data:
+      title: "Too Good To Go: Bakkerij Gielis in Kessel-Lo"
+      message: "Nog {{states('sensor.tgtg_bakkerij_gielis_kessel_lo')}} over aan {{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo', 'TGT Price') }}."
+      data:
+        tag: toogoodtogo
+        color: red
+        actions:
+        - action: URI
+          title: Voor meer info, klik hier
+          uri: "{{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo', 'Item URL') }}"
+  mode: single
+
+- alias: TGTG Tartes de Françoise
+  id: 'e51f741d-29bd-45d7-9c3c-96e9e68999da'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.tgtg_les_tartes_de_francoise_leuven_zoet
+    from: '0'
+  condition:
+  - condition: template
+    value_template: "{{ states('sensor.tgtg_les_tartes_de_francoise_leuven_zoet') | float >= 1}}"
+  action:
+  - service: notify.madouce_phone
+    data:
+      title: "Too Good To Go: Tartes de Françoise in Leuven"
+      message: "Nog {{states('sensor.tgtg_les_tartes_de_francoise_leuven_zoet')}} over aan {{ state_attr('sensor.tgtg_les_tartes_de_francoise_leuven_zoet', 'TGT Price') }} ipv aan {{ state_attr('sensor.tgtg_les_tartes_de_francoise_leuven_zoet', 'Original value') }}."
+      data:
+        tag: toogoodtogo
+        color: red
+        actions:
+        - action: URI
+          title: Voor meer info, klik hier
+          uri: "{{ state_attr('sensor.tgtg_les_tartes_de_francoise_leuven_zoet', 'Item URL') }}"
+  mode: single
+
+- alias: TGTG Hoegaards broodje Leuven
+  id: 'c67b5178-28f6-4260-9a23-9c7b8c786737'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.tgtg_hoegaards_broodje
+    from: '0'
+  condition:
+  - condition: template
+    value_template: "{{ states('sensor.tgtg_hoegaards_broodje') | float >= 1}}"
+  action:
+  - service: notify.madouce_phone
+    data:
+      title: "Too Good To Go: Hoegaards broodje in Leuven"
+      message: >
+        "Nog {{states('sensor.tgtg_hoegaards_broodje')}} over aan {{ state_attr('sensor.tgtg_hoegaards_broodje', 'TGT Price') }} ipv aan {{ state_attr('sensor.tgtg_hoegaards_broodje', 'Original value') }}.<br>
+        Ophalen tussen {{ state_attr('sensor.tgtg_hoegaards_broodje', 'Pickup start') }} en {{ state_attr('sensor.tgtg_hoegaards_broodje', 'Pickup stop') }}".
+      data:
+        tag: toogoodtogo
+        color: red
+        actions:
+        - action: URI
+          title: Voor meer info, klik hier
+          uri: "{{ state_attr('sensor.tgtg_hoegaards_broodje', 'Item URL') }}"
+  mode: single

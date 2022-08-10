@@ -29,9 +29,17 @@ automation:
   - service: notify.bart_phone
     data:
       message: TTS
-      title: "Welkom thuis Bart! De auto batterij is {{states('sensor.audi_e_tron_sportback_state_of_charge') | round (0)}}%."
       data:
-        channel: alarm_stream
+        tts_text: >-
+          {% set t = (now().date() + timedelta(days=1)) %}
+          {% set car_target_soc_day = 'input_number.car_target_soc_day_' ~ t.isoweekday() %}
+          Welkom thuis Bart!
+          {% if states('sensor.audi_e_tron_sportback_state_of_charge') | float(default=0) <  states(car_target_soc_day) | float(default=0) %}Vergeet de laadkabel niet in te steken. Er moet geladen worden van {{states('sensor.audi_e_tron_sportback_state_of_charge') | round (0)}}% naar {{ states('input_number.car_smart_charge_target_percentage') | round(0) }}%.
+          {% else %} De auto heeft {{states('sensor.audi_e_tron_sportback_state_of_charge') | round (0)}}% batterij en dit is voldoende voor morgen. Er is morgen maar {{ states(car_target_soc_day) | round(0) }}% nodig.
+          {% endif %}
+        ttl: 0
+        priority: high
+        media_stream: alarm_stream_max
   - service: notify.bart_phone
     data:
       message: Welkom thuis! (veeg omlaag voor acties)
@@ -66,9 +74,17 @@ automation:
   - service: notify.madouce_phone
     data:
       message: TTS
-      title: "Welkom thuis Madouce! De auto batterij is {{states('sensor.audi_e_tron_sportback_state_of_charge') | round (0)}}%."
       data:
-        channel: alarm_stream
+        tts_text: >
+          {% set t = (now().date() + timedelta(days=1)) %}
+          {% set car_target_soc_day = 'input_number.car_target_soc_day_' ~ t.isoweekday() %}
+          Welkom thuis Madouce!
+          {% if states('sensor.audi_e_tron_sportback_state_of_charge') | float(default=0) <  states(car_target_soc_day) | float(default=0) %}Vergeet de laadkabel niet in te steken. Er moet geladen worden van {{states('sensor.audi_e_tron_sportback_state_of_charge') | round (0)}}% naar {{ states('input_number.car_smart_charge_target_percentage') | round(0) }}%.
+          {% else %} De auto heeft {{states('sensor.audi_e_tron_sportback_state_of_charge') | round (0)}}% batterij en dit is voldoende voor morgen. Er is morgen maar {{ states(car_target_soc_day) | round(0) }}% nodig.
+          {% endif %}
+        ttl: 0
+        priority: high
+        media_stream: alarm_stream_max
   - service: notify.madouce_phone
     data:
       message: Welkom thuis! (veeg omlaag voor acties)
@@ -100,9 +116,11 @@ automation:
   - service: notify.mobile_app_alunya_a71
     data:
       message: TTS
-      title: Welkom thuis Alunya!
       data:
-        channel: alarm_stream
+        tts_text: Welkom thuis Alunya!
+        ttl: 0
+        priority: high
+        media_stream: alarm_stream_max
   - service: notify.mobile_app_alunya_a71
     data:
       message: Welkom thuis! (veeg omlaag voor acties)
@@ -142,7 +160,7 @@ automation:
   action:
   - service: lock.unlock
     target:
-      entity_id: lock.voordeur
+      entity_id: lock.voordeur_nuki
   mode: single
 
 - alias: 🏡 Madouce is bijna thuis 
@@ -168,10 +186,14 @@ automation:
       message: Hoera.
       data:
         color: red
+        ttl: 0
+        priority: high        
   - service: notify.bart_phone
     data:
       message: TTS
-      title: Madouce is bijna thuis.
+      data:
+        channel: "alarm_stream"
+        tts_text: "Madouce is bijna thuis."
   mode: single
 
 - alias: 🏡 Bart is bijna thuis 
@@ -197,9 +219,12 @@ automation:
       message: Hoera.
       data:
         color: red
+        ttl: 0
+        priority: high        
   - service: notify.madouce_phone
     data:
       message: TTS
-      title: Bart is bijna thuis.
+      data:
+        tts_txt: Bart is bijna thuis.
   mode: single
   

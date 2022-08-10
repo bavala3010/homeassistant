@@ -27,6 +27,11 @@ automation:
   - platform: time
     at: '21:30:00'
   condition:
+  # doors are open
+  - condition: state
+    entity_id: binary_sensor.audi_e_tron_sportback_doors_lock
+    state: 'on'
+  # no phone is connected to the car with bluetooth (= meaning: we are still driving the car)
   - condition: state
     entity_id: binary_sensor.bart_phone_connected_to_car
     state: 'off'
@@ -45,7 +50,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/e-tron        
+          uri: /eikenbos-dashboard/car      
   - service: notify.madouce_phone
     data:
       title: Auto niet op slot!
@@ -57,7 +62,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/e-tron        
+          uri: /eikenbos-dashboard/car        
   - service: lock.lock
     target:
       entity_id: lock.audi_e_tron_sportback_door_lock
@@ -97,4 +102,52 @@ automation:
         tag: auto_sluiten        
   mode: single
 
-- alias: 🚗 Auto 2 min. niet op slot = refresh & melding
+- alias: 🚗 Auto 15 minuten niet op slot
+  id: 'e6cbf5ea-1924-4fc5-9336-70b382689f0d'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.audi_e_tron_sportback_doors_lock
+    to: 'on'
+    for: '00:15:00'
+  condition:
+  # doors are open
+  - condition: state
+    entity_id: binary_sensor.audi_e_tron_sportback_doors_lock
+    state: 'on'
+  # no phone is connected to the car with bluetooth (= meaning: we are still driving the car)
+  - condition: state
+    entity_id: binary_sensor.bart_phone_connected_to_car
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.madouce_phone_connected_to_car
+    state: 'off'
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Auto niet op slot!
+      message: 🚙 Er wordt nu geprobeerd om de auto te sluiten.
+      data:
+        channel: Important
+        tag: auto_sluiten
+        color: red
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car        
+  - service: notify.madouce_phone
+    data:
+      title: Auto niet op slot!
+      message: 🚙 Er wordt nu geprobeerd om de auto te sluiten.
+      data:
+        channel: Important
+        tag: auto_sluiten
+        color: red
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car        
+  - service: lock.lock
+    target:
+      entity_id: lock.audi_e_tron_sportback_door_lock
+  mode: single

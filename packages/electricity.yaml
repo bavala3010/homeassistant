@@ -1,19 +1,19 @@
 automation:
 
-- alias: ⚡stekker living uit om middernacht of nieamand thuis
+- alias: ⚡stekker living uit om middernacht of niemand thuis
   id: 'df3e3a84-96d7-4201-ae3d-6ad86a3842f9'
   description: ''
   trigger:
   - platform: time
     at:
-    - '00:00'
+    - '00:00:00'
   - platform: state
     entity_id: group.gezin
     to: not_home
   action:
   - service: switch.turn_off
     target:
-      entity_id: switch.switch_1
+      entity_id: switch.living_plug
   mode: single
   
 - alias: ⚡ stekker living aan om 7u of bij thuiskomst
@@ -22,14 +22,14 @@ automation:
   trigger:
   - platform: time
     at:
-    - '07:00'
+    - '07:00:00'
   - platform: state
     entity_id: group.gezin
     to: home
   action:
   - service: switch.turn_on
     target:
-      entity_id: switch.switch_1
+      entity_id: switch.living_plug 
   mode: single 
   
 - alias: ⚡ check om 20u als laptop van het werk uit staat

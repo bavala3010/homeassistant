@@ -1,0 +1,66 @@
+automation:
+
+- alias: 'Waarschoot: alarm wordt ingeschakeld (knop beneden)'
+  id: 'f6c83f1d-0413-4e19-bfd7-651f74737fc7'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.waarschoot_living_alarmknop
+    to: 'on'
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Alarm in Waarschoot wordt ingeschakeld.
+      message: Via de knop in de living
+  mode: single
+
+- alias: 'Waarschoot: alarm wordt ingeschakeld (knop beneden)'
+  id: '1851d4c4-690a-4c76-adb3-7bf46201dcb8'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.waarschoot_boven_alarmknop
+    to: 'on'
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Alarm in Waarschoot wordt ingeschakeld.
+      message: Via de knop in de badkamer
+  mode: single
+
+  
+- alias: 'Waarschoot: alarm wordt uitgeschakeld (knop beneden) tijdens vakantiemodus'
+  id: 'd4775c3a-8c66-4414-b317-dcb7cfa5a745'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.waarschoot_living_alarmknop
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: input_boolean.waarschoot_holiday_modus
+    state: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Alarm in Waarschoot wordt voor 1 uur uitgeschakeld.
+      message: Huis is in "vakantiemodus".
+  - delay:
+      hours: 1
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.waarschoot_living_alarmknop
+  - service: notify.bart_phone
+    data:
+      title: Alarm in Waarschoot wordt opnieuw ingeschakeld.
+      message: Huis is in "vakantiemodus".
+  mode: single

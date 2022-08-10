@@ -121,7 +121,7 @@ automation:
     data:
       entity_id: media_player.living_speaker
       message: "Alarm ingeschakeld!
-      {% if is_state('group.group.raam_sensoren', 'off') %} Alle ramen zijn dicht!
+      {% if is_state('group.alle_raam_sensoren', 'off') %} Alle ramen zijn dicht!
       {% else %} De volgende ramen staan nog open: {{ expand(states.binary_sensor.kamer_amilya_raam, states.binary_sensor.kamer_alunya_raam, states.binary_sensor.kamer_alunya_schuifraam, states.binary_sensor.badkamer_raam, states.binary_sensor.berging_raam, states.binary_sensor.keuken_raam, states.binary_sensor.living_oprit_raam, states.binary_sensor.living_tuin_raam, states.binary_sensor.master_bedroom_raam, states.binary_sensor.veranda_schuifraam) | selectattr('state','eq','on') | map(attribute='name')| list }}
       {% endif %}"
   - wait_template: ''
@@ -175,18 +175,20 @@ automation:
     - binary_sensor.berging_sensor_motion
     - binary_sensor.garage_sensor_motion
     - binary_sensor.keldertrap_sensor_motion
-    - binary_sensor.trap_boven_motion_motion
+    - binary_sensor.trap_boven_sensor_motion
     - binary_sensor.toilet_motion_sensor_motion
     # raam sensoren
     - binary_sensor.kamer_alunya_raam
     - binary_sensor.kamer_alunya_schuifraam
     - binary_sensor.kamer_amilya_raam
-    - binary_sensor.badkamer_raam
+    - binary_sensor.badkamer_raam_kantel
+    - binary_sensor.badkamer_raam_wijd
     - binary_sensor.berging_raam
     - binary_sensor.keuken_raam
     - binary_sensor.living_oprit_raam
     - binary_sensor.living_tuin_raam
-    - binary_sensor.master_bedroom_raam
+    - binary_sensor.master_bedroom_raam_kantel
+    - binary_sensor.master_bedroom_raam_wijd
     - binary_sensor.veranda_schuifraam
     - binary_sensor.voordeur
     from: 'off'
@@ -216,7 +218,7 @@ automation:
   - service: notify.bart_phone
     data:
       message: TTS
-      title: Alarm in Eikenboslaan!
+      tts_text: Alarm in Eikenboslaan!
       data:
         color: red
         actions:
@@ -284,29 +286,34 @@ automation:
     to: 'on'
   condition: []
   action:
-  - service: media_player.volume_set
-    data:
-      entity_id: media_player.living_speaker
-      volume_level: 0.5
-  - service: tts.google_say
-    data:
-      entity_id: media_player.living_speaker
-      message: Beweging op oprit!
-  - service: tts.google_say
-    data:
-      entity_id: media_player.veranda_speaker
-      message: Beweging op oprit! 
+  - parallel:
+    - service: script.google_home_resume
+      data:
+        action:
+          - service: tts.google_say
+            data:
+              entity_id: media_player.living_speaker
+              message: Beweging op oprit!
+    - service: script.google_home_resume
+      data:
+        action:
+          - service: tts.google_say
+            data:
+              entity_id: media_player.veranda_speaker
+              message: Beweging op oprit!
   - wait_template: ''
-    timeout: 00:00:07
-  - service: camera.play_stream
-    data:
-      media_player: media_player.living_speaker
-    target:
-      entity_id: camera.netatmo_eikenbos_oprit
-  - wait_template: ''
-    timeout: 00:01:30
-  - service: media_player.turn_off
-    entity_id: media_player.living_speaker
+    timeout: 00:00:45
+  # - wait_template: ''
+  #  timeout: 00:00:07
+  #- service: camera.play_stream
+  #  data:
+  #    media_player: media_player.living_speaker
+  #  target:
+  #    entity_id: camera.netatmo_eikenbos_oprit
+  #- wait_template: ''
+  #  timeout: 00:01:30
+  #- service: media_player.turn_off
+  #  entity_id: media_player.living_speaker
   mode: single
   max_exceeded: silent
 
@@ -547,8 +554,8 @@ automation:
 # Garagepport en voordeur
 ###########################################
 
-- alias: Garagepoort staat lang open
-  id: '2afaab2f-0aee-4dea-a340-be690d593fca'
+- alias: garagepoort staat lang open
+  id: '89cce371-bbfd-4154-a909-1ffeab77f9de'
   description: ''
   trigger:
   - platform: state
@@ -576,13 +583,15 @@ automation:
   - service: notify.bart_phone
     data:
       title: "Garage is nu terug dicht."
-      message: "Stond {{((as_timestamp(now()) - as_timestamp(states.cover.garagepoort.last_changed)) / 60 )| int() }} minuten open."
+      # + 5 = automation is triggered when the garage door is already 5 minutes open 
+      message: >
+        Stond {{ (((as_timestamp(now()) - as_timestamp(state_attr('automation.garagepoort_staat_lang_open', 'last_triggered') )) / 60 ) + 5) | int() }} minuten open.
       data:
         tag: garage_staat_open
   mode: single
 
 - alias: Voordeur staat lang open
-  id: '76d0bc44-085e-4a6f-bb8d-22d46f5f2ad5'
+  id: 'c1657da2-d8b2-4c18-a2c4-ae5c3c11b85e'
   description: ''
   trigger:
   - platform: state
@@ -595,7 +604,7 @@ automation:
   - service: notify.bart_phone
     data:
       title: Voordeur staat al lang open! 
-      message: "Open sinds {{ as_timestamp(states.binary_sensor.voordeur.last_changed | timestamp_custom('%H:%M:%S') }}."
+      message: "Staat al {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.voordeur.last_changed)) / 60 )| int() }} minuten open."
       data:
         color: red
         tag: voordeur_staat_open
@@ -610,7 +619,8 @@ automation:
       - service: notify.bart_phone      
         data:
           title: Voordeur staat al lang open!
-          message: "Staat al {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.voordeur.last_changed)) / 60 )| int() }} minuten open."
+          message: >-
+            Staat al {{ ((as_timestamp(now()) - as_timestamp(state_attr('automation.voordeur_staat_lang_open', 'last_triggered') )) / 60 )| int() }} minuten open.
           data:
             color: red
             tag: voordeur_staat_open
@@ -618,7 +628,48 @@ automation:
   - service: notify.bart_phone
     data:
       title: "Voordeur is nu terug dicht."
-      message: "Stond {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.voordeur.last_changed)) / 60 )| int() }} minuten open."
+      # + 3 = automation is triggered when the door is already 3 minutes open
+      message: >-
+        Stond {{ (((as_timestamp(now()) - as_timestamp(state_attr('automation.voordeur_staat_lang_open', 'last_triggered') )) / 60 ) + 3) | int() }} minuten open.
       data:
         tag: voordeur_staat_open
   mode: single
+
+
+- alias: Niemand meer thuis = check open ramen
+  id: '9c3567c0-ab6a-4ac9-83c9-82280a299e14'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.gezin
+    to: not_home
+  condition:
+  - condition: state
+    entity_id: group.alle_ramen_wijd_en_schuifdeuren
+    state: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: TTS
+      data:
+        tts_text: "Er staan nog ramen wijd open!"
+        color: red
+        actions:
+        - action: URI
+          title: Meer info
+          uri: /lovelace/alarm
+        vibrationPattern: 10, 10, 10, 10, 10, 10, 10
+        media_stream: alarm_stream
+  - service: notify.bart_phone
+    data:
+      title: Niemand thuis en ramen open
+      message: Er staan nog ramen wijd open.
+      data:
+        color: red
+  - service: notify.madouce_phone
+    data:
+      title: Niemand thuis en ramen open
+      message: Er staan nog ramen wijd open.
+      data:
+        color: red
+  mode: single         

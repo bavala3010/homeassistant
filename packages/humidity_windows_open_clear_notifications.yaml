@@ -1,0 +1,222 @@
+############################ Table of Contents ############################ 
+#
+#   Open windows clear notifications
+#   🪟 ramen - open raam living - clear notification (Bart en Madouce)
+#   🪟 ramen - open raam kamer Amilya - clear notification (Bart en Madouce)
+#   🪟 ramen - open raam veranda - clear notification (Bart en Madouce)
+#   🪟 ramen - open raam berging - clear notification (Bart en Madouce)
+#   🪟 ramen - open raam badkamer - clear notification (Bart en Madouce)
+#   🪟 ramen - open raam kamer Alunya - clear notification (Bart en Madouce)
+#   🪟 ramen - open raam master bedroom - clear notification (Bart en Madouce)
+#
+###########################################################################
+
+automation:
+
+- alias: 🪟 ramen - open raam living - clear notification (Bart en Madouce)
+  id: 'cd3425f6-6c8b-4e1b-93dc-1721d6db07ee'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.keuken_raam
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.living_oprit_raam
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.living_tuin_raam
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: input_boolean.living_window_pause
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.living_raam_moet_open
+    state: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_living
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_living
+  mode: single
+
+- alias: 🪟 ramen - open raam kamer Amilya - clear notification (Bart en Madouce)
+  id: '4f5f9a4c-76b7-4336-af97-cc93eab67acd'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.kamer_amilya_raam
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: input_boolean.kamer_amilya_window_pause
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.kamer_amilya_raam_moet_open
+    state: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_kamer_amilya
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_kamer_amilya
+  mode: single
+
+- alias: 🪟 ramen - open raam veranda - clear notification (Bart en Madouce)
+  id: '09a07555-51ac-4ce2-b365-fbbd81b55298'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.veranda_schuifraam
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: input_boolean.veranda_window_pause
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.veranda_schuifraam_moet_open
+    state: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_veranda
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_veranda
+  mode: single
+
+- alias: 🪟 ramen - open raam berging - clear notification (Bart en Madouce)
+  id: '133107e0-eaad-4ddf-9645-df489dc212c7'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.berging_raam
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: input_boolean.berging_window_pause
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.berging_raam_moet_open
+    state: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_berging
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_berging
+  mode: single
+
+- alias: 🪟 ramen - open raam badkamer - clear notification (Bart en Madouce)
+  id: '27f63745-eb58-410d-b416-b7e6ccb7387c'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.badkamer_raam_kantel
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: input_boolean.badkamer_window_pause
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.badkamer_raam_moet_open
+    state: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_badkamer
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_badkamer
+  mode: single
+
+- alias: 🪟 ramen - open raam kamer Alunya - clear notification (Bart en Madouce)
+  id: 'bd75a6c7-039b-4e5d-8c84-12459bfab11a'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.kamer_alunya_raam
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.kamer_alunya_schuifraam
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: input_boolean.kamer_alunya_window_pause
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.kamer_alunya_raam_moet_open
+    state: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_kamer_alunya
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_kamer_alunya
+  mode: single
+
+- alias: 🪟 ramen - open raam master bedroom - clear notification (Bart en Madouce)
+  id: '55bd62eb-9d04-44a0-b008-6ccb53531c29'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.master_bedroom_raam_kantel
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: input_boolean.master_bedroom_window_pause
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.master_bedroom_raam_moet_open
+    state: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_master_bedroom
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_master_bedroom
+  mode: single

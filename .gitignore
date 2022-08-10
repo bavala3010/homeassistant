@@ -19,6 +19,7 @@
 *.log
 _old_automations.yaml_old
 home-assistant_v2.*
+backups
 appdaemon
 blueprints
 custom_components

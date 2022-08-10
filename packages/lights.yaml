@@ -15,7 +15,6 @@
 
 ############################ Automations ################################## 
 
-
 automation:
 
 #################################################  
@@ -44,7 +43,7 @@ automation:
         - light.amilya_strip
   mode: single
   
-- alias: 💡 Amilya licht badkamer brandt langer dan 20 minuten -> licht flashen
+- alias: 💡 Amilya licht badkamer brandt langer dan 15 minuten -> licht uit
   id: 3e894234-e24b-4c8c-a497-87a05abc3453
   description: ''
   trigger:
@@ -53,17 +52,11 @@ automation:
     to: 'on'
     for:
       hours: 0
-      minutes: 20
+      minutes: 15
       seconds: 0
       milliseconds: 0
   condition: []
   action:
-  - service: light.turn_on
-    entity_id: light.amilya_badkamer
-    data:
-      flash: short
-      rgb_color: [252,3,3]
-  - delay: 5
   - service: light.turn_off
     target:
       entity_id: light.amilya_badkamer
@@ -90,6 +83,21 @@ automation:
   - service: light.turn_off
     target:
       entity_id: light.amilya_badkamer
+  mode: single
+
+- alias: 💡 Amilya lichten plafond onbereikbaar = lichten plafond uit
+  id: '64602e2b-48aa-4304-809c-387d24ca9eee'
+  trigger:
+  - platform: state
+    entity_id: group.amilya_plafond_1
+    to: unavailable
+  condition: []
+  action:
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.amilya_plafond_1
+      - light.amilya_plafond_2
   mode: single
 
 
@@ -173,24 +181,35 @@ automation:
     entity_id: media_player.ue55ju7000
     from: 'off'
     to: 'on'
+  - platform: state
+    entity_id: sun.sun
+    to: 'below_horizon'
   condition:
   - condition: state
     entity_id: sun.sun
     state: below_horizon
+  - condition: state
+    entity_id: media_player.ue55ju7000
+    state: 'on'
   action:
   - service: light.turn_on
     data:
-      transition: 10
-      brightness: 26
+      transition: 20
+      color_temp: 500
+      brightness: 100
     target:
-      device_id: d5ef9b4f569a408660e7e445331abfcc
+      entity_id: light.tv_strip
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.living_bol
   mode: single
 
 - alias: 💡 Google TV living playing + zon onder = Hue sync aan
   id: 'cf1702e9-33d4-43cc-be9c-67cafc91d105'
   trigger:
   - platform: state
-    entity_id: media_player.google_tv
+    entity_id: media_player.living_google_tv
     to: 'playing'
   condition:
   - condition: state
@@ -232,12 +251,13 @@ automation:
     event: sunset
   condition: []
   action:
-  - type: turn_on
-    device_id: 3623c76590024bf538fcc54a365fc8cc
-    entity_id: light.living_bol
-    domain: light
-    brightness_pct: 10
-    flash: long
+  - service: light.turn_on
+    data:
+      transition: 20
+      color_temp: 473
+      brightness_pct: 40
+    target:
+      entity_id: light.living_bol
   mode: single
 
 
@@ -295,12 +315,27 @@ automation:
       brightness_pct: 75
   mode: single
 
+- alias: 💡 Madouce en Bart niet thuis = licht uit
+  id: '428317ff-aba5-4c2e-96c6-e1d97eb6ddb8'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.bart_madouce
+    to: 'not_home'
+    for: 00:03:00
+  condition: []
+  action:
+  - service: light.turn_off
+    target:
+      entity_id: group.master_bedroom_lichten
+  mode: single
+
 
 #################################################  
 # Gang, toilet, garage
 #################################################
 
-- alias: 'licht in garage'
+- alias: '💡 licht in garage'
   id: c3801d8a-dd6e-444e-9a25-0adc8c0655d8
   description: ''
   trigger:
@@ -322,7 +357,9 @@ automation:
       sequence:
       - service: notify.bart_phone
         data:
-          message: "Licht in garage brandt al {{ as_timestamp(now()) - as_timestamp(state_attr('automation.licht_in_garage','last_triggered')) | int }} minuten."
+          message: >
+            {% set s = ( as_timestamp(now()) - as_timestamp(state_attr('automation.licht_in_garage','last_triggered')) )|int %}
+            Licht in garage brandt al {{ '%02du%02d' % ((s/3600)|int, (s%3600)/60) }}.
           title: Licht in garage
           data:
             color: blue
@@ -389,8 +426,8 @@ automation:
     to: 'on'
   condition:
   - condition: time
-    after: '22:30:0'
-    before: '7:00:00'
+    after: '22:30:00'
+    before: '07:00:00'
   action:
   - service: light.turn_on
     data:
@@ -409,7 +446,7 @@ automation:
     to: 'on'
   condition:
   - condition: time
-    after: '7:00:0'
+    after: '07:00:00'
     before: '23:00:00'
   action:
   - service: light.turn_on
@@ -420,7 +457,7 @@ automation:
       entity_id: light.toilet
   mode: single  
 
-- alias: 💡 licht gang na zonsondergang gedimd
+- alias: "💡 licht gang: zon onder = gedimd"
   id: 151c0615-8998-408b-a0ab-0a31af6c3ea8
   description: ''
   trigger:
@@ -435,12 +472,12 @@ automation:
   - service: light.turn_on
     data:
       kelvin: 1500
-      brightness_pct: 40
+      brightness_pct: 20
     target:
       entity_id: light.gang
   mode: single
 
-- alias: 💡 licht gang na zonsopgang helder
+- alias: "💡 licht gang: zon op = helder"
   id: 80b10678-6e3b-41a7-ba87-fdb427cfc2ce
   description: ''
   trigger:

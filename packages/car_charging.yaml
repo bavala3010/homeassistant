@@ -9,7 +9,58 @@
 
 ############################ Automations ################################## 
 automation:
- 
+
+
+- alias: "🔋 smart charge planning is veranderd = bepaal SOC per dag"
+  id: '6a3d5cef-5531-4e6e-9f94-1777e1217a4a'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: 
+    - input_select.car_use_day_1
+    - input_select.car_use_day_2
+    - input_select.car_use_day_3
+    - input_select.car_use_day_4
+    - input_select.car_use_day_5
+    - input_select.car_use_day_6
+    - input_select.car_use_day_7
+  action:
+  - service: script.set_target_soc_based_on_calendar
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.car_smart_charge_target_percentage
+    data:
+      value: >
+        {% set t = (now().date() + timedelta(days=1)) %}
+        {% set car_target_soc_day = 'input_number.car_target_soc_day_' ~ t.isoweekday() %}  
+        {{ states(car_target_soc_day) | float(default=0) }}  
+
+- alias: "🔋 smart charge - om 7u00 bepaal target SOC per dag op basis van planning"
+  id: '2a4d4e65-51b0-44b4-80fc-d22a39dde38b'
+  description: ''
+  trigger:
+  - platform: time
+    at: '07:00:00'
+  action:
+  - service: script.set_target_soc_based_on_calendar  
+
+- alias: "🔋 smart charge - om 6u30 zet doel % voor 's anderendaags"
+  id: '275aac64-70ee-42c5-bcf7-3d522de6a8e5'
+  trigger:
+  - platform: time
+    at: '06:30:00'
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.car_smart_charge_target_percentage
+    data:
+      value: >
+        {% set t = (now().date() + timedelta(days=1)) %}
+        {% set car_target_soc_day = 'input_number.car_target_soc_day_' ~ t.isoweekday() %}  
+        {{ states(car_target_soc_day) | float(default=0) }}
+  mode: single
+
 
 ######################################
 # gewoon laden (niet thuis)
@@ -20,7 +71,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: sensor.audi_e_tron_sportback_plug_state
+    entity_id: sensor.car_1_plug_state
     to: 'connected'
   condition:
   - condition: template
@@ -29,7 +80,7 @@ automation:
   - service: notify.bart_phone
     data:
       title: "🚙 Autolader is verbonden." 
-      message: "Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}%. Nog {{states('sensor.audi_e_tron_sportback_remaining_charge_time')}} laden."
+      message: "Nu {{states('sensor.car_1_soc')}}%. Nog {{states('sensor.car_1_remaining_charge_time')}} laden."
       data:
         color: green
         tag: auto_laden
@@ -37,10 +88,10 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/e-tron        
+          uri: /eikenbos-dashboard/car        
   - service: notify.madouce_phone
     data:
-      message: "🚙 Autolader is verbonden. Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}%."
+      message: "🚙 Autolader is verbonden. Nu {{states('sensor.car_1_soc')}}%."
       data:
         color: green
         tag: auto_laden
@@ -48,7 +99,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/e-tron        
+          uri: /eikenbos-dashboard/car        
   mode: single
 
 - alias: 🚗 auto laadt (niet thuis) = melding
@@ -56,9 +107,9 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: sensor.audi_e_tron_sportback_charging_state
+    entity_id: sensor.car_1_charging_state
     from: 'off'
-    to: 'charging'
+    to: 'charge'
   condition:
   - condition: template
     value_template: "{{ states('device_tracker.audi_e_tron_sportback_position') != 'home' }}"
@@ -66,8 +117,8 @@ automation:
   - service: notify.bart_phone
     data:
       title: 🚙 Auto is aan het laden.
-      message: Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_primary_engine_range')}} km.
-        Nog {{states('sensor.audi_e_tron_sportback_remaining_charge_time')}} laden.
+      message: Nu {{states('sensor.car_1_soc')}}% = {{states('sensor.car_1_range')}} km.
+        Nog {{states('sensor.car_1_remaining_charge_time')}} laden.
       data:
         color: green
         tag: auto_laden
@@ -75,11 +126,11 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/e-tron
+          uri: /eikenbos-dashboard/car
   - service: notify.madouce_phone
     data:
-      message: Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_primary_engine_range')}} km.
-        Nog {{states('sensor.audi_e_tron_sportback_remaining_charge_time')}} laden.
+      message: Nu {{states('sensor.car_1_soc')}}% = {{states('sensor.car_1_range')}} km.
+        Nog {{states('sensor.car_1_remaining_charge_time')}} laden.
       data:
         color: green
         tag: auto_laden
@@ -87,7 +138,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/e-tron
+          uri: /eikenbos-dashboard/car
   mode: single
 
 - alias: 🚗 auto gedaan met laden (niet thuis) = melding
@@ -95,13 +146,13 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: sensor.audi_e_tron_sportback_charging_state
+    entity_id: sensor.car_1_charging_state
     to: 'completed'
   condition: []
   action:
   - service: notify.bart_phone
     data:
-      message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}%. {{states('sensor.audi_e_tron_sportback_primary_engine_range')}} km."
+      message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.car_1_soc')}}%. {{states('sensor.car_1_range')}} km."
       data:
         color: green
         tag: auto_laden
@@ -109,10 +160,10 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/e-tron
+          uri: /eikenbos-dashboard/car
   - service: notify.madouce_phone
     data:
-      message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}%. {{states('sensor.audi_e_tron_sportback_primary_engine_range')}} km."
+      message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.car_1_soc')}}%. {{states('sensor.car_1_range')}} km."
       data:
         color: green
         tag: auto_laden
@@ -120,7 +171,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/e-tron
+          uri: /eikenbos-dashboard/car
   mode: single
 
 
@@ -128,7 +179,7 @@ automation:
 # Check lading 's avonds
 ######################################
   
-- alias: 🚗 morgen naar Toyota Evere = check 21u30 voldoende geladen?
+- alias: 🔋 morgen naar Toyota Evere = check 21u30 voldoende geladen?
   id: 'e03b771a-c1d0-49ed-a0d7-8e833e3c228e'
   description: ''
   trigger:
@@ -137,20 +188,21 @@ automation:
   condition:
   - condition: template
     value_template: >
-      {% set car_use_day = 'input_select.car_use_day' ~ (now().isoweekday() +1) %}
-      {%if states(car_use_day) == "Toyota Evere"%} true {% endif %}
+      {% set t = (now().date() + timedelta(days=1)) %}
+      {% set car_use_day = 'input_select.car_use_day_' ~ t.isoweekday() %}  
+      {% if states(car_use_day) == "Toyota Evere" %} true {% endif %}
   action:
   - service: notify.madouce_phone
     data:
       title: Morgen naar Toyota Evere
-      message: "Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_state_of_charge') |round() > 24 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen. Best 20% à 25%.{% endif %}"
+      message: "Nu {{states('sensor.car_1_soc')}}%. {% if states('sensor.car_1_soc') |round() > 24 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen. Best 20% à 25%.{% endif %}"
   - service: notify.bart_phone
     data:
       title: Morgen naar Toyota Evere
-      message: "Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_state_of_charge') |round() > 24 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen. Best 20% à 25%.{% endif %}"
+      message: "Nu {{states('sensor.car_1_soc')}}%. {% if states('sensor.car_1_soc') |round() > 24 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen. Best 20% à 25%.{% endif %}"
   mode: single
   
-- alias: 🚗 morgen naar Toyota Diest = check 21u30 voldoende geladen?
+- alias: 🔋 morgen naar Toyota Diest = check 21u30 voldoende geladen?
   id: 'dfb0156e-1033-4259-82d0-08c5bc687860'
   description: ''
   trigger:
@@ -159,46 +211,40 @@ automation:
   condition:
   - condition: template
     value_template: >
-      {% set car_use_day = 'input_select.car_use_day' ~ (now().isoweekday() +1) %}
-      {%if states(car_use_day) == "Toyota Diest"%} true {% endif %}
+      {% set t = (now().date() + timedelta(days=1)) %}
+      {% set car_use_day = 'input_select.car_use_day_' ~ t.isoweekday() %}  
+      {% if states(car_use_day) == "Toyota Diest" %} true {% endif %}
   action:
   - service: notify.madouce_phone
     data:
       title: Morgen naar Toyota Diest
-      message: "Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_state_of_charge') |round() > 38 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen. Best +/- 40%.{% endif %}"
+      message: "Nu {{states('sensor.car_1_soc')}}%. {% if states('sensor.car_1_soc') |round() > 38 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen. Best +/- 40%.{% endif %}"
   - service: notify.bart_phone
     data:
       title: Morgen naar Toyota Diest
-      message: "Nu {{states('sensor.audi_e_tron_sportback_state_of_charge')}}%. {% if states('sensor.audi_e_tron_sportback_state_of_charge') |round() > 38 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen. Best +/- 40%.{% endif %}"
+      message: "Nu {{states('sensor.car_1_soc')}}%. {% if states('sensor.car_1_soc') |round() > 38 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen. Best +/- 40%.{% endif %}"
   mode: single
 
-- alias: 🚗 batterij <60% en niet verbonden (week)
+- alias: 🔋 check batterij tov laaddoel
   id: '19c7cda6-2abb-4e28-9025-0ea5c4e1caa1'
   description: ''
   trigger:
   - platform: time
     at: '21:30'
   condition:
-  - condition: time
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - sun
   - condition: template
-    value_template: "{% if states('sensor.audi_e_tron_sportback_state_of_charge') | float < 60.0 %} true {% endif %}"
+    value_template: "{% if ( states('sensor.car_1_soc') | float ) < ( states('input_number.car_smart_charge_target_percentage') | float ) %} true {% endif %}"
   - condition: state
     entity_id: device_tracker.audi_e_tron_sportback_position
     state: home
   - condition: state
-    entity_id: sensor.audi_e_tron_sportback_plug_state
+    entity_id: sensor.car_1_plug_state
     state: disconnected
   action:
   - service: notify.bart_phone
     data:
-      title: Auto laden?
-      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_primary_engine_range')}} km."
+      title: Verbind de laadkabel!
+      message: "🚙 Auto zou moeten laden tot {{states('input_number.car_smart_charge_target_percentage') | round(0) }}% maar is nu slechts {{states('sensor.car_1_soc') | round(0)}}%."
       data:
         color: green
         tag: auto_laden
@@ -208,8 +254,8 @@ automation:
           uri: /eikenbos-dashboard/car-charging      
   - service: notify.madouce_phone
     data:
-      title: Auto laden?
-      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_primary_engine_range')}} km."
+      title: Verbind de laadkabel!
+      message: "🚙 Auto zou moeten laden tot {{states('input_number.car_smart_charge_target_percentage') | round(0) }}% maar is nu slechts {{states('sensor.car_1_soc') | round(0)}}%."
       data:
         color: green
         tag: auto_laden
@@ -217,169 +263,334 @@ automation:
         - action: URI
           title: meer info
           uri: /eikenbos-dashboard/car-charging
-  mode: single
-
-- alias: 🚗 batterij <80% en niet verbonden (weekend)
-  id: '30ea35b4-3f2a-4702-9df4-323965d8bf70'
-  description: ''
-  trigger:
-  - platform: time
-    at: '21:45'
-  condition:
-  - condition: time
-    weekday:
-    - fri
-    - sat
-  - condition: template
-    value_template: "{% if states('sensor.audi_e_tron_sportback_state_of_charge') | float < 80.0 %} true {% endif %}"
-  - condition: state
-    entity_id: device_tracker.audi_e_tron_sportback_position
-    state: home
-  - condition: state
-    entity_id: sensor.audi_e_tron_sportback_plug_state
-    state: disconnected
-  action:
-  - service: notify.bart_phone
-    data:
-      title: Auto laden voor het weekend?
-      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_primary_engine_range')}} km."
-      data:
-        color: green
-        tag: auto_laden
-        actions:
-        - action: URI
-          title: meer info
-          uri: /eikenbos-dashboard/car-charging
-  - service: notify.madouce_phone
-    data:
-      title: Auto laden voor het weekend?
-      message: "🚙 Auto maar {{states('sensor.audi_e_tron_sportback_state_of_charge')}}% = {{states('sensor.audi_e_tron_sportback_primary_engine_range')}} km."
-      data:
-        color: green
-        tag: auto_laden
-        actions:
-        - action: URI
-          title: meer info
-          uri: /eikenbos-dashboard/car-charging        
   mode: single
 
 
 #######################################
-# Charging modus toggle
+# charge modus toggle
 ######################################
 
-- alias: "🔋 smart charging - toggle charging mode"
-  id: '49d1aea0-e3b2-4a80-83ba-b2d68d3a3e22'
+- alias: "🔋 smart charge - charge mode nu ingeschakeld"
+  id: 'eb33ffea-2365-4147-9419-4b223f04b921'
+  description: ''
   trigger:
   - platform: state
-    entity_id: input_boolean.smart_charging_mode_timer
-  - platform: state
-    entity_id: input_boolean.smart_charging_mode_direct
-  condition: []
+    entity_id: input_boolean.car_smart_charge_mode_now
+    to: 'on'
+  condition:
+  - condition: template
+    value_template: "{{ states('sensor.car_1_soc')| int(2) <= (states('input_number.car_smart_charge_target_percentage') | int(2)) }}"
   action:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: input_boolean.smart_charging_mode_timer
-        state: 'on'
-      sequence:
-      - service: input_boolean.turn_off
-        data: {}
-        target:
-          entity_id: input_boolean.smart_charging_mode_direct
-      - service: script.auto_start_laden_timer
-        data: {}
-      - service: input_boolean.turn_off
-        data: {}
-        target:
-          entity_id: input_boolean.car_smart_charging_busy
-    - conditions:
-      - condition: state
-        entity_id: input_boolean.smart_charging_mode_direct
-        state: 'on'
-      sequence:
-      - service: input_boolean.turn_off
-        data: {}
-        target:
-          entity_id: input_boolean.smart_charging_mode_timer
-      - service: input_boolean.turn_on
-        data: {}
-        target:
-          entity_id: input_boolean.car_smart_charging_busy
-      - service: script.auto_start_laden_nu
-        data: {}       
+  - service: notify.bart_phone
+    data:
+      title: Direct laden gestart.
+      message: >
+        {% set soc = states('sensor.car_1_soc') | round(default=0) %}
+        {% set targetsoc = states('input_number.car_smart_charge_target_percentage') | round(default=0) %}
+        {% set targetrange = states('input_number.car_smart_charge_target_range') | round(default=0) %}
+        {% set nog_te_laden_procent = [targetsoc - soc, 0] | max %}
+        {% set nog_te_laden_minuten = nog_te_laden_procent * states('input_number.minuten_voor_1_laden') | round(2) %}      
+        Nu: {{ soc }}%.
+        Laden tot {{ targetsoc }}% = {{ targetrange }} km.<br>
+        Einde laden voorzien om {{ (as_timestamp(now()) + (nog_te_laden_minuten | float(default=0) * 60)) | timestamp_custom('%a %d %b %-Hu%M') }}
+      data:
+        tag: smart_charge
+        color: green
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car-charging
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id:
+        - input_boolean.car_smart_charge_busy
+        # nog geen zonnepanelen, dus direct starten is altijd met 100% netstroom
+        - input_boolean.car_smart_charge_grid_busy
+  - service: script.charger_define_phase_1_or_3_based_on_watt
+  - service: script.charger_define_ampere_based_on_watt
+  - service: script.charger_define_and_write_register_based_on_ampere
   mode: restart
 
+- alias: "🔋 smart charge - charge mode nu uitgeschakeld"
+  id: 'f1791b1c-4799-4e85-890f-9a6cd31f7e54'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.car_smart_charge_mode_now
+    to: 'off'
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: smart_charge
+  - service: script.stop_charger
+    data: {}
+  mode: restart
+
+- alias: "🔋 smart charge - charge mode net ingeschakeld"
+  id: '6e284b34-555e-418a-ad8f-c7a7afe2b121'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.car_smart_charge_mode_grid
+    to: 'on'
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.car_charger_watt
+    data:
+      value: 5.5 
+  - service: notify.bart_phone
+    data:
+      title: "Laden met netstroom"
+      message: >
+         Laden van {{ as_timestamp(states('sensor.car_smart_charge_start_time')) | timestamp_custom('%a %-Hu%M', false)}} tot {{ state_attr('input_datetime.car_smart_charge_target_time', 'timestamp') | timestamp_custom("%a %-Hu%M") }}.<br>
+         Er wordt geladen van {{states('sensor.car_1_soc') | round() }}% naar {{states('input_number.car_smart_charge_target_percentage') | round() }}%.
+      data:
+        tag: smart_charge
+        color: green
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car-charging
+  mode: restart
+
+- alias: "🔋 smart charge - charge mode net uitgeschakeld"
+  id: '10103bac-9dc6-4cae-8db7-5d9c2de8360f'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.car_smart_charge_mode_grid
+    to: 'off'
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: smart_charge  
+  # force stop charging by setting charger at 5 A
+  - service: script.stop_charger
+    data: {}
+  mode: restart
+
+- alias: "🔋 smart charge - charge mode zon ingeschakeld"
+  id: 'a8ea0be1-580c-4645-bd01-d16d57be3018'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.car_smart_charge_mode_sun
+    to: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Laden met zon.
+      message: "Er zal worden geladen wanneer er zon is. Auto is nu {{ states('sensor.car_1_soc')| int(2)}}% geladen."
+      data:
+        tag: smart_charge
+        color: green
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car-charging
+  # - service: input_number.set_value
+  #  target:
+  #    entity_id: input_number.car_charger_watt
+  #  data:
+  #    value: "{{ states('sensor.energy_current_hour') | float - 0.5 }}"      
+  mode: restart
+
+- alias: "🔋 smart charge - charge mode zon uitgeschakeld"
+  id: '4ec2782b-8638-44d0-9aa3-45ae916ccf86'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.car_smart_charge_mode_sun
+    to: 'off'
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.car_smart_charge_sun_busy  
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: smart_charge        
+  # force stop charging by setting charger at 5 A
+  - service: script.stop_charger
+    data: {}
+  mode: restart
 
 #######################################
 # Target range / SOC
 ######################################
 
-- alias: charging target percentage veranderd
+- alias: 🔋 charge target percentage is veranderd
   id: 'bc9713f6-225f-4e87-99eb-6bb78aa18653'
   description: ''
   trigger:
   - platform: state
-    entity_id: input_number.car_smart_charging_target_percentage
+    entity_id: input_number.car_smart_charge_target_percentage
   condition: []
   action:
   - service: input_number.set_value
     target:
-      entity_id: input_number.car_smart_charging_target_range
+      entity_id: input_number.car_smart_charge_target_range
     data:
-      value: "{{ ((states('input_number.car_smart_charging_target_percentage') | float ) * (states('sensor.car_range_per_10percent')| float) / 10) | int }}"
+      value: "{{ ((states('input_number.car_smart_charge_target_percentage') | float(default=0) ) * (states('sensor.car_range_per_10percent')| float(default=0)) / 10) | int }}"
   - wait_template: ''
     timeout: '00:00:02'      
   mode: single
+  max_exceeded: silent
 
-- alias: charging target range veranderd
+- alias: 🔋 charge target range is veranderd
   id: '79d535f9-0b79-4eb6-98cb-5786bf032300'
   description: ''
   trigger:
   - platform: state
-    entity_id: input_number.car_smart_charging_target_range
+    entity_id: input_number.car_smart_charge_target_range
   condition: []
   action:
   - service: input_number.set_value
     target:
-      entity_id: input_number.car_smart_charging_target_percentage
+      entity_id: input_number.car_smart_charge_target_percentage
     data:
-      value: "{{ ((states('input_number.car_smart_charging_target_range') | float ) / (states('sensor.car_range_per_10percent')| float) * 10) | int }}"
+      value: "{{ ((states('input_number.car_smart_charge_target_range') | float(default=0) ) / (states('sensor.car_range_per_10percent')| float(default=0)) * 10) | int }}"
   - wait_template: ''
     timeout: '00:00:02'  
   mode: single
+  max_exceeded: silent
 
-######################################
-# car smart charging (enkel thuis)
-######################################
 
-- alias: "🔋 smart charging - om 10u, 20u en 22u check of laadkabel ingeplugd is voor smart charging binnen de volgende 10 uren "
+#######################################
+# Car charger: define ampère and phases
+#######################################
+
+- alias: 🔋 bepaal W van de lader op basis van zonne-energie dit uur
+  id: '79250ffc-c3c1-48b2-b477-d57cb976b7f7'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.energy_current_hour
+  condition:
+  - condition: state
+    entity_id: input_boolean.car_smart_charge_mode_sun
+    state: 'on'
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.car_charger_watt
+    data:
+      value: "{{ states('sensor.energy_current_hour') | float - 0.5 }}"
+  mode: single
+
+- alias: "🔋 gewenst Wattage laadpaal is veranderd = bepaal laadminuten voor 1%"
+  id: 'baae9f5a-73dd-45f6-98b4-5130a50a903d'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_number.car_charger_watt
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.minuten_voor_1_laden
+    data:
+      value: "{{ ( 56.925 / (states('input_number.car_charger_watt') | float ) ) | round(2) }}"
+  mode: restart
+
+- alias: "🔋 gewenst Wattage laadpaal is veranderd = zet de fasen op 1 of 3"
+  id: 'f27a3c48-775c-471f-bd6d-33d23c638826'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_number.car_charger_watt
+  condition:
+  # only when charging is busy, otherwise by changing the W the car will start to charge
+  - condition: state
+    entity_id: input_boolean.car_smart_charge_busy
+    state: 'on'
+  action:
+  - service: script.charger_define_phase_1_or_3_based_on_watt
+  mode: restart
+
+- alias: "🔋 gewenst Wattage laadpaal is veranderd = bepaal Ampère"
+  id: 'd4197275-7e4b-453d-b3ea-3ea91c2e19d8'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_number.car_charger_watt
+  condition:
+  # only when charging is busy, otherwise by changing the W the car will start to charge
+  - condition: state
+    entity_id: input_boolean.car_smart_charge_busy
+    state: 'on'
+  action:
+  - service: script.charger_define_ampere_based_on_watt
+    data: {}
+  mode: restart
+
+- alias: 🔋 Ampere laadpaal is veranderd = bepaal waarde en zend naar register
+  id: '9550cbe2-2979-4c7f-9974-ec7eaebc249e'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_number.car_charger_ampere
+  condition:
+  # only when charging is busy, otherwise by changing the W the car will start to charge
+  - condition: state
+    entity_id: input_boolean.car_smart_charge_busy
+    state: 'on'
+  action:
+  - service: script.charger_define_and_write_register_based_on_ampere
+  mode: restart
+
+
+############################################
+# car smart charge: check cable and session
+############################################
+
+- alias: "🔋 smart charge - om 10u, 21u30 en 22u30 check of laadkabel ingeplugd is voor smart charge binnen de volgende 10 uren "
   id: '995d850b-435f-46a6-9e5a-9ab89701ddf4'
   description: ''
   trigger:
   - platform: time
     at: '10:00'
   - platform: time
-    at: '20:00'
+    at: '21:30'
   - platform: time
-    at: '22:00'
+    at: '22:30'
   condition:
   - condition: state
     entity_id: device_tracker.audi_e_tron_sportback_position
     state: home    
   - condition: state
-    entity_id: sensor.audi_e_tron_sportback_plug_state
+    entity_id: sensor.car_1_plug_state
     state: 'disconnected'
   # voorwaarde: als start tijd < nu + 10 uren (dus starttijd voor 20u)
   - condition: template
-    value_template: "{% if as_timestamp(states('sensor.car_smart_charging_start_time')) | timestamp_custom('%Y-%m-%d %H:%M', false) < ((as_timestamp(now())  + (10 * 60 * 60)) | timestamp_custom('%Y-%m-%d %H:%M')) %}true{% endif %}"
+    value_template: "{% if as_timestamp(states('sensor.car_smart_charge_start_time')) | timestamp_custom('%Y-%m-%d %H:%M', false) < ((as_timestamp(now())  + (10 * 60 * 60)) | timestamp_custom('%Y-%m-%d %H:%M')) %}true{% endif %}"
+  # voorwaarde: enkel als SOC < gewenst laaddoel
+  - condition: template
+    value_template: "{{ states('sensor.car_1_soc')| int(2) < (states('input_number.car_smart_charge_target_percentage') | int(2)) }}"
   action:
   - service: notify.bart_phone
     data:
       title: "Plug de laadkabel in."
-      message: "De auto zou moeten laden op {{ as_timestamp(states('sensor.car_smart_charging_start_time')) | timestamp_custom('%a %-Hu%M', false) }} maar de kabel steekt niet in. Laaddoel is {{ states('input_number.car_smart_charging_target_percentage') | round() }}%."
+      message: >
+        {% set soc = states('sensor.car_1_soc') | round(default=0) %}
+        {% set targetsoc = states('input_number.car_smart_charge_target_percentage') | round(default=0) %}
+        {% set targetrange = states('input_number.car_smart_charge_target_range') | round(default=0) %}
+        De auto zou moeten laden op {{ as_timestamp(states('sensor.car_smart_charge_start_time')) | timestamp_custom('%a %-Hu%M', false) }} maar de kabel steekt niet in.
+        Huidige lading is {{ soc }}%. Laaddoel is {{ targetsoc }}% = {{ targetrange }} km.
       data:
-        tag: smart_charging
+        tag: smart_charge
         color: green
         actions:
         - action: URI
@@ -387,13 +598,13 @@ automation:
           uri: /eikenbos-dashboard/car-charging        
   mode: single
 
-- alias: "🔋 smart charging - laadkabel zopas ingeplugd = op timer zetten (enkel thuis)"
+- alias: "🔋 smart charge - laadkabel zopas ingeplugd = melding (enkel thuis)"
   # bij het inpluggen begint de lader eerst bijna 2 minuten direct te laden want het duurt een tijdje vooraleer het commando om op timer te laden geactiveerd wordt
   id: '6fc148ce-a035-4699-bffd-dc4eb83e52a5'
   description: ''
   trigger:
   - platform: state
-    entity_id: sensor.audi_e_tron_sportback_plug_state
+    entity_id: sensor.car_1_plug_state
     to: connected
   condition:
     # check dat de auto thuis staat
@@ -402,18 +613,20 @@ automation:
     state: home
     # check dat de sessie op de laadpaal gestart is
   - condition: state
-    entity_id: sensor.chargepoint_status
+    entity_id: sensor.charger_status
     state: connected
   action:
   - service: notify.bart_phone
     data:
-      title: "Smart charging staat nu klaar."
+      title: "De laadkabel is zopas ingeplugd."
       message: >
-         De laadkabel is zopas ingeplugd.<br>
-         Smart charging van {{ as_timestamp(states('sensor.car_smart_charging_start_time')) | timestamp_custom('%a %-Hu%M', false)}} tot {{ state_attr('input_datetime.car_smart_charging_target_time', 'timestamp') | timestamp_custom("%a %-Hu%M") }}.<br>
-         Er wordt geladen van {{states('sensor.audi_e_tron_sportback_state_of_charge') | round() }}% naar {{states('input_number.car_smart_charging_target_percentage') | round() }}%.
+        {% set soc = states('sensor.car_1_soc') | round(default=0) %}
+        {% set targetsoc = states('input_number.car_smart_charge_target_percentage') | round(default=0) %}
+        {% set targetrange = states('input_number.car_smart_charge_target_range') | round(default=0) %}      
+        Smart charge van {{ as_timestamp(states('sensor.car_smart_charge_start_time')) | timestamp_custom('%a %-Hu%M', false)}} tot {{ state_attr('input_datetime.car_smart_charge_target_time', 'timestamp') | timestamp_custom("%a %-Hu%M") }}.<br>
+        Er wordt geladen van {{ soc }}% naar {{ targetsoc }}% = {{ targetrange }} km.
       data:
-        tag: smart_charging
+        tag: smart_charge
         color: green
         actions:
         - action: URI
@@ -421,53 +634,51 @@ automation:
           uri: /eikenbos-dashboard/car-charging
   - service: notify.madouce_phone
     data:
-      title: "Smart charging staat nu klaar."
+      title: "De laadkabel is zopas ingeplugd."
       message: >
-         De laadkabel is zopas ingeplugd.<br>
-         Smart charging van {{ as_timestamp(states('sensor.car_smart_charging_start_time')) | timestamp_custom('%a %-Hu%M', false)}} tot {{ state_attr('input_datetime.car_smart_charging_target_time', 'timestamp') | timestamp_custom("%a %-Hu%M") }}.<br>
-         Er wordt geladen van {{states('sensor.audi_e_tron_sportback_state_of_charge') | round() }}% naar {{states('input_number.car_smart_charging_target_percentage') | round() }}%.
+        {% set soc = states('sensor.car_1_soc') | round(default=0) %}
+        {% set targetsoc = states('input_number.car_smart_charge_target_percentage') | round(default=0) %}
+        {% set targetrange = states('input_number.car_smart_charge_target_range') | round(default=0) %}      
+        Smart charge van {{ as_timestamp(states('sensor.car_smart_charge_start_time')) | timestamp_custom('%a %-Hu%M', false)}} tot {{ state_attr('input_datetime.car_smart_charge_target_time', 'timestamp') | timestamp_custom("%a %-Hu%M") }}.<br>
+        Er wordt geladen van {{ soc }}% naar {{ targetsoc }}% = {{ targetrange }} km.
       data:
-        tag: smart_charging
+        tag: smart_charge
         color: green
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/car-charging        
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: WAUZZZGE6MB019131
-      action: start_timed_charger
-  mode: single    
+          uri: /eikenbos-dashboard/car-charging
 
-- alias: "🔋 smart charging - laadkabel verbonden maar sessie op laadpaal niet gestart"
+- alias: "🔋 smart charge - laadkabel verbonden maar sessie op laadpaal niet gestart (enkel thuis)"
   id: '8add47e4-3af1-43f9-b9f3-56e39c333e1e'
   description: ''
   trigger:
   - platform: state
-    entity_id: sensor.audi_e_tron_sportback_plug_state
+    entity_id: sensor.car_1_plug_state
     to: connected
   condition:
   - condition: state
-    entity_id: sensor.chargepoint_status
+    entity_id: device_tracker.audi_e_tron_sportback_position
+    state: home  
+  - condition: state
+    entity_id: sensor.charger_status
     state: 'available'
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
   action:
   - service: notify.bart_phone
     data:
       message: TTS
-      title: "De laadkabel steekt in, maar de sessie is niet gestart!"
       data:
-        channel: alarm_stream
+        tts_text: "De laadkabel steekt in, maar de sessie is niet gestart!"
+        ttl: 0
+        priority: high
+        media_stream: alarm_stream_max
   - service: notify.bart_phone
     data:
       title: "De laadkabel steekt in maar de sessie is niet gestart."
       message: >
          De laadkabel is ingeplugd maar er is niet gebadget om de sessie te starten.
       data:
-        tag: smart_charging
+        tag: smart_charge
         color: green
         actions:
         - action: URI
@@ -475,67 +686,73 @@ automation:
           uri: /eikenbos-dashboard/car-charging        
   mode: single
 
-- alias: "🔋 smart charging - starten op datum en uur van smart charging start time"
+- alias: "🔋 smart charge - laadkabel losgekoppeld = laden stoppen"
+  id: '13076d4e-aabf-4fa9-9f90-6d1392e29f69'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.charger_status
+    to: available
+  condition: []
+  action:
+  # stop all charging sessions
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: 
+      - input_boolean.car_smart_charge_busy
+      - input_boolean.car_smart_charge_sun_busy
+      - input_boolean.car_smart_charge_grid_busy
+  # force stop charging by setting charger at 5 A
+  - service: script.stop_charger
+    data: {}
+  mode: single
+
+######################################
+# car smart charge: grid charging
+######################################
+
+- alias: "🔋 smart charge - starten op datum en uur van smart charge grid"
   id: '7bcf7836-3149-4eb2-9d40-f0f3f309a249'
   description: ''
   trigger:
   - platform: template
-    value_template: "{% if as_timestamp(states('sensor.car_smart_charging_start_time')) | timestamp_custom('%Y-%m-%d %H:%M',false)  == as_timestamp(now()) | timestamp_custom('%Y-%m-%d %H:%M') %}true{% endif %}"
-  # Only run routine if smart charging has not yet started (input_boolean.car_smart_charging_busy = off)
-  # Because the calculated start time continuously moves while charging, this routine would continously be triggered
+    value_template: "{% if as_timestamp(states('sensor.car_smart_charge_start_time')) | timestamp_custom('%Y-%m-%d %H:%M',false)  == as_timestamp(now()) | timestamp_custom('%Y-%m-%d %H:%M') %}true{% endif %}"
+  # Only run routine if smart charge has not yet started (input_boolean.car_smart_charge_busy = off)
+  # Because the calculated start time continuously moves while charge, this routine would continously be triggered
   condition:
+  # check if SOC < target SOC, otherwise routine should not run
+  - condition: template
+    value_template: "{{ states('sensor.car_1_soc')| int(2) < (states('input_number.car_smart_charge_target_percentage') | int(2)) }}"
+  # only when 'charge mode grid' is ON
   - condition: state
-    entity_id: input_boolean.smart_charging_mode_timer
+    entity_id: input_boolean.car_smart_charge_mode_grid
     state: 'on'
+  # only when 'charge busy' is OFF  
   - condition: state
-    entity_id: input_boolean.car_smart_charging_busy
-    state: 'off'
-  - condition: state
-    entity_id: sensor.audi_e_tron_sportback_charging_state
+    entity_id: input_boolean.car_smart_charge_busy
     state: 'off'
   action:
   - service: input_boolean.turn_on
     data: {}
     target:
-      entity_id: input_boolean.car_smart_charging_busy  
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: WAUZZZGE6MB019131
-      action: start_charger
+      entity_id:
+      - input_boolean.car_smart_charge_busy
+      - input_boolean.car_smart_charge_grid_busy
+  - service: script.charger_define_phase_1_or_3_based_on_watt
+  - service: script.charger_define_ampere_based_on_watt
+  - service: script.charger_define_and_write_register_based_on_ampere
   - service: notify.bart_phone
     data:
-      title: Smart charging gestart.
-      message: "Nu: {{states('sensor.audi_e_tron_sportback_state_of_charge') | round()}}%. Laden tot {{states('input_number.car_smart_charging_target_percentage') | round() }}%.<br>Doeluur: {{as_timestamp(states('input_datetime.car_smart_charging_target_time')) | timestamp_custom('%a %-d/%-m %-Hu%M',false) }}"
-      data:
-        tag: smart_charging
-        color: green
-        actions:
-        - action: URI
-          title: meer info
-          uri: /eikenbos-dashboard/car-charging
-  mode: single
-
-- alias: "🔋 smart charging - direct laden gestart"
-  id: '242e4f5f-1396-4774-911a-be6e7b685c82'
-  trigger:
-  - platform: state
-    entity_id: input_boolean.smart_charging_mode_direct
-    to: 'on'
-  condition: []
-  action:
-  - service: notify.bart_phone
-    data:
-      title: Direct laden gestart.
+      title: Smart charge gestart met netstroom
       message: >
-        {% set target = states('input_number.car_smart_charging_target_percentage') | float(default=0) %}
-        {% set soc = states('sensor.audi_e_tron_sportback_state_of_charge') | float(default=0) %}
-        {% set nog_te_laden_procent = [target - soc, 0] | max %}
-        {% set nog_te_laden_minuten = nog_te_laden_procent * 8.5 | round(2) %}      
-        Nu: {{states('sensor.audi_e_tron_sportback_state_of_charge') | round()}}%.
-        Laden tot {{states('input_number.car_smart_charging_target_percentage') | round() }}%.<br>
-        Laden gedaan op {{ (as_timestamp(now()) + (nog_te_laden_minuten | float(default=0) * 60)) | timestamp_custom('%a %d %b %-Hu%M') }}
+        {% set soc = states('sensor.car_1_soc') | round(default=0) %}
+        {% set targetsoc = states('input_number.car_smart_charge_target_percentage') | round(default=0) %}
+        {% set targetrange = states('input_number.car_smart_charge_target_range') | round(default=0) %}
+        Doeluur: {{as_timestamp(states('input_datetime.car_smart_charge_target_time')) | timestamp_custom('%a %-d/%-m %-Hu%M',false) }}<br>
+        Er wordt geladen van {{ soc }}% naar {{ targetsoc }}% = {{ targetrange }} km.
       data:
-        tag: smart_charging
+        tag: smart_charge
         color: green
         actions:
         - action: URI
@@ -543,50 +760,137 @@ automation:
           uri: /eikenbos-dashboard/car-charging
   mode: single
 
-- alias: "🔋 smart charging - laaddoel bereikt (zowel timer als direct)= laden stoppen + melding sturen + timer dag later (enkel thuis)"
+- alias: "🔋 smart charge - laaddoel bereikt (enkel grid en direct) = laden stoppen + melding sturen (enkel thuis)"
   id: 'b7a22897-2c7b-4e07-bf71-380271658908'
   description: ''
   trigger:
   - platform: state
-    entity_id: sensor.audi_e_tron_sportback_state_of_charge
+    entity_id: sensor.car_1_soc
   condition:
+  # check dat huidige SOC groter is dan gevraagd laaddoel
   - condition: template
-    value_template: "{{ states('sensor.audi_e_tron_sportback_state_of_charge')| int(2) >= (states('input_number.car_smart_charging_target_percentage') | int(2)) }}"
+    value_template: "{{ states('sensor.car_1_soc')| int(2) >= (states('input_number.car_smart_charge_target_percentage') | int(2)) }}"
   - condition: state
-    entity_id: sensor.audi_e_tron_sportback_charging_state
+    entity_id: sensor.charger_status
     state: 'charging'
-  - condition: state
-    entity_id: device_tracker.audi_e_tron_sportback_position
-    state: home    
   action:
-  - service: input_boolean.turn_off
-    data: {}
-    target:
-      entity_id: input_boolean.car_smart_charging_busy
   - service: notify.bart_phone
     data:
       title: Laaddoel bereikt!
-      message: "Laaddoel van {{states('input_number.car_smart_charging_target_percentage') | round() }}% is bereikt. Huidige lading: {{states('sensor.audi_e_tron_sportback_state_of_charge') | round()}}%"
+      message: >
+        {% set soc = states('sensor.car_1_soc') | round(default=0) %}
+        {% set targetsoc = states('input_number.car_smart_charge_target_percentage') | round(default=0) %}
+        {% set range = ( soc * (states('sensor.car_range_per_10percent') | float(default=0)) / 10 ) | int(0) %}
+        Laaddoel van {{ targetsoc }}% is bereikt. Huidige lading: {{ soc }}% = {{ range }} km
       data:
-        tag: smart_charging
+        tag: smart_charge
         color: green
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/car-charging        
-  # targtet time op dag later zetten
+          uri: /eikenbos-dashboard/car-charging      
+  # stop charging
+  - service: script.stop_charger
+    data: {}
+  mode: single
+
+- alias: "🔋 smart charge - laaddoeluur bereikt = laden stoppen + verzetten naar 's anderendaags"
+  id: '94c89ef0-a331-4a74-a2bc-d03289b73354'
+  description: ''
+  trigger:
+  # hierin zit mogelijk een fout (er moeten defaults gedefinieerd worden)
+  - platform: template
+    value_template: "{% if as_timestamp(states('input_datetime.car_smart_charge_target_time'),0) | timestamp_custom('%Y-%m-%d %H:%M',false,0) == as_timestamp(now()) | timestamp_custom('%Y-%m-%d %H:%M') %}true{% endif %}"
+  condition: []
+  action:
+  - service: script.stop_charger
+    data: {}
   - service: input_datetime.set_datetime
     data:
-      datetime: "{{ (as_timestamp(now())  + (24 * 60 * 60) ) | timestamp_custom('%Y-%m-%d %H:%M:%S') }}"
+      datetime: "{{ (as_timestamp(states('input_datetime.car_smart_charge_target_time'),0 | timestamp_custom('%Y-%m-%d %H:%M:%S'))  + (24 * 60 * 60) ) | timestamp_custom('%Y-%m-%d %H:%M:%S',false) }}"
     target:
-      entity_id: input_datetime.car_smart_charging_target_time
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: WAUZZZGE6MB019131
-      action: start_timed_charger
+      entity_id: input_datetime.car_smart_charge_target_time
   mode: single
-  
-- alias: "🔋 smart charging - red hours: week 6u-8u -> lader op timer (enkel thuis)"
+
+
+######################################
+# car smart charge: solar charging
+######################################
+
+- alias: "🔋 smart charge mode sun - starten bij zonsopgang"
+  id: 'bf363599-fff0-4f0a-9d19-93d28ce0b9a4'
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunrise
+    offset: 0
+  condition:
+  - condition: state
+    entity_id: input_boolean.car_smart_charge_mode_sun
+    state: 'on'
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.car_smart_charge_sun_busy
+  - service: notify.bart_phone
+    data:
+      title: smart charge gestart met netstroom
+      message: "Nu: {{states('sensor.car_1_soc') | round()}}%. Laden tot {{states('input_number.car_smart_charge_target_percentage') | round() }}%.<br>Doeluur: {{as_timestamp(states('input_datetime.car_smart_charge_target_time')) | timestamp_custom('%a %-d/%-m %-Hu%M',false) }}"
+      data:
+        tag: smart_charge
+        color: green
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car-charging
+  mode: single
+
+- alias: "🔋 smart charge mode sun - starten wanneer zon-schakelaar wordt ingeschakeld"
+  id: 'fff013ea-12e1-427f-8283-617a0f2e94ad'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.car_smart_charge_mode_sun
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: sun.sun
+    state: 'above_horizon'
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id:
+        - input_boolean.car_smart_charge_sun_busy
+        - input_boolean.car_smart_charge_busy
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.car_charger_watt
+    data:
+      value: "{{ states('sensor.energy_current_hour') | float - 0.5 }}"
+  - wait_template: ''
+    timeout: '00:00:05'
+  - service: script.charger_define_and_write_register_based_on_ampere
+  - service: notify.bart_phone
+    data:
+      title: smart charge gestart met zonne-energie
+      message: "Nu: {{states('sensor.car_1_soc') | round()}}%. Laden tot {{states('input_number.car_smart_charge_target_percentage') | round() }}%.<br>Doeluur: {{as_timestamp(states('input_datetime.car_smart_charge_target_time')) | timestamp_custom('%a %-d/%-m %-Hu%M',false) }}"
+      data:
+        tag: smart_charge
+        color: green
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car-charging
+  mode: single   
+
+
+######################################
+# car smart charge: red hours
+######################################
+
+- alias: "🔋 smart charge - red hours: week 6u-8u -> lader op timer (enkel thuis)"
   id: '0a0bce79-42d8-4184-9dab-9ed54f30f3bf'  
   description: ''
   trigger:
@@ -610,7 +914,7 @@ automation:
       action: start_timed_charger
   - delay: 02:00:00
   - condition: state
-    entity_id: input_boolean.car_smart_charging_busy
+    entity_id: input_boolean.car_smart_charge_busy
     state: 'on'  
   - service: audiconnect.execute_vehicle_action
     data:
@@ -618,7 +922,7 @@ automation:
       action: start_charger
   mode: single
   
-- alias: "🔋 smart charging - red hours: zaterdag 7u-9u -> lader op timer (enkel thuis)"
+- alias: "🔋 smart charge - red hours: zaterdag 7u-9u -> lader op timer (enkel thuis)"
   id: '31e6ff24-3423-4332-b4f9-da785af82b26'
   description: ''
   trigger:
@@ -638,7 +942,7 @@ automation:
       action: start_timed_charger
   - delay: 02:00:00
   - condition: state
-    entity_id: input_boolean.car_smart_charging_busy
+    entity_id: input_boolean.car_smart_charge_busy
     state: 'on'
   - service: audiconnect.execute_vehicle_action
     data:
@@ -646,7 +950,7 @@ automation:
       action: start_charger
   mode: single
 
-- alias: "🔋 smart charging - red hours: zondag 8u-12u -> lader op timer (enkel thuis)"
+- alias: "🔋 smart charge - red hours: zondag 8u-12u -> lader op timer (enkel thuis)"
   id: '81cb1458-debb-4378-9313-d34f4029f693'
   description: ''
   trigger:
@@ -670,38 +974,70 @@ automation:
       vin: WAUZZZGE6MB019131
       action: start_charger
   mode: single
-
-- alias: "🔋 smart charging - laaddoeluur bereikt = verzetten naar 's anderendaags"
-  id: '94c89ef0-a331-4a74-a2bc-d03289b73354'
-  description: ''
-  trigger:
-  - platform: template
-    value_template: "{% if as_timestamp(states('input_datetime.car_smart_charging_target_time')) | timestamp_custom('%Y-%m-%d %H:%M',false) == as_timestamp(now()) | timestamp_custom('%Y-%m-%d %H:%M') %}true{% endif %}"
-  condition: []
-  action:
-  - service: input_datetime.set_datetime
-    data:
-      datetime: "{{ (as_timestamp(now())  + (24 * 60 * 60) ) | timestamp_custom('%Y-%m-%d %H:%M:%S') }}"
-    target:
-      entity_id: input_datetime.car_smart_charging_target_time
-  mode: single
   
 
-#######################################
-# Laadpaal / car charger
+######################################
+# car smart charge: varia
 ######################################
 
-- alias: '[elek] Set the chargepoint current'
-  id: '246e66e7-ce8f-4078-9f18-2ca23225e5cd'
-  description: 'Pass MQTT current to the script'
+- alias: "🔋 smart charge - ververs status auto tijdens het laden"
+  id: '05fea2a8-3699-41b6-b535-a1a6e49be1b1'
+  description: ''
   trigger:
-    - platform: mqtt
-      topic: chargepoint/maxcurrent
+  - platform: state
+    entity_id: sensor.car_1_charging_state
+    to: 'charge'
   condition: []
   action:
-    - service: script.set_modbus_maxcurrent
-      data_template:
-        value_msb: '{{ trigger.payload_json.value_msb | int}}'
-        value_lsb: '{{ trigger.payload_json.value_lsb | int}}'
+  - repeat:
+      while:
+      - condition: state
+        entity_id: sensor.car_1_charging_state
+        state: 'charge'
+      sequence:
+      - service: audiconnect.refresh_data
+        data:
+          vin: WAUZZZGE6MB019131
+      - delay:
+          hours: 0
+          minutes: 10
+          seconds: 0
+          milliseconds: 0
   mode: single
 
+- alias: "🔋 hernieuw ampère en W op laadpaal (bij aftellen counter)"
+  id: '227ab015-24f0-461e-a977-4600c813ac98'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.charger_socket1_current_valid_time
+    below: '10000'
+    # 10000 seconds = +/- 2,5 uren
+  - platform: numeric_state
+    entity_id: sensor.charger_socket1_current_valid_time
+    below: '5000'    
+  condition: []
+  action:
+  - service: script.send_ampere_to_charger
+    data:
+      registervalue: '{{registervalue}}'
+  - service: >
+      {% if is_state('sensor.charger_use_1_or_3_phases', '1') %}
+        script.set_charger_to_1_phase
+      {% elif is_state('sensor.charger_use_1_or_3_phases','3') %}
+        script.set_charger_to_3_phases
+      {% endif %}      
+  variables:
+    registervalue: >
+      {% set A = states('sensor.charger_actual_applied_maxcurrent') | float %}
+      {% if A == 5 %}[0x40a0, 0x0000]
+      {% elif A == 6 %}[0x40c0, 0x0000]
+      {% elif A == 7 %}[0x40e0, 0x0000]
+      {% elif A == 8 %}[0x4100, 0x0000]
+      {% elif A == 9 %}[0x4110, 0x0000]
+      {% elif A == 10 %}[0x4120, 0x0000]
+      {% elif A == 11 %}[0x4130, 0x0000]
+      {% elif A == 12 %}[0x4140, 0x0000]
+      {% elif A == 13 %}[0x4160, 0x0000]
+      {% endif %}
+  mode: single
