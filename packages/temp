@@ -1,0 +1,193 @@
+type: vertical-stack
+cards:
+  - type: horizontal-stack
+    cards:
+      - show_name: true
+        show_icon: true
+        type: button
+        tap_action:
+          action: toggle
+        entity: input_boolean.car_smart_charge_mode_sun
+        icon: mdi:white-balance-sunny
+        name: zonne-energie
+        icon_height: 40px
+      - show_name: true
+        show_icon: true
+        type: button
+        tap_action:
+          action: toggle
+        entity: input_boolean.car_smart_charge_mode_grid
+        name: netstroom
+        icon: mdi:lightning-bolt-circle
+        icon_height: 40px
+  - type: horizontal-stack
+    cards:
+      - type: markdown
+        content: >-
+          <center>☀️</center>
+
+          {% set target =
+          states('input_number.car_smart_charge_target_percentage') |
+          round(default=0) %}
+
+          {% set soc = states('sensor.car_1_soc') | round(default=0) %}
+
+          {% set nog_te_laden_procent = [target - soc, 0] | max %}
+
+          {% set nog_te_laden_minuten = nog_te_laden_procent *
+          states('input_number.minuten_voor_1_laden') | round(2) %}
+
+          {% set prod = (states('sensor.energy_production_today') |
+          float(default=0) - ( states('sensor.realised_sun_production_today') |
+          float ) ) | round(1) %}
+
+          {% set prodprocent = ( prod / 0.85 ) | int %}
+
+
+          {% if states('input_boolean.car_smart_charge_mode_sun') == 'on' %}
+            {% if  (soc + prodprocent) < target %}<center>{{ ( (prodprocent  / nog_te_laden_procent) * 100 ) | round}}%</center>
+            {% elif  (soc + prodprocent) > target %}<center>{{ (((target - soc) / nog_te_laden_procent) * 100 ) | round}}%</center>
+            {% endif %}
+            
+           Van **{{ soc }}%** tot {% if  (soc + prodprocent) < target %}**{{ (soc + prodprocent) }}%**{% elif  (soc + prodprocent) > target %} **{{ target }}%**
+           Kan zelfs tot {{ [soc + prodprocent, 100] | min  }}% laden.{% endif %}
+
+          **Timing** 
+
+          Tot zonsondergang om {{ as_timestamp(state_attr('sun.sun',
+          'next_setting')) | timestamp_custom('%H:%M') }}.
+
+
+          Verwachte productie dit uur: {{ ( states('sensor.energy_current_hour')
+          | float + states('sensor.energy_current_hour_2') | float ) |
+          round(1)}} kWh
+
+          Huidige injectie: {{ states('sensor.net_meter_power') }} kW
+
+
+          {% elif states('input_boolean.casensor.digital_meter_power') and
+          states('car_smart_charge_mode_sun') == 'off' %}**<center><font
+          color="red">0%</center>**<font color="black">
+
+          Er kan vandaag nog **{{ prodprocent }}%** ({{ prod | round(0)}} kW)
+          worden bijgeladen met zon.
+
+          **Timing**
+
+          Van: nu
+
+          Tot: zonsondergang om {{ as_timestamp(state_attr('sun.sun',
+          'next_setting')) | timestamp_custom('%Hu%M') }}
+
+          {% endif %}
+      - type: markdown
+        content: >
+          <center>🔌</center>
+
+          {% set target =
+          states('input_number.car_smart_charge_target_percentage') |
+          round(default=0) %}
+
+          {% set soc = states('sensor.car_1_soc') | round(default=0) %}
+
+          {% set nog_te_laden_procent = [target - soc, 0] | max %}
+
+          {% set nog_te_laden_minuten = nog_te_laden_procent *
+          states('input_number.minuten_voor_1_laden') | round(2) %}
+
+          {% set prod = (states('sensor.energy_production_today') |
+          float(default=0) - (states('sensor.realised_sun_production_today') |
+          float ) ) | round(1) %}
+
+          {% set prodprocent = ( prod / 0.85 ) | int %}
+
+          {% if nog_te_laden_procent ==0 %} Er moet niet worden geladen.
+
+          {% else %}**<center>100%</center>**
+
+            {% if states('input_boolean.car_smart_charge_mode_sun') == 'off' and
+            states('input_boolean.car_smart_charge_mode_grid') == 'on'%}
+
+            <center>van {{soc}}% tot {{target}}%</center>
+
+            **Timer**
+            Van: {{ as_timestamp(states('sensor.car_smart_charge_start_time')) |
+            timestamp_custom('%a %d %b %-Hu%M', false) }}
+            Tot : {{ state_attr('input_datetime.car_smart_charge_target_time',
+            'timestamp') | timestamp_custom('%a %d %b %-Hu%M',) }}
+
+            {% elif states('input_boolean.car_smart_charge_mode_grid') == 'off' %}
+
+            **<center><font color="red">0%</center>**<font color="black">
+
+            {% elif states('input_boolean.car_smart_charge_mode_sun') == 'on' and
+            states('input_boolean.car_smart_charge_mode_grid') == 'on'%}
+              {% if  (soc + prodprocent) <= target %}<center>{{ 100 - ( (prodprocent  / nog_te_laden_procent) * 100 ) | round}}%</center>
+              {% elif  (soc + prodprocent) > target %}<center>{{ 100 - (((target - soc) / nog_te_laden_procent) * 100 ) | round}}%</center>
+              {% endif %}
+
+              {% if  (soc + prodprocent) >= target %}{% set netprocent = 0 %} Er hoeft niet van het net te worden geladen.
+              {% else %}{% set netprocent = target - soc - prodprocent %} van **{{ soc + prodprocent }}%** tot **{{ target }}%**
+              {% endif %}
+
+              {% set nog_te_laden_procent = (states('input_number.car_smart_charge_target_percentage') | float(default=0) ) - (states('sensor.car_1_soc') | float(default=0) ) %}
+              {% set nog_te_laden_minuten = netprocent * states('input_number.minuten_voor_1_laden') | round(2) %}
+              
+              {% if  nog_te_laden_procent <= 0 %} Laaddoel {{ states('input_number.car_smart_charge_target_percentage') | round(0) }}% al bereikt. <br>Er hoeft niet te worden geladen.
+              {% elif  nog_te_laden_procent > 0 and netprocent > 0 %}
+
+              **Timer**
+              van {{ (state_attr('input_datetime.car_smart_charge_target_time', 'timestamp') - nog_te_laden_minuten ) | timestamp_custom('%a %d %b %-Hu%M') }}
+              tot {{ state_attr('input_datetime.car_smart_charge_target_time', 'timestamp') | timestamp_custom('%a %d %b %-Hu%M',) }}
+              
+              {% elif  (as_timestamp(now()) + (nog_te_laden_minuten | float * 60)) > state_attr('input_datetime.car_smart_charge_target_time', 'timestamp') %}<font color="red"><ha-icon icon="mdi:battery-charging-medium"></ha-icon> Kan laaddoel {{states('input_number.car_smart_charge_target_percentage')| round() }}% niet bereiken tegen {{ state_attr('input_datetime.car_smart_charge_target_time', 'timestamp') | timestamp_custom("%Hu%M") }}.
+              Kan wel **{{ ( ((state_attr('input_datetime.car_smart_charge_target_time', 'timestamp') - as_timestamp(now())) / 60 / states('input_number.minuten_voor_1_laden') ) + (states('sensor.car_1_soc') |float(default=0) )) | round () }}%** bereiken.
+              </font>
+              {% endif %}
+
+            {% endif %}
+          {% endif %}
+  - type: horizontal-stack
+    cards:
+      - type: markdown
+        content: >-
+          {% set v = states('input_number.elektriciteitsvergoeding_werkgever') |
+          float %}
+
+          **Besparing**
+
+          Vandaag: {{ (( states('sensor.car_charge_solar_energy_daily') |
+          float(default=0)) * v ) | round (2) }} €
+
+          Week: {{ ( states('sensor.car_charge_solar_energy_weekly') |
+          float(default=0) * v ) | round(2) }} €
+
+          Maand: {{ ( states('sensor.car_charge_solar_energy_monthly') |
+          float(default=0) * v ) | round(2) }} €
+
+          Totaal: **{{ ( states('sensor.car_charge_solar_energy') |
+          float(default=0) * v ) | round(2) }} €** ({{
+          states('sensor.car_charge_solar_energy') | round() }} kWh)
+      - type: markdown
+        content: >-
+          {% set v = states('input_number.elektriciteitsvergoeding_werkgever') |
+          float %}
+
+          **Kost**
+
+          Vandaag: {{ ( (states('sensor.car_charge_grid_energy_daily') |
+          float(default=0)) * v) | round (2) }} € ({{
+          states('sensor.car_charge_grid_energy_daily') | round(0)}} kWh)
+
+          Week: {{ ( states('sensor.car_charge_grid_energy_weekly') |
+          float(default=0) * v) | round(2) }} € ({{
+          states('sensor.car_charge_grid_energy_weekly') | round(0)}} kWh)
+
+          Maand: {{ ( states('sensor.car_charge_grid_energy_monthly') |
+          float(default=0) * v) | round(2) }} € ({{
+          states('sensor.car_charge_grid_energy_monthly') | round(0)}} kWh)
+
+          Totaal: **{{ ( states('sensor.car_charge_grid_energy') |
+          float(default=0) * v) | round(2) }} €** ({{
+          states('sensor.car_charge_grid_energy') | float(default=0) | round()
+          }} kWh)

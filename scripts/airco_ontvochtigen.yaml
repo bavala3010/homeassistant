@@ -1,0 +1,46 @@
+
+master_bedroom_airco_ontvochtigen:
+  sequence:
+    - service: climate.set_hvac_mode
+      data:
+        hvac_mode: dry
+      target:
+        device_id: 64296bd295e4506b8a3ec42c8aae7e58
+    - delay:
+        minutes: 15
+    - service: climate.set_hvac_mode
+      data:
+        hvac_mode: "off"
+      target:
+        device_id: 64296bd295e4506b8a3ec42c8aae7e58
+
+
+kamer_alunya_airco_ontvochtigen:
+  sequence:
+    - service: climate.set_hvac_mode
+      data:
+        hvac_mode: dry
+      target:
+        device_id: 3c12e341dfd1d1fe2327ec66f3613321
+    - delay:
+        minutes: 15
+    - service: climate.set_hvac_mode
+      data:
+        hvac_mode: "off"
+      target:
+        device_id: 3c12e341dfd1d1fe2327ec66f3613321
+  
+living_airco_ontvochtigen:
+  sequence:
+    - service: climate.set_hvac_mode
+      data:
+        hvac_mode: dry
+      target:
+        device_id: 1c560bbc7917f45d737e87d3e2bd0d89
+    - delay:
+        minutes: 15
+    - service: climate.set_hvac_mode
+      data:
+        hvac_mode: "off"
+      target:
+        device_id: 1c560bbc7917f45d737e87d3e2bd0d89

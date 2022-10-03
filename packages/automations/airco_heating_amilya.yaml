@@ -1,0 +1,204 @@
+automation:
+
+# device_id airco Amilya = 61864d1ab32c5af91d5f13faf697c27e
+
+##################
+# Aan
+##################
+
+# Aircoverwarming gaat AAN bij de trigger:
+# - het schema gaat op "aan" 
+# - Amilya komt in de kamer (of thuis)
+# - kamertemperatuur is lager dan normale temperatuur
+# Met de voorwaarden:
+# - het schema staat op "aan"
+# - Amilya is in de kamer (of thuis)
+# - kamertemperatuur is lager dan normale temperatuur
+
+- alias: "♨️ Airco heating Amilya: aan volgens schema/te koud/aankomst"
+  id: 'b0416de4-e1a6-440f-857d-9371d5ddc258'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id: schedule.kamer_amilya_normal_temperature_schema
+      to: "on"
+    - platform: state
+      entity_id: person.amilya
+      to: home
+    - platform: template
+      value_template: >
+        {{ states('sensor.kamer_amilya_temperature') | float <
+        states('input_number.kamer_amilya_normal_temperature') | float }}
+  condition:
+    - condition: state
+      entity_id: schedule.kamer_amilya_normal_temperature_schema
+      state: "on"
+    - condition: state
+      entity_id: person.amilya
+      state: home
+    - condition: template
+      value_template: >
+        {{ states('sensor.kamer_amilya_temperature') | float <
+        states('input_number.kamer_amilya_normal_temperature') | float }}
+    - condition: state
+      entity_id: binary_sensor.kamer_amilya_raam
+      state: "off"
+  action:
+  - service: input_number.set_value
+    data:
+      value: >
+        {{ states('input_number.kamer_amilya_normal_temperature') | float }}
+    target:
+      entity_id: input_number.amilya_airco_target_temperature  
+  - service: input_number.set_value
+    data:
+      value: 30
+    target:
+      entity_id: input_number.amilya_airco_timer_minutes
+  - service: script.amilya_airco_start
+    data: {} 
+  mode: restart
+
+
+
+##################
+# Uit
+##################
+
+# Aircoverwarming gaat UIT bij de trigger:
+# - het schema gaat op "uit" 
+# - Amilya verlaat het huis
+# - op einduur van de timer
+# - wanneer het raam opengaat
+
+- alias: "♨️ Airco heating Amilya: uit volgens volgens schema/verlaten huis/timer stop"
+  id: '7163ee3e-c1ee-47db-ac1a-f93c58ccee76'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id: schedule.kamer_amilya_normal_temperature_schema
+      to: "off"
+    - platform: state
+      entity_id: person.amilya
+      to: not_home
+    - platform: state
+      entity_id: binary_sensor.kamer_amilya_raam
+      to: "on"
+    - platform: time
+      at: input_datetime.amilya_airco_timer_stop
+  condition: []
+  action:
+    - service: climate.turn_off
+      data: {}
+      target:
+        device_id: 61864d1ab32c5af91d5f13faf697c27e  
+    - service: climate.set_temperature
+      data:
+        temperature: 14
+      target:
+        device_id: 61864d1ab32c5af91d5f13faf697c27e
+    - service: input_number.set_value
+      data:
+        value: 14
+      target:
+        entity_id: input_number.amilya_airco_target_temperature
+    - service: timer.finish
+      data: {}
+      target:
+        entity_id: timer.amilya_airco_timer
+  mode: single
+
+
+########################
+# Handmatige aanpassing
+########################
+
+- alias: '♨️ Airco heating Amilya: aan gedurende 30 minuten bij hogere gewenste temperatuur'
+  id: 'b2300335-cc58-49e3-a3ca-51f184ef4133'
+  description: ''
+  trigger:
+  - platform: template
+    value_template: >
+      {{ states('sensor.kamer_amilya_temperature') | float < states('input_number.amilya_airco_target_temperature') | float }}
+  condition:
+  # - condition: state
+  #   entity_id: sensor.amilya_phone_room
+  #   state: "amilya kamer"
+  - condition: state
+    entity_id: person.amilya
+    state: home
+  action:
+  - service: input_number.set_value
+    data:
+      value: 30
+    target:
+      entity_id: input_number.amilya_airco_timer_minutes
+  - service: script.amilya_airco_start
+    data: {}            
+  mode: restart
+
+
+- alias: '♨️ Airco heating Amilya: uit als huidige temperatuur hoger is dan gewenste temperatuur'
+  id: 'd66d9475-6fb5-4c28-b05f-dec14cc883b7'
+  description: ''
+  trigger:
+  - platform: template
+    value_template: >
+      {{ states('sensor.kamer_amilya_temperature') | float > states('input_number.amilya_airco_target_temperature') | float }}    
+  condition: []
+  action:  
+  - service: climate.turn_off
+    data: {}
+    target:
+      device_id: 61864d1ab32c5af91d5f13faf697c27e  
+  - service: climate.set_temperature
+    data:
+      temperature: 14
+    target:
+      device_id: 61864d1ab32c5af91d5f13faf697c27e
+  - service: input_number.set_value
+    data:
+      value: 14
+    target:
+      entity_id: input_number.amilya_airco_target_temperature
+  - service: timer.finish
+    data: {}
+    target:
+      entity_id: timer.amilya_airco_timer          
+  mode: single
+
+- alias: '♨️ Airco heating Amilya: uit als verwarming 10 min aan staat buiten de normale uren'
+  id: '2a22e365-aebc-41ab-87dc-3f461cab1d4d'
+  description: ''
+  trigger:
+  - platform: template
+    value_template: >
+      {{ states('climate.amilya_airco') != "off" }}
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  condition:
+    - condition: state
+      entity_id: schedule.kamer_amilya_normal_temperature_schema
+      state: "off"
+  action:
+  - service: climate.turn_off
+    data: {}
+    target:
+      device_id: 61864d1ab32c5af91d5f13faf697c27e  
+  - service: climate.set_temperature
+    data:
+      temperature: 14
+    target:
+      device_id: 61864d1ab32c5af91d5f13faf697c27e
+  - service: input_number.set_value
+    data:
+      value: 14
+    target:
+      entity_id: input_number.amilya_airco_target_temperature
+  - service: timer.finish
+    data: {}
+    target:
+      entity_id: timer.amilya_airco_timer      
+  mode: single

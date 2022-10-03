@@ -9,6 +9,7 @@ gezin:
     - person.madouce
     - person.amilya
     - person.alunya
+    # - sensor.alunya_phone_home
     # # via mobile app
     # - device_tracker.bart_s10
     # - device_tracker.madouce_s20
@@ -25,6 +26,7 @@ alleen_bart:
     - person.madouce
     - person.amilya
     - person.alunya
+    # - sensor.alunya_phone_home
     # - device_tracker.madouce_s20
     # - device_tracker.amilya_iphone_xs
     # - device_tracker.alunya_a71
@@ -35,6 +37,7 @@ alleen_madouce:
     - person.bart
     - person.amilya
     - person.alunya
+    # - sensor.alunya_phone_home
     # - device_tracker.bart_s10
     # - device_tracker.amilya_iphone_xs
     # - device_tracker.alunya_a71

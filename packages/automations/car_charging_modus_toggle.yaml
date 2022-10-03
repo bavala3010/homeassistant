@@ -1,0 +1,176 @@
+############################ Table of Contents ############################ 
+# 
+#   Automations
+#   🔋 charge - charge mode nu ingeschakeld
+#   🔋 charge - charge mode nu uitgeschakeld
+#   🔋 charge - charge mode net ingeschakeld
+#   🔋 charge - charge mode net uitgeschakeld
+#   🔋 charge - charge mode zon ingeschakeld
+#   🔋 charge - charge mode zon uitgeschakeld
+
+
+############################ Automations ################################## 
+automation:
+
+
+#######################################
+# charge modus toggle
+######################################
+
+- alias: "🔋 charge - directe modus ingeschakeld"
+  id: 'eb33ffea-2365-4147-9419-4b223f04b921'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.car_charge_mode_now
+    to: 'on'
+  condition:
+  - condition: template
+    value_template: "{{ states('sensor.car_1_soc')| int(2) <= (states('input_number.car_charge_target_percentage') | int(2)) }}"
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Direct laden gestart.
+      message: >
+        {% set soc = states('sensor.car_1_soc') | round(default=0) %}
+        {% set targetsoc = states('input_number.car_charge_target_percentage') | round(default=0) %}
+        {% set targetrange = states('input_number.car_charge_target_range') | round(default=0) %}
+        {% set nog_te_laden_procent = [targetsoc - soc, 0] | max %}
+        {% set nog_te_laden_minuten = nog_te_laden_procent * states('input_number.minuten_voor_1_laden') | round(2) %}      
+        Nu: {{ soc }}%.
+        Laden tot {{ targetsoc }}% = {{ targetrange }} km.<br>
+        Einde laden voorzien om {{ (as_timestamp(now()) + (nog_te_laden_minuten | float(default=0) * 60)) | timestamp_custom('%a %d %b %-Hu%M') }}
+      data:
+        tag: car_charging
+        color: red
+        notification_icon: "mdi:car-electric"
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car-charging
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id:
+        - input_boolean.car_charge_busy
+        - input_boolean.car_charge_sun_busy
+        - input_boolean.car_charge_net_busy
+  - service: script.charger_define_phase_1_or_3_based_on_watt
+  - service: script.charger_define_ampere_based_on_watt
+  - service: script.charger_define_and_write_register_based_on_ampere
+  mode: restart
+
+- alias: "🔋 charge - directe modus uitgeschakeld"
+  id: 'f1791b1c-4799-4e85-890f-9a6cd31f7e54'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.car_charge_mode_now
+    to: 'off'
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: car_charging
+  - service: script.stop_charger
+    data: {}
+  mode: restart
+
+- alias: "🔋 charge - timer modus ingeschakeld"
+  id: '6e284b34-555e-418a-ad8f-c7a7afe2b121'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.car_charge_mode_net
+    to: 'on'
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.car_charger_watt
+    data:
+      value: 5.5 
+  - service: notify.bart_phone
+    data:
+      title: "Laden met netstroom"
+      message: >
+        Laden van {{ as_timestamp(states('sensor.car_charge_start_time')) | timestamp_custom('%a %-Hu%M', false)}} tot {{ state_attr('input_datetime.car_charge_target_time', 'timestamp') | timestamp_custom("%a %-Hu%M") }}.<br>
+        Er wordt geladen van {{states('sensor.car_1_soc') | round() }}% naar {{states('input_number.car_charge_target_percentage') | round() }}%.
+      data:
+        tag: car_charging
+        color: green
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car-charging
+  mode: restart
+
+- alias: "🔋 charge - timer modus uitgeschakeld"
+  id: '10103bac-9dc6-4cae-8db7-5d9c2de8360f'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.car_charge_mode_net
+    to: 'off'
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: car_charging  
+  # force stop charging by setting charger at 5 A
+  - service: script.stop_charger
+    data: {}
+  mode: restart
+
+- alias: "🔋 charge - zon modus ingeschakeld"
+  id: 'a8ea0be1-580c-4645-bd01-d16d57be3018'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.car_charge_mode_sun
+    to: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Laden met zon.
+      message: "Er zal worden geladen wanneer er zon is. Auto is nu {{ states('sensor.car_1_soc')| int(2)}}% geladen."
+      data:
+        tag: car_charging
+        color: green
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car-charging
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.car_charger_watt
+    data:
+      value: "{{ ((( states('sensor.net_power') | float ) / 1000 ) | abs ) - 1 }}"
+  mode: restart
+
+- alias: "🔋 charge - zon modus uitgeschakeld"
+  id: '4ec2782b-8638-44d0-9aa3-45ae916ccf86'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.car_charge_mode_sun
+    to: 'off'
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.car_charge_sun_busy  
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: car_charging        
+  # force stop charging by setting charger at 5 A
+  - service: script.stop_charger
+    data: {}
+  mode: restart

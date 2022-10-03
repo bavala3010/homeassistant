@@ -1,0 +1,17 @@
+
+###############################################################################
+# sensors for Alfen Eve Pro charge point 
+###############################################################################
+
+template:
+  - sensor:
+      - name: mode3_sanitized
+        state: "{{states('sensor.charger_mode3_state').replace('\0','') }}"
+      - name: charger_status
+        state: >
+          {% set m3 = states('sensor.mode3_sanitized') %}
+          {% if m3 in ['A', 'E'] %} available
+          {% elif m3 in ['B1', 'B2', 'C1', 'D1'] %} connected
+          {% elif m3 in ['C2', 'D2'] %} charging
+          {% else %} {{ m3 }}
+          {% endif %}

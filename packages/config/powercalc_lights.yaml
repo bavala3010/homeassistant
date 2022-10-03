@@ -1,0 +1,94 @@
+
+###############################################################################
+# Powercalc measures the power consumption of lights 
+###############################################################################
+
+sensor:
+  - platform: powercalc
+    create_group: living alle lichten
+    entities:
+      -  entity_id: light.living_links_1
+      -  entity_id: light.living_links_2
+      -  entity_id: light.living_links_3
+      -  entity_id: light.living_links_4
+      -  entity_id: light.living_links_5
+      -  entity_id: light.living_rechts_1  
+      -  entity_id: light.living_rechts_2
+      -  entity_id: light.living_rechts_3
+      -  entity_id: light.living_rechts_4
+      -  entity_id: light.living_rechts_5
+    manufacturer: signify
+    model: LCT003
+    # creates 2 sensors called
+    #   sensor.all_living_lights_power (in W)
+    #   sensor.all_living_lights_energy (in kWh)
+
+  - platform: powercalc
+    entity_id: light.living_bol
+    manufacturer: signify
+    model: LCT015
+    # creates a sensor called sensor.living_bol_power
+
+  - platform: powercalc
+    create_group: Amilya alle lichten
+    entities:
+      -  entity_id: light.amilya_badkamer
+      -  entity_id: light.amilya_bol
+      -  entity_id: light.amilya_strip
+      -  entity_id: light.amilya_plafond_1
+      -  entity_id: light.amilya_plafond_2
+
+  - platform: powercalc
+    entity_id: light.veranda
+    manufacturer: signify
+    model: LCT015
+
+  - platform: powercalc
+    entity_id: light.gang
+    manufacturer: signify
+    model: LCT003
+    multiply_factor: 3
+    
+  - platform: powercalc
+    entity_id: light.wasbak_rechts
+    manufacturer: signify
+    model: LCT003
+    
+  - platform: powercalc
+    entity_id: light.douche
+    manufacturer: signify
+    model: LCT003
+    
+  - platform: powercalc
+    entity_id: light.bad
+    manufacturer: signify
+    model: LCT003
+
+  - platform: powercalc
+    create_group: Alunya alle lichten
+    entities:
+      -  entity_id: light.alunya_bol
+      -  entity_id: light.alunya_staande_lamp
+      -  entity_id: light.alunya_wasbak
+
+  - platform: powercalc
+    create_group: master bedroom alle lichten
+    entities:
+      -  entity_id: light.master_bedroom_play_bart
+      -  entity_id: light.master_bedroom_play_madouce
+      -  entity_id: light.master_bedroom_staande_lamp
+
+  - platform: powercalc
+    create_group: master bedroom play bar lights 
+    entities:
+      -  entity_id: light.master_bedroom_play_bart
+      -  entity_id: light.master_bedroom_play_madouce
+    multiply_factor: 2
+    manufacturer: signify
+    model: LCT024
+    
+  - platform: powercalc
+    entity_id: light.buiten
+    manufacturer: signify
+    model: LCT015     # model 1744630P7 not found
+    multiply_factor: 2

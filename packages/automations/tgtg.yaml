@@ -1,0 +1,111 @@
+automation:
+
+- alias: "TGTG Bakkerij Gielis (brood & co)"
+  id: '345730fa-b1c4-4232-977e-3e4ae9e9d412'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.tgtg_bakkerij_gielis_kessel_lo
+    from: '0'
+  condition:
+  - condition: template
+    value_template: "{{ states('sensor.tgtg_bakkerij_gielis_kessel_lo') | float >= 1}}"
+  action:
+  - service: notify.madouce_phone
+    data:
+      title: "Too Good To Go: Bakkerij Gielis in Kessel-Lo (brood & co)"
+      message: "Nog {{states('sensor.tgtg_bakkerij_gielis_kessel_lo')}} over aan {{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo', 'TGT Price') }}."
+      data:
+        tag: toogoodtogo
+        color: red
+        actions:
+        - action: URI
+          title: Voor meer info, klik hier
+          uri: "{{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo', 'Item URL') }}"
+  - service: notify.bart_phone
+    data:
+      title: "Too Good To Go: Bakkerij Gielis in Kessel-Lo (brood & co)"
+      message: "Nog {{states('sensor.tgtg_bakkerij_gielis_kessel_lo')}} over aan {{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo', 'TGT Price') }}."
+      data:
+        tag: toogoodtogo
+        color: red
+        actions:
+        - action: URI
+          title: Voor meer info, klik hier
+          uri: "{{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo', 'Item URL') }}"
+  mode: single
+
+- alias: "TGTG Bakkerij Gielis (gebak)"
+  id: '460ac55c-f0c8-4aea-9636-4f7fec6c13e0'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.tgtg_bakkerij_gielis_kessel_lo_gebak
+    from: '0'
+  condition:
+  - condition: template
+    value_template: "{{ states('sensor.tgtg_bakkerij_gielis_kessel_lo_gebak') | float >= 1}}"
+  action:
+  - service: notify.madouce_phone
+    data:
+      title: "Too Good To Go: Bakkerij Gielis in Kessel-Lo (gebak)"
+      message: "Nog {{states('sensor.tgtg_bakkerij_gielis_kessel_lo_gebak')}} over aan {{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo', 'TGT Price') }}."
+      data:
+        tag: toogoodtogo
+        color: red
+        actions:
+        - action: URI
+          title: Voor meer info, klik hier
+          uri: "{{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo_gebak', 'Item URL') }}"
+  mode: single  
+
+
+- alias: "TGTG Tartes de Françoise"
+  id: '207d49b9-192c-4fc6-ae8c-fe7f51b05501'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.tgtg_les_tartes_de_francoise_leuven_zoet
+    from: '0'
+  condition:
+  - condition: template
+    value_template: "{{ states('sensor.tgtg_les_tartes_de_francoise_leuven_zoet') | float >= 1}}"
+  action:
+  - service: notify.madouce_phone
+    data:
+      title: "Too Good To Go: Tartes de Françoise in Leuven"
+      message: "Nog {{states('sensor.tgtg_les_tartes_de_francoise_leuven_zoet')}} over aan {{ state_attr('sensor.tgtg_les_tartes_de_francoise_leuven_zoet', 'TGT Price') }} ipv aan {{ state_attr('sensor.tgtg_les_tartes_de_francoise_leuven_zoet', 'Original value') }}."
+      data:
+        tag: toogoodtogo
+        color: red
+        actions:
+        - action: URI
+          title: Voor meer info, klik hier
+          uri: "{{ state_attr('sensor.tgtg_les_tartes_de_francoise_leuven_zoet', 'Item URL') }}"
+  mode: single
+
+- alias: "TGTG Hoegaards broodje Leuven"
+  id: 'a9676920-dc3b-4dda-bf9e-11fe53915a74'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.tgtg_hoegaards_broodje
+    from: '0'
+  condition:
+  - condition: template
+    value_template: "{{ states('sensor.tgtg_hoegaards_broodje') | float >= 1}}"
+  action:
+  - service: notify.madouce_phone
+    data:
+      title: "Too Good To Go: Hoegaards broodje in Leuven"
+      message: >
+        "Nog {{states('sensor.tgtg_hoegaards_broodje')}} over aan {{ state_attr('sensor.tgtg_hoegaards_broodje', 'TGT Price') }} ipv aan {{ state_attr('sensor.tgtg_hoegaards_broodje', 'Original value') }}.<br>
+        Ophalen tussen {{ state_attr('sensor.tgtg_hoegaards_broodje', 'Pickup start') }} en {{ state_attr('sensor.tgtg_hoegaards_broodje', 'Pickup stop') }}".
+      data:
+        tag: toogoodtogo
+        color: red
+        actions:
+        - action: URI
+          title: Voor meer info, klik hier
+          uri: "{{ state_attr('sensor.tgtg_hoegaards_broodje', 'Item URL') }}"
+  mode: single

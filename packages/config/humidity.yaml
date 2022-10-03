@@ -1,0 +1,193 @@
+###############################################################################
+# Calculate the absolute humidity (gram water /m³) in every room and outside  
+###############################################################################
+
+sensor:
+  - platform: template
+  # calculation of absolute humidity based on relative humidity and temperature
+  # https://carnotcycle.wordpress.com/2012/08/04/how-to-convert-relative-humidity-to-absolute-humidity/
+    sensors:
+      gram_water_outside:
+        friendly_name: 'gram vocht per m³ buiten'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >
+          {% set t = states('sensor.temp_leuven24_wunderground') | float(default=0) %}
+          {% set h = states('sensor.humidity_leuven24_wunderground') | float(default=0) %}
+          {{ ((e ** ((17.67 * (t)) / (243.5 + (t)) ) * 6.112 * (h) * 2.1674 ) / (273.15 + (t))) | round(1) }}
+
+      gram_water_living:
+        friendly_name: 'gram vocht per m³ in living'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >
+          {% set t = states('sensor.living_temperature') | float(default=0) %}
+          {% set h = states('sensor.living_humidity') | float(default=0) %}
+          {{ ((e ** ((17.67 * (t)) / (243.5 + (t)) ) * 6.112 * (h) * 2.1674 ) / (273.15 + (t))) | round(1) }}
+
+      gram_water_kamer_amilya:
+        friendly_name: 'gram vocht per m³ in kamer Amilya'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >-
+          {% set t = states('sensor.kamer_amilya_temperature') | float(default=0) %}
+          {% set h = states('sensor.kamer_amilya_humidity') | float(default=0) %}
+          {{ ((e ** ((17.67 * (t)) / (243.5 + (t)) ) * 6.112 * (h) * 2.1674 ) / (273.15 + (t))) | round(1) }}
+
+      gram_water_veranda:
+        friendly_name: 'gram vocht per m³ in veranda'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >-
+          {% set t = states('sensor.veranda_temperature') | float(default=0) %}
+          {% set h = states('sensor.veranda_humidity') | float(default=0) %}
+          {{ ((e ** ((17.67 * (t)) / (243.5 + (t)) ) * 6.112 * (h) * 2.1674 ) / (273.15 + (t))) | round(1) }}
+
+      gram_water_berging:
+        friendly_name: 'gram vocht per m³ in berging'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >-
+          {% set t = states('sensor.berging_temperature') | float(default=0) %}
+          {% set h = states('sensor.berging_humidity') | float(default=0) %}
+          {{ ((e ** ((17.67 * (t)) / (243.5 + (t)) ) * 6.112 * (h) * 2.1674 ) / (273.15 + (t))) | round(1) }}
+
+      gram_water_badkamer:
+        friendly_name: 'gram vocht per m³ in badkamer'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >-
+          {% set t = states('sensor.badkamer_temperature') | float(default=0) %}
+          {% set h = states('sensor.badkamer_humidity') | float(default=0) %}
+          {{ ((e ** ((17.67 * (t)) / (243.5 + (t)) ) * 6.112 * (h) * 2.1674 ) / (273.15 + (t))) | round(1) }}
+
+      gram_water_gang:
+        friendly_name: 'gram vocht per m³ in gang'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >-
+          {% set t = states('sensor.gang_temperature') | float(default=0) %}
+          {% set h = states('sensor.gang_humidity') | float(default=0) %}
+          {{ ((e ** ((17.67 * (t)) / (243.5 + (t)) ) * 6.112 * (h) * 2.1674 ) / (273.15 + (t))) | round(1) }}
+
+      gram_water_kamer_alunya:
+        friendly_name: 'gram vocht per m³ in kamer Alunya'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >-
+          {% set t = states('sensor.kamer_alunya_temperature') | float(default=0) %}
+          {% set h = states('sensor.kamer_alunya_humidity') | float(default=0) %}
+          {{ ((e ** ((17.67 * (t)) / (243.5 + (t)) ) * 6.112 * (h) * 2.1674 ) / (273.15 + (t))) | round(1) }}
+
+      gram_water_master_bedroom:
+        friendly_name: 'gram vocht per m³ in master bedroom'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >-
+          {% set t = states('sensor.master_bedroom_temperature') | float(default=0) %}
+          {% set h = states('sensor.master_bedroom_humidity') | float(default=0) %}
+          {{ ((e ** ((17.67 * (t)) / (243.5 + (t)) ) * 6.112 * (h) * 2.1674 ) / (273.15 + (t))) | round(1) }}
+
+      gram_water_living_diff_outside:
+        friendly_name: 'verschil gram vocht per m³ in living en buiten'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >
+          {% set i = states('sensor.gram_water_living') | float(default=0) | round(1) %}
+          {% set o = states('sensor.gram_water_outside') | float(default=0) | round(1) %}
+          {{ ( (i) - (o) ) | round(1) }}
+
+      gram_water_kamer_amilya_diff_outside:
+        friendly_name: 'verschil gram vocht per m³ in kamer Amilya en buiten'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >
+          {% set i = states('sensor.gram_water_kamer_amilya') | float(default=0) | round(1) %}
+          {% set o = states('sensor.gram_water_outside') | float(default=0) | round(1) %}
+          {{ ( (i) - (o) ) | round(1) }}
+
+      gram_water_veranda_diff_outside:
+        friendly_name: 'verschil gram vocht per m³ in veranda en buiten'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >
+          {% set i = states('sensor.gram_water_veranda') | float(default=0) | round(1) %}
+          {% set o = states('sensor.gram_water_outside') | float(default=0) | round(1) %}
+          {{ ( (i) - (o) ) | round(1) }}
+
+      gram_water_berging_diff_outside:
+        friendly_name: 'verschil gram vocht per m³ in berging en buiten'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >
+          {% set i = states('sensor.gram_water_berging') | float(default=0) | round(1) %}
+          {% set o = states('sensor.gram_water_outside') | float(default=0) | round(1) %}
+          {{ ( (i) - (o) ) | round(1) }}
+
+      gram_water_badkamer_diff_outside:
+        friendly_name: 'verschil gram vocht per m³ in badkamer en buiten'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >
+          {% set i = states('sensor.gram_water_badkamer') | float(default=0) | round(1) %}
+          {% set o = states('sensor.gram_water_outside') | float(default=0) | round(1) %}
+          {{ ( (i) - (o) ) | round(1) }}
+
+      gram_water_gang_diff_outside:
+        friendly_name: 'verschil gram vocht per m³ in gang en buiten'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >
+          {% set i = states('sensor.gram_water_gang') | float(default=0) | round(1) %}
+          {% set o = states('sensor.gram_water_outside') | float(default=0) | round(1) %}
+          {{ ( (i) - (o) ) | round(1) }}
+
+      gram_water_kamer_alunya_diff_outside:
+        friendly_name: 'verschil gram vocht per m³ in kamer Alunya en buiten'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >
+          {% set i = states('sensor.gram_water_kamer_alunya') | float(default=0) | round(1) %}
+          {% set o = states('sensor.gram_water_outside') | float(default=0) | round(1) %}
+          {{ ( (i) - (o) ) | round(1) }}
+
+      gram_water_master_bedroom_diff_outside:
+        friendly_name: 'verschil gram vocht per m³ in master bedroom en buiten'
+        device_class: humidity
+        unit_of_measurement: 'g/m³'
+        icon_template: mdi:water
+        value_template: >
+          {% set i = states('sensor.gram_water_master_bedroom') | float(default=0) | round(1) %}
+          {% set o = states('sensor.gram_water_outside') | float(default=0) | round(1) %}
+          {{ ( (i) - (o) ) | round(1) }}
+
+      outside_enthalpy:
+        friendly_name: 'enthalpy buiten'
+        unit_of_measurement: KJ/kg      
+        value_template: "{{ (1.006 * (states('sensor.temp_leuven24_wunderground') | float(default=0) )) + ( (states('sensor.outside_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.temp_leuven24_wunderground') | float(default=0) ))) | round (2) }}" 
+
+      veranda_enthalpy:
+        friendly_name: 'enthalpy veranda'
+        unit_of_measurement: KJ/kg      
+        value_template: "{{ (1.006 * (states('sensor.veranda_temperature') | float(default=0) )) + ( (states('sensor.veranda_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.veranda_temperature') | float(default=0) ))) | round (2) }}" 
+
+      master_bedroom_enthalpy:
+        friendly_name: 'enthalpy master bedroom'
+        unit_of_measurement: KJ/kg      
+        value_template: "{{ (1.006 * (states('sensor.master_bedroom_temperature') | float(default=0)) ) + ( (states('sensor.master_bedroom_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.master_bedroom_temperature') | float(default=0) ))) | round (2) }}" 

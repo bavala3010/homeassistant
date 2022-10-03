@@ -1,0 +1,235 @@
+############################ Table of Contents ############################ 
+# 
+#   Automations
+#     🏡 Bart komt thuis = melding auto % + open garage/voordeur
+#     🏡 Madouce komt thuis = melding auto % + open garage/voordeur
+#     🏡 Alunya komt thuis = welkom & melding garage/deur
+#     Open garage
+#     Open voordeur
+#
+############################ Automations ################################## 
+
+automation:
+
+- alias: 🏡 Bart komt thuis = melding auto % + open garage/voordeur
+  id: '99d307b5-f692-4996-8d0e-7eb92a735b57'
+  description: ''
+  trigger:
+  - platform: device
+    device_id: b5d28be91fff8c03aece377f73b28dd2
+    domain: device_tracker
+    entity_id: device_tracker.bart_s10
+    type: enters
+    zone: zone.home
+  condition:
+  - condition: state
+    entity_id: binary_sensor.bart_phone_connected_to_car
+    state: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: TTS
+      data:
+        tts_text: >-
+          {% set t = (now().date() + timedelta(days=1)) %}
+          {% set car_target_soc_day = 'input_number.car_target_soc_day_' ~ t.isoweekday() %}
+          Welkom thuis Bart!
+          {% if states('sensor.audi_e_tron_sportback_state_of_charge') | float(default=0) <  states(car_target_soc_day) | float(default=0) %}Vergeet de laadkabel niet in te steken. Er moet geladen worden van {{states('sensor.audi_e_tron_sportback_state_of_charge') | round(default=0)}}% naar {{ states('input_number.car_charge_target_percentage') | round(default=0) }}%.
+          {% else %} De auto heeft {{states('sensor.audi_e_tron_sportback_state_of_charge') | round(default=0) }}% batterij en dit is voldoende voor morgen. Er is morgen maar {{ states(car_target_soc_day) | round(default=0) }}% nodig.
+          {% endif %}
+        ttl: 0
+        priority: high
+        media_stream: alarm_stream_max
+  - service: notify.bart_phone
+    data:
+      message: Welkom thuis! (veeg omlaag voor acties)
+      data:
+        channel: Important
+        persistent: true
+        tag: persistent
+        color: red
+        timeout: 420
+        notification_icon: "mdi:account-heart"
+        actions:
+        - action: open_garage
+          title: OPEN GARAGE
+        - action: open_voordeur
+          title: OPEN VOORDEUR        
+  mode: single
+
+- alias: 🏡 Madouce komt thuis = melding auto % + open garage/voordeur
+  id: '4a938979-1120-4d05-a5f3-6f572bdeac88'
+  description: ''
+  trigger:
+  - platform: device
+    device_id: d434bc1199aafa4c5d9e448b1fd55e30
+    domain: device_tracker
+    entity_id: device_tracker.madouce_s20
+    type: enters
+    zone: zone.home
+  condition:
+  - condition: state
+    entity_id: binary_sensor.madouce_phone_connected_to_car
+    state: 'on'
+  action:
+  - service: notify.madouce_phone
+    data:
+      message: TTS
+      data:
+        tts_text: >
+          {% set t = (now().date() + timedelta(days=1)) %}
+          {% set car_target_soc_day = 'input_number.car_target_soc_day_' ~ t.isoweekday() %}
+          Welkom thuis Madouce!
+          {% if states('sensor.audi_e_tron_sportback_state_of_charge') | float(default=0) <  states(car_target_soc_day) | float(default=0) %}Vergeet de laadkabel niet in te steken. Er moet geladen worden van {{states('sensor.audi_e_tron_sportback_state_of_charge') | round(default=0)}}% naar {{ states('input_number.car_charge_target_percentage') | round(default=0) }}%.
+          {% else %} De auto heeft {{states('sensor.audi_e_tron_sportback_state_of_charge') | round(default=0) }}% batterij en dit is voldoende voor morgen. Er is morgen maar {{ states(car_target_soc_day) | round(default=0) }}% nodig.
+          {% endif %}
+        ttl: 0
+        priority: high
+        media_stream: alarm_stream_max
+  - service: notify.madouce_phone
+    data:
+      message: Welkom thuis! (veeg omlaag voor acties)
+      data:
+        channel: Important
+        persistent: true
+        tag: persistent
+        color: red
+        timeout: 420
+        notification_icon: "mdi:account-heart" 
+        actions:
+        - action: open_garage
+          title: OPEN GARAGE
+        - action: open_voordeur
+          title: OPEN VOORDEUR
+  mode: single
+
+- alias: 🏡 Alunya komt thuis = welkom & melding garage/deur
+  id: 'f3b84352-fc50-4d3e-83d5-5b3d81ee03d0'
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 94ae27ff1307ca2428ac8963b4477de2
+    domain: device_tracker
+    entity_id: device_tracker.alunya_samsung_galaxy_a71
+    type: enters
+    zone: zone.home
+  condition: []
+  action:
+  - service: notify.mobile_app_alunya_a71
+    data:
+      message: TTS
+      data:
+        tts_text: Welkom thuis Alunya!
+        ttl: 0
+        priority: high
+        media_stream: alarm_stream_max
+  - service: notify.mobile_app_alunya_a71
+    data:
+      message: Welkom thuis! (veeg omlaag voor acties)
+      data:
+        channel: Important
+        persistent: true
+        tag: persistent
+        color: red
+        timeout: 420
+        actions:
+        - action: open_garage
+          title: OPEN GARAGE
+        - action: open_voordeur
+          title: OPEN VOORDEUR
+  mode: single
+
+- alias: Open garage
+  id: '17e008ff-4a39-438b-8021-89e07c3cf5cf'
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: open_garage
+  action:
+  - service: cover.open_cover
+    target:
+      entity_id: cover.garagepoort
+  mode: single
+  
+- alias: Open voordeur
+  id: 'b432c591-0c68-40fe-a22b-0f31296d1ba5'
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: open_voordeur
+  action:
+  - service: lock.unlock
+    target:
+      entity_id: lock.voordeur_nuki
+  mode: single
+
+- alias: 🏡 Madouce is bijna thuis 
+  id: '9d978857-e649-455d-8144-1e5dad99eb23'
+  description: '9d978857-e649-455d-8144-1e5dad99eb23'
+  trigger:
+  - platform: numeric_state
+    entity_id:
+      - proximity.madouce_home
+    below: 2
+  condition:
+  - condition: state
+    entity_id: person.bart
+    state: home
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0    
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Madouce is bijna thuis.
+      message: Hoera.
+      data:
+        color: red
+        ttl: 0
+        priority: high
+        notification_icon: "mdi:account-heart" 
+  - service: notify.bart_phone
+    data:
+      message: TTS
+      data:
+        channel: "alarm_stream"
+        tts_text: "Madouce is bijna thuis."
+  mode: single
+
+- alias: 🏡 Bart is bijna thuis 
+  id: '50eab11b-f89a-41b3-82ad-e1110b9b0738'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id:
+      - proximity.bart_home
+    below: 2
+  condition:
+  - condition: state
+    entity_id: person.madouce
+    state: home
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0    
+  action:
+  - service: notify.madouce_phone
+    data:
+      title: Bart is bijna thuis.
+      message: Hoera.
+      data:
+        color: red
+        ttl: 0
+        priority: high
+        notification_icon: "mdi:account-heart"   
+  - service: notify.madouce_phone
+    data:
+      message: TTS
+      data:
+        channel: "alarm_stream"
+        tts_text: "Bart is bijna thuis."        
+  mode: single
+  

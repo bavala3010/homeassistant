@@ -1,0 +1,5 @@
+
+
+# {% set t = states('input_datetime.living_airco_timer').split(':') %}
+# {% set timer = t[0]|int * 60*60 + t[1]|int * 60 %}
+# timestamp nu + timer: {{ (now().timestamp() + timer )| timestamp_custom("%-I:%M") }}

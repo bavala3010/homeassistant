@@ -1,0 +1,44 @@
+###############################################################################
+# historiek TV
+###############################################################################
+
+sensor:
+  - platform: history_stats
+    name: "Living TV aan vandaag"
+    entity_id: media_player.ue55ju7000
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "Amilya TV aan vandaag"
+    entity_id: media_player.amilya_tv
+    state: "playing"
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "Alunya TV aan vandaag"
+    entity_id: media_player.alunya_tv
+    state: "playing"
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "master bedroom TV aan vandaag"
+    entity_id: binary_sensor.master_bedroom_tv_on
+    state: "on"
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "veranda speaker aan vandaag"
+    entity_id: media_player.veranda_speaker
+    state: "playing"
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'

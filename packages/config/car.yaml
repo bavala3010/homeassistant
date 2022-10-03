@@ -1,0 +1,116 @@
+###############################################################################
+# sensors for the car 
+###############################################################################
+
+sensor:
+  - platform: template
+    sensors:
+
+      car_range_per_10percent:
+        friendly_name: 'range per 10%'
+        unit_of_measurement: km
+        value_template: "{{ (10 * states('sensor.audi_e_tron_sportback_primary_engine_range') | float(default=0) / states('sensor.audi_e_tron_sportback_state_of_charge') | float(default=0) ) | round (1) }}"
+
+      car_range_at_target_percentage:
+        friendly_name: 'rijbereik bij doelpercentage'
+        unit_of_measurement: km
+        value_template: "{{ ( states('input_number.car_smart_charge_target_percentage') | float(default=0) * ( states('sensor.car_range_per_10percent') | float(default=0)) / 10 ) | int }}"
+
+      car_remaining_charge_minutes:
+        friendly_name: 'resterende laadminuten'
+        value_template: >
+          {% set target = states('input_number.car_smart_charge_target_percentage') | float(default=0) %}
+          {% set soc = states('sensor.audi_e_tron_sportback_state_of_charge') | float(default=0) %}
+          {% set nog_te_laden_procent = [target - soc, 0] | max %}
+          {{ nog_te_laden_procent * states('input_number.minuten_voor_1_laden') | round(2) }}        
+
+utility_meter:
+  car_today_km:
+    source: sensor.audi_e_tron_sportback_mileage
+    cycle: daily
+
+  car_monthly_km:
+    source: sensor.audi_e_tron_sportback_mileage
+    cycle: monthly
+
+
+###############################################################################
+# sensors for car (to map sensor names of the car to fixed sensor names)
+###############################################################################
+
+template:
+  - sensor:
+      - name: "car 1 soc"
+        state: "{{ states('sensor.audi_e_tron_sportback_state_of_charge') }}"
+        unit_of_measurement: procent
+
+      - name: "car 1 range"
+        state: "{{ states('sensor.audi_e_tron_sportback_range') }}"
+        unit_of_measurement: km
+
+      - name: "car 1 plug state"
+        state: "{{ states('sensor.audi_e_tron_sportback_plug_state') }}"
+
+      - name: "car 1 remaining charge time"
+        state: "{{ states('sensor.audi_e_tron_sportback_remaining_charge_time') }}"
+
+      - name: "car 1 charging state"
+        state: "{{ states('sensor.audi_e_tron_sportback_charging_state') }}"
+
+
+input_number:
+  car_charge_ideal_percentage:
+    name: ideaal laadpercentage auto
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+
+  car_ideal_target_soc_day_1:
+    name: ideale SOC maandag
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+
+  car_ideal_target_soc_day_2:
+    name: ideale SOC dinsdag
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+
+  car_ideal_target_soc_day_3:
+    name: ideale SOC woensdag
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+
+  car_ideal_target_soc_day_4:
+    name: ideale SOC donderdag
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+
+  car_ideal_target_soc_day_5:
+    name: ideale SOC vrijdag
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+
+  car_ideal_target_soc_day_6:
+    name: ideale SOC zaterdag
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+
+  car_ideal_target_soc_day_7:
+    name: ideale SOC zondag
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"

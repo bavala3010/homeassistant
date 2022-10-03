@@ -11,11 +11,16 @@ default_config:
 # https://www.zapsplat.com/sound-effect-category/sirens-and-alarms/
 # https://app.diagrams.net/
 # https://demo.home-assistant.io/#/energy
+# https://www.tablesgenerator.com/markdown_tables#
+
 
 # integration (Riemann sum integral) unit moet k, M, G of T zijn. (NIET kW of kWh) 
+# Attention: the “platform: integration” does not support the state_class: measurement
+# Therefore it does not show up in the energy dashboard.
 
 # An integration sensor is useful in energy billing scenarios since energy is generally billed in kWh and many sensors provide power in W (Watts).
-# If you have a sensor that provides you with power readings in Watts (uses W as unit_of_measurement), then you can use the integration sensor to track how much energy is being spent.
+# If you have a sensor that provides you with power readings in Watts (uses W as unit_of_measurement), 
+# then you can use the integration sensor to track how much energy is being spent.
 
 #   Examples
 #   value_template: '{{ (value| float)}}'
@@ -25,15 +30,35 @@ default_config:
 
 # Enables in the left menu a map showing the location of tracked devices
 # map:
-history:
-logbook:
+conversation:           # to speak to Home Assistant
+
+daikin_residential:
+  email: bartland@gmail.com
+  password: Qc#DHeq9!7!WEe*
+
+device_tracker:
+  - platform: tomato
+    host: 192.168.86.1
+    username: root
+    password: admin
+    http_id: TID3fac41d84c91e1a8
 discovery:
+energy:
+history:
+homeassistant_alerts:
 input_boolean:
 input_datetime:
 input_number:
-energy:
+logbook:
 media_source:
-homeassistant_alerts:
+person:
+
+
+# lovelace:
+#   mode: yaml
+#   resources:
+#     - url: /hacsfiles/battery-state-card/battery-state-card.js
+#       type: module
 
 #python_script is not the same as pyscript. It is less advanced.
 python_script:
@@ -42,7 +67,8 @@ python_script:
 pyscript:
   allow_all_imports: true
   hass_is_global: true
-  
+
+
 ##### Text to speech ##########################################
 tts:
   - platform: google_translate
@@ -52,6 +78,8 @@ tts:
     base_url: http://192.168.86.101:8123
     service_name: google_say
     language: 'nl'
+  - platform: edge_tts
+    language: nl-BE-DenaNeural    #nl-BE-ArnaudNeural
 
 ##### YAML file locations #####################################    
 group: !include groups.yaml
@@ -72,25 +100,49 @@ homeassistant:
   allowlist_external_dirs:
     - "/config"
 
-### The following installs all package files, including lights, alarm, humidity etc.
+  ### The following installs all package files, including lights, alarm, humidity etc.
   packages: !include_dir_named packages
   customize: !include customize.yaml
-  
+
   external_url: http://bartland.duckdns.org
   time_zone: "Europe/Brussels"
 
-# secrets should not be mentioned in this file; it is automatic !
-# secrets: !include secrets.yaml
+  # secrets should not be mentioned in this file; it is automatic !
+  # secrets: !include secrets.yaml
 
-# manuele aanpassing van alle sensoren eindigend op "energieverbruik" om in het energy dashboard te krijgen
+  # manuele aanpassing van alle sensoren eindigend op "energieverbruik" om in het energy dashboard te krijgen
   customize_glob:
     sensor.*energieverbruik:
       unit_of_measurement: "kWh"     
       device_class: energy
       state_class: measurement
       last_reset: "1970-01-01T00:00:00+00:00"
-#####################################################
 
+    sensor.*energy:
+      unit_of_measurement: "kWh"     
+      device_class: energy
+      state_class: measurement
+      last_reset: "1970-01-01T00:00:00+00:00"
+
+    sensor.*productie:
+      unit_of_measurement: "kWh"     
+      device_class: energy
+      state_class: measurement
+      last_reset: "1970-01-01T00:00:00+00:00"  
+
+    # the sensor.zonne_energie_totaal created by the "integration" integration 
+    # does not have the necessary attributes to be used in the energy dashboard.
+    # Therefore, this customization adds the necessary attributes.
+    sensor.zonne_energie_totaal:
+      # source: sensor.solar_power
+      unit_of_measurement: kWh
+      device_class: energy
+      state_class: total_increasing # of moet het "measurement" of "total" zijn ?
+      last_reset: "1970-01-01T00:00:00+00:00"
+      icon: mdi:chart-histogram
+      
+
+#####################################################
 # needed when using reverse proxy managers (eg. Nginx)
 http:
   # TO DO : ik ken het pad niet
@@ -112,9 +164,6 @@ http:
     
   ip_ban_enabled: false         # use this to enable auto IP ban
   login_attempts_threshold: 3   # set the number of allowed login attempts
-
-# to speak to Home Assistant
-conversation:
 
 recorder:
   purge_keep_days: 3
@@ -212,116 +261,109 @@ input_text:
   trigger_source:
     name: Trigger Source
 
+
+##############################################################
+# Utility meters
+##############################################################
+
 utility_meter:
-  daily_energy:
-    source: sensor.ty02820620a4cf12eb80b8_2
+  washingmachine_energy_daily:
+    unique_id: '2b606da9-0b0e-428d-901b-534d01f27390'
+    source: sensor.washingmachine_power
     cycle: daily
     
-  monthly_energy:
-    source: sensor.ty02820620a4cf12eb80b8_2
+  washingmachine_energy_monthly:
+    unique_id: 'c837f475-9183-45b8-8745-5ce9338d7469'
+    source: sensor.washingmachine_power
     cycle: monthly
 
+  net_energy_daily:
+    unique_id: '003c3f3c-5a3e-495b-81d6-2d74ea356b57'
+    source: sensor.net_energy
+    cycle: daily
+
+  net_energy_monthly:
+    unique_id: '7ad9df31-7589-4331-83fe-60a11675763a'  
+    source: sensor.net_energy
+    cycle: monthly
+
+  net_energy_yearly:
+    unique_id: '4b4078f6-b1e6-4f73-9ac7-3968369ddeae'  
+    source: sensor.net_energy
+    cycle: yearly
+
+  solar_energy_daily:
+    unique_id: 'fde4c082-6b5d-43c6-9988-c7f3d25b4152'
+    source: sensor.zonne_energie_totaal
+    cycle: daily
+
+  solar_energy_weekly:
+    unique_id: '7b40b4bd-cc07-433d-9d3e-6229123999fa'
+    source: sensor.zonne_energie_totaal
+    cycle: weekly
+
+  net_injection_daily:
+    unique_id: '777f5014-d5e3-4b88-af36-f6583325c10f'
+    source: sensor.net_injection_energy_total
+    cycle: daily
+
+  solar_energy_monthly:
+    unique_id: '45ac36a8-d58e-4d64-b08a-45a6b6acca7e'
+    source: sensor.zonne_energie_totaal 
+    cycle: monthly
+
+  solar_energy_yearly:
+    unique_id: '7b459a97-69ab-407a-a9c5-cae18ace8772'
+    source: sensor.zonne_energie_totaal 
+    cycle: yearly
+
+  car_charge_net_energy_daily:
+    unique_id: '0eee3892-0b11-4142-8a74-96bc9d4bca49'
+    source: sensor.car_charge_net_energy
+    cycle: daily
+
+  car_charge_net_energy_weekly:
+    unique_id: '49b53721-5e91-4421-bcd5-dfd30afed72f'  
+    source: sensor.car_charge_net_energy
+    cycle: weekly
+
+  car_charge_net_energy_monthly:
+    unique_id: '8bc12bd0-fa1b-4d8e-a4cc-ec714f8c5530'  
+    source: sensor.car_charge_net_energy
+    cycle: monthly
+
+  car_charge_net_energy_yearly:
+    unique_id: 'c215a40f-07a8-4515-b0d4-4ea2270a67a1'  
+    source: sensor.car_charge_net_energy
+    cycle: yearly
+
+  car_charge_solar_energy_daily:
+    unique_id: '20d48c19-255f-4bca-857a-ac236f28927b'  
+    source: sensor.car_charge_solar_energy
+    cycle: daily
+
+  car_charge_solar_energy_weekly:
+    unique_id: '1935420d-6604-4cac-85f6-3af9d250aa36'  
+    source: sensor.car_charge_solar_energy
+    cycle: weekly
+
+  car_charge_solar_energy_monthly:
+    unique_id: 'f798866b-e57d-4e5d-86b8-085680bb5522'  
+    source: sensor.car_charge_solar_energy
+    cycle: monthly
+
+  car_charge_solar_energy_yearly:
+    unique_id: '9ad606fb-02e6-4eb7-8ec1-c98272ac3644'  
+    source: sensor.car_charge_solar_energy
+    cycle: yearly
+
   realised_sun_production_today:
+    unique_id: 'aa95f490-df7d-4c80-b798-33225a1afe4d'  
     source: sensor.gerealiseerde_zonneproductie
     cycle: daily
 
-  car_today_km:
-    source: sensor.audi_e_tron_sportback_mileage
-    cycle: daily
-
-  car_monthly_km:
-    source: sensor.audi_e_tron_sportback_mileage
-    cycle: monthly
-
-###############################################################################
-###############################################################################
-# A long list of sensors
-###############################################################################
-###############################################################################
 
 sensor:
-
-  # sensors to check if there are updates in Ubuntu
-  - platform: command_line
-    name: System Updates
-    scan_interval: 86400
-    command: "cat /local/system_updates.out | cut -d ';' -f 1"
-  - platform: command_line
-    name: Security Updates
-    scan_interval: 86400
-    command: "cat /local/system_updates.out | cut -d ';' -f 2"
-
-###############################################################################
-# Too good to go
-###############################################################################
-  - platform: tgtg
-    username: 'bartland@gmail.com'
-    access_token: 'e30.eyJzdWIiOiI0OTkyMTA1IiwiZXhwIjoxNjUwMTA4Mzg4LCJ0IjoiMVVuaHpIMEJRLWV3RTRwakVTRDBRZzowOjEifQ.1mkWH_bvNhWAHDT4-j9UOyY5zrBoG40dCgi0KHDRF-Q'
-    refresh_token: 'e30.eyJzdWIiOiI0OTkyMTA1IiwiZXhwIjoxNjgxNDcxNTg4LCJ0IjoiUkVQQ3pUY19UMm1VWGRTejl2MXVIZzowOjAifQ.EE3A_1FPlbpBK47MSkCndqR_MBrEUZvKfGjktFnUPOA'
-    user_id: '4992105'
-    scan_interval: 300
-
-  - platform: nmbs
-    station_from: "Leuven"
-    station_to: "Brussel-Centraal/Bruxelles-Central"
-    exclude_vias: true
-
-  - platform: nmbs
-    station_from: "Brussel-Centraal/Bruxelles-Central"
-    station_to: "Leuven"
-    exclude_vias: true    
-
-###############################################################################
-# Calculate the absolute humidity (gram w/m³) in every room and outside  
-###############################################################################
-  
-  - platform: thermal_comfort
-    sensors:
-      outside_thermal:
-        friendly_name: outside
-        temperature_sensor: sensor.temp_leuven24_wunderground
-        humidity_sensor: sensor.humidity_leuven24_wunderground
-      living_thermal:
-        friendly_name: living
-        temperature_sensor: sensor.living_temperature
-        humidity_sensor: sensor.living_humidity
-      kamer_amilya_thermal:
-        friendly_name: kamer Amilya
-        temperature_sensor: sensor.kamer_amilya_temperature
-        humidity_sensor: sensor.kamer_amilya_humidity
-      veranda_thermal:
-        friendly_name: veranda
-        temperature_sensor: sensor.veranda_temperature
-        humidity_sensor: sensor.veranda_humidity
-      berging_thermal:
-        friendly_name: berging
-        temperature_sensor: sensor.berging_temperature
-        humidity_sensor: sensor.berging_humidity
-      gang_thermal:
-        friendly_name: gang
-        temperature_sensor: sensor.gang_temperature
-        humidity_sensor: sensor.gang_humidity
-      badkamer_thermal:
-        friendly_name: badkamer
-        temperature_sensor: sensor.badkamer_temperature
-        humidity_sensor: sensor.badkamer_humidity
-      kamer_alunya_thermal:
-        friendly_name: kamer Alunya
-        temperature_sensor: sensor.kamer_alunya_temperature
-        humidity_sensor: sensor.kamer_alunya_humidity
-      master_bedroom_thermal:
-        friendly_name: master bedroom
-        temperature_sensor: sensor.master_bedroom_temperature
-        humidity_sensor: sensor.master_bedroom_humidity
-
-  - platform: template
-    sensors:
-      xiaomi_air_purifier_air_quality_pm25:
-        friendly_name: "Air quality (AQI) PM2.5"
-        value_template: "{{ state_attr('fan.xiaomi_air_purifier_3h', 'aqi') }}"
-        unit_of_measurement: "μg/m³"
-        icon_template: "mdi:weather-fog"
-
   - platform: template
     sensors:
       temp_forecast_4_hours:
@@ -330,576 +372,23 @@ sensor:
         unit_of_measurement: °C
         device_class: temperature
 
-
-###############################################################################
-#  Calc water /m³ in every room and outside
-###############################################################################
-
-  - platform: template
-  # calculation of absolute humidity based on relative humidity and temperature
-  # https://carnotcycle.wordpress.com/2012/08/04/how-to-convert-relative-humidity-to-absolute-humidity/
-    sensors:
-      gram_water_outside:
-        friendly_name: 'gram vocht per m³ buiten'
-        device_class: humidity
-        unit_of_measurement: 'g/m³'
-        icon_template: mdi:water
-        value_template: >
-          {% set t = states('sensor.temp_leuven24_wunderground') | float(default=0) %}
-          {% set h = states('sensor.humidity_leuven24_wunderground') | float(default=0) %}
-          {{ ((e ** ((17.67 * (t)) / (243.5 + (t)) ) * 6.112 * (h) * 2.1674 ) / (273.15 + (t))) | round(1) }}
-
-      gram_water_living:
-        friendly_name: 'gram vocht per m³ in living'
-        device_class: humidity
-        unit_of_measurement: 'g/m³'
-        icon_template: mdi:water
-        value_template: >
-          {% set t = states('sensor.living_temperature') | float(default=0) %}
-          {% set h = states('sensor.living_humidity') | float(default=0) %}
-          {{ ((e ** ((17.67 * (t)) / (243.5 + (t)) ) * 6.112 * (h) * 2.1674 ) / (273.15 + (t))) | round(1) }}
-
-      gram_water_kamer_amilya:
-        friendly_name: 'gram vocht per m³ in kamer Amilya'
-        device_class: humidity
-        unit_of_measurement: 'g/m³'
-        icon_template: mdi:water
-        value_template: >-
-          {% set t = states('sensor.kamer_amilya_temperature') | float(default=0) %}
-          {% set h = states('sensor.kamer_amilya_humidity') | float(default=0) %}
-          {{ ((e ** ((17.67 * (t)) / (243.5 + (t)) ) * 6.112 * (h) * 2.1674 ) / (273.15 + (t))) | round(1) }}
-
-      gram_water_veranda:
-        friendly_name: 'gram vocht per m³ in veranda'
-        device_class: humidity
-        unit_of_measurement: 'g/m³'
-        icon_template: mdi:water
-        value_template: >-
-          {% set t = states('sensor.veranda_temperature') | float(default=0) %}
-          {% set h = states('sensor.veranda_humidity') | float(default=0) %}
-          {{ ((e ** ((17.67 * (t)) / (243.5 + (t)) ) * 6.112 * (h) * 2.1674 ) / (273.15 + (t))) | round(1) }}
-
-      gram_water_berging:
-        friendly_name: 'gram vocht per m³ in berging'
-        device_class: humidity
-        unit_of_measurement: 'g/m³'
-        icon_template: mdi:water
-        value_template: >-
-          {% set t = states('sensor.berging_temperature') | float(default=0) %}
-          {% set h = states('sensor.berging_humidity') | float(default=0) %}
-          {{ ((e ** ((17.67 * (t)) / (243.5 + (t)) ) * 6.112 * (h) * 2.1674 ) / (273.15 + (t))) | round(1) }}
-
-      gram_water_badkamer:
-        friendly_name: 'gram vocht per m³ in badkamer'
-        device_class: humidity
-        unit_of_measurement: 'g/m³'
-        icon_template: mdi:water
-        value_template: >-
-          {% set t = states('sensor.badkamer_temperature') | float(default=0) %}
-          {% set h = states('sensor.badkamer_humidity') | float(default=0) %}
-          {{ ((e ** ((17.67 * (t)) / (243.5 + (t)) ) * 6.112 * (h) * 2.1674 ) / (273.15 + (t))) | round(1) }}
-
-      gram_water_gang:
-        friendly_name: 'gram vocht per m³ in gang'
-        device_class: humidity
-        unit_of_measurement: 'g/m³'
-        icon_template: mdi:water
-        value_template: >-
-          {% set t = states('sensor.gang_temperature') | float(default=0) %}
-          {% set h = states('sensor.gang_humidity') | float(default=0) %}
-          {{ ((e ** ((17.67 * (t)) / (243.5 + (t)) ) * 6.112 * (h) * 2.1674 ) / (273.15 + (t))) | round(1) }}
-
-      gram_water_kamer_alunya:
-        friendly_name: 'gram vocht per m³ in kamer Alunya'
-        device_class: humidity
-        unit_of_measurement: 'g/m³'
-        icon_template: mdi:water
-        value_template: >-
-          {% set t = states('sensor.kamer_alunya_temperature') | float(default=0) %}
-          {% set h = states('sensor.kamer_alunya_humidity') | float(default=0) %}
-          {{ ((e ** ((17.67 * (t)) / (243.5 + (t)) ) * 6.112 * (h) * 2.1674 ) / (273.15 + (t))) | round(1) }}
-
-      gram_water_master_bedroom:
-        friendly_name: 'gram vocht per m³ in master bedroom'
-        device_class: humidity
-        unit_of_measurement: 'g/m³'
-        icon_template: mdi:water
-        value_template: >-
-          {% set t = states('sensor.master_bedroom_temperature') | float(default=0) %}
-          {% set h = states('sensor.master_bedroom_humidity') | float(default=0) %}
-          {{ ((e ** ((17.67 * (t)) / (243.5 + (t)) ) * 6.112 * (h) * 2.1674 ) / (273.15 + (t))) | round(1) }}
-
-      gram_water_living_diff_outside:
-        friendly_name: 'verschil gram vocht per m³ in living en buiten'
-        device_class: humidity
-        unit_of_measurement: 'g/m³'
-        icon_template: mdi:water
-        value_template: >
-          {% set i = states('sensor.gram_water_living') | float(default=0) | round(1) %}
-          {% set o = states('sensor.gram_water_outside') | float(default=0) | round(1) %}
-          {{ ( (i) - (o) ) | round(1) }}
-
-      gram_water_kamer_amilya_diff_outside:
-        friendly_name: 'verschil gram vocht per m³ in kamer Amilya en buiten'
-        device_class: humidity
-        unit_of_measurement: 'g/m³'
-        icon_template: mdi:water
-        value_template: >
-          {% set i = states('sensor.gram_water_kamer_amilya') | float(default=0) | round(1) %}
-          {% set o = states('sensor.gram_water_outside') | float(default=0) | round(1) %}
-          {{ ( (i) - (o) ) | round(1) }}
-
-      gram_water_veranda_diff_outside:
-        friendly_name: 'verschil gram vocht per m³ in veranda en buiten'
-        device_class: humidity
-        unit_of_measurement: 'g/m³'
-        icon_template: mdi:water
-        value_template: >
-          {% set i = states('sensor.gram_water_veranda') | float(default=0) | round(1) %}
-          {% set o = states('sensor.gram_water_outside') | float(default=0) | round(1) %}
-          {{ ( (i) - (o) ) | round(1) }}
-
-      gram_water_berging_diff_outside:
-        friendly_name: 'verschil gram vocht per m³ in berging en buiten'
-        device_class: humidity
-        unit_of_measurement: 'g/m³'
-        icon_template: mdi:water
-        value_template: >
-          {% set i = states('sensor.gram_water_berging') | float(default=0) | round(1) %}
-          {% set o = states('sensor.gram_water_outside') | float(default=0) | round(1) %}
-          {{ ( (i) - (o) ) | round(1) }}
-
-      gram_water_badkamer_diff_outside:
-        friendly_name: 'verschil gram vocht per m³ in badkamer en buiten'
-        device_class: humidity
-        unit_of_measurement: 'g/m³'
-        icon_template: mdi:water
-        value_template: >
-          {% set i = states('sensor.gram_water_badkamer') | float(default=0) | round(1) %}
-          {% set o = states('sensor.gram_water_outside') | float(default=0) | round(1) %}
-          {{ ( (i) - (o) ) | round(1) }}
-
-      gram_water_gang_diff_outside:
-        friendly_name: 'verschil gram vocht per m³ in gang en buiten'
-        device_class: humidity
-        unit_of_measurement: 'g/m³'
-        icon_template: mdi:water
-        value_template: >
-          {% set i = states('sensor.gram_water_gang') | float(default=0) | round(1) %}
-          {% set o = states('sensor.gram_water_outside') | float(default=0) | round(1) %}
-          {{ ( (i) - (o) ) | round(1) }}
-
-      gram_water_kamer_alunya_diff_outside:
-        friendly_name: 'verschil gram vocht per m³ in kamer Alunya en buiten'
-        device_class: humidity
-        unit_of_measurement: 'g/m³'
-        icon_template: mdi:water
-        value_template: >
-          {% set i = states('sensor.gram_water_kamer_alunya') | float(default=0) | round(1) %}
-          {% set o = states('sensor.gram_water_outside') | float(default=0) | round(1) %}
-          {{ ( (i) - (o) ) | round(1) }}
-
-      gram_water_master_bedroom_diff_outside:
-        friendly_name: 'verschil gram vocht per m³ in master bedroom en buiten'
-        device_class: humidity
-        unit_of_measurement: 'g/m³'
-        icon_template: mdi:water
-        value_template: >
-          {% set i = states('sensor.gram_water_master_bedroom') | float(default=0) | round(1) %}
-          {% set o = states('sensor.gram_water_outside') | float(default=0) | round(1) %}
-          {{ ( (i) - (o) ) | round(1) }}
-
-      outside_enthalpy:
-        friendly_name: 'enthalpy buiten'
-        unit_of_measurement: KJ/kg      
-        value_template: "{{ (1.006 * (states('sensor.temp_leuven24_wunderground') | float(default=0) )) + ( (states('sensor.outside_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.temp_leuven24_wunderground') | float(default=0) ))) | round (2) }}" 
-
-      veranda_enthalpy:
-        friendly_name: 'enthalpy veranda'
-        unit_of_measurement: KJ/kg      
-        value_template: "{{ (1.006 * (states('sensor.veranda_temperature') | float(default=0) )) + ( (states('sensor.veranda_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.veranda_temperature') | float(default=0) ))) | round (2) }}" 
-
-      master_bedroom_enthalpy:
-        friendly_name: 'enthalpy master bedroom'
-        unit_of_measurement: KJ/kg      
-        value_template: "{{ (1.006 * (states('sensor.master_bedroom_temperature') | float(default=0)) ) + ( (states('sensor.master_bedroom_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.master_bedroom_temperature') | float(default=0) ))) | round (2) }}" 
-
-###############################################################################
-# sensors voor laden auto 
-###############################################################################
-
-      car_range_per_10percent:
-        friendly_name: 'range per 10%'
-        unit_of_measurement: km
-        value_template: "{{ (10 * states('sensor.audi_e_tron_sportback_primary_engine_range') | float(default=0) / states('sensor.audi_e_tron_sportback_state_of_charge') | float(default=0) ) | round (1) }}"
-
-      car_range_at_target_percentage:
-        friendly_name: 'rijbereik bij doelpercentage'
-        unit_of_measurement: km
-        value_template: "{{ ( states('input_number.car_smart_charge_target_percentage') | float(default=0) * ( states('sensor.car_range_per_10percent') | float(default=0)) / 10 ) | int }}"
-
-      car_remaining_charge_minutes:
-        friendly_name: 'resterende laadminuten'
-        value_template: >
-          {% set target = states('input_number.car_smart_charge_target_percentage') | float(default=0) %}
-          {% set soc = states('sensor.audi_e_tron_sportback_state_of_charge') | float(default=0) %}
-          {% set nog_te_laden_procent = [target - soc, 0] | max %}
-          {{ nog_te_laden_procent * states('input_number.minuten_voor_1_laden') | round(2) }}        
-
-      car_solar_wattmeter:
-        friendly_name: "auto zonne-energie"
+      net_power:
+        friendly_name: "net power"
+        unique_id: 'ffc1bd97-4dbf-483c-8659-48ed4c2790ad'
         unit_of_measurement: W
+        device_class: power
+        # total of the power measured on the 3 phases via Shelly 3EM
         value_template: >
-          {% if states('input_boolean.car_smart_charge_sun_busy')== "on" %}
-            {{ states('sensor.charger_real_power')|float(default=0) }}
-          {% else %}
-            0
-          {% endif %}
-
-      car_grid_wattmeter:
-        friendly_name: "auto netstroom"
-        unit_of_measurement: W
-        value_template: >
-          {% if states('input_boolean.car_smart_charge_grid_busy')== "on" %}
-            {{ states('sensor.charger_real_power')|float(default=0) }}
-          {% else %}
-            0
-          {% endif %}          
-
-###############################################################################
-# Powercalc measures the power consumption of lights 
-###############################################################################
-
-  - platform: powercalc
-    create_group: living alle lichten
-    entities:
-      -  entity_id: light.living_links_1
-      -  entity_id: light.living_links_2
-      -  entity_id: light.living_links_3
-      -  entity_id: light.living_links_4
-      -  entity_id: light.living_links_5
-      -  entity_id: light.living_rechts_1  
-      -  entity_id: light.living_rechts_2
-      -  entity_id: light.living_rechts_3
-      -  entity_id: light.living_rechts_4
-      -  entity_id: light.living_rechts_5
-    manufacturer: signify
-    model: LCT003
-    # creates 2 sensors called
-    #   sensor.all_living_lights_power (in W)
-    #   sensor.all_living_lights_energy (in kWh)
-
-  - platform: powercalc
-    entity_id: light.living_bol
-    manufacturer: signify
-    model: LCT015
-    # creates a sensor called sensor.living_bol_power
-
-  - platform: powercalc
-    create_group: Amilya alle lichten
-    entities:
-      -  entity_id: light.amilya_badkamer
-      -  entity_id: light.amilya_bol
-      -  entity_id: light.amilya_strip
-      -  entity_id: light.amilya_plafond_1
-      -  entity_id: light.amilya_plafond_2
-
-  - platform: powercalc
-    entity_id: light.veranda
-    manufacturer: signify
-    model: LCT015
-
-  - platform: powercalc
-    entity_id: light.gang
-    manufacturer: signify
-    model: LCT003
-    multiply_factor: 3
-    
-  - platform: powercalc
-    entity_id: light.wasbak_rechts
-    manufacturer: signify
-    model: LCT003
-    
-  - platform: powercalc
-    entity_id: light.douche
-    manufacturer: signify
-    model: LCT003
-    
-  - platform: powercalc
-    entity_id: light.bad
-    manufacturer: signify
-    model: LCT003
-
-  - platform: powercalc
-    create_group: Alunya alle lichten
-    entities:
-      -  entity_id: light.alunya_bol
-      -  entity_id: light.alunya_staande_lamp
-      -  entity_id: light.alunya_wasbak
-
-  - platform: powercalc
-    create_group: master bedroom alle lichten
-    entities:
-      -  entity_id: light.master_bedroom_play_bart
-      -  entity_id: light.master_bedroom_play_madouce
-      -  entity_id: light.master_bedroom_staande_lamp
-
-  - platform: powercalc
-    create_group: master bedroom play bar lights 
-    entities:
-      -  entity_id: light.master_bedroom_play_bart
-      -  entity_id: light.master_bedroom_play_madouce
-    multiply_factor: 2
-    manufacturer: signify
-    model: LCT024
-    
-  - platform: powercalc
-    entity_id: light.buiten
-    manufacturer: signify
-    model: LCT015     # model 1744630P7 not found
-    multiply_factor: 2
+          {% set a = states('sensor.shellyem3_bcff4dfd1dbb_channel_a_power') | float(default=0) %}
+          {% set b = states('sensor.shellyem3_bcff4dfd1dbb_channel_b_power') | float(default=0) %}
+          {% set c = states('sensor.shellyem3_bcff4dfd1dbb_channel_c_power') | float(default=0) %}
+          {{ ( a + b + c ) | round(default=0) }}
 
 
-###############################################################################
-# auto batterij en zonnepanelen
-###############################################################################
-  
   - platform: powercalc
     name: unload_battery
     daily_fixed_energy:
       value: 0.00
-
-  - platform: powercalc
-    name: zonnepanelen_sim
-    daily_fixed_energy:
-      value: 0.00
-
-  - platform: powercalc
-    name: huis_stroomverbruik
-    daily_fixed_energy:
-      value: 12.00
-
-###############################################################################
-# historiek TV
-###############################################################################
-
-  - platform: history_stats
-    name: "Living TV aan vandaag"
-    entity_id: media_player.ue55ju7000
-    state: 'on'
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-  - platform: history_stats
-    name: "Amilya TV aan vandaag"
-    entity_id: media_player.amilya_tv
-    state: "playing"
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-  - platform: history_stats
-    name: "Alunya TV aan vandaag"
-    entity_id: media_player.alunya_tv
-    state: "playing"
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
- 
-  - platform: history_stats
-    name: "master bedroom TV aan vandaag"
-    entity_id: binary_sensor.master_bedroom_tv_on
-    state: "on"
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-  - platform: history_stats
-    name: "veranda speaker aan vandaag"
-    entity_id: media_player.veranda_speaker
-    state: "playing"
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-#####################################################################
-# historiek laptops
-#####################################################################
-  - platform: history_stats
-    name: "Chromebook Bart/Madouce aan vandaag"
-    entity_id: switch.bart_chromebook_chromeos_device
-    state: "on"
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-    
-  - platform: history_stats
-    name: "Laptop Bart Fortis aan vandaag"
-    entity_id: switch.bart_laptop_fortis_brum05007458
-    state: "on"
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-    
-  - platform: history_stats
-    name: "Windows laptop aan vandaag"
-    entity_id: switch.bart_utraland_notebook_wifi_windows_device
-    state: "on"
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-    
-#####################################################################
-# historiek lichten
-#####################################################################
-    
-  - platform: history_stats
-    name: "living lichten links aan vandaag"
-    entity_id: light.living_links 
-    state: 'on'
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-  - platform: history_stats
-    name: "living lichten rechts aan vandaag"
-    entity_id: light.living_rechts 
-    state: 'on'
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-  - platform: history_stats
-    name: "gang lichten aan vandaag"
-    entity_id: light.gang
-    state: 'on'
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-  - platform: history_stats
-    name: "veranda licht aan vandaag"
-    entity_id: light.veranda 
-    state: 'on'
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-  - platform: history_stats
-    name: "Alunya licht bol aan vandaag"
-    entity_id: light.alunya_bol 
-    state: 'on'
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-  - platform: history_stats
-    name: "Alunya licht staande lamp aan vandaag"
-    entity_id: light.alunya_staande_lamp
-    state: 'on'
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-  - platform: history_stats
-    name: "Alunya licht wasbak aan vandaag"
-    entity_id: light.alunya_wasbak
-    state: 'on'
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-#####################################################################
-# historiek ramen
-#####################################################################
-
-  - platform: history_stats
-    name: "keuken raam open vandaag"
-    entity_id: binary_sensor.keuken_raam 
-    state: 'on'
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-  - platform: history_stats
-    name: "Amilya raam open vandaag"
-    entity_id: binary_sensor.kamer_amilya_raam 
-    state: 'on'
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-  - platform: history_stats
-    name: "badkamer raam gekanteld vandaag"
-    entity_id: binary_sensor.badkamer_raam_kantel 
-    state: 'on'
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-  - platform: history_stats
-    name: "badkamer raam wijd open vandaag"
-    entity_id: binary_sensor.badkamer_raam_wijd
-    state: 'on'
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-  - platform: history_stats
-    name: "Alunya raam open vandaag"
-    entity_id: binary_sensor.kamer_alunya_raam 
-    state: 'on'
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-  - platform: history_stats
-    name: "Alunya schuifraam open vandaag"
-    entity_id: binary_sensor.kamer_alunya_schuifraam 
-    state: 'on'
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-  - platform: history_stats
-    name: "master bedroom raam gekanteld vandaag"
-    entity_id: binary_sensor.master_bedroom_raam_kantel 
-    state: 'on'
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-  - platform: history_stats
-    name: "master bedroom raam wijd open vandaag"
-    entity_id: binary_sensor.master_bedroom_raam_wijd 
-    state: 'on'
-    type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
-
-###############################################################################
-# 
-###############################################################################
-
-  - platform: afvalbeheer
-    wastecollector: RecycleApp
-    resources:
-      - restafval
-      - gft
-      - papier
-      - pmd
-    postcode: 3010
-    streetname: !secret streetname
-    streetnumber: 25
-    upcomingsensor: 1
-    dateformat: '%d-%m-%Y'
-    dateonly: 0
-    name: ""
-    nameprefix: 1
-    builtinicons: 1
-    dutch: 1
 
   - platform: buienalarm
     timeframe: 15
@@ -953,150 +442,7 @@ sensor:
       - sensor.kamer_alunya_temperature
       - sensor.master_bedroom_temperature
     round_digits: 1
-    
-###############################################################################
-# Scrape weather info from the local weather station
-###############################################################################
-    
-  - platform: scrape
-    resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
-#   resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
-    select: "#main-page-content > div > div > div > div:nth-child(2) > div > lib-tile-current-conditions > div > div.module__body > div > div.small-4.columns.text-left.conditions-temp > div.main-temp > lib-display-unit > span > span.wu-value.wu-value-to"
-    name: temp_leuven24_wunderground
-#   convert Farenheit to Celcius
-    value_template: '{{ ((value | float(default=0) -32) * (5/9)) |round(1) }}'
-    scan_interval: 240
-    unit_of_measurement: "°C"
-    
-  - platform: scrape
-    resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
-#   resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
-    select: '<span _ngcontent-app-root-c173="">Offline</span>'
-    name: online_status_leuven24_wunderground
-    scan_interval: 600
-    
-  - platform: scrape
-    resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
-#   resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
-    name: humidity_leuven24_wunderground
-    select: "#main-page-content > div > div > div > div:nth-child(2) > div > lib-tile-current-conditions > div > div.module__body > div > div.weather__summary > div:nth-child(4) > div > div.weather__text > lib-display-unit > span > span.wu-value.wu-value-to"
-    scan_interval: 240
-    unit_of_measurement: "%"
 
-  - platform: scrape  
-    resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
-#   resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
-    # hoeveelheid huidige neerslag
-    name: precip_rate_leuven24_wunderground
-    select: "#main-page-content > div > div > div > div:nth-child(8) > div > lib-tile-precipitation > div > div.module__body > div > div.small-5.columns > div > div:nth-child(2) > lib-display-unit > span > span.wu-value.wu-value-to"
-    # convert inch to mm
-    value_template: '{{ (value | float(default=0) * 25.4 ) | round(2) }}'
-    scan_interval: 180
-    unit_of_measurement: "mm/u"
-
-  - platform: scrape
-    resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
-#   resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
-    # hoeveelheid neerslag vandaag
-    name: precip_total_leuven24_wunderground
-#   select: "#main-page-content > div > div > div > div:nth-child(2) > div > lib-tile-current-conditions > div > div.module__body > div > div.weather__summary > div:nth-child(5) > div > div.weather__text > lib-display-unit > span > span.wu-value.wu-value-to"
-    select: "#main-page-content > div > div > div > div:nth-child(8) > div > lib-tile-precipitation > div > div.module__body > div > div.small-5.columns > div > div:nth-child(4) > lib-display-unit > span > span.wu-value.wu-value-to"
-    # convert inch to mm
-    value_template: '{{ (value | float(default=0) * 25.4 ) | round(2) }}'
-    scan_interval: 600
-    unit_of_measurement: "l/m²"
-    
-  - platform: scrape
-    resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
-#   resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
-    # UV index
-    name: uvindex_leuven24_wunderground
-    select: "#main-page-content > div > div > div > div:nth-child(9) > div > lib-tile-uv > div > div.module__body > div > div.small-5.columns > div > div:nth-child(2) > lib-display-unit > span > span.wu-value.wu-value-to"
-    scan_interval: 600
-    unit_of_measurement: "index"
-
-  - platform: scrape
-    resource: "https://www.wunderground.com/precipitation/be/leuven/ILEUVE24?cm_ven=localwx_modprecip"
-    name: precipitation_statement
-    select: "#precip-graph > div > lib-precipitation-graph-alert > div > h2 > span"
-    scan_interval: 1200
-
-###############################################################################
-# Sensor to calculate the consumption of lights
-###############################################################################
-
-  - platform: template
-    sensors:
-      all_lights_power:
-        friendly_name: Alle lichten power
-        unit_of_measurement: W
-        icon_template: mdi:transmission-tower
-        device_class: power
-        value_template: >
-          {{ expand('group.all_lights_power') 
-          | rejectattr('state', 'in', ['unavailable', 'unknown'])
-          | map(attribute='state') | map('float') | sum | round(2) }}
-
-
-###############################################################################
-# Sensor to calculate the energie consumption tv 
-###############################################################################
-
-  - platform: template
-    sensors:  
-      living_tv_powerconsumption:
-        value_template: >
-          {% if is_state('media_player.ue55ju7000', 'on') %}
-            85
-          {% else %}
-            0
-          {% endif %}
-        device_class: 'power'
-        unit_of_measurement: 'W'
-   # creates a sensor called sensor.living_tv_powerconsumption
-   # TV consumes 82 W + Google TV 3 W
-
-  - platform: template
-    sensors:  
-      master_bedroom_tv_powerconsumption:
-        value_template: >
-          {% if is_state('media_player.master_bedroom_tv', 'on') %}
-            63
-          {% else %}
-            0
-          {% endif %}
-        device_class: 'power'
-        unit_of_measurement: 'W'
-   # creates a sensor called sensor.master_bedroom_tv_powerconsumption
-   # TV + Google TV consumes 63 W
-
-  - platform: template
-    sensors:  
-      amilya_tv_powerconsumption:
-        value_template: >
-          {% if is_state('binary_sensor.amilya_tv_on', 'on') %}
-            82
-          {% else %}
-            0
-          {% endif %}
-        device_class: 'power'
-        unit_of_measurement: 'W'
-   # creates a sensor called sensor.amilya_tv_powerconsumption
-   # TV consumes 82 W + Google Chromecast 3 W
-
-  - platform: template
-    sensors:  
-      alunya_tv_powerconsumption:
-        value_template: >
-          {% if is_state('binary_sensor.alunya_tv_on', 'on') %}
-            82
-          {% else %}
-            0
-          {% endif %}
-        device_class: 'power'
-        unit_of_measurement: 'W'
-   # creates a sensor called sensor.alunya_tv_powerconsumption
-   # TV consumes 82 W + Google Chromecast 3 W
 
   - platform: template
     sensors:
@@ -1124,34 +470,6 @@ sensor:
           {% endfor %}
           {{ as_timestamp(ns.max_temp_datetime)|timestamp_custom('%H:%M') }}
 
-###############################################################################
-# Sensors to measure Raspberry Pi components 
-###############################################################################
-  - platform: systemmonitor
-    resources:
-    - type: processor_use
-    - type: disk_use_percent
-#      arg: /
-    - type: disk_free
-#      arg: /
-    - type: memory_use_percent
-    - type: network_in
-      arg: eth0
-    - type: throughput_network_in
-      arg: eth0
-    - type: network_out
-      arg: eth0
-    - type: throughput_network_out
-      arg: eth0
-    - type: processor_temperature
-    - type: last_boot
-    
-  # OPTIONAL CPU Raspberry Pi Temp
-  - platform: command_line
-    name: CPU Temp
-    command: "cat /sys/class/thermal/thermal_zone0/temp"
-    unit_of_measurement: "°C"
-    value_template: '{{ value | multiply(0.001) | round(2)  }}'
 
 ###################################################################################
 # Integration
@@ -1167,14 +485,16 @@ sensor:
 #    round: 2
 
   - platform: integration
-    source: sensor.car_grid_wattmeter
-    name: car charge grid energy
+    source: sensor.car_net_wattmeter
+    name: car charge net energy
+    method: left
     unit_prefix: k
     unit_time: h
 
   - platform: integration
     source: sensor.car_solar_wattmeter
     name: car charge solar energy
+    method: left
     unit_prefix: k
     unit_time: h
 
@@ -1191,489 +511,129 @@ sensor:
     unit_time: h
 
   - platform: integration
-    source: sensor.ontvochtiger_power
-    name: ontvochtiger energieverbruik
-    unit_prefix: k
-    # apparaten die bij het starten pieken veroorzaken, moeten de left methode gebruiken
-    method: left
-    round: 2
-    # creates a sensor called sensor.ontvochtiger_energieverbruik
-
-  - platform: integration
-    source: sensor.living_tv_powerconsumption
-    name: living tv energieverbruik
-    unit_prefix: k
-    method: left
-    round: 2
-    # creates sensor called sensor.living_tv_energieverbruik
-
-  - platform: integration
-    source: sensor.master_bedroom_tv_powerconsumption
-    name: master bedroom tv energieverbruik
-    method: left
-    unit_prefix: k
-    round: 2
-
-  - platform: integration
-    source: sensor.amilya_tv_powerconsumption
-    name: Amilya tv energieverbruik
-    method: left
-    unit_prefix: k
-    round: 2
-
-  - platform: integration
-    source: sensor.alunya_tv_powerconsumption
-    name: Alunya tv energieverbruik
-    method: left
-    unit_prefix: k
-    round: 2
-
-  - platform: integration
     source: sensor.charger_real_power
     name: charger energieverbruik
     method: left
     unit_prefix: k
     round: 2
 
-###############################################################################
+  - platform: integration
+    source: sensor.washingmachine_power
+    name: washingmachine energy
+    unit_prefix: k
+    # apparaten die bij het starten pieken veroorzaken, moeten de left methode gebruiken
+    method: left
+    round: 2
+    # creates a sensor called sensor.washingmachine_energy
+
+
+###############################################
+# sensoren voor het energie-dashboard
+###############################################
+
+  - platform: integration
+    # creates a sensor called: sensor.huis_energieverbruik in kWh
+    source: sensor.huis_verbruik
+    name: huis energieverbruik
+    unit_prefix: k
+    round: 2
+    method: left
+
+  - platform: integration
+    # creates a sensor called sensor.zonne_energie_totaal in kWh
+    source: sensor.solar_power
+    name: zonne energie totaal
+    unit_prefix: k
+    round: 2
+    method: left
+
+  - platform: filter
+    name: net power avg
+    entity_id: sensor.net_power
+    filters:
+      - filter: outlier
+        window_size: 6   # number of samples taken
+        radius: 4.0
+      # - filter: time_simple_moving_average
+      #   window_size: "00:05"
+      # - filter: throttle
+      #   window_size: 120
+
 ###############################################################################
 # template / sensor
-###############################################################################
 ###############################################################################
 
 template:
   - sensor:
-      - name: "badkamer raam"
-        state: >
-          {% if is_state('binary_sensor.badkamer_raam_wijd', 'on') %}
-            wijd open
-          {% elif is_state('binary_sensor.badkamer_raam_kantel', 'on') %}
-            gekanteld
-          {% else %}
-            gesloten
-          {% endif %}
 
-      - name: "master bedroom raam"
+      # this is the new way to define sensors via templates
+      # this works !
+      - name: net_consumption_energy_total
+        unit_of_measurement: kWh
+        device_class: energy    
+        state_class: total    # or "measurement"
+        # total of the energy calculated by Shelly 3EM
         state: >
-          {% if is_state('binary_sensor.master_bedroom_raam_wijd', 'on') %}
-            wijd open
-          {% elif is_state('binary_sensor.master_bedroom_raam_kantel', 'on') %}
-            gekanteld
-          {% else %}
-            gesloten
-          {% endif %}
+          {% set phase1 = states('sensor.shellyem3_bcff4dfd1dbb_channel_a_energy') | float(default=0) %}
+          {% set phase2 = states('sensor.shellyem3_bcff4dfd1dbb_channel_b_energy') | float(default=0) %}
+          {% set phase3 = states('sensor.shellyem3_bcff4dfd1dbb_channel_c_energy') | float(default=0) %}
+          {{ float(phase1) + float(phase2) + float(phase3) }}
+        availability: >
+          {{ not ( is_state('sensor.shellyem3_bcff4dfd1dbb_channel_a_energy', 'unavailable') or
+          is_state('sensor.shellyem3_bcff4dfd1dbb_channel_b_energy', 'unavailable') or
+          is_state('sensor.shellyem3_bcff4dfd1dbb_channel_c_energy', 'unavailable') ) }}
+        attributes:         
+          last_reset: '1970-01-01T00:00:00+00:00'
 
-      - name: "car smart charge start time"
+      # this is the new way to define sensors via templates
+      # this works !
+      - name: net_injection_energy_total
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total    # or "measurement"
         state: >
-          {% set target = states('input_number.car_smart_charge_target_percentage') | float(default=0) %}
+          {% set phase1 = states('sensor.shellyem3_bcff4dfd1dbb_channel_a_energy_returned') | float(default=0) %}
+          {% set phase2 = states('sensor.shellyem3_bcff4dfd1dbb_channel_b_energy_returned') | float(default=0) %}
+          {% set phase3 = states('sensor.shellyem3_bcff4dfd1dbb_channel_c_energy_returned') | float(default=0) %}
+          {{ float(phase1) + float(phase2) + float(phase3) }}
+        availability: >
+          {{ not ( is_state('sensor.shellyem3_bcff4dfd1dbb_channel_a_energy_returned', 'unavailable') or
+          is_state('sensor.shellyem3_bcff4dfd1dbb_channel_b_energy_returned', 'unavailable') or
+          is_state('sensor.shellyem3_bcff4dfd1dbb_channel_c_energy_returned', 'unavailable') ) }}  
+        attributes:         
+          last_reset: '1970-01-01T00:00:00+00:00'
+
+      - name: "car charge start time"
+        state: >
+          {% set target = states('input_number.car_charge_target_percentage') | float(default=0) %}
           {% set soc = states('sensor.audi_e_tron_sportback_state_of_charge') | float(default=0) %}
           {% set nog_te_laden_procent = [target - soc, 0] | max %}
           {% set nog_te_laden_minuten = nog_te_laden_procent * states('input_number.minuten_voor_1_laden') | round(2) %}
-          {{ strptime((as_timestamp(states('input_datetime.car_smart_charge_target_time')) - ((nog_te_laden_minuten | float(default=0) + 10 ) * 60) ) | timestamp_custom('%Y-%m-%d %H:%M',false), '%Y-%m-%d %H:%M') }}
+          {{ strptime((as_timestamp(states('input_datetime.car_charge_target_time')) - ((nog_te_laden_minuten | float(default=0) + 10 ) * 60) ) | timestamp_custom('%Y-%m-%d %H:%M',false), '%Y-%m-%d %H:%M') }}
 
-      ###############################################################################
-      # sensors for car (to map sensor names of the car to fixed sensor names)
-      ###############################################################################
-
-      - name: "car 1 soc"
-        state: "{{ states('sensor.audi_e_tron_sportback_state_of_charge') }}"
-        unit_of_measurement: procent
-
-      - name: "car 1 range"
-        state: "{{ states('sensor.audi_e_tron_sportback_range') }}"
-        unit_of_measurement: km
-
-      - name: "car 1 plug state"
-        state: "{{ states('sensor.audi_e_tron_sportback_plug_state') }}"
-
-      - name: "car 1 remaining charge time"
-        state: "{{ states('sensor.audi_e_tron_sportback_remaining_charge_time') }}"
-
-      - name: "car 1 charging state"
-        state: "{{ states('sensor.audi_e_tron_sportback_charging_state') }}"
-        
-
-      ###############################################################################
-      # sensors for Alfen Eve Pro charge point 
-      ###############################################################################
-
-      - name: mode3_sanitized
-        state: "{{states('sensor.charger_mode3_state').replace('\0','') }}"
-      - name: charger_status
+      - name: "verwachte zonneproductie morgen"
+        unit_of_measurement: kWh
         state: >
-          {% set m3 = states('sensor.mode3_sanitized') %}
-          {% if m3 in ['A', 'E'] %} available
-          {% elif m3 in ['B1', 'B2', 'C1', 'D1'] %} connected
-          {% elif m3 in ['C2', 'D2'] %} charging
-          {% else %} {{ m3 }}
-          {% endif %}
+          {{ (states('sensor.energy_production_tomorrow') | float + states('sensor.energy_production_tomorrow_2') | float ) | round() }}
+
+      - name: "huisverbruik"
+        unique_id: '3b201f08-68f2-4b19-8f98-3fa1fd580316'
+        state: >
+            {{ states('sensor.solar_power') | float(default=0) + (states('sensor.net_power') | float(default=0) ) | round(0) }}
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement   # total_increasing
 
 
-
-###############################################################################
-#
-# adaptive lightning
-# This changes the brightness of the lights according to the time of day
-###############################################################################
-
-# adaptive_lighting:
-# - name: "living bol adaptive lightning"
-#   lights: [light.living_bol]
-#   prefer_rgb_color: false
-#   transition: 45
-#   initial_transition: 1
-#   interval: 90
-#   min_brightness: 1
-#   max_brightness: 100
-#   min_color_temp: 2000
-#   max_color_temp: 5500
-#   sleep_brightness: 1
-#   sleep_color_temp: 1000
-# #  sunrise_time: '08:00:00'  # override the sunrise time
-# #  sunrise_offset:
-# #  sunset_time:
-#   sunset_offset: 1800  # in seconds or '00:15:00'
-#   take_over_control: true
-#   detect_non_ha_changes: false
-#   only_once: false
-
-# - name: "living links adaptive lightning"
-#   lights: [light.living_links_4,light.living_links_5]
-#   prefer_rgb_color: false
-#   transition: 45
-#   initial_transition: 1
-#   interval: 90
-#   min_brightness: 1
-#   max_brightness: 100
-#   min_color_temp: 2000
-#   max_color_temp: 4000
-#   sleep_brightness: 1
-#   sleep_color_temp: 1000
-# #  sunrise_time: '08:00:00'  # override the sunrise time
-# #  sunrise_offset:
-# #  sunset_time:
-#   sunset_offset: 1800  # in seconds or '00:15:00'
-#   take_over_control: true
-#   detect_non_ha_changes: false
-#   only_once: true
-
-# - name: "master bedroom staande lamp adaptive lightning"
-#   lights: [light.master_bedroom_staande_lamp]
-#   prefer_rgb_color: false
-#   transition: 45
-#   initial_transition: 1
-#   interval: 90
-#   min_brightness: 1
-#   max_brightness: 100
-#   min_color_temp: 2000
-#   max_color_temp: 5500
-#   sleep_brightness: 1
-#   sleep_color_temp: 1000
-# #  sunrise_time: '08:00:00'  # override the sunrise time
-# #  sunrise_offset:
-# #  sunset_time:
-#   sunset_offset: 1800  # in seconds or '00:15:00'
-#   take_over_control: true
-#   detect_non_ha_changes: false
-#   only_once: false
-
-# - name: "veranda adaptive lightning"
-#   lights: [light.veranda,light.veranda_staande_lamp]
-#   prefer_rgb_color: false
-#   transition: 45
-#   initial_transition: 1
-#   interval: 90
-#   min_brightness: 1
-#   max_brightness: 100
-#   min_color_temp: 2000
-#   max_color_temp: 4000
-#   sleep_brightness: 1
-#   sleep_color_temp: 1000
-# #  sunrise_time: '08:00:00'  # override the sunrise time
-# #  sunrise_offset:
-# #  sunset_time:
-#   sunset_offset: 1800  # in seconds or '00:15:00'
-#   take_over_control: true
-#   detect_non_ha_changes: false
-#   only_once: true  
-
-###############################################################################
-#
-# anniversaries
-# 
-###############################################################################
-
-anniversaries:
-  sensors:
-  - name: huwelijk Madouce & Bart
-    date: '2022-04-30'
-  - name: verjaardag Alunya
-    date: '10-10'
-  - name: verjaardag Amilya
-    date: '05-04'
-  - name: verjaardag Madouce
-    date: '02-06'
-  - name: verjaardag Bart
-    date: '05-03'
+################################################################################
+# binary sensors
+################################################################################
 
 binary_sensor:
   - platform: ping
     name: google_server
     host: 8.8.8.8
     scan_interval: 5    # scan every 5 minutes
-
-  - platform: template
-    sensors:
-      master_bedroom_tv_on:
-        friendly_name: "master bedroom tv aan"
-        value_template: >-
-          {{ states('media_player.master_bedroom_tv') in ['unknown', 'playing'] }}
-    # als netflix speelt is de status "unknown"
-    
-  - platform: template
-    sensors:
-      alunya_tv_on:
-        friendly_name: "Alunya tv aan"
-        value_template: >-
-          {{ states('media_player.alunya_tv') in ['unknown', 'playing'] }}
-    # als netflix speelt is de status "unknown"
-
-  - platform: template
-    sensors:
-      amilya_tv_on:
-        friendly_name: "Amilya tv aan"
-        value_template: >-
-          {{ states('media_player.amilya_tv') in ['unknown', 'playing'] }}
-    # als netflix speelt is de status "unknown"
-
-
-###############################################################################
-#
-# binary sensors: warmer/kouder dan binnen/buiten
-# 
-###############################################################################
-
-  - platform: template
-    sensors:
-      warm_outside_living:
-        friendly_name: "buiten warmer dan in living"
-        value_template: "{{ states('sensor.temp_leuven24_wunderground') > states('sensor.living_temperature') }}"
-      warm_inside_living:
-        friendly_name: "in living warmer dan buiten"
-        value_template: "{{ states('sensor.living_temperature') > states('sensor.temp_leuven24_wunderground') }}"
-      warm_outside_amilya:
-        friendly_name: "buiten warmer dan in kamer Amilya"
-        value_template: "{{ states('sensor.temp_leuven24_wunderground') > states('sensor.kamer_amilya_temperature') }}"
-      warm_inside_amilya:
-        friendly_name: "in kamer Amilya warmer dan buiten"
-        value_template: "{{ states('sensor.kamer_amilya_temperature') > states('sensor.temp_leuven24_wunderground') }}"
-      warm_outside_veranda:
-        friendly_name: "buiten warmer dan in veranda"
-        value_template: "{{ states('sensor.temp_leuven24_wunderground') > states('sensor.veranda_temperature') }}"
-      warm_inside_veranda:
-        friendly_name: "in veranda warmer dan buiten"
-        value_template: "{{ states('sensor.veranda_temperature') > states('sensor.temp_leuven24_wunderground') }}"
-      warm_outside_bedroom:
-        friendly_name: "buiten warmer dan in master bedroom"
-        value_template: "{{ states('sensor.temp_leuven24_wunderground') > states('sensor.master_bedroom_temperature') }}"
-      warm_inside_bedroom:
-        friendly_name: "in master bedroom warmer dan buiten"
-        value_template: "{{ states('sensor.master_bedroom_temperature') > states('sensor.temp_leuven24_wunderground') }}"
-
-      bart_phone_connected_to_car:
-        friendly_name: 'Telefoon Bart verbonden met auto'
-        device_class: connectivity
-        icon_template: >-
-          {% if is_state('binary_sensor.bart_phone_connected_to_car', 'on') %}
-            mdi:car-connected
-          {% else %}
-            mdi:car
-          {% endif %}
-        value_template: "{{ '98:49:14:C1:37:0B' in state_attr('sensor.sm_g975f_bluetooth_connection', 'connected_paired_devices') }}"    
-        # do not forget to activate the bluetooth sensor in the Home Assistant companion app on smartphone
-
-      madouce_phone_connected_to_car:
-        friendly_name: 'Telefoon Mardouce verbonden met auto'
-        device_class: connectivity
-        icon_template: >-
-          {% if is_state('binary_sensor.madouce_phone_connected_to_car', 'on') %}
-            mdi:car-connected
-          {% else %}
-            mdi:car
-          {% endif %}
-        value_template: "{{ '98:49:14:C1:37:0B' in state_attr('sensor.sm_g986b_bluetooth_connection', 'connected_paired_devices') }}"    
-        # do not forget to activate the bluetooth sensor in the Home Assistant companion app on smartphone
-
-
-  - platform: trend
-    sensors:
-
-###############################################################################
-#
-# Sensors to detect rising/falling humidity outside and in every room 
-# Used to calculate when to open/close the windows
-#
-###############################################################################
-
-      gram_water_outside_rising:
-        entity_id: sensor.gram_water_outside
-        sample_duration: 4800
-        max_samples: 20
-        # 1 sample every second. 1800 seconds = 30 minutes  3600 seconds = 1 hour
-        min_gradient: 0.00011      # The gradient is measured in sensor units per second (independent from the duration ?)
-        # If you want to know when the humidity is rising by 0.5 gram per hour, use a gradient of (0.5) / (60 x 60) = 0.000139
-        
-      gram_water_outside_falling:
-        entity_id: sensor.gram_water_outside
-        sample_duration: 4800
-        max_samples: 20
-        # 1 sample every second. 1800 seconds = 30 minutes
-        min_gradient: -0.00011
-        # The gradient is measured in sensor units per second
-        # If you want to know when the humidity is rising by 0.5 gram per hour, use a gradient of (0.5) / (60 x 60) = 0.000139
-
-      gram_water_master_bedroom_rising:
-        entity_id: sensor.gram_water_master_bedroom
-        sample_duration: 3600
-        # 1 sample every second. 1800 seconds = 30 minutes
-        min_gradient: 0.00011      # The gradient is measured in sensor units per second (independent from the duration ?)
-        # If you want to know when the humidity is rising by 0.5 gram per hour, use a gradient of (0.8) / (60 x 60) = 0.000139
-        max_samples: 10
-
-      humidity_master_bedroom_rising:
-        entity_id: sensor.master_bedroom_humidity
-        sample_duration: 3600
-        # 1 sample every second. 1800 seconds = 30 minutes
-        min_gradient: 0.0004
-        device_class: moisture
-        # The gradient is measured in sensor units per second
-        # If you want to know when the humidity is rising by 4 % per hour, use a gradient of (4) / (60 x 60) = 0.00111111111
-        
-      humidity_kamer_alunya_rising:
-        entity_id: sensor.kamer_alunya_humidity
-        sample_duration: 3600
-        # 1 sample every second. 1800 seconds = 30 minutes
-        min_gradient: 0.00027777777
-        device_class: moisture
-
-      humidity_badkamer_rising:
-        entity_id: sensor.badkamer_humidity
-        sample_duration: 3600
-        # 1 sample every second. 1800 seconds = 30 minutes
-        min_gradient: 0.0004
-        device_class: moisture
-
-      humidity_eikenbos_rising:
-        entity_id: sensor.humidity_leuven24_wunderground
-        sample_duration: 3600  # 1 hour
-        min_gradient: 0.00027777777
-        # 4% increase per hour = 4/(60x60) = 0.00111111111
-        device_class: moisture
-
-      humidity_eikenbos_falling:
-        entity_id: sensor.humidity_leuven24_wunderground
-        sample_duration: 3600  # 1 hour
-        min_gradient: -0.00027777777
-        # 4% increase per hour = 4/(60x60) = 0.00111111111
-        device_class: moisture
-
-###############################################################################
-#
-# Sensors to detect rising/falling temperature outside and in every room 
-# Used to calculate when to open/close the windows
-# The gradient is measured in sensor units per second (independent from the duration ?)
-# to detect temp rising by 0.5 degrees in a half hour, use a gradient of (0.5) / (60 x 30) = 0.00027777777
-# 1 sample every second. 1800 seconds = 30 minutes
-###############################################################################
-
-      eikenbos_temp_rising:
-        entity_id: sensor.temp_leuven24_wunderground
-        friendly_name: Eikenbos
-        sample_duration: 1800
-        min_gradient: 0.00027777777
-        device_class: heat
-
-      living_temp_rising:
-        entity_id: sensor.living_temperature
-        friendly_name: living
-        sample_duration: 1800
-        min_gradient: 0.00027777777
-        device_class: heat
-
-      kamer_amilya_temp_rising:
-        entity_id: sensor.kamer_amilya_temperature
-        friendly_name: Amilya
-        sample_duration: 1800
-        min_gradient: 0.00027777777
-        device_class: heat
-
-      veranda_temp_rising:
-        entity_id: sensor.veranda_temperature
-        friendly_name: veranda
-        sample_duration: 1800
-        min_gradient: 0.00027777777
-        device_class: heat
-
-      gang_temp_rising:
-        entity_id: sensor.gang_temperature
-        friendly_name: gang
-        sample_duration: 1800
-        min_gradient: 0.00027777777
-        device_class: heat
-
-      berging_temp_rising:
-        entity_id: sensor.berging_temperature
-        friendly_name: berging
-        sample_duration: 1800
-        min_gradient: 0.00027777777
-        device_class: heat
-
-      badkamer_temp_rising:
-        entity_id: sensor.badkamer_temperature
-        friendly_name: badkamer
-        sample_duration: 1800
-        min_gradient: 0.00027777777
-        device_class: heat
-
-      kamer_alunya_temp_rising:
-        entity_id: sensor.kamer_alunya_temperature
-        friendly_name: Alunya
-        sample_duration: 1800
-        min_gradient: 0.00027777777
-        device_class: heat
-
-      master_bedroom_temp_rising:
-        entity_id: sensor.master_bedroom_temperature
-        friendly_name: master bedroom
-        sample_duration: 1800
-        min_gradient: 0.00027777777
-        device_class: heat
-
-
-
-
-###############################################################################
-#
-# Mapping of the phone to a fixed name
-# If you change smartphone, you can easily change the mapping and keep the fixed name in the automations.
-#
-###############################################################################
-
-notify:
-  - name: bart_phone
-    platform: group
-    services:
-      - service: mobile_app_sm_g975f
-
-  - name: madouce_phone
-    platform: group
-    services:
-      - service: mobile_app_sm_g986b
-
-  - name: alunya_phone
-    platform: group
-    services:
-      - service: mobile_app_sm_a715f
 
 timer:
   car_climatisation:
@@ -1697,22 +657,6 @@ rest_command:
 # Send car info to A Better Route Planner
 # info: https://juju.nz/michaelh/post/2021/abrp/
 ################################################
-  # update_abrp:
-  #   method: POST
-  #   headers:
-  #     authorization: 846001dd-c532-4e61-a9f4-11cd1123fb6b
-  #     content_type: "charset=utf-8; application/x-www-form-urlencoded"
-  #   url: >
-  #     {% set tlm = {
-  #     "utc": float(as_timestamp(utcnow())),
-  #     "soc": states('sensor.audi_e_tron_sportback_state_of_charge'),
-  #     "est_battery_range": states('sensor.audi_e_tron_sportback_primary_engine_range') | float(default=0),
-  #     "is_charging": states('sensor.audi_e_tron_sportback_charging_rate') | float(default=0) > 0, } -%}
-  #     {% set token = '444e9623-255e-44b7-b2cd-bf9dade6f46b' %}
-  #     https://api.iternio.com/1/tlm/send?token={{token}}&tlm={{tlm|to_json|urlencode}}
-  #   # the token is defined in the automation
-
-
   update_abrp:
     method: POST
     headers:
@@ -1720,86 +664,6 @@ rest_command:
     url: >
       http://api.iternio.com/1/tlm/send?token=444e9623-255e-44b7-b2cd-bf9dade6f46b&api_key=846001dd-c532-4e61-a9f4-11cd1123fb6b&tlm={"utc":{{ as_timestamp(utcnow()) | float(default=0) }},"soc":{{ states('sensor.audi_e_tron_sportback_state_of_charge') }},"soh":99,"is_charging":"no","car_model":"audi:etron:21:86:other"}
 
-# abrp:
-#     url: "{{ state_attr( 'sensor.audi_abrp', 'abrp') }}"
-#     method: POST
-#     headers:
-#       content_type: 'charset=utf-8; application/x-www-form-urlencoded'
-
-
-proximity:
-  bart_home:
-    devices:
-      - device_tracker.bart_s10
-    tolerance: 50
-    unit_of_measurement: km
-    
-  madouce_home:
-    devices:
-      - device_tracker.madouce_s20
-    tolerance: 50
-    unit_of_measurement: km
-    
-
-modbus:
-  - name: charger
-    type: tcp
-    host: 192.168.1.2
-    port: 502
-    sensors:
-      - name: charger_name
-        slave: 200
-        address: 100
-        count: 17
-        data_type: string
-      - name: charger_temperature
-        slave: 200
-        address: 1102
-        data_type: float32
-        unit_of_measurement: °C
-      - name: charger_active_max_current
-        slave: 200
-        address: 1100
-        data_type: float32
-        unit_of_measurement: A
-      - name: charger_real_power
-        slave: 1
-        address: 344
-        data_type: float32
-        unit_of_measurement: W
-      - name: charger_mode3_state
-        slave: 1
-        address: 1201
-        count: 5
-        data_type: string
-        scan_interval: 5
-      - name: charger_actual_applied_maxcurrent
-        slave: 1
-        address: 1206
-        data_type: float32
-        unit_of_measurement: A
-      - name: charger_modbus_maxcurrent
-        slave: 1
-        address: 1210
-        data_type: float32
-        unit_of_measurement: A
-      - name: charger_socket1_current_valid_time
-        slave: 1
-        address: 1208
-        data_type: uint32
-        unit_of_measurement: s
-      - name: charger_energy_delivered
-        slave: 1
-        address: 374
-        count: 4
-        data_type: float64
-        unit_of_measurement: Wh
-        device_class: energy
-        state_class: total_increasing
-      - name: charger_use_1_or_3_phases
-        slave: 1
-        address: 1215
-        data_type: uint16        
         
 # Add Portainer to Home Assistant navigation menu
 panel_iframe:
@@ -1874,4 +738,5 @@ camera:
 #         name: Wellness Londerzeel sluitingstijd
 #         select: ".css-1wr7ib4"
 #         value_template: "{{ value | replace('Veiling sluit om ','') }}"
+
 

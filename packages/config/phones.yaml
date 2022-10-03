@@ -1,0 +1,121 @@
+sensor:
+- platform: template
+  sensors:
+    alunya_phone_home:
+      value_template: >
+        {% if states('device_tracker.alunya_a71') == "home" %}
+          home
+        {% else %}
+          not_home
+        {% endif %}
+
+    bart_phone_room:
+      value_template: >
+        {% set wifi_bssid = states('sensor.sm_g975f_wifi_bssid') %}
+        {% set wifi_signal = states('sensor.sm_g975f_wifi_signal_strength') | float %}
+        {% if  wifi_bssid == "cc:f4:11:77:bf:82" %}
+          living
+        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-80 < wifi_signal <= -67) %}
+          master bedroom
+        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-67 < wifi_signal <= -55) %}
+          badkamer
+        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-55 < wifi_signal < -30) %}
+          gang
+        {% elif wifi_bssid == "cc:f4:11:4c:c1:73" %}
+          veranda
+        {% elif wifi_bssid != "cc:f4:11:77:bf:82" and wifi_bssid != "cc:f4:11:43:8f:b5" and wifi_bssid != "cc:f4:11:4c:c1:73" %}
+          niet thuis
+        {% else %}
+          onbekend
+        {% endif %}
+      friendly_name: Bart phone locatie
+
+    madouce_phone_room:
+      value_template: >
+        {% set wifi_bssid = states('sensor.sm_g986b_wifi_bssid') %}
+        {% set wifi_signal = states('sensor.sm_g986b_wifi_signal_strength') | float %}
+        {% if  wifi_bssid == "cc:f4:11:77:bf:82" %}
+          living
+        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-80 < wifi_signal <= -67) %}
+          master bedroom
+        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-67 < wifi_signal <= -55) %}
+          badkamer
+        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-55 < wifi_signal < -30) %}
+          gang
+        {% elif wifi_bssid == "cc:f4:11:4c:c1:73" %}
+          veranda
+        {% elif wifi_bssid != "cc:f4:11:77:bf:82" and wifi_bssid != "cc:f4:11:43:8f:b5" and wifi_bssid != "cc:f4:11:4c:c1:73" %}
+          niet thuis
+        {% else %}
+          onbekend
+        {% endif %}
+      friendly_name: Madouce phone locatie
+
+
+    alunya_phone_room:
+      value_template: >
+        {% set wifi_bssid = states('sensor.sm_a715f_wifi_bssid') %}
+        {% set wifi_signal = states('sensor.sm_a715f_wifi_signal_strength') | float %}
+        {% if  wifi_bssid == "cc:f4:11:77:bf:82" %}
+          living
+        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and wifi_signal <= -68 %}
+          badkamer
+        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-75 < wifi_signal <= -67) %}
+          Alunya kamer
+        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-67 < wifi_signal <= -55) %}
+          badkamer
+        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-55 < wifi_signal < -30) %}
+          gang
+        {% elif wifi_bssid == "cc:f4:11:4c:c1:73" %}
+          veranda
+        {% elif wifi_bssid != "cc:f4:11:77:bf:82" and wifi_bssid != "cc:f4:11:43:8f:b5" and wifi_bssid != "cc:f4:11:4c:c1:73" %}
+          niet thuis
+        {% else %}
+          onbekend
+        {% endif %}
+      friendly_name: Alunya phone locatie
+
+
+device_tracker:
+  - platform: iphonedetect
+    consider_home: 60
+    scan_interval: 12
+    new_device_defaults:
+      track_new_devices: true
+    hosts:
+      amilya_iphone: 192.168.86.112
+      amilya_appletv: 192.168.86.48
+      bart_iphone: 192.168.86.51
+
+  - platform: ping
+    hosts:
+      alunya_phone: 192.168.86.113
+
+binary_sensor:
+  - platform: template
+    sensors:
+      bart_phone_connected_to_car:
+        friendly_name: 'Telefoon Bart verbonden met auto'
+        device_class: connectivity
+        icon_template: >-
+          {% if is_state('binary_sensor.bart_phone_connected_to_car', 'on') %}
+            mdi:car-connected
+          {% else %}
+            mdi:car
+          {% endif %}
+        value_template: "{{ '98:49:14:C1:37:0B (Audi_MMI_9131)' in state_attr('sensor.sm_g975f_bluetooth_connection', 'connected_paired_devices') }}"    
+        # do not forget to activate the bluetooth sensor in the Home Assistant companion app on smartphone
+
+  - platform: template
+    sensors:
+      madouce_phone_connected_to_car:
+        friendly_name: 'Telefoon Mardouce verbonden met auto'
+        device_class: connectivity
+        icon_template: >-
+          {% if is_state('binary_sensor.madouce_phone_connected_to_car', 'on') %}
+            mdi:car-connected
+          {% else %}
+            mdi:car
+          {% endif %}
+        value_template: "{{ '98:49:14:C1:37:0B (Audi_MMI_9131)' in state_attr('sensor.sm_g986b_bluetooth_connection', 'connected_paired_devices') }}"    
+        # do not forget to activate the bluetooth sensor in the Home Assistant companion app on smartphone

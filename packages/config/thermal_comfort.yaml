@@ -1,0 +1,39 @@
+sensor:
+  - platform: thermal_comfort
+    sensors:
+      outside_thermal:
+        friendly_name: outside
+        temperature_sensor: sensor.temp_leuven24_wunderground
+        humidity_sensor: sensor.humidity_leuven24_wunderground
+      living_thermal:
+        friendly_name: living
+        temperature_sensor: sensor.living_temperature
+        humidity_sensor: sensor.living_humidity
+      kamer_amilya_thermal:
+        friendly_name: kamer Amilya
+        temperature_sensor: sensor.kamer_amilya_temperature
+        humidity_sensor: sensor.kamer_amilya_humidity
+      veranda_thermal:
+        friendly_name: veranda
+        temperature_sensor: sensor.veranda_temperature
+        humidity_sensor: sensor.veranda_humidity
+      berging_thermal:
+        friendly_name: berging
+        temperature_sensor: sensor.berging_temperature
+        humidity_sensor: sensor.berging_humidity
+      gang_thermal:
+        friendly_name: gang
+        temperature_sensor: sensor.gang_temperature
+        humidity_sensor: sensor.gang_humidity
+      badkamer_thermal:
+        friendly_name: badkamer
+        temperature_sensor: sensor.badkamer_temperature
+        humidity_sensor: sensor.badkamer_humidity
+      kamer_alunya_thermal:
+        friendly_name: kamer Alunya
+        temperature_sensor: sensor.kamer_alunya_temperature
+        humidity_sensor: sensor.kamer_alunya_humidity
+      master_bedroom_thermal:
+        friendly_name: master bedroom
+        temperature_sensor: sensor.master_bedroom_temperature
+        humidity_sensor: sensor.master_bedroom_humidity

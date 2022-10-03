@@ -1,0 +1,56 @@
+sensor:  
+  - platform: template
+    sensors:  
+      living_tv_power:
+        # creates a sensor called sensor.living_tv_power
+        # TV consumes 82 W + Google TV 3 W
+        value_template: >
+          {% if is_state('media_player.ue55ju7000', 'on') %}
+            85
+          {% else %}
+            0
+          {% endif %}
+        device_class: 'power'
+        unit_of_measurement: 'W'
+
+  - platform: template
+    sensors:
+      # creates a sensor called sensor.master_bedroom_tv_power
+      # TV + Google TV consumes 63 W
+      master_bedroom_tv_power:
+        value_template: >
+          {% if is_state('media_player.master_bedroom_tv', 'on') %}
+            63
+          {% else %}
+            0
+          {% endif %}
+        device_class: 'power'
+        unit_of_measurement: 'W'
+
+  - platform: template
+    sensors:  
+      # creates a sensor called sensor.amilya_tv_power
+      # TV consumes 82 W + Google Chromecast 3 W
+      amilya_tv_power:
+        value_template: >
+          {% if is_state('binary_sensor.amilya_tv_on', 'on') %}
+            82
+          {% else %}
+            0
+          {% endif %}
+        device_class: 'power'
+        unit_of_measurement: 'W'
+
+  - platform: template
+    sensors:  
+    # creates a sensor called sensor.alunya_tv_power
+    # TV consumes 82 W + Google Chromecast 3 W
+      alunya_tv_power:
+        value_template: >
+          {% if is_state('binary_sensor.alunya_tv_on', 'on') %}
+            82
+          {% else %}
+            0
+          {% endif %}
+        device_class: 'power'
+        unit_of_measurement: 'W'

@@ -1,0 +1,94 @@
+
+sensor:
+- platform: template
+  sensors:
+    solar_power:
+      # converts the sma_power_ac sensor to sensor.solar_power
+      # but cutting of incorrect (too high) values to 10000
+      unique_id: '136e925b-8fa2-446f-b0b5-222cfd4742f1'
+      unit_of_measurement: "W"
+      friendly_name: "zonne-energie productie"
+      icon_template: "mdi:solar-power"
+      value_template: >
+        {% if states('sensor.sma_power_ac') | float(default=0) >=10000 %}
+        0
+        {% elif states('sensor.sma_power_ac') | float(default=0) <= 10000 %}
+        {{ states('sensor.sma_power_ac') | float(default=0) }}
+        {% endif %}
+
+    solar_sim_energy_today:
+      # totaal van de gesimuleerde productie  (= solar integratie)
+      unique_id: 'd7878be1-3fb7-4f10-a090-92bf0640868c'
+      unit_of_measurement: "kWh"
+      friendly_name: "zonne-energie productie simulatie vandaag"
+      icon_template: "mdi:solar-power"
+      value_template: >-
+        {% set s1 = states('sensor.energy_production_today')  | float(default=0) %}
+        {% set s2 = states('sensor.energy_production_today_2')| float(default=0) %}
+        {{ s1 + s2 }}
+
+    solar_sim_energy_tomorrow:
+      # totaal van de gesimuleerde energie  (= solar integratie)
+      unit_of_measurement: "kWh"
+      friendly_name: "zonne-energie productie simulatie morgen"
+      icon_template: "mdi:solar-power"
+      value_template: >-
+        {% set s1 = states('sensor.energy_production_tomorrow')  | float(default=0) %}
+        {% set s2 = states('sensor.energy_production_tomorrow_2')| float(default=0) %}
+        {{ s1 + s2 }}
+
+    # Code voor het wegfilteren van exuberante waarden
+    # https://www.zonstraal.be/forum/viewtopic.php?t=23979&start=45
+    # sensor:
+    #   - name: PV_Vermogen_AC
+    #     unit_of_measurement: W
+    #     device_class: power
+    #     state: "{% if states('sensor.PV_Vermogen_AC_r') is not none %}
+    #                {% if states('sensor.PV_Vermogen_AC_r') | int < 0 %}
+    #                   {{ 0 }}
+    #                {% else %}
+    #                   {{ states('sensor.PV_Vermogen_AC_r') | int }}
+    #                {% endif %}
+    #              {% else %}
+    #                {{ 'error' }}
+    #              {% endif %}"
+
+    net_neutrality:
+      unit_of_measurement: "%"
+      friendly_name: "netonafhankelijkheid totaal"
+      icon_template: "mdi:solar-power"
+      value_template: >-
+        {% set sp = states('sensor.sma_energy_total') | float %}
+        {% set nc = states('sensor.net_consumption_energy_total') | float %}
+        {% set ni = states('sensor.net_injection_energy_total') | float %}
+        {{ ((sp - ni ) / ( sp - ni + nc) * 100 ) | round() }}
+
+    net_neutrality_home:
+      unit_of_measurement: "%"
+      friendly_name: "netonafhankelijkheid huis"
+      icon_template: "mdi:solar-power"
+      value_template: >-
+        {% set sp = states('sensor.sma_energy_total') | float %}
+        {% set nc = states('sensor.net_consumption_energy_total') | float %}
+        {% set ni = states('sensor.net_injection_energy_total') | float %}
+        {% set car_net = states('sensor.car_charge_net_energy') | round() %}
+        {% set car_sun = states('sensor.car_charge_solar_energy') | round() %}
+        {{ (((sp - ni - car_sun) / (sp - ni + nc - car_net - car_sun) ) * 100 ) | round() }}
+
+    net_neutrality_car:
+      unit_of_measurement: "%"
+      friendly_name: "netonafhankelijkheid auto"
+      icon_template: "mdi:solar-power"
+      value_template: >-
+        {% set car_net = states('sensor.car_charge_net_energy') | round() %}
+        {% set car_sun = states('sensor.car_charge_solar_energy') | round() %}
+        {{ (car_sun / (car_net + car_sun) * 100 ) | round()}}
+
+    solar_self_consumption:
+      unit_of_measurement: "kWh"
+      friendly_name: "zelfverbruik zonne-energie"
+      icon_template: "mdi:solar-power"
+      value_template: >-
+        {% set sp = states('sensor.sma_energy_total') | float %}
+        {% set ni = states('sensor.net_injection_energy_total') | float %}
+        {{ sp - ni }}

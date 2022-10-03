@@ -1,0 +1,35 @@
+
+
+timer:
+  living_airco_timer:
+    name: living airco timer
+
+  amilya_airco_timer:
+    name: Amilya airco timer
+
+  alunya_airco_timer:
+    name: Alunya airco timer
+
+  master_bedroom_airco_timer:
+    name: Master bedroom airco timer
+
+input_datetime:
+  living_airco_timer:
+    name: living airco timer
+    has_date: false
+    has_time: true
+    
+  amilya_airco_timer:
+    name: Amilya airco timer
+    has_date: false
+    has_time: true
+
+  alunya_airco_timer:
+    name: Alunya airco timer
+    has_date: false
+    has_time: true
+
+  master_bedroom_airco_timer:
+    name: Master bedroom airco timer
+    has_date: false
+    has_time: true

@@ -1,0 +1,246 @@
+############################ Table of Contents ############################ 
+# 
+#   Automations
+
+
+############################ Automations ################################## 
+automation:
+
+######################################
+# car charge: sun mode
+######################################
+
+- alias: "🔋 charge mode sun start - check elke minuut om te starten bij meer dan 2 kW injectie gedurende 1 minuut of meer dan 4 kW gedurende 2 min."
+  id: 'fff013ea-12e1-427f-8283-617a0f2e94ad'
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /1
+  condition:
+  # minimum charge for the car is 1,3 kW
+  - condition: numeric_state
+    entity_id: sensor.net_power
+    below: '-2000'
+  # only if charger cable is connected to home charger or in status "charging"
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: sensor.charger_status
+      state: 'connected'            
+    - condition: state
+      entity_id: sensor.charger_status
+      state: 'charging'
+  - condition: state
+    entity_id: sun.sun
+    state: 'above_horizon'
+  - condition: state
+    entity_id: input_boolean.car_charge_mode_sun
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.car_charge_sun_busy
+    state: 'off'
+  action:
+  # toggle the switches to keep track of the status
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id:
+        - input_boolean.car_charge_sun_busy
+        - input_boolean.car_charge_busy
+  # use injection minus 1 kW as car charger Watt (so you keep 1 kW injection)      
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.car_charger_watt
+    data:
+      value: "{{ (( states('sensor.net_power') | float(default=0)  / 1000 ) | abs ) - 1  }}"
+  - wait_template: ''
+    timeout: '00:00:05'
+  - service: script.charger_define_phase_1_or_3_based_on_watt
+  - service: script.charger_define_ampere_based_on_watt     
+  - service: script.charger_define_and_write_register_based_on_ampere
+  - service: notify.bart_phone
+    data:
+      title: Auto is gestart met laden op zonne-energie
+      message: >
+        Zon: {{ states('sensor.solar_power')}} W | Net: {{ states('sensor.net_power')}} W | Auto: {{states('input_number.car_charger_watt') | round(1)}} kW<br>
+        Nu: {{states('sensor.car_1_soc') | round()}}%.
+      data:
+        tag: car_charging_sun
+        color: green
+        notification_icon: "mdi:car-electric"
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car-charging
+  mode: single   
+
+- alias: "🔋 charge mode sun bezig - check elke minuut tijdens zonneladen = meer dan 1.3 W voor lader"
+  id: '258101bc-919c-4944-96e4-bb290cbe8922'
+  trigger:
+  - platform: time_pattern
+    minutes: /1
+  - platform: numeric_state
+    entity_id: sensor.net_power
+    above: '1500'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30     
+  condition:
+  # only if charger cable is connected to home charger or already charging
+  - condition: or
+    conditions:    
+    - condition: state
+      entity_id: sensor.charger_status
+      state: 'connected'            
+    - condition: state
+      entity_id: sensor.charger_status
+      state: 'charging'
+  # only when sun is up
+  - condition: state
+    entity_id: sun.sun
+    state: above_horizon
+  # only if charging is busy in sun mode 
+  - condition: state
+    entity_id: input_boolean.car_charge_sun_busy
+    state: 'on'
+  - condition: template
+    value_template: >-
+      {% set charger = states('sensor.charger_real_power') | float(default=0) / 1000 %}
+      {% set buffer = states('input_number.net_injection_buffer') | float(default=0) %}
+      {% set net = states('sensor.net_power') | float(default=0) %}
+      {{ ( charger + (- (buffer + net )) / 1000) >= 1.3 }}
+  action:
+    # adjust car charger wattage in function of the remaining injection
+    # final injection should be +/- 500 W
+    # make adjustment to car charger Watt
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.car_charger_watt
+      data:
+        value: >-
+          {% set charger = states('sensor.charger_real_power') | float(default=0) / 1000 %}        
+          {% set buffer = states('input_number.net_injection_buffer') | float(default=0) %}
+          {% set net = states('sensor.net_power') | float(default=0) %}
+          {{ charger + ( - ( buffer + net )) / 1000 }}
+    - wait_template: ''
+      timeout: '00:00:05'
+    - service: script.charger_define_phase_1_or_3_based_on_watt
+    - service: script.charger_define_ampere_based_on_watt
+    - service: script.charger_define_and_write_register_based_on_ampere
+  mode: single    
+
+- alias: "🔋 charge mode sun bezig - check elke minuut tijdens zonneladen = minder dan 1.3 W voor lader"
+  id: 'e2e2dc57-1a3d-4a19-ba4e-7a850b98ab3c'
+  trigger:
+  - platform: time_pattern
+    minutes: /1
+  - platform: numeric_state
+    entity_id: sensor.net_power
+    above: '1500'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30     
+  condition:
+  # only if charging is busy in sun mode 
+  - condition: state
+    entity_id: input_boolean.car_charge_sun_busy
+    state: 'on'
+  # only if charger cable is connected to home charger or already charging
+  - condition: or
+    conditions:    
+    - condition: state
+      entity_id: sensor.charger_status
+      state: 'connected'            
+    - condition: state
+      entity_id: sensor.charger_status
+      state: 'charging'
+  # only when sun is up
+  - condition: state
+    entity_id: sun.sun
+    state: above_horizon
+  - condition: template
+    value_template: >-
+      {% set charger = states('sensor.charger_real_power') | float(default=0) / 1000 %}
+      {% set buffer = states('input_number.net_injection_buffer') | float(default=0) %}
+      {% set net = states('sensor.net_power') | float(default=0) %}
+      {{ ( charger + (- (buffer + net )) / 1000) < 1.3 }}
+  action:
+  # adjust car charger wattage in function of the remaining injection
+  # final injection should be 1 kW
+  # when the car charger Watt would be under 1.3, then stop
+  - service: script.stop_charger
+    data: {}
+  # set charget Watt back to (default) 5.5 W (without starting)
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.car_charger_watt
+    data:
+      value: 5.5
+  mode: single    
+
+- alias: "🔋 charge mode sun stop - bij verbruik net"
+  id: '8a35994e-0144-43b6-905d-61ba985df90f'
+  trigger:
+  # when net consumption is above 500 W
+  - platform: numeric_state
+    entity_id: sensor.net_power
+    above: '500'
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0  
+  condition:
+  # only if charging is busy in sun mode 
+  - condition: state
+    entity_id: input_boolean.car_charge_sun_busy
+    state: 'on'
+  action:
+  # stop charger
+  - service: script.stop_charger
+    data: {}
+  # set charget Watt back to (default) 5.5 W (without starting)
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.car_charger_watt
+    data:
+      value: 5.5
+  mode: single
+
+- alias: "🔋 charge mode sun - check SOC tov ideaal laaddoel"
+  id: '2c93c0ae-c0b7-43bf-9014-ddf5f6a12944'
+  trigger:
+  - platform: state
+    entity_id: sensor.car_1_soc
+  condition:
+    # only if charging in direct mode 
+  - condition: state
+    entity_id: input_boolean.car_charge_mode_now
+    state: 'on'
+    # check dat huidige SOC groter is dan ideaal laaddoel
+  - condition: template
+    value_template: "{{ states('sensor.car_1_soc')| int(2) >= (states('input_number.car_ideal_target_soc') | int(2)) }}"
+  - condition: state
+    entity_id: sensor.charger_status
+    state: 'charging'
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Laaddoel bereikt!
+      message: >
+        {% set soc = states('sensor.car_1_soc') | round(default=0) %}
+        {% set targetsoc = states('input_number.car_ideal_target_soc') | round(default=0) %}
+        {% set range = ( soc * (states('sensor.car_range_per_10percent') | float(default=0)) / 10 ) | int(0) %}
+        Laaddoel van {{ targetsoc }}% is bereikt. Huidige lading: {{ soc }}% = {{ range }} km
+      data:
+        tag: car_charging
+        color: green
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car-charging      
+  # stop charging
+  - service: script.stop_charger
+    data: {}
+  mode: single

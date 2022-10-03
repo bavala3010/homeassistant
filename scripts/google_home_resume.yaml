@@ -65,7 +65,7 @@ google_home_resume:
       media_player.zolder_groep:
         - media_player.zolder_mini_marleen
         - media_player.zolder_mini_martijn
-    default_volume_level: 0.25
+    default_volume_level: 0.4
     dummy_player: media_player.vlc_telnet
   sequence:
     - alias: "Version number"

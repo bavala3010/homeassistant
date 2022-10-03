@@ -1,0 +1,75 @@
+###############################################################################
+#
+# Sensors to detect rising/falling temperature outside and in every room 
+# Used to calculate when to open/close the windows
+# The gradient is measured in sensor units per second (independent from the duration ?)
+# to detect temp rising by 0.5 degrees in a half hour, use a gradient of (0.5) / (60 x 30) = 0.00027777777
+# 1 sample every second. 1800 seconds = 30 minutes
+###############################################################################
+
+binary_sensor:
+  - platform: trend
+    sensors:
+
+      eikenbos_temp_rising:
+        entity_id: sensor.temp_leuven24_wunderground
+        friendly_name: Eikenbos
+        sample_duration: 1800
+        min_gradient: 0.00027777777
+        device_class: heat
+
+      living_temp_rising:
+        entity_id: sensor.living_temperature
+        friendly_name: living
+        sample_duration: 1800
+        min_gradient: 0.00027777777
+        device_class: heat
+
+      kamer_amilya_temp_rising:
+        entity_id: sensor.kamer_amilya_temperature
+        friendly_name: Amilya
+        sample_duration: 1800
+        min_gradient: 0.00027777777
+        device_class: heat
+
+      veranda_temp_rising:
+        entity_id: sensor.veranda_temperature
+        friendly_name: veranda
+        sample_duration: 1800
+        min_gradient: 0.00027777777
+        device_class: heat
+
+      gang_temp_rising:
+        entity_id: sensor.gang_temperature
+        friendly_name: gang
+        sample_duration: 1800
+        min_gradient: 0.00027777777
+        device_class: heat
+
+      berging_temp_rising:
+        entity_id: sensor.berging_temperature
+        friendly_name: berging
+        sample_duration: 1800
+        min_gradient: 0.00027777777
+        device_class: heat
+
+      badkamer_temp_rising:
+        entity_id: sensor.badkamer_temperature
+        friendly_name: badkamer
+        sample_duration: 1800
+        min_gradient: 0.00027777777
+        device_class: heat
+
+      kamer_alunya_temp_rising:
+        entity_id: sensor.kamer_alunya_temperature
+        friendly_name: Alunya
+        sample_duration: 1800
+        min_gradient: 0.00027777777
+        device_class: heat
+
+      master_bedroom_temp_rising:
+        entity_id: sensor.master_bedroom_temperature
+        friendly_name: master bedroom
+        sample_duration: 1800
+        min_gradient: 0.00027777777
+        device_class: heat

@@ -1,0 +1,196 @@
+automation:
+
+# device_id airco Alunya = 3c12e341dfd1d1fe2327ec66f3613321
+
+##################
+# Aan
+##################
+
+# Aircoverwarming gaat AAN bij de trigger:
+# - het schema gaat op "aan" 
+# - Alunya komt in de kamer (of thuis)
+# - kamertemperatuur is lager dan normale temperatuur
+# Met de voorwaarden:
+# - het schema staat op "aan"
+# - Alunya is in de kamer (of thuis)
+# - kamertemperatuur is lager dan normale temperatuur
+
+- alias: "♨️ Airco heating Alunya: aan volgens schema/te koud/aankomst"
+  id: '97872037-539d-496f-807e-26248fb4cae2'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id: schedule.kamer_alunya_normal_temperature_schema
+      to: "on"
+    - platform: state
+      entity_id: person.alunya
+      to: home
+    - platform: template
+      value_template: >
+        {{ states('sensor.kamer_alunya_temperature') | float <
+        states('input_number.kamer_alunya_normal_temperature') | float }}
+  condition:
+    - condition: state
+      entity_id: schedule.kamer_alunya_normal_temperature_schema
+      state: "on"
+    - condition: state
+      entity_id: person.alunya
+      state: home
+    - condition: template
+      value_template: >
+        {{ states('sensor.kamer_alunya_temperature') | float <
+        states('input_number.kamer_alunya_normal_temperature') | float }}
+    - condition: state
+      entity_id: binary_sensor.kamer_alunya_raam
+      state: "off"
+  action:
+  - service: input_number.set_value
+    data:
+      value: >
+        {{ states('input_number.kamer_alunya_normal_temperature') | float }}
+    target:
+      entity_id: input_number.alunya_airco_target_temperature          
+  - service: input_number.set_value
+    data:
+      value: 30
+    target:
+      entity_id: input_number.alunya_airco_timer_minutes
+  - service: script.alunya_airco_start
+    data: {} 
+  mode: restart
+
+
+##################
+# Uit
+##################
+
+# Aircoverwarming gaat UIT bij de trigger:
+# - het schema gaat op "uit" 
+# - Alunya verlaat het huis
+# - pp einduur van de timer
+# - wanneer het raam opengaat
+
+- alias: "♨️ Airco heating Alunya: uit volgens volgens schema/verlaten huis/timer stop"
+  id: 'dd0ae256-6054-431e-bb12-506191798b6e'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id: schedule.kamer_alunya_normal_temperature_schema
+      to: "off"
+    - platform: state
+      entity_id: person.alunya
+      to: not_home
+    - platform: state
+      entity_id: binary_sensor.kamer_alunya_raam
+      to: "on"
+    - platform: time
+      at: input_datetime.alunya_airco_timer_stop      
+  condition: []
+  action:
+    - service: climate.turn_off
+      data: {}
+      target:
+        device_id: 3c12e341dfd1d1fe2327ec66f3613321  
+    - service: climate.set_temperature
+      data:
+        temperature: 14
+      target:
+        device_id: 3c12e341dfd1d1fe2327ec66f3613321
+    - service: input_number.set_value
+      data:
+        value: 14
+      target:
+        entity_id: input_number.alunya_airco_target_temperature        
+    - service: timer.finish
+      data: {}
+      target:
+        entity_id: timer.alunya_airco_timer
+  mode: single
+
+
+########################
+# Handmatige aanpassing
+########################
+
+- alias: '♨️ Airco heating Alunya: aan gedurende 30 minuten bij hogere gewenste temperatuur'
+  id: 'da19679e-5318-4bd2-85f3-1b5153f0ab08'
+  description: ''
+  trigger:
+  - platform: template
+    value_template: >
+      {{ states('sensor.kamer_alunya_temperature') | float < states('input_number.alunya_airco_target_temperature') | float }}
+  condition:
+  - condition: state
+    entity_id: person.alunya
+    state: home
+  action:
+  - service: input_number.set_value
+    data:
+      value: 30
+    target:
+      entity_id: input_number.alunya_airco_timer_minutes
+  - service: script.alunya_airco_start
+    data: {}            
+  mode: restart
+
+
+- alias: '♨️ Airco heating Alunya: uit als huidige temperatuur hoger is dan gewenste temperatuur'
+  id: 'ce181e9e-3206-404a-8588-46583be2e248'
+  description: ''
+  trigger:
+  - platform: template
+    value_template: >
+      {{ states('sensor.kamer_alunya_temperature') | float > states('input_number.alunya_airco_target_temperature') | float }}
+  condition: []
+  action:  
+  - service: climate.turn_off
+    data: {}
+    target:
+      device_id: 3c12e341dfd1d1fe2327ec66f3613321  
+  - service: climate.set_temperature
+    data:
+      temperature: 14
+    target:
+      device_id: 3c12e341dfd1d1fe2327ec66f3613321
+  - service: input_number.set_value
+    data:
+      value: 14
+    target:
+      entity_id: input_number.alunya_airco_target_temperature
+  - service: timer.finish
+    data: {}
+    target:
+      entity_id: timer.alunya_airco_timer
+  mode: single
+
+- alias: '♨️ Airco heating Alunya: uit als verwarming 10 min aan staat buiten de normale uren'
+  id: 'ec418031-ba50-4aca-b396-d6c864ddbe59'
+  description: ''
+  trigger:
+  - platform: template
+    value_template: >
+      {{ states('climate.amilya_airco') != "off" }}
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  condition:
+    - condition: state
+      entity_id: schedule.kamer_alunya_normal_temperature_schema
+      state: "off"
+  action:
+  - service: climate.turn_off
+    data: {}
+    target:
+      device_id: 3c12e341dfd1d1fe2327ec66f3613321 
+  - service: climate.set_temperature
+    data:
+      temperature: 14
+    target:
+      device_id: 3c12e341dfd1d1fe2327ec66f3613321
+  - service: input_number.set_value
+    data:
+      value: 14
+    target:
+      entity_id: input_number.alunya_airco_target_temperature
+  mode: single

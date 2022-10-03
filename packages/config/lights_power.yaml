@@ -1,0 +1,16 @@
+###############################################################################
+# Sensor to calculate the consumption of lights
+###############################################################################
+
+sensor:
+  - platform: template
+    sensors:
+      all_lights_power:
+        friendly_name: Alle lichten power
+        unit_of_measurement: W
+        icon_template: mdi:transmission-tower
+        device_class: power
+        value_template: >
+          {{ expand('group.all_lights_power') 
+          | rejectattr('state', 'in', ['unavailable', 'unknown'])
+          | map(attribute='state') | map('float') | sum | round(2) }}

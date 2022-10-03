@@ -74,3 +74,41 @@ naam:
       value: '{% set l = states(''input_select.car_use_day_7'') %} {% if l == ''thuis''
         %} 25 {% elif l == ''Toyota Diest'' %} 45 {% elif l == ''Toyota Evere'' %}
         25 {% elif l == ''andere 100%'' %} 100 {% endif %}'
+'1663098482978':
+  alias: Nieuw script
+  sequence:
+    delay: 00:01:30
+'1663098699766':
+  alias: Nieuw script
+  sequence:
+  - delay:
+      hours: 1
+      minutes: 25
+      seconds: 0
+      milliseconds: 0
+'1663099574639':
+  alias: Nieuw script
+  sequence:
+  - delay:
+      hours: 1
+      minutes: 25
+      seconds: 0
+      milliseconds: 0
+'1663100214312':
+  alias: Nieuw script
+  sequence:
+  - service: climate.set_hvac_mode
+    data:
+      hvac_mode: dry
+    target:
+      device_id: 64296bd295e4506b8a3ec42c8aae7e58
+  - delay:
+      hours: 0
+      minutes: 30
+      seconds: 0
+      milliseconds: 0
+  - service: climate.set_hvac_mode
+    data:
+      hvac_mode: 'off'
+    target:
+      device_id: 64296bd295e4506b8a3ec42c8aae7e58

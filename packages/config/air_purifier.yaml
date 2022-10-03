@@ -1,0 +1,8 @@
+sensor:
+  - platform: template
+    sensors:
+      xiaomi_air_purifier_air_quality_pm25:
+        friendly_name: "Air quality (AQI) PM2.5"
+        value_template: "{{ state_attr('fan.xiaomi_air_purifier_3h', 'aqi') }}"
+        unit_of_measurement: "μg/m³"
+        icon_template: "mdi:weather-fog"

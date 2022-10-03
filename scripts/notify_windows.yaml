@@ -19,6 +19,7 @@ notify_bart_windows_close:
           channel: ramen
           timeout: 3600
           tag: " {{tag}}"
+          notification_icon: "mdi:window-closed-variant"
           actions:
           - action: "{{action_window_pause}}" 
             title: stel meldingen 2 uren uit
@@ -45,6 +46,7 @@ notify_bart_windows_open:
           channel: ramen
           timeout: 3600
           tag: "{{tag}}"
+          notification_icon: "mdi:window-closed-variant"
           actions:
           - action: "{{action_window_pause}}" 
             title: stel meldingen 2 uren uit
@@ -71,6 +73,7 @@ notify_madouce_windows_close:
           channel: ramen
           timeout: 3600
           tag: " {{tag}}"
+          notification_icon: "mdi:window-closed-variant"
           actions:
           - action: "{{action_window_pause}}" 
             title: stel meldingen 2 uren uit
@@ -97,6 +100,7 @@ notify_madouce_windows_open:
           channel: ramen
           timeout: 3600
           tag: " {{tag}}"
+          notification_icon: "mdi:window-closed-variant"
           actions:
           - action: "{{action_window_pause}}" 
             title: stel meldingen 2 uren uit

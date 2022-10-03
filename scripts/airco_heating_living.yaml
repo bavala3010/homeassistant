@@ -1,0 +1,80 @@
+living_airco_start:
+  sequence:
+  - service: timer.start
+    data:
+      duration: "{{ states('input_number.living_airco_timer_minutes') | float * 60 }}"
+    target:
+      entity_id: timer.living_airco_timer
+  - service: input_datetime.set_datetime
+    data:
+      datetime: >
+        {% set t =states('input_number.living_airco_timer_minutes') | float %}
+        {{ (now().timestamp() + t*60 ) | timestamp_custom("%Y-%m-%d %-H:%M:%S") }}
+    target:
+      entity_id: input_datetime.living_airco_timer_stop
+  - service: climate.set_temperature
+    data:
+      hvac_mode: heat
+      temperature: >
+        {% set adj = states('input_number.living_airco_target_temperature') | float - states('sensor.living_temperature') | float %}
+        {{ (state_attr('climate.living_airco', 'current_temperature') + adj) | round(1, 'half', 0) }}
+    target:
+      device_id: 1c560bbc7917f45d737e87d3e2bd0d89
+  - service: climate.set_preset_mode
+    data:
+      preset_mode: eco
+    target:
+      device_id: 1c560bbc7917f45d737e87d3e2bd0d89
+  - service: climate.set_swing_mode
+    data:
+      swing_mode: 3D
+    target:
+      device_id: 1c560bbc7917f45d737e87d3e2bd0d89
+
+living_airco_19:
+  sequence:
+  - service: input_number.set_value
+    data:
+      value: 19
+    target:
+      entity_id: input_number.living_airco_target_temperature          
+  - service: input_number.set_value
+    data:
+      value: 30
+    target:
+      entity_id: input_number.living_airco_timer_minutes
+  - service: script.living_airco_start
+    data: {} 
+  mode: restart
+
+living_airco_20:
+  sequence:
+  - service: input_number.set_value
+    data:
+      value: 20
+    target:
+      entity_id: input_number.living_airco_target_temperature          
+  - service: input_number.set_value
+    data:
+      value: 30
+    target:
+      entity_id: input_number.living_airco_timer_minutes
+  - service: script.living_airco_start
+    data: {} 
+  mode: restart
+
+living_airco_21:
+  sequence:
+  - service: input_number.set_value
+    data:
+      value: 21
+    target:
+      entity_id: input_number.living_airco_target_temperature          
+  - service: input_number.set_value
+    data:
+      value: 30
+    target:
+      entity_id: input_number.living_airco_timer_minutes
+  - service: script.living_airco_start
+    data: {} 
+  mode: restart

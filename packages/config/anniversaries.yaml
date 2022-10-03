@@ -1,0 +1,18 @@
+###############################################################################
+#
+# anniversaries
+# 
+###############################################################################
+
+anniversaries:
+  sensors:
+  - name: huwelijk Madouce & Bart
+    date: '2022-04-30'
+  - name: verjaardag Alunya
+    date: '10-10'
+  - name: verjaardag Amilya
+    date: '05-04'
+  - name: verjaardag Madouce
+    date: '02-06'
+  - name: verjaardag Bart
+    date: '05-03'

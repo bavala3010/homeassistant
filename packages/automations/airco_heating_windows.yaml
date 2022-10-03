@@ -1,0 +1,83 @@
+automation:
+
+
+- alias: Master bedroom raam open = airco uit
+  id: 'a94943b2-4b1a-4034-a876-5cad358022b1'
+  description: ''
+  trigger:
+  - type: opened
+    platform: device
+    device_id: 70420b97a92835cedb78632572b8f668
+    entity_id: binary_sensor.master_bedroom_raam_kantel
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+  condition:
+    alias: als airco niet uit staat
+    not:
+    - condition: state
+      entity_id: climate.master_bedroom_airco
+      state: 'off'
+  action:
+  - device_id: 64296bd295e4506b8a3ec42c8aae7e58
+    domain: climate
+    entity_id: climate.master_bedroom_airco
+    type: set_hvac_mode
+    hvac_mode: 'off'
+  mode: single
+
+
+- alias: living raam open = airco uit
+  id: 'c7e156ce-7151-48a2-a636-d5aea9957309'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - group.living_ramen
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+  condition:
+    alias: als airco niet uit staat
+    not:
+    - condition: state
+      entity_id: climate.living_airco
+      state: 'off'
+  action:
+  - device_id: 1c560bbc7917f45d737e87d3e2bd0d89
+    domain: climate
+    entity_id: climate.living_airco
+    type: set_hvac_mode
+    hvac_mode: 'off'
+  mode: single
+
+  
+- alias: ramen Alunya open = airco uit
+  id: '98e35c26-bc8b-4283-9d2b-2f79aab3a6d0'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - group.kamer_alunya_ramen_ramen
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+  condition:
+    alias: als airco niet uit staat
+    not:
+    - condition: state
+      entity_id: climate.alunya_airco
+      state: 'off'
+  action:
+  - device_id: 1c560bbc7917f45d737e87d3e2bd0d89
+    domain: climate
+    entity_id: climate.alunya_airco
+    type: set_hvac_mode
+    hvac_mode: 'off'
+  mode: single

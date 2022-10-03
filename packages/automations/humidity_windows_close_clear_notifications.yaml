@@ -1,0 +1,228 @@
+############################ Table of Contents ############################ 
+#
+#   Close windows clear notifications
+#   🪟 ramen - sluit raam living - clear notification (Bart en Madouce)
+#   🪟 ramen - sluit raam kamer Amilya - clear notification (Bart en Madouce)
+#   🪟 ramen - sluit raam veranda - clear notification (Bart en Madouce)
+#   🪟 ramen - sluit raam berging - clear notification (Bart en Madouce)
+#   🪟 ramen - sluit raam badkamer - clear notification (Bart en Madouce)
+#   🪟 ramen - sluit raam kamer Alunya - clear notification (Bart en Madouce)
+#   🪟 ramen - sluit raam master bedroom - clear notification (Bart en Madouce)
+# 
+#############################################################################
+
+automation:
+
+- alias: 🪟 ramen - sluit raam living - clear notification
+  id: '14873cee-f737-4de1-9f0c-7e3ee45cea02'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.keuken_raam
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: binary_sensor.living_oprit_raam
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: binary_sensor.living_tuin_raam
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: input_boolean.living_window_pause
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.living_raam_moet_dicht
+    state: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_living
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_living
+  mode: single
+
+- alias: 🪟 ramen - sluit raam kamer Amilya - clear notification (Bart en Madouce)
+  id: '641488e0-5315-4a14-98c1-91a58c2541f3'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.kamer_amilya_raam
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: input_boolean.kamer_amilya_window_pause
+    from: 'off'
+    to: 'on'    
+  condition:
+  - condition: state
+    entity_id: input_boolean.kamer_amilya_raam_moet_dicht
+    state: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_kamer_amilya
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_kamer_amilya
+  mode: single
+
+- alias: 🪟 ramen - sluit raam veranda - clear notification (Bart en Madouce)
+  id: '2edf5074-c13e-41c1-be2e-056f14dc22bc' 
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.veranda_schuifraam
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: input_boolean.veranda_window_pause
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.veranda_schuifraam_moet_dicht
+    state: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_veranda
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_veranda        
+  mode: single
+
+- alias: 🪟 ramen - sluit raam berging - clear notification (Bart en Madouce)
+  id: 'ac82b1aa-20a8-4b50-b528-d3565aaac616'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.berging_raam
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: input_boolean.berging_window_pause
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.berging_raam_moet_dicht
+    state: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_berging
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_berging
+  mode: single
+
+- alias: 🪟 ramen - sluit raam badkamer - clear notification (Bart en Madouce)
+  id: '8b2d90de-b450-4150-a9f3-0851eb39c3a6'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.badkamer_raam_kantel
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: input_boolean.badkamer_window_pause
+    from: 'off'
+    to: 'on'    
+  condition:
+  - condition: state
+    entity_id: input_boolean.badkamer_raam_moet_dicht
+    state: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_badkamer
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_badkamer
+  mode: single
+
+- alias: 🪟 ramen - sluit raam kamer Alunya - clear notification (Bart en Madouce)
+  id: '301ebb17-90c6-4d29-a5f4-5a4a3e757bb8'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.kamer_alunya_raam
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: binary_sensor.kamer_alunya_schuifraam
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: input_boolean.kamer_alunya_window_pause
+    from: 'off'
+    to: 'on'    
+  condition:
+  - condition: state
+    entity_id: input_boolean.kamer_alunya_raam_moet_dicht
+    state: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_kamer_alunya
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_kamer_alunya
+  mode: single
+
+- alias: 🪟 ramen - sluit raam master bedroom - clear notification (Bart en Madouce)
+  id: '46c0ae94-f544-42d3-b91c-2e8855031ecf'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.master_bedroom_raam_kantel
+    to: 'off'
+  - platform: state
+    entity_id: input_boolean.master_bedroom_window_pause
+    from: 'off'
+    to: 'on'    
+  condition:
+  - condition: state
+    entity_id: input_boolean.master_bedroom_raam_moet_dicht
+    state: 'on'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_master_bedroom
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: window_master_bedroom
+  mode: single

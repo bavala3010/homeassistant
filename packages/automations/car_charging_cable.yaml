@@ -1,0 +1,214 @@
+############################ Table of Contents ############################ 
+# 
+#   Automations
+
+
+############################ Automations ################################## 
+automation:
+
+
+############################################
+# car charge: check cable and session
+############################################
+
+- alias: "🔋 charge - om 10u, 21u30 en 22u30 check of laadkabel ingeplugd is voor charge binnen de volgende 10 uren"
+  id: '995d850b-435f-46a6-9e5a-9ab89701ddf4'
+  description: ''
+  trigger:
+  - platform: time
+    at: '10:00'
+  - platform: time
+    at: '21:30'
+  - platform: time
+    at: '22:30'
+  condition:
+  - condition: state
+    entity_id: device_tracker.audi_e_tron_sportback_position
+    state: home    
+  - condition: state
+    entity_id: sensor.car_1_plug_state
+    state: 'disconnected'
+  # voorwaarde: als start tijd < nu + 10 uren (dus starttijd voor 20u)
+  - condition: template
+    value_template: "{% if as_timestamp(states('sensor.car_charge_start_time')) | timestamp_custom('%Y-%m-%d %H:%M', false) < ((as_timestamp(now())  + (10 * 60 * 60)) | timestamp_custom('%Y-%m-%d %H:%M')) %}true{% endif %}"
+  # voorwaarde: enkel als SOC < gewenst laaddoel
+  - condition: template
+    value_template: "{{ states('sensor.car_1_soc')| int(2) < (states('input_number.car_charge_target_percentage') | int(2)) }}"
+  action:
+  - service: notify.bart_phone
+    data:
+      title: "Plug de laadkabel in."
+      message: >
+        {% set soc = states('sensor.car_1_soc') | round(default=0) %}
+        {% set targetsoc = states('input_number.car_charge_target_percentage') | round(default=0) %}
+        {% set targetrange = states('input_number.car_charge_target_range') | round(default=0) %}
+        De auto zou moeten laden op {{ as_timestamp(states('sensor.car_charge_start_time')) | timestamp_custom('%a %-Hu%M', false) }} maar de kabel steekt niet in.
+        Huidige lading is {{ soc }}%. Laaddoel is {{ targetsoc }}% = {{ targetrange }} km.
+      data:
+        tag: car_charging
+        color: green
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car-charging        
+  mode: single
+
+- alias: "🔋 charge - laadkabel zopas ingeplugd = melding (enkel thuis)"
+  id: '7d9ccd84-6dd5-4ab3-9595-f31eaff66c87'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id: sensor.car_1_plug_state
+      to: connected
+  condition:
+    - condition: state
+      entity_id: device_tracker.audi_e_tron_sportback_position
+      state: home
+    - condition: state
+      entity_id: sensor.charger_status
+      state: connected
+    - condition: state
+      entity_id: input_boolean.car_charge_mode_net
+      state: "on"
+  action:
+    - service: notify.bart_phone
+      data:
+        title: De laadkabel is zopas ingeplugd.
+        message: "{{ message }}"
+        data:
+          tag: car_charging
+          color: green
+          actions:
+            - action: URI
+              title: meer info
+              uri: /eikenbos-dashboard/car-charging
+    - service: notify.madouce_phone
+      data:
+        title: De laadkabel is zopas ingeplugd.
+        message: "{{ message }}"
+        data:
+          tag: car_charging
+          color: green
+          actions:
+            - action: URI
+              title: meer info
+              uri: /eikenbos-dashboard/car-charging
+  variables:
+    message: >
+      {% set soc = states('sensor.car_1_soc') | round(default=0) %} {% set
+      targetsoc = states('input_number.car_charge_target_percentage') |
+      round(default=0) %} {% set targetrange =
+      states('input_number.car_charge_target_range') | round(default=0) %} Laden
+      met timer van {{ as_timestamp(states('sensor.car_charge_start_time')) |
+      timestamp_custom('%a %-Hu%M', false)}} tot {{
+      state_attr('input_datetime.car_charge_target_time', 'timestamp') |
+      timestamp_custom("%a %-Hu%M") }}.<br> Er wordt geladen van {{ soc }}% naar
+      {{ targetsoc }}% = {{ targetrange }} km.
+
+- alias: "🔋 charge - laadkabel zopas ingeplugd zonder laadmodus = melding (enkel thuis)"
+  id: 'c5e1ffbb-0efe-4802-ab3a-cf38fa31900d'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id: sensor.car_1_plug_state
+      to: connected
+  condition:
+    - condition: state
+      entity_id: device_tracker.audi_e_tron_sportback_position
+      state: home
+    - condition: state
+      entity_id: sensor.charger_status
+      state: connected
+    - condition: state
+      entity_id: input_boolean.car_charge_mode_net
+      state: "off"
+    - condition: state
+      entity_id: input_boolean.car_charge_mode_sun
+      state: "off"
+  action:
+    - service: notify.bart_phone
+      data:
+        title: De laadkabel is zopas ingeplugd.
+        message: "{{ message }}"
+        data:
+          tag: car_charging
+          color: green
+          actions:
+            - action: URI
+              title: meer info
+              uri: /eikenbos-dashboard/car-charging
+    - service: notify.madouce_phone
+      data:
+        title: De laadkabel is zopas ingeplugd.
+        message: "{{ message }}"
+        data:
+          tag: car_charging
+          color: green
+          actions:
+            - action: URI
+              title: meer info
+              uri: /eikenbos-dashboard/car-charging
+  variables:
+    message: >
+      OPGELET: Er is geen laadmodus ingesteld. Kies laden met timer, direct of met
+      zon.
+
+
+- alias: "🔋 charge - laadkabel verbonden maar sessie op laadpaal niet gestart (enkel thuis)"
+  id: '8add47e4-3af1-43f9-b9f3-56e39c333e1e'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.car_1_plug_state
+    to: connected
+  condition:
+  - condition: state
+    entity_id: device_tracker.audi_e_tron_sportback_position
+    state: home  
+  - condition: state
+    entity_id: sensor.charger_status
+    state: 'available'
+  action:
+  - service: notify.bart_phone
+    data:
+      message: TTS
+      data:
+        tts_text: "De laadkabel steekt in, maar de sessie is niet gestart!"
+        ttl: 0
+        priority: high
+        media_stream: alarm_stream_max
+  - service: notify.bart_phone
+    data:
+      title: "De laadkabel steekt in maar de sessie is niet gestart."
+      message: >
+        De laadkabel is ingeplugd maar er is niet gebadget om de sessie te starten.
+      data:
+        tag: car_charging
+        color: green
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car-charging        
+  mode: single
+
+- alias: "🔋 charge - laadkabel losgekoppeld = laden stoppen"
+  id: '13076d4e-aabf-4fa9-9f90-6d1392e29f69'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.charger_status
+    to: available
+  condition: []
+  action:
+  # stop all charging sessions
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: 
+      - input_boolean.car_charge_busy
+      - input_boolean.car_charge_sun_busy
+      - input_boolean.car_charge_net_busy
+  # force stop charging by setting charger at 5 A
+  - service: script.stop_charger
+    data: {}
+  mode: single

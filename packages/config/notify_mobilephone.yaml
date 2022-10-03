@@ -1,0 +1,22 @@
+###############################################################################
+#
+# Mapping of the phone to a fixed name
+# If you change smartphone, you can easily change the mapping and keep the fixed name in the automations.
+#
+###############################################################################
+
+notify:
+  - name: bart_phone
+    platform: group
+    services:
+      - service: mobile_app_sm_g975f
+
+  - name: madouce_phone
+    platform: group
+    services:
+      - service: mobile_app_sm_g986b
+
+  - name: alunya_phone
+    platform: group
+    services:
+      - service: mobile_app_sm_a715f

@@ -2,3 +2,5 @@ lovelace:
   resources:
     - url: /hacsfiles/lovelace-battery-entity-row/battery-entity-row.js
       type: module
+    - url: /hacsfiles/battery-state-card/battery-state-card.js
+      type: module      

@@ -1,0 +1,418 @@
+############################ Table of Contents ############################ 
+# 
+#   Automations
+#   🚗 autolader is verbonden (niet thuis) = melding
+#   🚗 auto laadt (niet thuis) = melding
+#   🚗 auto gedaan met laden = melding
+#
+#   🔋 charge planning is veranderd = bepaal SOC per dag
+#   🔋 charge planning - om 7u00 bepaal target SOC per dag op basis van planning
+#   🔋 charge planning - om 6u30 zet doel % voor 's anderendaags
+#   🔋 morgen naar Toyota Evere = check 21u30 voldoende geladen?
+#   🔋 morgen naar Toyota Diest = check 21u30 voldoende geladen?
+#   🔋 check om 21u30 batterij tov laaddoel
+#   🔋 charge target percentage is veranderd
+#   🔋 charge target range is veranderd
+#   🔋 gewenst Wattage laadpaal is veranderd = bepaal laadminuten voor 1%
+#   🔋 gewenst Wattage laadpaal is veranderd = zet de fasen op 1 of 3
+#   🔋 gewenst Wattage laadpaal is veranderd = bepaal Ampère
+#   🔋 Ampère laadpaal is veranderd = bepaal waarde en zend naar register
+#   🔋 charge - om 10u, 21u30 en 22u30 check of laadkabel ingeplugd is voor charge binnen de volgende 10 uren
+#   🔋 charge - laadkabel zopas ingeplugd = melding (enkel thuis)
+#   🔋 charge - laadkabel verbonden maar sessie op laadpaal niet gestart (enkel thuis)
+#   🔋 charge - laadkabel losgekoppeld = laden stoppen
+#   🔋 charge - starten op datum en uur van charge net
+#   🔋 charge - laaddoel bereikt (enkel timer en direct) = laden stoppen + melding sturen (enkel thuis)
+#   🔋 charge - laaddoeluur bereikt = laden stoppen + verzetten naar 's anderendaags
+
+
+# bluetooth address Etron: 98:49:14:C1:37:0B
+# VIN etron: WAUZZZGE6MB019131
+
+############################ Automations ################################## 
+automation:
+
+
+######################################
+# gewoon laden (niet thuis)
+######################################
+
+- alias: 🚗 autolader is verbonden (niet thuis) = melding
+  id: 'cdd4783a-a810-4b0a-b46d-1b1bf58eb80e'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.car_1_plug_state
+    to: 'connected'
+  condition:
+  - condition: template
+    value_template: "{{ states('device_tracker.audi_e_tron_sportback_position') != 'home' }}"
+  action:
+  - service: notify.bart_phone
+    data:
+      title: "🚙 Autolader is verbonden." 
+      message: "Nu {{states('sensor.car_1_soc')}}%. Nog {{states('sensor.car_1_remaining_charge_time')}} laden."
+      data:
+        color: green
+        tag: auto_laden
+        timeout: 300
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car        
+  - service: notify.madouce_phone
+    data:
+      message: "🚙 Autolader is verbonden. Nu {{states('sensor.car_1_soc')}}%."
+      data:
+        color: green
+        tag: auto_laden
+        timeout: 300
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car        
+  mode: single
+
+- alias: 🚗 auto laadt (niet thuis) = melding
+  id: '10f06a54-7eea-4d86-9bf8-2ef07549a4d6'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.car_1_charging_state
+    from: 'off'
+    to: 'charge'
+  condition:
+  - condition: template
+    value_template: "{{ states('device_tracker.audi_e_tron_sportback_position') != 'home' }}"
+  action:
+  - service: notify.bart_phone
+    data:
+      title: 🚙 Auto is aan het laden.
+      message: Nu {{states('sensor.car_1_soc')}}% = {{states('sensor.car_1_range')}} km.
+        Nog {{states('sensor.car_1_remaining_charge_time')}} laden tot 100%.
+      data:
+        color: green
+        tag: auto_laden
+        timeout: 300
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car
+  - service: notify.madouce_phone
+    data:
+      message: Nu {{states('sensor.car_1_soc')}}% = {{states('sensor.car_1_range')}} km.
+        Nog {{states('sensor.car_1_remaining_charge_time')}} laden tot 100%.
+      data:
+        color: green
+        tag: auto_laden
+        timeout: 300
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car
+  mode: single
+
+- alias: 🚗 auto gedaan met laden = melding
+  id: '23ebfe4a-e944-49dc-aa3f-e8a1983e8a56'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.car_1_charging_state
+    to: 'completed'
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: 
+      - input_boolean.car_charge_mode_now
+      - input_boolean.car_charge_busy
+      - input_boolean.car_charge_sun_busy
+      - input_boolean.car_charge_net_busy
+  - service: notify.bart_phone
+    data:
+      message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.car_1_soc')}}%. {{states('sensor.car_1_range')}} km."
+      data:
+        color: green
+        tag: auto_laden
+        timeout: 43200
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car
+  - service: notify.madouce_phone
+    data:
+      message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.car_1_soc')}}%. {{states('sensor.car_1_range')}} km."
+      data:
+        color: green
+        tag: auto_laden
+        timeout: 43200
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car
+  mode: single
+
+
+#######################################
+# Target range / SOC
+######################################
+
+- alias: 🔋 charge target percentage is veranderd
+  id: 'bc9713f6-225f-4e87-99eb-6bb78aa18653'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_number.car_charge_target_percentage
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.car_charge_target_range
+    data:
+      value: "{{ ((states('input_number.car_charge_target_percentage') | float(default=0) ) * (states('sensor.car_range_per_10percent')| float(default=0)) / 10) | int }}"
+  - wait_template: ''
+    timeout: '00:00:02'      
+  mode: single
+  max_exceeded: silent
+
+- alias: 🔋 charge target range is veranderd
+  id: '79d535f9-0b79-4eb6-98cb-5786bf032300'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_number.car_charge_target_range
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.car_charge_target_percentage
+    data:
+      value: "{{ ((states('input_number.car_charge_target_range') | float(default=0) ) / (states('sensor.car_range_per_10percent')| float(default=0)) * 10) | int }}"
+  - wait_template: ''
+    timeout: '00:00:02'  
+  mode: single
+  max_exceeded: silent
+
+
+#######################################
+# Car charger: define ampère and phases
+#######################################
+
+- alias: "🔋 gewenst Wattage laadpaal is veranderd = bepaal laadminuten voor 1%"
+  id: 'baae9f5a-73dd-45f6-98b4-5130a50a903d'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_number.car_charger_watt
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.minuten_voor_1_laden
+    data:
+      value: "{{ ( 56.925 / (states('input_number.car_charger_watt') | float ) ) | round(2) }}"
+  mode: restart
+
+- alias: "🔋 gewenst Wattage laadpaal is veranderd = zet de fasen op 1 of 3"
+  id: 'f27a3c48-775c-471f-bd6d-33d23c638826'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_number.car_charger_watt
+  condition:
+  # only when charging is busy, otherwise by changing the W the car will start to charge
+  - condition: state
+    entity_id: input_boolean.car_charge_busy
+    state: 'on'
+  action:
+  - service: script.charger_define_phase_1_or_3_based_on_watt
+  mode: restart
+
+- alias: "🔋 gewenst Wattage laadpaal is veranderd = bepaal Ampère"
+  id: 'd4197275-7e4b-453d-b3ea-3ea91c2e19d8'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_number.car_charger_watt
+  condition:
+  # only when charging is busy, otherwise by changing the W the car will start to charge
+  - condition: state
+    entity_id: input_boolean.car_charge_busy
+    state: 'on'
+  action:
+  - service: script.charger_define_ampere_based_on_watt
+    data: {}
+  mode: restart
+
+- alias: "🔋 Ampère laadpaal is veranderd = bepaal waarde en stuur naar register"
+  id: '9550cbe2-2979-4c7f-9974-ec7eaebc249e'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_number.car_charger_ampere
+  condition:
+  # only when charging is busy, otherwise by changing the W the car will start to charge
+  - condition: state
+    entity_id: input_boolean.car_charge_busy
+    state: 'on'
+  action:
+  - service: script.charger_define_and_write_register_based_on_ampere
+  mode: restart
+
+
+######################################
+# car charge: red hours
+######################################
+
+- alias: "🔋 charge - red hours: week 6u-8u -> lader op timer (enkel thuis)"
+  id: '0a0bce79-42d8-4184-9dab-9ed54f30f3bf'  
+  description: ''
+  trigger:
+  - platform: time
+    at: 06:00
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  - condition: state
+    entity_id: device_tracker.audi_e_tron_sportback_position
+    state: home    
+  action:
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: start_timed_charger
+  - delay: 02:00:00
+  - condition: state
+    entity_id: input_boolean.car_charge_busy
+    state: 'on'  
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: start_charger
+  mode: single
+  
+- alias: "🔋 charge - red hours: zaterdag 7u-9u -> lader op timer (enkel thuis)"
+  id: '31e6ff24-3423-4332-b4f9-da785af82b26'
+  description: ''
+  trigger:
+  - platform: time
+    at: 07:00
+  condition:
+  - condition: time
+    weekday:
+    - sat
+  - condition: state
+    entity_id: device_tracker.audi_e_tron_sportback_position
+    state: home    
+  action:
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: start_timed_charger
+  - delay: 02:00:00
+  - condition: state
+    entity_id: input_boolean.car_charge_busy
+    state: 'on'
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: start_charger
+  mode: single
+
+- alias: "🔋 charge - red hours: zondag 8u-12u -> lader op timer (enkel thuis)"
+  id: '81cb1458-debb-4378-9313-d34f4029f693'
+  description: ''
+  trigger:
+  - platform: time
+    at: 08:00
+  condition:
+  - condition: time
+    weekday:
+    - sun
+  - condition: state
+    entity_id: device_tracker.audi_e_tron_sportback_position
+    state: home    
+  action:
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: start_timed_charger
+  - delay: 04:00:00
+  - service: audiconnect.execute_vehicle_action
+    data:
+      vin: WAUZZZGE6MB019131
+      action: start_charger
+  mode: single
+  
+
+######################################
+# car charge: varia
+######################################
+
+- alias: "🔋 charge - ververs status auto tijdens het laden"
+  id: '05fea2a8-3699-41b6-b535-a1a6e49be1b1'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.car_1_charging_state
+    to: 'charge'
+  condition: []
+  action:
+  - repeat:
+      while:
+      - condition: state
+        entity_id: sensor.car_1_charging_state
+        state: 'charge'
+      sequence:
+      - service: audiconnect.refresh_data
+        data:
+          vin: WAUZZZGE6MB019131
+      - delay:
+          hours: 0
+          minutes: 10
+          seconds: 0
+          milliseconds: 0
+  mode: single
+
+- alias: "🔋 hernieuw ampère en W op laadpaal (bij aftellen counter)"
+  id: '227ab015-24f0-461e-a977-4600c813ac98'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.charger_socket1_current_valid_time
+    below: '10000'
+    # 10000 seconds = +/- 2,5 uren
+  - platform: numeric_state
+    entity_id: sensor.charger_socket1_current_valid_time
+    below: '5000'    
+  condition: []
+  action:
+  - service: script.send_ampere_to_charger
+    data:
+      registervalue: '{{registervalue}}'
+  - service: >
+      {% if is_state('sensor.charger_use_1_or_3_phases', '1') %}
+        script.set_charger_to_1_phase
+      {% elif is_state('sensor.charger_use_1_or_3_phases','3') %}
+        script.set_charger_to_3_phases
+      {% endif %}      
+  variables:
+    registervalue: >
+      {% set A = states('sensor.charger_actual_applied_maxcurrent') | float %}
+      {% if A == 5 %}[0x40a0, 0x0000]
+      {% elif A == 6 %}[0x40c0, 0x0000]
+      {% elif A == 7 %}[0x40e0, 0x0000]
+      {% elif A == 8 %}[0x4100, 0x0000]
+      {% elif A == 9 %}[0x4110, 0x0000]
+      {% elif A == 10 %}[0x4120, 0x0000]
+      {% elif A == 11 %}[0x4130, 0x0000]
+      {% elif A == 12 %}[0x4140, 0x0000]
+      {% elif A == 13 %}[0x4160, 0x0000]
+      {% endif %}
+  mode: single

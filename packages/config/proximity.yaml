@@ -1,0 +1,12 @@
+proximity:
+  bart_home:
+    devices:
+      - device_tracker.bart_s10
+    tolerance: 50
+    unit_of_measurement: km
+    
+  madouce_home:
+    devices:
+      - device_tracker.madouce_s20
+    tolerance: 50
+    unit_of_measurement: km

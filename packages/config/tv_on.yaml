@@ -1,0 +1,25 @@
+
+binary_sensor:
+  - platform: template
+    sensors:
+      master_bedroom_tv_on:
+        friendly_name: "master bedroom tv aan"
+        value_template: >-
+          {{ states('media_player.master_bedroom_tv') in ['unknown', 'playing'] }}
+    # als netflix speelt is de status "unknown"
+    
+  - platform: template
+    sensors:
+      alunya_tv_on:
+        friendly_name: "Alunya tv aan"
+        value_template: >-
+          {{ states('media_player.alunya_tv') in ['unknown', 'playing'] }}
+    # als netflix speelt is de status "unknown"
+
+  - platform: template
+    sensors:
+      amilya_tv_on:
+        friendly_name: "Amilya tv aan"
+        value_template: >-
+          {{ states('media_player.amilya_tv') in ['unknown', 'playing'] }}
+    # als netflix speelt is de status "unknown"

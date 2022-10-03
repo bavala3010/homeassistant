@@ -1,0 +1,18 @@
+sensor:
+  - platform: afvalbeheer
+    wastecollector: RecycleApp
+    resources:
+      - restafval
+      - gft
+      - papier
+      - pmd
+    postcode: 3010
+    streetname: !secret streetname
+    streetnumber: 25
+    upcomingsensor: 1
+    dateformat: '%d-%m-%Y'
+    dateonly: 0
+    name: ""
+    nameprefix: 1
+    builtinicons: 1
+    dutch: 1

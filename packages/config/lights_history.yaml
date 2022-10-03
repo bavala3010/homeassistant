@@ -1,0 +1,63 @@
+#####################################################################
+# historiek lichten
+#####################################################################
+
+sensor:    
+  - platform: history_stats
+    name: "living lichten links aan vandaag"
+    entity_id: light.living_links 
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "living lichten rechts aan vandaag"
+    entity_id: light.living_rechts 
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "gang lichten aan vandaag"
+    entity_id: light.gang
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "veranda licht aan vandaag"
+    entity_id: light.veranda 
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "Alunya licht bol aan vandaag"
+    entity_id: light.alunya_bol 
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "Alunya licht staande lamp aan vandaag"
+    entity_id: light.alunya_staande_lamp
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "Alunya licht wasbak aan vandaag"
+    entity_id: light.alunya_wasbak
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+
+

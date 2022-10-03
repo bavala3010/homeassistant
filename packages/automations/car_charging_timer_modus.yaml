@@ -1,0 +1,114 @@
+############################ Table of Contents ############################ 
+# 
+#   Automations
+
+
+############################ Automations ################################## 
+automation:
+
+######################################
+# car charge: timer charging
+######################################
+
+- alias: "🔋 charge timer - starten op datum en uur van timer"
+  id: '7bcf7836-3149-4eb2-9d40-f0f3f309a249'
+  description: ''
+  trigger:
+  - platform: template
+    value_template: "{% if as_timestamp(states('sensor.car_charge_start_time')) | timestamp_custom('%Y-%m-%d %H:%M',false)  == as_timestamp(now()) | timestamp_custom('%Y-%m-%d %H:%M') %}true{% endif %}"
+  # Only run routine if charge has not yet started (input_boolean.car_charge_busy = off)
+  # Because the calculated start time continuously moves while charge, this routine would continously be triggered
+  condition:
+  # check if SOC < target SOC, otherwise routine should not run
+  - condition: template
+    value_template: "{{ states('sensor.car_1_soc')| int(2) < (states('input_number.car_charge_target_percentage') | int(2)) }}"
+  # only when 'charge mode net' is ON
+  - condition: state
+    entity_id: input_boolean.car_charge_mode_net
+    state: 'on'
+  # only when 'charge busy' is OFF  
+  - condition: state
+    entity_id: input_boolean.car_charge_busy
+    state: 'off'
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.car_charge_busy
+      - input_boolean.car_charge_net_busy
+  - service: script.charger_define_phase_1_or_3_based_on_watt
+  - service: script.charger_define_ampere_based_on_watt
+  - service: script.charger_define_and_write_register_based_on_ampere
+  - service: notify.bart_phone
+    data:
+      title: charge gestart met netstroom
+      message: >
+        {% set soc = states('sensor.car_1_soc') | round(default=0) %}
+        {% set targetsoc = states('input_number.car_charge_target_percentage') | round(default=0) %}
+        {% set targetrange = states('input_number.car_charge_target_range') | round(default=0) %}
+        Doeluur: {{as_timestamp(states('input_datetime.car_charge_target_time')) | timestamp_custom('%a %-d/%-m %-Hu%M',false) }}<br>
+        Er wordt geladen van {{ soc }}% naar {{ targetsoc }}% = {{ targetrange }} km.
+      data:
+        tag: car_charging
+        color: green
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car-charging
+  mode: single
+
+- alias: "🔋 charge - laaddoel bereikt (enkel nu en timer) = laden stoppen + melding sturen (enkel thuis)"
+  id: 'b7a22897-2c7b-4e07-bf71-380271658908'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.car_1_soc
+  condition:
+  # check dat huidige SOC groter is dan gevraagd laaddoel
+  - condition: template
+    value_template: "{{ states('sensor.car_1_soc')| int(2) >= (states('input_number.car_charge_target_percentage') | int(2)) }}"
+  - condition: state
+    entity_id: sensor.charger_status
+    state: 'charging'
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Laaddoel bereikt!
+      message: >
+        {% set soc = states('sensor.car_1_soc') | round(default=0) %}
+        {% set targetsoc = states('input_number.car_charge_target_percentage') | round(default=0) %}
+        {% set range = ( soc * (states('sensor.car_range_per_10percent') | float(default=0)) / 10 ) | int(0) %}
+        Laaddoel van {{ targetsoc }}% is bereikt. Huidige lading: {{ soc }}% = {{ range }} km
+      data:
+        tag: car_charging
+        color: green
+        actions:
+        - action: URI
+          title: meer info
+          uri: /eikenbos-dashboard/car-charging      
+  # stop charging
+  - service: script.stop_charger
+    data: {}
+    
+  mode: single
+
+- alias: "🔋 charge - laaddoeluur bereikt = laden stoppen + verzetten naar 's anderendaags"
+  id: '94c89ef0-a331-4a74-a2bc-d03289b73354'
+  description: ''
+  trigger:
+  # hierin zit mogelijk een fout (er moeten defaults gedefinieerd worden)
+  - platform: template
+    value_template: "{% if as_timestamp(states('input_datetime.car_charge_target_time'),0) | timestamp_custom('%Y-%m-%d %H:%M',false,0) == as_timestamp(now()) | timestamp_custom('%Y-%m-%d %H:%M') %}true{% endif %}"
+  condition: []
+  action:
+  - service: script.stop_charger
+    data: {}
+  - service: input_datetime.set_datetime
+    data:
+      datetime: "{{ (as_timestamp(states('input_datetime.car_charge_target_time'),0 | timestamp_custom('%Y-%m-%d %H:%M:%S'))  + (24 * 60 * 60) ) | timestamp_custom('%Y-%m-%d %H:%M:%S',false) }}"
+    target:
+      entity_id: input_datetime.car_charge_target_time
+  mode: single
+
+

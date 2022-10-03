@@ -1,0 +1,30 @@
+
+sensor:
+  - platform: integration
+    source: sensor.living_tv_power
+    name: living tv energieverbruik
+    unit_prefix: k
+    method: left
+    round: 2
+    # creates sensor called sensor.living_tv_energieverbruik
+
+  - platform: integration
+    source: sensor.master_bedroom_tv_power
+    name: master bedroom tv energieverbruik
+    method: left
+    unit_prefix: k
+    round: 2
+
+  - platform: integration
+    source: sensor.amilya_tv_power
+    name: Amilya tv energieverbruik
+    method: left
+    unit_prefix: k
+    round: 2
+
+  - platform: integration
+    source: sensor.alunya_tv_power
+    name: Alunya tv energieverbruik
+    method: left
+    unit_prefix: k
+    round: 2

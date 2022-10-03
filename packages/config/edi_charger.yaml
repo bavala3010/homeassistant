@@ -1,0 +1,59 @@
+modbus:
+  - name: charger
+    type: tcp
+    host: 192.168.1.2
+    port: 502
+    sensors:
+      - name: charger_name
+        slave: 200
+        address: 100
+        count: 17
+        data_type: string
+      - name: charger_temperature
+        slave: 200
+        address: 1102
+        data_type: float32
+        unit_of_measurement: °C
+      - name: charger_active_max_current
+        slave: 200
+        address: 1100
+        data_type: float32
+        unit_of_measurement: A
+      - name: charger_real_power
+        slave: 1
+        address: 344
+        data_type: float32
+        unit_of_measurement: W
+      - name: charger_mode3_state
+        slave: 1
+        address: 1201
+        count: 5
+        data_type: string
+        scan_interval: 5
+      - name: charger_actual_applied_maxcurrent
+        slave: 1
+        address: 1206
+        data_type: float32
+        unit_of_measurement: A
+      - name: charger_modbus_maxcurrent
+        slave: 1
+        address: 1210
+        data_type: float32
+        unit_of_measurement: A
+      - name: charger_socket1_current_valid_time
+        slave: 1
+        address: 1208
+        data_type: uint32
+        unit_of_measurement: s
+      - name: charger_energy_delivered
+        slave: 1
+        address: 374
+        count: 4
+        data_type: float64
+        unit_of_measurement: Wh
+        device_class: energy
+        state_class: total_increasing
+      - name: charger_use_1_or_3_phases
+        slave: 1
+        address: 1215
+        data_type: uint16
