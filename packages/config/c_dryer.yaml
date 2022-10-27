@@ -1,0 +1,64 @@
+#############################
+# Droogkast
+#############################
+
+template:
+- sensor:
+    - name: "dryer expected time left"
+      unique_id: '62d06d9c-31be-48c2-8f5d-62c91d8269e3'
+      state: >
+        {% set dryer_start_time = as_timestamp(states('input_datetime.dryer_start_time')) %}
+        {% set dryer_stop_time = as_timestamp(states('input_datetime.dryer_stop_time')) %}
+        {% set dryer_expected_run_time = states('input_number.dryer_expected_run_time') | float(0) %}
+        {% set expected_end_time = dryer_start_time + dryer_expected_run_time %}
+        {% set expected_time_left = expected_end_time - now().timestamp() %}
+        {{ expected_time_left }}
+
+input_number:
+  dryer_expected_run_time:
+    name: "droogkast geschatte duur"
+    min: 0
+    max: 1000000000
+    step: 1
+    mode: slider
+
+input_datetime:
+  dryer_expected_stop_time:
+    name: "droogkast verwachte eindtijd"
+    has_date: true
+    has_time: true
+
+  dryer_start_time:
+    name: "droogkast starttijd"
+    has_date: true
+    has_time: true
+
+  dryer_stop_time:
+    name: "droogkast eindtijd"
+    has_date: true
+    has_time: true
+
+input_select:
+  dryer_state:
+    name: "droogkast status"
+    options:
+      - uit
+      - uitgestelde start
+      - bezig
+      - klaar
+
+sensor:
+  - platform: integration
+    source: sensor.dryer_power
+    name: droogkast energieverbruik
+    method: left
+    unit_prefix: k
+    unit_time: h
+    round: 2
+    # apparaten die bij het starten pieken veroorzaken, moeten de left methode gebruiken
+    # creates a sensor called sensor.droogkast_energieverbruik
+
+utility_meter:
+  dryer_energy_daily:
+    source: sensor.droogkast_energieverbruik
+    cycle: daily

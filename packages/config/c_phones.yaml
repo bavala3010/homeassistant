@@ -42,7 +42,7 @@ sensor:
           badkamer
         {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-55 < wifi_signal < -30) %}
           gang
-        {% elif wifi_bssid == "cc:f4:11:4c:c1:73" %}
+        {% elif wifi_bssid == "cc:f4:11:43:8f:b9" %}
           veranda
         {% elif wifi_bssid != "cc:f4:11:77:bf:82" and wifi_bssid != "cc:f4:11:43:8f:b5" and wifi_bssid != "cc:f4:11:4c:c1:73" %}
           niet thuis
@@ -50,6 +50,22 @@ sensor:
           onbekend
         {% endif %}
       friendly_name: Madouce phone locatie
+
+    amilya_phone_room:
+      value_template: >
+        {% set wifi_bssid = states('sensor.amilya_phone_bssid') %}
+        {% if  wifi_bssid == "cc:f4:11:77:bf:82" %}
+          living
+        {% elif wifi_bssid == "cc:f4:11:4c:c1:73" %}
+          Amilya kamer
+        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" %}
+          badkamer
+        {% elif wifi_bssid != "cc:f4:11:77:bf:82" and wifi_bssid != "cc:f4:11:43:8f:b5" and wifi_bssid != "cc:f4:11:4c:c1:73" %}
+          niet thuis
+        {% else %}
+          onbekend
+        {% endif %}
+      friendly_name: Amilya phone locatie
 
 
     alunya_phone_room:
@@ -109,7 +125,7 @@ binary_sensor:
   - platform: template
     sensors:
       madouce_phone_connected_to_car:
-        friendly_name: 'Telefoon Mardouce verbonden met auto'
+        friendly_name: 'Telefoon Madouce verbonden met auto'
         device_class: connectivity
         icon_template: >-
           {% if is_state('binary_sensor.madouce_phone_connected_to_car', 'on') %}

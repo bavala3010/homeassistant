@@ -1,0 +1,53 @@
+multiscrape:
+  # - name: KBC
+  #   resource: https://www.tijd.be/markten-live/fondsen/horizon-kbc-expertease-sri-highly-dynamic-tolerant-classic.616733575.html
+  #   scan_interval: 900
+  #   sensor:
+  #     - name: BE6307337095
+  #       select: "#container > header.clearfix.header-stats > div:nth-child(1) > span"
+  #       #value_template: '{{ (value.split(":")[1]) }}'
+  #       unit_of_measurement: EUR
+
+  - name: FT
+    resource: https://markets.ft.com/data/funds/tearsheet/holdings?s=BE6307337095:EUR
+    scan_interval: 60
+    sensor:
+      - name: BE6307337095
+        select: "body > div.o-grid-container.mod-container > div:nth-child(2) > section:nth-child(1) > div > div > div.mod-tearsheet-overview__overview.clearfix > div.mod-tearsheet-overview__quote > ul > li:nth-child(1) > span.mod-ui-data-list__value"
+        unit_of_measurement: EUR
+
+  - name: FT
+    resource: https://markets.ft.com/data/funds/tearsheet/holdings?s=BE6307334068:EUR
+    scan_interval: 60
+    sensor:
+      - name: BE6307334068
+        select: "body > div.o-grid-container.mod-container > div:nth-child(2) > section:nth-child(1) > div > div > div.mod-tearsheet-overview__overview.clearfix > div.mod-tearsheet-overview__quote > ul > li:nth-child(1) > span.mod-ui-data-list__value"
+        unit_of_measurement: EUR
+        
+  - name: KBC Eco Fund - Alternative Energy Classic Cap
+    resource: https://markets.ft.com/data/funds/tearsheet/holdings?s=BE0175280016:EUR
+    scan_interval: 60
+    sensor:
+      - name: BE0175280016
+        select: "body > div.o-grid-container.mod-container > div:nth-child(2) > section:nth-child(1) > div > div > div.mod-tearsheet-overview__overview.clearfix > div.mod-tearsheet-overview__quote > ul > li:nth-child(1) > span.mod-ui-data-list__value"
+        unit_of_measurement: EUR
+      - name: BE0175280016_changetoday
+        select: "body > div.o-grid-container.mod-container > div:nth-child(2) > section:nth-child(1) > div > div > div.mod-tearsheet-overview__overview.clearfix > div.mod-tearsheet-overview__quote > ul > li:nth-child(2) > span.mod-ui-data-list__value > span"
+
+
+yahoofinance:
+  symbols:
+    - symbol: 0P0001I7E7.F
+    - symbol: 0P0001I7E1.F
+    - symbol: 0P00000NB4.F
+
+template:
+  - sensor:
+      - name: madouce_invest_result
+        state: >
+          {% set r = 
+          ( 10 * ( states('sensor.be6307337095') | float() - 1009.61 )) | round(2) +
+          ( 10 * ( states('sensor.be6307334068') | float() - 981.59  )) | round(2) +
+          ( 17 * ( states('sensor.be0175280016') | float() - 613.22  )) | round(2) %}
+          {{ r | round(2) }}
+        unit_of_measurement: EUR

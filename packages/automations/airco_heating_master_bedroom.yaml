@@ -6,32 +6,28 @@ automation:
   trigger:
   - platform: numeric_state
     entity_id: sensor.master_bedroom_temperature
-    below: 18
+    below: 16
   condition:
   - condition: state
-    entity_id:
-    - schedule.master_bedroom_normal_temperature_schema
+    entity_id: schedule.master_bedroom_normal_temperature_schema
     state: 'on'
   - condition: state
     entity_id: group.gezin
     state: home
   action:
-  - service: climate.set_temperature
+  - service: input_number.set_value
     data:
-      hvac_mode: heat
-      temperature: 18
+      value: >
+        {{ states('input_number.master_bedroom_normal_temperature') | float }}
     target:
-      device_id: 64296bd295e4506b8a3ec42c8aae7e58
-  - service: climate.set_preset_mode
+      entity_id: input_number.master_bedroom_airco_target_temperature          
+  - service: input_number.set_value
     data:
-      preset_mode: eco
+      value: 30
     target:
-      device_id: 64296bd295e4506b8a3ec42c8aae7e58
-  - service: climate.set_swing_mode
-    data:
-      swing_mode: 3D
-    target:
-      device_id: 64296bd295e4506b8a3ec42c8aae7e58
+      entity_id: input_number.master_bedroom_airco_timer_minutes
+  - service: script.master_bedroom_airco_start
+    data: {} 
   mode: single
 
 - alias: '♨️ Airco heating master bedroom: uit volgens schema/verlaten huis/timer stop'
@@ -39,8 +35,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id:
-    - schedule.master_bedroom_normal_temperature_schema
+    entity_id: schedule.master_bedroom_normal_temperature_schema
     to: 'off'
   - platform: state
     entity_id: group.gezin
@@ -67,8 +62,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id:
-    - group.bart_madouce
+    entity_id: group.bart_madouce
     to: not_home
   condition: []
   action:

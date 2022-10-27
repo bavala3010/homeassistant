@@ -1,6 +1,6 @@
 
 ###############################################################################
-# Powercalc measures the power consumption of lights 
+# Powercalc creates a power sensor (W) and energy sensor (kWh) for lights 
 ###############################################################################
 
 sensor:
@@ -20,8 +20,8 @@ sensor:
     manufacturer: signify
     model: LCT003
     # creates 2 sensors called
-    #   sensor.all_living_lights_power (in W)
-    #   sensor.all_living_lights_energy (in kWh)
+    #   sensor.living_alle_lichten_power (in W)
+    #   sensor.living_alle_lichten_energy (in kWh)
 
   - platform: powercalc
     entity_id: light.living_bol

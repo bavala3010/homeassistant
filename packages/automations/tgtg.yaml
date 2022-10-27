@@ -18,10 +18,7 @@ automation:
       data:
         tag: toogoodtogo
         color: red
-        actions:
-        - action: URI
-          title: Voor meer info, klik hier
-          uri: "{{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo', 'Item URL') }}"
+        clickAction: "{{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo', 'Item URL') }}"
   - service: notify.bart_phone
     data:
       title: "Too Good To Go: Bakkerij Gielis in Kessel-Lo (brood & co)"
@@ -29,10 +26,7 @@ automation:
       data:
         tag: toogoodtogo
         color: red
-        actions:
-        - action: URI
-          title: Voor meer info, klik hier
-          uri: "{{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo', 'Item URL') }}"
+        clickAction: "{{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo', 'Item URL') }}"
   mode: single
 
 - alias: "TGTG Bakkerij Gielis (gebak)"
@@ -53,10 +47,15 @@ automation:
       data:
         tag: toogoodtogo
         color: red
-        actions:
-        - action: URI
-          title: Voor meer info, klik hier
-          uri: "{{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo_gebak', 'Item URL') }}"
+        clickAction: "{{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo_gebak', 'Item URL') }}"
+  - service: notify.bart_phone
+    data:
+      title: "Too Good To Go: Bakkerij Gielis in Kessel-Lo (gebak)"
+      message: "Nog {{states('sensor.tgtg_bakkerij_gielis_kessel_lo_gebak')}} over aan {{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo', 'TGT Price') }}."
+      data:
+        tag: toogoodtogo
+        color: red
+        clickAction: "{{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo_gebak', 'Item URL') }}"
   mode: single  
 
 
@@ -78,10 +77,7 @@ automation:
       data:
         tag: toogoodtogo
         color: red
-        actions:
-        - action: URI
-          title: Voor meer info, klik hier
-          uri: "{{ state_attr('sensor.tgtg_les_tartes_de_francoise_leuven_zoet', 'Item URL') }}"
+        clickAction: "{{ state_attr('sensor.tgtg_les_tartes_de_francoise_leuven_zoet', 'Item URL') }}"
   mode: single
 
 - alias: "TGTG Hoegaards broodje Leuven"
@@ -104,8 +100,5 @@ automation:
       data:
         tag: toogoodtogo
         color: red
-        actions:
-        - action: URI
-          title: Voor meer info, klik hier
-          uri: "{{ state_attr('sensor.tgtg_hoegaards_broodje', 'Item URL') }}"
+        clickAction: "{{ state_attr('sensor.tgtg_hoegaards_broodje', 'Item URL') }}"
   mode: single

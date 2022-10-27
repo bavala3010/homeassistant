@@ -1,0 +1,153 @@
+automation:
+
+- alias: droogkast start
+  id: '294f6c7d-5626-4e52-ba07-2383cfdcbc78'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.dryer_power
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    above: 500
+  condition: []
+  action:
+    - service: input_datetime.set_datetime
+      data:
+        datetime: '{{ now() }}'
+      target:
+        entity_id: input_datetime.dryer_start_time
+    - service: input_datetime.set_datetime
+      data:
+        datetime: '{{ (now().timestamp() + states(''input_number.dryer_expected_run_time'')
+          | float(0)) | timestamp_local() }}'
+      target:
+        entity_id: input_datetime.dryer_expected_stop_time
+    - service: input_select.select_option
+      data:
+        option: bezig
+      target:
+        entity_id: input_select.dryer_state        
+  mode: single
+
+- alias: droogkast is klaar
+  id: 'a29517d8-2bc9-4a72-8dd8-b417fc29e7ab'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.dryer_power
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    below: 100
+  condition: []
+  action:
+    - service: input_datetime.set_datetime
+      data:
+        datetime: '{{ now() }}'
+      target:
+        entity_id: input_datetime.dryer_stop_time
+    - service: input_number.set_value
+      data:
+        value: '{{ (as_timestamp(states(''input_datetime.dryer_stop_time'')) - as_timestamp(states(''input_datetime.dryer_start_time'')))
+          | float(0) }}'
+      target:
+        entity_id: input_number.dryer_expected_run_time
+    - service: input_select.select_option
+      data:
+        option: klaar
+      target:
+        entity_id: input_select.dryer_state
+    - service: notify.bart_phone
+      data:
+        message: De droogkast is klaar! Je mag de was uithalen.
+        title: 👕👙 Droogkast
+        data:
+          tag: droogkast
+          notification_icon: "mdi:tumble-dryer"        
+    - service: notify.madouce_phone
+      data:
+        message: De droogkast is klaar! Je mag de was uithalen.
+        title: 👕👙 Droogkast
+        data:
+          tag: droogkast        
+          notification_icon: "mdi:tumble-dryer"        
+    - service: script.google_home_resume
+      data:
+        action:
+          - service: tts.edge_tts_say
+            data:
+              entity_id: media_player.living_speaker
+              message: De was zit nog altijd in de droogkast.
+              options:
+                pitch: +0Hz
+                rate: -10%            
+  mode: single
+
+- alias: was nog steeds in droogkast
+  id: 'cb97cf23-41ac-4f3f-87ba-59338f89cb42'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - input_select.dryer_state
+      to: klaar
+      for:
+        hours: 0
+        minutes: 15
+        seconds: 0
+  condition:
+    - condition: state
+      entity_id: binary_sensor.dryer_vibration
+      state: "off"
+      for:
+        hours: 0
+        minutes: 14
+        seconds: 30
+  action:
+    - service: notify.bart_phone
+      data:
+        title: Droogkast
+        message: "Haal de was uit de droogkast. De droogkast was al klaar om {{ states('input_datetime.dryer_stop_time') }}."
+        data:
+          tag: droogkast        
+          notification_icon: "mdi:tumble-dryer"
+    - service: notify.madouce_phone
+      data:
+        title: Droogkast
+        message: "Haal de was uit de droogkast. De droogkast was al klaar om {{ states('input_datetime.dryer_stop_time') }}."
+        data:
+          tag: droogkast        
+          notification_icon: "mdi:tumble-dryer"          
+    - service: script.google_home_resume
+      data:
+        action:
+          - service: tts.edge_tts_say
+            data:
+              entity_id: media_player.living_speaker
+              message: De was zit nog altijd in de droogkast.
+              options:
+                pitch: +0Hz
+                rate: -10%
+  mode: single
+
+- alias: was gedaan en deur droogkast wordt geopend = droogkast uit
+  id: 'ad451208-4b61-47e4-944e-34fbddf9981d'
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.dryer_vibration
+      to: "on"
+  condition:
+    - condition: state
+      entity_id: input_select.dryer_state
+      state: klaar 
+  action:
+    - service: input_select.select_option
+      data:
+        option: uit
+      target:
+        entity_id: input_select.dryer_state
+  mode: single  

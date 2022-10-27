@@ -173,7 +173,7 @@ automation:
   trigger:
   - platform: template
     value_template: >
-      {{ states('climate.amilya_airco') != "off" }}
+      {{ states('climate.amilya_airco') = "verwamen" }}
     for:
       hours: 0
       minutes: 10

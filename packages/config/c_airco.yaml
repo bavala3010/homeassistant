@@ -1,5 +1,3 @@
-
-
 timer:
   living_airco_timer:
     name: living airco timer
@@ -12,6 +10,9 @@ timer:
 
   master_bedroom_airco_timer:
     name: Master bedroom airco timer
+
+  airco_dehumidify_timer:
+    name: ontvochtigen met airco timer
 
 input_datetime:
   living_airco_timer:
@@ -33,3 +34,11 @@ input_datetime:
     name: Master bedroom airco timer
     has_date: false
     has_time: true
+
+input_number:
+  airco_dehumidifier_timer_minutes:
+    name: ontvochtigen met airco minuten
+    initial: 15
+    min: 0
+    max: 90
+    step: 5

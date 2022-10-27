@@ -61,7 +61,7 @@ sensor:
         {% set sp = states('sensor.sma_energy_total') | float %}
         {% set nc = states('sensor.net_consumption_energy_total') | float %}
         {% set ni = states('sensor.net_injection_energy_total') | float %}
-        {{ ((sp - ni ) / ( sp - ni + nc) * 100 ) | round() }}
+        {{ ((sp - ni ) / ( sp - ni + nc) * 100 ) | round(1) }}
 
     net_neutrality_home:
       unit_of_measurement: "%"
@@ -73,7 +73,7 @@ sensor:
         {% set ni = states('sensor.net_injection_energy_total') | float %}
         {% set car_net = states('sensor.car_charge_net_energy') | round() %}
         {% set car_sun = states('sensor.car_charge_solar_energy') | round() %}
-        {{ (((sp - ni - car_sun) / (sp - ni + nc - car_net - car_sun) ) * 100 ) | round() }}
+        {{ (((sp - ni - car_sun) / (sp - ni + nc - car_net - car_sun) ) * 100 ) | round(1) }}
 
     net_neutrality_car:
       unit_of_measurement: "%"
@@ -82,7 +82,7 @@ sensor:
       value_template: >-
         {% set car_net = states('sensor.car_charge_net_energy') | round() %}
         {% set car_sun = states('sensor.car_charge_solar_energy') | round() %}
-        {{ (car_sun / (car_net + car_sun) * 100 ) | round()}}
+        {{ (car_sun / (car_net + car_sun) * 100 ) | round(1)}}
 
     solar_self_consumption:
       unit_of_measurement: "kWh"
@@ -92,3 +92,100 @@ sensor:
         {% set sp = states('sensor.sma_energy_total') | float %}
         {% set ni = states('sensor.net_injection_energy_total') | float %}
         {{ sp - ni }}
+
+    net_neutrality_now:
+      unit_of_measurement: "%"
+      friendly_name: "netonafhankelijkheid nu"
+      icon_template: "mdi:solar-power"
+      value_template: >-
+        {% set sp = states('sensor.solar_power') | float %}
+        {% set hc = states('sensor.huisverbruik') | float %}
+        {% set result = [((sp  / hc ) * 100 ) | round(1), 100] | min %}
+        {{ result }}
+      availability_template: >
+        {% if result < 0 %}
+          false
+        {% endif %}
+
+    net_injection_savings:
+      unit_of_measurement: "EUR"
+      friendly_name: "winst teruggave"
+      value_template: >-
+          {% set np = states('sensor.net_injection_daily') | float(default=0) %}
+          {% set i = states('input_number.elektriciteitsprijs_injectie') | float() %}
+          {{ (np * i) | round(1) }}
+
+    solar_selfconsumption_savings:
+      unit_of_measurement: "EUR"
+      friendly_name: "winst zelfverbruik"
+      value_template: >-
+          {% set sp = states('sensor.zonne_energie_totaal') | float(default=0) %}
+          {% set i = states('sensor.net_injection_daily') | float(default=0) %}
+          {% set c = states('input_number.elektriciteitsprijs_afname') | float() %}
+          {{ ((sp - i ) * c ) | round(1) }}
+
+utility_meter:
+  net_injection_savings_monthly:
+    source: sensor.net_injection_savings
+    cycle: monthly
+
+  solar_selfconsumption_savings_monthly:
+    source: sensor.solar_selfconsumption_savings
+    cycle: monthly
+
+  net_injection_savings_yearly:
+    source: sensor.net_injection_savings
+    cycle: yearly
+
+  solar_selfconsumption_savings_yearly:
+    source: sensor.solar_selfconsumption_savings
+    cycle: yearly
+    
+  net_consumption_daily:
+    source: sensor.net_consumption_energy_total
+    cycle: daily
+
+  net_injection_daily:
+    unique_id: '777f5014-d5e3-4b88-af36-f6583325c10f'
+    source: sensor.net_injection_energy_total
+    cycle: daily
+
+  net_energy_daily:
+    unique_id: '003c3f3c-5a3e-495b-81d6-2d74ea356b57'
+    source: sensor.net_energy
+    cycle: daily
+
+  net_energy_monthly:
+    unique_id: '7ad9df31-7589-4331-83fe-60a11675763a'  
+    source: sensor.net_energy
+    cycle: monthly
+
+  net_energy_yearly:
+    unique_id: '4b4078f6-b1e6-4f73-9ac7-3968369ddeae'  
+    source: sensor.net_energy
+    cycle: yearly
+
+  solar_energy_daily:
+    unique_id: 'fde4c082-6b5d-43c6-9988-c7f3d25b4152'
+    source: sensor.zonne_energie_totaal
+    cycle: daily
+
+  solar_energy_weekly:
+    unique_id: '7b40b4bd-cc07-433d-9d3e-6229123999fa'
+    source: sensor.zonne_energie_totaal
+    cycle: weekly
+
+  solar_energy_monthly:
+    unique_id: '45ac36a8-d58e-4d64-b08a-45a6b6acca7e'
+    source: sensor.zonne_energie_totaal 
+    cycle: monthly
+
+  solar_energy_yearly:
+    unique_id: '7b459a97-69ab-407a-a9c5-cae18ace8772'
+    source: sensor.zonne_energie_totaal 
+    cycle: yearly
+
+  realised_sun_production_today:
+    unique_id: 'aa95f490-df7d-4c80-b798-33225a1afe4d'  
+    source: sensor.gerealiseerde_zonneproductie
+    cycle: daily    

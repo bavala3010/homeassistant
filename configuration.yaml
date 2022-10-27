@@ -102,9 +102,38 @@ homeassistant:
 
   ### The following installs all package files, including lights, alarm, humidity etc.
   packages: !include_dir_named packages
-  customize: !include customize.yaml
+  
+  customize:
+    zone.home:
+      radius: 500
 
-  external_url: http://bartland.duckdns.org
+  # changes required for the engery dashboard (info from 16/10/2022)
+  # You don’t need a last reset for the total_increasing state_class
+    sensor.ontvochtiger_energieverbruik:
+      device_class: energy
+      state_class: total_increasing
+
+    sensor.wasmachine_energieverbruik:
+      device_class: energy
+      state_class: total_increasing
+
+    sensor.living_tv_energieverbruik:
+      device_class: energy
+      state_class: total_increasing
+
+    sensor.amilya_tv_energieverbruik:
+      device_class: energy
+      state_class: total_increasing
+
+    sensor.alunya_tv_energieverbruik:
+      device_class: energy
+      state_class: total_increasing
+
+    sensor.master_bedroom_tv_energieverbruik:
+      device_class: energy
+      state_class: total_increasing
+
+  # external_url: http://bartland.duckdns.org
   time_zone: "Europe/Brussels"
 
   # secrets should not be mentioned in this file; it is automatic !
@@ -112,22 +141,22 @@ homeassistant:
 
   # manuele aanpassing van alle sensoren eindigend op "energieverbruik" om in het energy dashboard te krijgen
   customize_glob:
-    sensor.*energieverbruik:
-      unit_of_measurement: "kWh"     
-      device_class: energy
-      state_class: measurement
-      last_reset: "1970-01-01T00:00:00+00:00"
+    # sensor.*energieverbruik:
+    #   unit_of_measurement: "kWh"
+    #   device_class: energy
+    #   state_class: total_increasing
+    #   last_reset: "1970-01-01T00:00:00+00:00"
 
     sensor.*energy:
       unit_of_measurement: "kWh"     
       device_class: energy
-      state_class: measurement
+      state_class: total_increasing  # measurement werkt niet in energy dashboard
       last_reset: "1970-01-01T00:00:00+00:00"
 
     sensor.*productie:
       unit_of_measurement: "kWh"     
       device_class: energy
-      state_class: measurement
+      state_class: total_increasing
       last_reset: "1970-01-01T00:00:00+00:00"  
 
     # the sensor.zonne_energie_totaal created by the "integration" integration 
@@ -166,7 +195,7 @@ http:
   login_attempts_threshold: 3   # set the number of allowed login attempts
 
 recorder:
-  purge_keep_days: 3
+  purge_keep_days: 7
   commit_interval: 30
   exclude:
     entities:
@@ -181,6 +210,9 @@ recorder:
       - sensor.google_wifi_system_aaaaabzipgy_upload_traffic
       - sensor.google_wifi_system_aaaaabzipgy_download_traffic
       - sensor.network_in_eth0
+      # - sensor.net_neutrality_home
+      # - sensor.net_neutrality_car
+      # - sensor.net_neutrality
     domains:
       - automation
       - camera
@@ -262,107 +294,6 @@ input_text:
     name: Trigger Source
 
 
-##############################################################
-# Utility meters
-##############################################################
-
-utility_meter:
-  washingmachine_energy_daily:
-    unique_id: '2b606da9-0b0e-428d-901b-534d01f27390'
-    source: sensor.washingmachine_power
-    cycle: daily
-    
-  washingmachine_energy_monthly:
-    unique_id: 'c837f475-9183-45b8-8745-5ce9338d7469'
-    source: sensor.washingmachine_power
-    cycle: monthly
-
-  net_energy_daily:
-    unique_id: '003c3f3c-5a3e-495b-81d6-2d74ea356b57'
-    source: sensor.net_energy
-    cycle: daily
-
-  net_energy_monthly:
-    unique_id: '7ad9df31-7589-4331-83fe-60a11675763a'  
-    source: sensor.net_energy
-    cycle: monthly
-
-  net_energy_yearly:
-    unique_id: '4b4078f6-b1e6-4f73-9ac7-3968369ddeae'  
-    source: sensor.net_energy
-    cycle: yearly
-
-  solar_energy_daily:
-    unique_id: 'fde4c082-6b5d-43c6-9988-c7f3d25b4152'
-    source: sensor.zonne_energie_totaal
-    cycle: daily
-
-  solar_energy_weekly:
-    unique_id: '7b40b4bd-cc07-433d-9d3e-6229123999fa'
-    source: sensor.zonne_energie_totaal
-    cycle: weekly
-
-  net_injection_daily:
-    unique_id: '777f5014-d5e3-4b88-af36-f6583325c10f'
-    source: sensor.net_injection_energy_total
-    cycle: daily
-
-  solar_energy_monthly:
-    unique_id: '45ac36a8-d58e-4d64-b08a-45a6b6acca7e'
-    source: sensor.zonne_energie_totaal 
-    cycle: monthly
-
-  solar_energy_yearly:
-    unique_id: '7b459a97-69ab-407a-a9c5-cae18ace8772'
-    source: sensor.zonne_energie_totaal 
-    cycle: yearly
-
-  car_charge_net_energy_daily:
-    unique_id: '0eee3892-0b11-4142-8a74-96bc9d4bca49'
-    source: sensor.car_charge_net_energy
-    cycle: daily
-
-  car_charge_net_energy_weekly:
-    unique_id: '49b53721-5e91-4421-bcd5-dfd30afed72f'  
-    source: sensor.car_charge_net_energy
-    cycle: weekly
-
-  car_charge_net_energy_monthly:
-    unique_id: '8bc12bd0-fa1b-4d8e-a4cc-ec714f8c5530'  
-    source: sensor.car_charge_net_energy
-    cycle: monthly
-
-  car_charge_net_energy_yearly:
-    unique_id: 'c215a40f-07a8-4515-b0d4-4ea2270a67a1'  
-    source: sensor.car_charge_net_energy
-    cycle: yearly
-
-  car_charge_solar_energy_daily:
-    unique_id: '20d48c19-255f-4bca-857a-ac236f28927b'  
-    source: sensor.car_charge_solar_energy
-    cycle: daily
-
-  car_charge_solar_energy_weekly:
-    unique_id: '1935420d-6604-4cac-85f6-3af9d250aa36'  
-    source: sensor.car_charge_solar_energy
-    cycle: weekly
-
-  car_charge_solar_energy_monthly:
-    unique_id: 'f798866b-e57d-4e5d-86b8-085680bb5522'  
-    source: sensor.car_charge_solar_energy
-    cycle: monthly
-
-  car_charge_solar_energy_yearly:
-    unique_id: '9ad606fb-02e6-4eb7-8ec1-c98272ac3644'  
-    source: sensor.car_charge_solar_energy
-    cycle: yearly
-
-  realised_sun_production_today:
-    unique_id: 'aa95f490-df7d-4c80-b798-33225a1afe4d'  
-    source: sensor.gerealiseerde_zonneproductie
-    cycle: daily
-
-
 sensor:
   - platform: template
     sensors:
@@ -383,7 +314,6 @@ sensor:
           {% set b = states('sensor.shellyem3_bcff4dfd1dbb_channel_b_power') | float(default=0) %}
           {% set c = states('sensor.shellyem3_bcff4dfd1dbb_channel_c_power') | float(default=0) %}
           {{ ( a + b + c ) | round(default=0) }}
-
 
   - platform: powercalc
     name: unload_battery
@@ -485,51 +415,10 @@ sensor:
 #    round: 2
 
   - platform: integration
-    source: sensor.car_net_wattmeter
-    name: car charge net energy
-    method: left
-    unit_prefix: k
-    unit_time: h
-
-  - platform: integration
-    source: sensor.car_solar_wattmeter
-    name: car charge solar energy
-    method: left
-    unit_prefix: k
-    unit_time: h
-
-  - platform: integration
     source: sensor.power_production_now
     name: gerealiseerde zonneproductie
     unit_prefix: k
     unit_time: h
-
-  - platform: integration
-    source: sensor.charger_real_power
-    name: charger total power
-    unit_prefix: k
-    unit_time: h
-
-  - platform: integration
-    source: sensor.charger_real_power
-    name: charger energieverbruik
-    method: left
-    unit_prefix: k
-    round: 2
-
-  - platform: integration
-    source: sensor.washingmachine_power
-    name: washingmachine energy
-    unit_prefix: k
-    # apparaten die bij het starten pieken veroorzaken, moeten de left methode gebruiken
-    method: left
-    round: 2
-    # creates a sensor called sensor.washingmachine_energy
-
-
-###############################################
-# sensoren voor het energie-dashboard
-###############################################
 
   - platform: integration
     # creates a sensor called: sensor.huis_energieverbruik in kWh
@@ -623,7 +512,6 @@ template:
         unit_of_measurement: W
         device_class: power
         state_class: measurement   # total_increasing
-
 
 ################################################################################
 # binary sensors

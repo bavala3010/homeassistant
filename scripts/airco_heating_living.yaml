@@ -30,6 +30,11 @@ living_airco_start:
       swing_mode: 3D
     target:
       device_id: 1c560bbc7917f45d737e87d3e2bd0d89
+  - service: climate.set_fan_mode
+    data:
+      fan_mode: auto
+    target:
+      device_id: 1c560bbc7917f45d737e87d3e2bd0d89      
 
 living_airco_19:
   sequence:
@@ -44,7 +49,7 @@ living_airco_19:
     target:
       entity_id: input_number.living_airco_timer_minutes
   - service: script.living_airco_start
-    data: {} 
+    data: {}
   mode: restart
 
 living_airco_20:

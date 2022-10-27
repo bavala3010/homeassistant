@@ -58,54 +58,6 @@
       message: clear_notification
       data:
         tag: recycle
-- alias: Elek timer wasmachine zetten (2u00)
-  id: '1645356388702'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.elec_wasmachine_busy
-    to: 'on'
-  condition: []
-  action:
-  - service: input_datetime.set_datetime
-    data:
-      datetime: '{{ ((as_timestamp(now())  + (120 * 60)) |timestamp_custom(''%Y-%m-%d
-        %H:%M:%S'')) }}'
-    target:
-      entity_id: input_datetime.elec_wasmachine_end
-  mode: single
-- alias: Elek timer vaatwasser zetten (1u40)
-  id: '1645359198579'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.elec_vaatwasser_busy
-    to: 'on'
-  condition: []
-  action:
-  - service: input_datetime.set_datetime
-    data:
-      datetime: '{{ ((as_timestamp(now())  + (100 * 60)) |timestamp_custom(''%Y-%m-%d
-        %H:%M:%S'')) }}'
-    target:
-      entity_id: input_datetime.elec_vaatwasser_end
-  mode: single
-- alias: Elek timer droger zetten (2u00)
-  id: '1645359477977'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.elec_droger_busy
-    to: 'on'
-  condition: []
-  action:
-  - service: input_datetime.set_datetime
-    data:
-      datetime: '{{ ((as_timestamp(now())  + (120 * 60)) |timestamp_custom(''%Y-%m-%d
-        %H:%M:%S'')) }}'
-    target:
-      entity_id: input_datetime.elec_droger_end
-  mode: single
 - alias: 'Waarschoot: alarm wordt uitgeschakeld (knop beneden)'
   id: '1655128635738'
   description: ''
@@ -209,12 +161,9 @@
   - service: notify.madouce_phone
     data:
       title: Welkom in de winkel.
-      message: Wil je het boodschappenlijstje zien?
+      message: Klik om het boodschappenlijstje te openen.
       data:
-        actions:
-        - action: URI
-          title: zo ja, klik hier
-          uri: https://keep.google.com/u/0/#LIST/1abVJeIHcbEuGmkbxfSRp4u-w3spv7Ck1dS5Y0o03VfIhM7bFjrr1xcfK_gvFizCvCRCMtrUQ
+        clickAction: https://keep.google.com/u/0/#LIST/1tp-ZTk_c08ZlPeLqLHEUm10bx6DtTQbI9_IOigZVGtBjakrxKwJo4DiytWorvbiXyHGD
   mode: single
 - id: '1662195373247'
   alias: Waze naar huis openen
@@ -263,53 +212,6 @@
     target:
       device_id: 64296bd295e4506b8a3ec42c8aae7e58
   mode: single
-- id: '1663704158456'
-  alias: wasmachine start/stopt
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.washingmachine_power
-    for:
-      hours: 0
-      minutes: 3
-      seconds: 0
-    above: 3
-    id: washing machine started
-  condition: []
-  action:
-  - if:
-    - condition: trigger
-      id: washing-started
-      alias: Washing Started
-    then:
-    - service: input_datetime.set_datetime
-      data:
-        datetime: '{{ now() }}'
-      target:
-        entity_id: input_datetime.washing_started
-    - service: input_datetime.set_datetime
-      data:
-        datetime: '{{ (now().timestamp() + states(''input_number.washing_expected_runtime'')
-          | float(0)) | timestamp_local() }}'
-      target:
-        entity_id: input_datetime.washing_expected_time_to_stop
-    else:
-    - service: notify.mobile_app_iphone
-      data:
-        message: The Washing machine is ready!
-        title: Washing Notification
-    - service: input_datetime.set_datetime
-      data:
-        datetime: '{{ now() }}'
-      target:
-        entity_id: input_datetime.washing_stopped
-    - service: input_number.set_value
-      data:
-        value: '{{ (as_timestamp(states(''input_datetime.washing_stopped'')) - as_timestamp(states(''input_datetime.washing_started'')))
-          | float(0) }}'
-      target:
-        entity_id: input_number.washing_expected_runtime
-  mode: single
 - id: '1664611616733'
   alias: Forceer update huisverbruik-meter bij aanpassing zonneproductie-meter
   description: ''
@@ -330,3 +232,173 @@
       - sensor.huisverbruik
     data: {}
   mode: restart
+- id: '1665867606604'
+  alias: 'Test: beweging oprit/pad = spot aan'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.voordeur_bewegingssensor_motion
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: sun.sun
+    state: below_horizon
+  action:
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id:
+      - light.netatmo_eikenbos_oprit
+  mode: single
+- id: '1665942731812'
+  alias: 'log  in Google Sheets: km auto '
+  description: ''
+  trigger:
+  - platform: time
+    at: '23:58:00'
+  condition: []
+  action:
+  - service: google_sheets.append_sheet
+    data:
+      config_entry: 2d4ff1f67e0a1e75255bae8b80df0d52
+      worksheet: AudiEtron
+      data:
+        odometer: '{{ states(''sensor.audi_e_tron_sportback_mileage'') | float }}'
+        date: '{{ now() }}'
+  mode: single
+- id: '1666249229359'
+  alias: 'log  in Google Sheets: dagelijkse energiewaarden '
+  description: ''
+  trigger:
+  - platform: time
+    at: '23:59:30'
+  condition: []
+  action:
+  - service: google_sheets.append_sheet
+    data:
+      config_entry: 2d4ff1f67e0a1e75255bae8b80df0d52
+      worksheet: Energy
+      data:
+        solar_production: '{{ states(''sensor.sma_today'') | float() }}'
+        net_injection_daily: '{{ states(''sensor.net_injection_daily'') | float()
+          }}'
+        net_consumption_daily: '{{ states(''sensor.net_consumption_daily'') | float()
+          }}'
+        car_battery_charged_daily: '{{ states(''sensor.car_charger_energy_daily'')
+          | float() }}'
+        car_charge_solar_energy_daily: '{{ states(''sensor.car_charge_solar_energy_daily'')
+          | float() }}'
+        car_charge_net_energy_daily: '{{ states(''sensor.car_charge_net_energy_daily'')
+          | float() }}'
+        net_neutrality_home: '{{ states(''sensor.net_neutrality_home'') | float()
+          }}'
+        net_neutrality_car: '{{ states(''sensor.net_neutrality_car'') | float() }}'
+        net_neutrality: '{{ states(''sensor.net_neutrality'') | float() }}'
+        washing_machine_energy_daily: '{{ states(''sensor.washing_machine_energy_daily'')
+          | float() }}'
+        dryer_energy_daily: '{{ states(''sensor.dryer_energy_daily'') | float() }}'
+        dehumidifier_energy_daily: '{{ states(''sensor.dehumidifier_energy_daily'')
+          | float() }}'
+        infrared_panel_energy_daily: '{{ states(''sensor.infrared_panel_energy_daily'')
+          | float() }}'
+        living_airco_daily_heat_energy_consumption: '{{ states(''sensor.living_airco_daily_heat_energy_consumption'')
+          | float() }}'
+        amilya_airco_daily_heat_energy_consumption: '{{ states(''sensor.amilya_airco_daily_heat_energy_consumption'')
+          | float() }}'
+        alunya_airco_daily_heat_energy_consumption: '{{ states(''sensor.alunya_airco_daily_heat_energy_consumption'')
+          | float() }}'
+        master_bedroom_airco_daily_heat_energy_consumption: '{{ states(''sensor.master_bedroom_airco_daily_heat_energy_consumption'')
+          | float() }}'
+        living_airco_daily_cool_energy_consumption: '{{ states(''sensor.living_airco_daily_cool_energy_consumption'')
+          | float() }}'
+        amilya_airco_daily_cool_energy_consumption: '{{ states(''sensor.amilya_airco_daily_cool_energy_consumption'')
+          | float() }}'
+        alunya_airco_daily_cool_energy_consumption: '{{ states(''sensor.alunya_airco_daily_cool_energy_consumption'')
+          | float() }}'
+        master_bedroom_airco_daily_cool_energy_consumption: '{{ states(''sensor.master_bedroom_airco_daily_cool_energy_consumption'')
+          | float() }}'
+  mode: single
+- id: '1666291531081'
+  alias: 'Alunya airco heating: ''s nachts niet meer dan 18 graden'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: input_number.alunya_airco_target_temperature
+    above: 18
+  condition:
+  - condition: time
+    after: '23:00:00'
+    before: 05:30:00
+  - condition: template
+    value_template: '{{trigger.to_state.context.user_id == ''7e508a5d2a5c42029f3d9238f0cc4648''
+      }}
+
+      '
+  action:
+  - service: notify.alunya_phone
+    data:
+      title: De temperatuur wordt 's nachts beperkt.
+      message: '{{ states(''input_number.alunya_airco_target_temperature'') }} graden
+        is niet mogelijk.'
+  - service: notify.bart_phone
+    data:
+      title: De temperatuur wordt 's nachts beperkt.
+      message: Alunya probeerde temperatuur op {{ states('input_number.alunya_airco_target_temperature')
+        }} graden in te stellen.
+  - service: input_number.set_value
+    data:
+      value: 14
+    target:
+      entity_id: input_number.alunya_airco_target_temperature
+  mode: single
+- id: '1666293716042'
+  alias: 'Amilya airco heating: ''s nachts niet meer dan 18 graden'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: input_number.amilya_airco_target_temperature
+    above: 18
+  condition:
+  - condition: time
+    after: '23:00:00'
+    before: 05:30:00
+  - condition: template
+    value_template: '{{trigger.to_state.context.user_id == ''7678e64f5e984bc2aac5d1d92cc318eb''
+      }}
+
+      '
+  action:
+  - service: notify.amilya_phone
+    data:
+      title: De temperatuur wordt 's nachts beperkt.
+      message: '{{ states(''input_number.amilya_airco_target_temperature'') }} graden
+        is niet mogelijk.'
+  - service: notify.bart_phone
+    data:
+      title: De temperatuur wordt 's nachts beperkt.
+      message: Amilya probeerde temperatuur op {{ states('input_number.amilya_airco_target_temperature')
+        }} graden in te stellen.
+  - service: input_number.set_value
+    data:
+      value: 14
+    target:
+      entity_id: input_number.amilya_airco_target_temperature
+  mode: single
+- id: '1666509207517'
+  alias: 'log  in Google Sheets: licht douche aan'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - light.badkamer_douche
+    to: 'on'
+  condition: []
+  action:
+  - service: google_sheets.append_sheet
+    data:
+      config_entry: 2d4ff1f67e0a1e75255bae8b80df0d52
+      worksheet: Douche
+      data:
+        light.badkamer_douche_on: '{{ now() }}'
+  mode: single

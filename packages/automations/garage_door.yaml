@@ -1,0 +1,300 @@
+automation:
+
+
+- alias: garagepoort staat lang open
+  id: '89cce371-bbfd-4154-a909-1ffeab77f9de'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: cover.garagepoort
+    from: 'closed'
+    to: 'open'
+    for: '00:05:00'
+  condition: []
+  action:
+  - repeat:
+      while:
+      - condition: state
+        entity_id: cover.garagepoort
+        state: 'open'
+      sequence:
+      - service: notify.bart_phone      
+        data:
+          title: "Garage staat al lang open."
+          message: "Staat al {{((as_timestamp(now()) - as_timestamp(states.cover.garagepoort.last_changed)) / 60 )| int() }} minuten open."
+          data:
+            color: red
+            tag: garage_staat_open
+      - delay:
+          minutes: 2
+  - service: notify.bart_phone
+    data:
+      title: "Garage is nu terug dicht."
+      # + 5 = automation is triggered when the garage door is already 5 minutes open 
+      message: >
+        Stond {{ (((as_timestamp(now()) - as_timestamp(state_attr('automation.garagepoort_staat_lang_open', 'last_triggered') )) / 60 ) + 5) | int() }} minuten open.
+      data:
+        tag: garage_staat_open
+  mode: single
+
+
+##########################################################################
+# tag buiten
+##########################################################################
+
+- alias: 🔐 garagepoorttag buiten gescand door Bart
+  id: '15550e2d-9a16-4d69-9342-c753548c534b'
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: !secret id_tag_garagepoort_buiten
+    device_id: !secret id_nfc_bart
+  condition: []
+  action:
+  - service: tts.google_say
+    data:
+      entity_id: media_player.living_speaker
+      message: Bart scant garagepoort.
+  - service: cover.open_cover
+    target:
+      entity_id: cover.garagepoort
+  - service: notify.bart_phone
+    data:
+      message: 'Bart scant garagepoorttag buiten.'
+      title: 'Garagepoort'
+      data:
+        color: "#FFA500"
+        channel: home_access
+  - service: notify.madouce_phone
+    data:
+      message: 'Bart scant garagepoorttag buiten.'
+      title: 'Garagepoort'
+      data:
+        color: "#FFA500"
+        channel: home_access
+  mode: single
+
+- alias: 🔐 garagepoorttag buiten gescand door Madouce
+  id: '43cd43bd-9577-4e30-b825-61ea11e9ee7c'
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: !secret id_tag_garagepoort_buiten
+    device_id: !secret id_nfc_madouce
+  condition: []
+  action:
+  - service: tts.google_say
+    data:
+      entity_id: media_player.living_speaker
+      message: Madouce scant garagepoort.
+  - service: cover.open_cover
+    target:
+      entity_id: cover.garagepoort
+  - service: notify.bart_phone
+    data:
+      message: 'Madouce scant garagepoorttag buiten.'
+      title: 'Garagepoort'
+      data:
+        color: "#FFA500"
+        channel: home_access
+  mode: single
+  
+- alias: 🔐 garagepoorttag buiten gescand door Alunya
+  id: 'd8fb82a1-a0d5-4b2f-a5d1-cce5fe4cf004'
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: !secret id_tag_garagepoort_buiten
+    device_id: !secret id_nfc_alunya
+  condition: []
+  action:
+  - service: tts.google_say
+    data:
+      entity_id: media_player.living_speaker
+      message: Alunya scant garagepoort.
+  - service: cover.open_cover
+    target:
+      entity_id: cover.garagepoort
+  - service: notify.bart_phone
+    data:
+      message: 'Alunya scant garagepoorttag buiten.'
+      title: 'Garagepoort'
+      data:
+        color: "#FFA500"
+        channel: home_access
+  - service: notify.madouce_phone
+    data:
+      message: 'Alunya scant garagepoorttag buiten.'
+      title: 'Garagepoort'
+      data:
+        color: "#FFA500"
+        channel: home_access
+  mode: single
+
+
+##########################################################################
+# tag binnen
+##########################################################################
+
+- alias: 🔐 garagepoorttag binnen gescand door Bart
+  id: '67a89219-5e5a-4862-b4a2-55f6013be43e'
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: !secret id_tag_garagepoort_binnen
+    device_id: !secret id_nfc_bart
+  condition: []
+  action:
+  - service: cover.open_cover
+    target:
+      entity_id: cover.garagepoort
+  - service: notify.bart_phone
+    data:
+      message: 'Bart scant tag garagepoort binnen.'
+      title: 'Garagepoort'
+      data:
+        color: "#FFA500"
+        channel: home_access
+  mode: single
+  
+- alias: 🔐 garagepoorttag binnen gescand door Madouce
+  id: '7c52e27f-3e9c-45a2-b434-e4bec52d9b32'
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: !secret id_tag_garagepoort_binnen
+    device_id: !secret id_nfc_madouce
+  condition: []
+  action:
+  - service: cover.open_cover
+    target:
+      entity_id: cover.garagepoort
+  - service: notify.bart_phone
+    data:
+      message: 'Madouce scant tag garagepoort binnen.'
+      title: 'Garagepoort'
+      data:
+        color: "#FFA500"
+        channel: home_access
+  mode: single
+  
+- alias: 🔐 garagepoorttag binnen gescand door Alunya
+  id: 'c51e85a1-d8bd-4f82-a919-0138a1e68861'
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: !secret id_tag_garagepoort_binnen
+    device_id: !secret id_nfc_alunya
+  condition: []
+  action:
+  - service: cover.open_cover
+    target:
+      entity_id: cover.garagepoort
+  - service: notify.bart_phone
+    data:
+      message: 'Alunya scant tag garagepoort binnen.'
+      title: 'Garagepoort'
+      data:
+        color: "#FFA500"
+        channel: home_access
+  - service: notify.madouce_phone
+    data:
+      message: 'Alunya scant tag garagepoort binnen.'
+      title: 'Garagepoort'
+      data:
+        color: "#FFA500"
+        channel: home_access
+  mode: single
+
+- alias: "Amilya doet garagepoort open met app"
+  id: 'd7df792b-d77c-4a5e-b174-f0a86c821f43'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id: cover.garagepoort
+  condition:
+    - condition: template
+      value_template: >
+        {{trigger.to_state.context.user_id == '7678e64f5e984bc2aac5d1d92cc318eb'}}
+  action:
+    - service: script.google_home_resume
+      data:
+        action:
+          - service: tts.edge_tts_say
+            data:
+              entity_id: media_player.living_speaker
+              message: Amilya doet garagepoort open.
+              options:
+                pitch: +0Hz
+                rate: -10%
+  mode: single
+
+
+- alias: "Alunya doet garagepoort open met app"
+  id: '819a3053-5c92-46ff-9679-31372411f598'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id: cover.garagepoort
+  condition:
+  - condition: template
+    value_template: >
+      {{trigger.to_state.context.user_id == '7e508a5d2a5c42029f3d9238f0cc4648'}}
+  action:
+    - service: script.google_home_resume
+      data:
+        action:
+          - service: tts.edge_tts_say
+            data:
+              entity_id: media_player.living_speaker
+              message: Alunya doet garagepoort open.
+              options:
+                pitch: +0Hz
+                rate: -10%
+  mode: single
+
+- alias: "Bart doet garagepoort open met app"
+  id: '93673ccd-ff15-4ed2-8624-687e2c9c6236'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id: cover.garagepoort
+  condition:
+  - condition: template
+    value_template: >
+      {{trigger.to_state.context.user_id == '87d0c2e6c3d4403396d34b43046072ae'}}
+  action:
+    - service: script.google_home_resume
+      data:
+        action:
+          - service: tts.edge_tts_say
+            data:
+              entity_id: media_player.living_speaker
+              message: Bart doet garagepoort open.
+              options:
+                pitch: +0Hz
+                rate: -10%
+  mode: single
+
+- alias: "Madouce doet garagepoort open met app"
+  id: '4434f09e-471c-46d7-bc67-cd856b858f6b'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id: cover.garagepoort
+  condition:
+  - condition: template
+    value_template: >
+      {{trigger.to_state.context.user_id == '12bbc36927b7443c915b9492d89f6c24'}}
+  action:
+    - service: script.google_home_resume
+      data:
+        action:
+          - service: tts.edge_tts_say
+            data:
+              entity_id: media_player.living_speaker
+              message: Madouce doet garagepoort open.
+              options:
+                pitch: +0Hz
+                rate: -10%
+  mode: single

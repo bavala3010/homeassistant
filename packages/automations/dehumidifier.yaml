@@ -1,0 +1,93 @@
+automation:
+
+- alias: ontvochtiger start
+  id: '5b2dc339-366f-40d0-af5a-2d56ea56f23c'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.dehumidifier_power
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 3
+    above: 20
+  condition: []
+  action:
+    - service: input_select.select_option
+      data:
+        option: aan
+      target:
+        entity_id: input_select.dehumidifier_state
+    - service: input_datetime.set_datetime
+      data:
+        datetime: '{{ now() }}'
+      target:
+        entity_id: input_datetime.dehumidifier_start_time        
+  mode: single
+
+- alias: ontvochtiger uit
+  id: '35121fab-a415-454e-af0a-fb863aa20b37'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.dehumidifier_power
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 3
+    below: 20
+  condition: []
+  action:
+    - service: input_select.select_option
+      data:
+        option: uit
+      target:
+        entity_id: input_select.dehumidifier_state
+    - service: input_datetime.set_datetime
+      data:
+        datetime: '{{ now() }}'
+      target:
+        entity_id: input_datetime.dehumidifier_stop_time
+  mode: single
+
+- alias: ontvochtiger staat al 15 min. aan
+  id: '0bd10dde-0f91-479c-9ddb-ebc484c0178d'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.dehumidifier_power
+    above: 0
+    for: 00:15:00
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Ontvochtiger staat al tijdje aan.
+      message: "Staat aan sinds meer dan 15 minuten aan."
+      data:
+        tag: ontvochtiger
+        notification_icon: "mdi:air-humidifier"
+  - repeat:
+      while:
+      - condition: numeric_state
+        entity_id: sensor.dehumidifier_power
+        above: 0
+      sequence:
+      - delay:
+          minutes: 15
+      - service: notify.bart_phone      
+        data:
+          title: Ontvochtiger staat al tijdje aan.
+          message: "Staat al {{((as_timestamp(now()) - as_timestamp(states.automation.ontvochtiger_staat_al_15_minuten_aan) + 15) / 60 )| int() }} minuten aan."
+          data:
+            tag: ontvochtiger
+            notification_icon: "mdi:air-humidifier"
+  - service: notify.bart_phone
+    data:
+      title: "Ontvochtiger staat nu uit."
+      message: "Stond {{((as_timestamp(now()) - as_timestamp(states.automation.ontvochtiger_staat_al_15_minuten_aan) + 15) / 60 )| int() }} minuten aan."
+      data:
+        tag: ontvochtiger
+        notification_icon: "mdi:air-humidifier"        
+  mode: single
+

@@ -27,12 +27,17 @@ amilya_airco_start:
       preset_mode: eco
     target:
       device_id: 61864d1ab32c5af91d5f13faf697c27e
+  - service: climate.set_fan_mode
+    data:
+      fan_mode: auto
+    target:
+      device_id: 61864d1ab32c5af91d5f13faf697c27e     
 
 amilya_airco_19:
   sequence:
   - service: input_number.set_value
     data:
-      value: 19
+      value: 18
     target:
       entity_id: input_number.amilya_airco_target_temperature          
   - service: input_number.set_value
@@ -48,7 +53,7 @@ amilya_airco_20:
   sequence:
   - service: input_number.set_value
     data:
-      value: 20
+      value: 19
     target:
       entity_id: input_number.amilya_airco_target_temperature          
   - service: input_number.set_value
@@ -60,11 +65,11 @@ amilya_airco_20:
     data: {} 
   mode: restart
 
-alunya_airco_21:
+amilya_airco_21:
   sequence:
   - service: input_number.set_value
     data:
-      value: 21
+      value: 20
     target:
       entity_id: input_number.amilya_airco_target_temperature          
   - service: input_number.set_value

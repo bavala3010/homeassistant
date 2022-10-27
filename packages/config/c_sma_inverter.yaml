@@ -1,3 +1,5 @@
+# MAC address SMA solar inverter: 70:74:14:92:6b:cd
+
 modbus:
   - name: sma
     type: tcp

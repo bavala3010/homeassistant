@@ -1,0 +1,104 @@
+sensor:
+  - platform: template
+    sensors:
+      car_solar_wattmeter:
+        friendly_name: "auto zonne-energie"
+        unique_id: '6d159574-486d-4e8f-85dc-f5965cfa4647' 
+        unit_of_measurement: W
+        value_template: >
+          {% set charger = states('sensor.charger_real_power') | float(default=0) %}
+          {% set solar = states('sensor.solar_power') | float(default=0) %}
+          {% if charger > 0 and solar >= charger %}
+            {{ charger }}
+          {% elif charger > 0 and solar < charger %}
+            {{ solar }}
+          {% else %}
+            0
+          {% endif %}
+
+      car_net_wattmeter:
+        friendly_name: "auto netstroom"
+        unique_id: 'b4a3fda6-2a3e-44f0-aa8b-ae833b86acf0' 
+        unit_of_measurement: W
+        value_template: >
+          {% set charger = states('sensor.charger_real_power') | float(default=0) %}
+          {% set solar = states('sensor.solar_power') | float(default=0) %}
+          {% set net = states('sensor.net_power') | float(default=0) %}
+          {% if solar <= charger %}
+              {{ charger - solar }}
+          {% elif net <= 0 and charger >= 0 %}
+              0
+          {% endif %}
+
+  - platform: integration
+    source: sensor.car_net_wattmeter
+    name: car charge net energy
+    method: left
+    unit_prefix: k
+    unit_time: h
+
+  - platform: integration
+    source: sensor.car_solar_wattmeter
+    name: car charge solar energy
+    method: left
+    unit_prefix: k
+    unit_time: h
+
+  - platform: integration
+    source: sensor.charger_real_power
+    name: charger total power
+    unit_prefix: k
+    unit_time: h
+
+  - platform: integration
+    source: sensor.charger_real_power
+    name: charger energieverbruik
+    method: left
+    unit_prefix: k
+    round: 2
+
+
+utility_meter:
+  car_charger_energy_daily:
+    source: sensor.charger_energieverbruik
+    cycle: daily
+  
+  car_charge_net_energy_daily:
+    unique_id: '0eee3892-0b11-4142-8a74-96bc9d4bca49'
+    source: sensor.car_charge_net_energy
+    cycle: daily
+
+  car_charge_net_energy_weekly:
+    unique_id: '49b53721-5e91-4421-bcd5-dfd30afed72f'  
+    source: sensor.car_charge_net_energy
+    cycle: weekly
+
+  car_charge_net_energy_monthly:
+    unique_id: '8bc12bd0-fa1b-4d8e-a4cc-ec714f8c5530'  
+    source: sensor.car_charge_net_energy
+    cycle: monthly
+
+  car_charge_net_energy_yearly:
+    unique_id: 'c215a40f-07a8-4515-b0d4-4ea2270a67a1'  
+    source: sensor.car_charge_net_energy
+    cycle: yearly
+
+  car_charge_solar_energy_daily:
+    unique_id: '20d48c19-255f-4bca-857a-ac236f28927b'  
+    source: sensor.car_charge_solar_energy
+    cycle: daily
+
+  car_charge_solar_energy_weekly:
+    unique_id: '1935420d-6604-4cac-85f6-3af9d250aa36'  
+    source: sensor.car_charge_solar_energy
+    cycle: weekly
+
+  car_charge_solar_energy_monthly:
+    unique_id: 'f798866b-e57d-4e5d-86b8-085680bb5522'  
+    source: sensor.car_charge_solar_energy
+    cycle: monthly
+
+  car_charge_solar_energy_yearly:
+    unique_id: '9ad606fb-02e6-4eb7-8ec1-c98272ac3644'  
+    source: sensor.car_charge_solar_energy
+    cycle: yearly

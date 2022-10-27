@@ -1,5 +1,5 @@
 
-master_bedroom_airco_timer:
+master_bedroom_airco_start:
   sequence:
   - service: timer.start
     data:
@@ -30,4 +30,57 @@ master_bedroom_airco_timer:
     data:
       swing_mode: 3D
     target:
-      device_id: 64296bd295e4506b8a3ec42c8aae7e58      
+      device_id: 64296bd295e4506b8a3ec42c8aae7e58
+  - service: climate.set_fan_mode
+    data:
+      fan_mode: auto
+    target:
+      device_id: 64296bd295e4506b8a3ec42c8aae7e58
+
+master_bedroom_airco_19:
+  sequence:
+  - service: input_number.set_value
+    data:
+      value: 19
+    target:
+      entity_id: input_number.master_bedroom_airco_target_temperature          
+  - service: input_number.set_value
+    data:
+      value: 30
+    target:
+      entity_id: input_number.master_bedroom_airco_timer_minutes
+  - service: script.master_bedroom_airco_start
+    data: {} 
+  mode: restart
+
+master_bedroom_airco_20:
+  sequence:
+  - service: input_number.set_value
+    data:
+      value: 20
+    target:
+      entity_id: input_number.master_bedroom_airco_target_temperature          
+  - service: input_number.set_value
+    data:
+      value: 30
+    target:
+      entity_id: input_number.master_bedroom_airco_timer_minutes
+  - service: script.master_bedroom_airco_start
+    data: {} 
+  mode: restart
+
+master_bedroom_airco_21:
+  sequence:
+  - service: input_number.set_value
+    data:
+      value: 21
+    target:
+      entity_id: input_number.master_bedroom_airco_target_temperature          
+  - service: input_number.set_value
+    data:
+      value: 30
+    target:
+      entity_id: input_number.master_bedroom_airco_timer_minutes
+  - service: script.master_bedroom_airco_start
+    data: {} 
+  mode: restart      

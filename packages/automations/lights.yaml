@@ -26,7 +26,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: device_tracker.amilya_iphone_xs
+    entity_id: person.amilya
     to: 'not_home'
     for: 00:03:00
     from: 'home'
@@ -110,7 +110,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: device_tracker.alunya_samsung_galaxy_a71
+    entity_id: person.alunya
     to: 'not_home'
     for: 00:03:00
   condition: []

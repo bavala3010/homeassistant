@@ -1,0 +1,135 @@
+automation:
+
+##############################
+# luchtzuivering living
+##############################
+
+- alias: 💨 Air Quality Index > 8 = purifier aan
+  id: '7e3043d1-8299-4121-ad8b-08da26340065'
+  description: ''
+  trigger:
+  - minutes: /5
+    platform: time_pattern
+  condition:
+  - condition: template
+    value_template: "{{ states('sensor.mi_air_pm2_5') |float(default=0) > 8 }}"
+  - condition: state
+    entity_id: group.gezin
+    state: 'home'
+  - condition: time
+    after: '07:00'
+    before: '23:30'
+  action:
+  - service: fan.set_preset_mode
+    data:
+      entity_id: fan.mi_air
+      preset_mode: auto
+  mode: single
+
+- alias: 💨 Air Quality Index < 8 = purifier uit
+  id: '991a6848-2b77-4573-a2c4-76d603eeb899'
+  description: ''
+  trigger:
+  - minutes: /5
+    platform: time_pattern
+  condition:
+  - condition: template
+    value_template: "{{ states('sensor.mi_air_pm2_5') |float(default=0) < 8 }}"
+  - condition: state
+    entity_id: input_boolean.busy_cooking
+    state: 'off'    
+  action:
+  - service: fan.turn_off
+    target:
+      entity_id: fan.mi_air
+  mode: single
+
+- alias: 💨 not home = Air purifier uit
+  id: '0c3adcca-2586-4ee3-a3bc-a78f38f65937'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.gezin
+    to: 'not_home'
+    for: 00:05:00
+  condition: []
+  action:
+  - service: fan.turn_off
+    target:
+      entity_id: fan.mi_air
+  mode: single
+
+- alias: 💨 om 23u00 = Air purifier uit
+  id: 'c046f93d-d49a-4db3-8dbf-4e3231374926'
+  description: ''
+  trigger:
+  - platform: time
+    at: '23:00:00'
+  condition: []
+  action:
+  - service: fan.turn_off
+    target:
+      entity_id: fan.mi_air
+  mode: single
+
+- alias: 💨 aan het koken = air purifier aan
+  id: 'ef2b8563-60f8-4962-a357-6ac1589b08cd'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.busy_cooking
+    to: 'on'
+  - device_id: dd2e7860b0b3eade0fbecf9965c6106a
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: remote_button_short_press
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.busy_cooking
+  - service: fan.turn_on
+    target:
+      entity_id: fan.mi_air
+    data: {}
+  - service: notify.bart_phone
+    data:
+      message: Lekker aan het koken? De lucht wordt gezuiverd.
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.living_speaker
+      volume_level: 0.5      
+  - service: tts.edge_tts_say
+    data:
+      entity_id: media_player.living_speaker
+      message: '{{ ("Laat het dadelijk smaken! Ik zorg voor de zuivere lucht.", "Zullen we deze week ook nog eens frietjes eten?", "Meisjes, dek de tafel maar alvast!", "Moet ik helpen met koken?", "Voor mij een steak met frietjes graag.", "Wanneer eten we nog eens spaghetti?", "Vergeet de groentjes niet voor de vitaminen!") |random }}'
+  - delay: '00:00:10'
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.living_speaker
+      volume_level: 0.3
+  - delay: '01:00:00'
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.busy_cooking
+  mode: restart
+  
+- alias: 💨 koken gedaan = air purifier uit
+  id: 'dd3f89f5-e628-408a-a5aa-9aa9afbbd6d6'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.busy_cooking
+    to: 'off'
+  condition: []
+  action:
+  - service: fan.turn_off
+    target:
+      entity_id: fan.mi_air
+    data: {}
+  - service: tts.edge_tts_say
+    data:
+      entity_id: media_player.living_speaker
+      message: De kooksessie is gedaan. Hopelijk heeft het gesmaakt.
+  mode: restart

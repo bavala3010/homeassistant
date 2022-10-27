@@ -1,0 +1,78 @@
+template:
+- sensor:
+    - name: "washing machine expected time left"
+      unique_id: 'c04aa3c3-ef3e-4329-88c3-706a66ec7968'
+      state: >
+        {% set washing_machine_start_time = as_timestamp(states('input_datetime.washing_machine_start_time')) %}
+        {% set washing_machine_stop_time = as_timestamp(states('input_datetime.washing_machine_stop_time')) %}
+        {% set washing_machine_expected_run_time = states('input_number.washing_machine_expected_run_time') | float(0) %}
+        {% set expected_end_time = washing_machine_start_time + washing_machine_expected_run_time %}
+        {% set expected_time_left = expected_end_time - now().timestamp() %}
+        {{ expected_time_left }}
+
+input_number:
+  washing_machine_expected_run_time:
+    name: "wasmachine geschatte duur"
+    min: 0
+    max: 1000000000
+    step: 1
+    mode: slider
+
+input_datetime:
+  washing_machine_expected_stop_time:
+    name: "wasmachine verwachte eindtijd"
+    has_date: true
+    has_time: true
+
+  washing_machine_start_time:
+    name: "wasmachine starttijd"
+    has_date: true
+    has_time: true
+
+  washing_machine_stop_time:
+    name: "wasmachine eindtijd"
+    has_date: true
+    has_time: true
+
+input_select:
+  washing_machine_state:
+    name: "wasmachine status"
+    options:
+      - uit
+      - uitgestelde start
+      - bezig
+      - klaar
+
+  washing_machine_phase:
+    name: "wasmachine faze"
+    options:
+      - uit
+      - water verwarmen
+      - wassen
+      - spoelen
+      - centrifugeren
+
+sensor:
+  - platform: statistics
+    name: "wasmachine energieverbruik laatste 8 minuten"
+    entity_id: sensor.washing_machine_power
+    state_characteristic: mean
+    max_age:
+      minutes: 8
+
+  - platform: integration
+    source: sensor.washing_machine_power
+    name: wasmachine energieverbruik
+    method: left
+    unit_prefix: k
+    unit_time: h
+    round: 2
+    # apparaten die bij het starten pieken veroorzaken, moeten de left methode gebruiken
+    # creates a sensor called sensor.wasmachine_energieverbruik      
+
+utility_meter:
+  washing_machine_energy_daily:
+    unique_id: '2b606da9-0b0e-428d-901b-534d01f27390'
+    source: sensor.wasmachine_energieverbruik
+    cycle: daily
+  

@@ -1,0 +1,245 @@
+automation:
+
+- alias: wasmachine start
+  id: '802f6420-28cb-46e6-aac1-a94d38a3c1f5'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.washing_machine_power
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    above: 5
+  condition: []
+  action:
+    - service: input_datetime.set_datetime
+      data:
+        datetime: '{{ now() }}'
+      target:
+        entity_id: input_datetime.washing_machine_start_time
+    - service: input_select.select_option
+      data:
+        option: bezig
+      target:
+        entity_id: input_select.washing_machine_state
+    - service: input_datetime.set_datetime
+      data:
+        datetime: '{{ (now().timestamp() + states(''input_number.washing_machine_expected_run_time'')
+          | float(0)) | timestamp_local() }}'
+      target:
+        entity_id: input_datetime.washing_machine_expected_stop_time
+  mode: single
+
+- alias: wasmachine bezig met water verwarmen
+  id: 'e07f24be-a789-40a2-9b9a-bfca2568f8ba'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.washing_machine_power
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+    above: 1000
+  condition: []
+  action:
+  - service: input_select.select_option
+    data:
+      option: water verwarmen
+    target:
+      entity_id: input_select.washing_machine_phase
+  mode: single
+
+- alias: wasmachine bezig met wassen
+  id: '94efde78-ad57-498a-830b-840bad4cb742'
+  # nog aan te passen
+  description: ''
+  trigger:
+  - platform: template
+    value_template: >
+      {% set p = states('sensor.washing_machine_power') | float %}
+      {{ p > 4 and p < 300 }}
+  condition: []
+  action:
+  - service: input_select.select_option
+    data:
+      option: wassen
+    target:
+      entity_id: input_select.washing_machine_phase
+  mode: single
+
+- alias: wasmachine bezig met centrifugeren
+  id: '430514c0-2df7-40f6-858f-8547a5a42e3a'
+  # nog aan te passen
+  description: ''
+  trigger:
+  - platform: template
+    value_template: >
+      {% set p = states('sensor.washing_machine_power') | float %}
+      {{ p > 300 and p < 600 }}
+  condition: []
+  action:
+  - service: input_select.select_option
+    data:
+      option: centrifugeren
+    target:
+      entity_id: input_select.washing_machine_phase
+  mode: single
+
+- alias: wasmachine is klaar
+  id: 'a53e90ee-9eef-44dd-bc1a-4700b85e4910'
+  description: ""
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.washing_machine_power
+      for:
+        hours: 0
+        minutes: 3
+        seconds: 0
+      below: 1
+  condition:
+    - condition: state
+      entity_id: input_select.washing_machine_state
+      state: bezig
+  action:
+    - service: input_datetime.set_datetime
+      data:
+        datetime: '{{ now() }}'
+      target:
+        entity_id: input_datetime.washing_machine_stop_time  
+    - service: input_number.set_value
+      data:
+        value: "{{ (as_timestamp(states('input_datetime.washing_machine_stop_time')) - as_timestamp(states('input_datetime.washing_machine_start_time'))) | float(0) }}"
+      target:
+        entity_id: input_number.washing_machine_expected_run_time
+    - service: input_select.select_option
+      data:
+        option: klaar
+      target:
+        entity_id: input_select.washing_machine_state
+    - service: input_select.select_option
+      data:
+        option: klaar
+      target:
+        entity_id: input_select.washing_machine_phase
+    - service: notify.bart_phone
+      data:
+        message: De wasmachine is klaar!
+        title: 👕👙 Wasmachine
+        data:
+          tag: wasmachine
+          notification_icon: "mdi:washing-machine"
+    - service: notify.madouce_phone
+      data:
+        message: De wasmachine is klaar!
+        title: 👕👙 Wasmachine
+        data:
+          tag: wasmachine
+          notification_icon: "mdi:washing-machine"            
+    - service: script.google_home_resume
+      data:
+        action:
+          - service: tts.edge_tts_say
+            data:
+              entity_id: media_player.living_speaker
+              message: De was is gedaan! Vergeet hem er niet uit te halen.
+              options:
+                pitch: +0Hz
+                rate: -10%
+  mode: single
+
+
+- alias: was nog steeds in wasmachine
+  id: '5c874c7e-b0c4-431d-be1f-3096330b6653'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - input_select.washing_machine_state
+      to: klaar
+      for:
+        hours: 0
+        minutes: 15
+        seconds: 0
+  condition:
+    - condition: state
+      entity_id: binary_sensor.washing_machine_vibration
+      state: "off"
+      for:
+        hours: 0
+        minutes: 14
+        seconds: 0  
+  action:
+    - service: notify.bart_phone
+      data:
+        title: Wasmachine
+        message: "Haal de was uit de wasmachine. De wasmachine was al klaar om {{ states('input_datetime.washing_machine_stop_time') }}."
+        data:
+          tag: wasmachine
+          notification_icon: "mdi:washing-machine"        
+    - service: notify.madouce_phone
+      data:
+        title: Wasmachine
+        message: "Haal de was uit de wasmachine. De wasmachine was al klaar om {{ states('input_datetime.washing_machine_stop_time') }}."
+        data:
+          tag: wasmachine
+          notification_icon: "mdi:washing-machine"                
+    - service: script.google_home_resume
+      data:
+        action:
+          - service: tts.edge_tts_say
+            data:
+              entity_id: media_player.living_speaker
+              message: De was zit nog altijd in de wasmachine.
+              options:
+                pitch: +0Hz
+                rate: -10%
+  mode: single
+
+- alias: was gedaan en deur wasmachine wordt geopend = wasmachine uit
+  id: 'f0cb7490-e53a-4c30-add5-1e8849c228be'
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.washing_machine_vibration
+      to: "on"
+  condition:
+    - condition: state
+      entity_id: input_select.washing_machine_state
+      state: klaar
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 0  
+  action:
+    - service: input_select.select_option
+      data:
+        option: uit
+      target:
+        entity_id: input_select.washing_machine_state
+    - service: input_select.select_option
+      data:
+        option: uit
+      target:
+        entity_id: input_select.washing_machine_phase
+  mode: single
+
+
+- alias: wasmachine in uitgestelde start
+  id: '8c917d8b-bde7-4f83-b4f1-80e0d7a46817'
+  description: ''
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.wasmachine_energieverbruik_laatste_8_minuten
+      above: 1
+      below: 4
+  condition: []
+  action:
+    - service: input_select.select_option
+      data:
+        option: uitgestelde start
+      target:
+        entity_id: input_select.washing_machine_state
+  mode: single
+

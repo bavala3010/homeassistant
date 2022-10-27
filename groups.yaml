@@ -253,16 +253,6 @@ kerstlichten:
     - switch.plug_1
     - switch.plug_2
 
-#######################################################################
-# huishoudtoestellen
-#######################################################################
-elec_huishoudtoestellen_busy:
-  name: huishoudtoestellen bezig
-  entities:
-    - input_boolean.elec_wasmachine_busy
-    - input_boolean.elec_droger_busy
-    - input_boolean.elec_vaatwasser_busy
-
 home_temp_rising:
   name: temperatuur in huis stijgt
   entities:

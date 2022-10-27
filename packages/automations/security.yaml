@@ -554,44 +554,10 @@ automation:
 
 
 ###########################################
-# Garagepport en voordeur
+# Garagepoort en voordeur
 ###########################################
 
-- alias: garagepoort staat lang open
-  id: '89cce371-bbfd-4154-a909-1ffeab77f9de'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: cover.garagepoort
-    from: 'closed'
-    to: 'open'
-    for: '00:05:00'
-  condition: []
-  action:
-  - repeat:
-      while:
-      - condition: state
-        entity_id: cover.garagepoort
-        state: 'open'
-      sequence:
-      - service: notify.bart_phone      
-        data:
-          title: "Garage staat al lang open."
-          message: "Staat al {{((as_timestamp(now()) - as_timestamp(states.cover.garagepoort.last_changed)) / 60 )| int() }} minuten open."
-          data:
-            color: red
-            tag: garage_staat_open
-      - delay:
-          minutes: 2
-  - service: notify.bart_phone
-    data:
-      title: "Garage is nu terug dicht."
-      # + 5 = automation is triggered when the garage door is already 5 minutes open 
-      message: >
-        Stond {{ (((as_timestamp(now()) - as_timestamp(state_attr('automation.garagepoort_staat_lang_open', 'last_triggered') )) / 60 ) + 5) | int() }} minuten open.
-      data:
-        tag: garage_staat_open
-  mode: single
+
 
 - alias: Voordeur staat lang open
   id: 'c1657da2-d8b2-4c18-a2c4-ae5c3c11b85e'
@@ -639,7 +605,7 @@ automation:
   mode: single
 
 
-- alias: Niemand meer thuis = check open ramen
+- alias: Niemand meer thuis = check ramen wijd open
   id: '9c3567c0-ab6a-4ac9-83c9-82280a299e14'
   description: ''
   trigger:
@@ -678,3 +644,46 @@ automation:
       data:
         color: red
   mode: single         
+
+- alias: Niemand meer thuis = check open ramen
+  id: 'ab53dc1d-a37e-4c56-a18b-d39bdddb5b17'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.gezin
+    to: not_home
+  condition:
+  - condition: state
+    entity_id: group.alle_raam_sensoren
+    state: 'on'
+  - condition: state
+    entity_id: binary_sensor.bart_phone_connected_to_car
+    state: 'on'    
+  action:
+  - service: notify.bart_phone
+    data:
+      message: TTS
+      data:
+        tts_text: >
+          Er staan nog ramen open!
+          {{expand(states.binary_sensor.badkamer_raam_kantel, states.binary_sensor.badkamer_raam_wijd, states.binary_sensor.berging_raam, states.binary_sensor.kamer_alunya_raam, states.binary_sensor.kamer_amilya_raam, states.binary_sensor.kamer_alunya_schuifraam, states.binary_sensor.keuken_raam, states.binary_sensor.living_oprit_raam, states.binary_sensor.living_tuin_raam, states.binary_sensor.master_bedroom_raam_kantel, states.binary_sensor.master_bedroom_raam_wijd, states.binary_sensor.veranda_schuifraam) | selectattr('state','eq','on') | map(attribute='name') | list | join(', ') }}
+        color: red
+        actions:
+        - action: URI
+          title: Meer info
+          uri: /lovelace/alarm
+        vibrationPattern: 10, 10, 10, 10, 10, 10, 10
+        media_stream: alarm_stream
+  - service: notify.bart_phone
+    data:
+      title: Niemand thuis en ramen open
+      message: Er staan nog ramen open.
+      data:
+        color: red
+  - service: notify.madouce_phone
+    data:
+      title: Niemand thuis en ramen open
+      message: Er staan nog ramen open.
+      data:
+        color: red
+  mode: single

@@ -62,7 +62,7 @@ automation:
           uri: /eikenbos-dashboard/car        
   - service: notify.madouce_phone
     data:
-      message: "🚙 Autolader is verbonden. Nu {{states('sensor.car_1_soc')}}%."
+      message: "🚙 Autolader is verbonden. Nu {{states('sensor.car_1_soc') |round()}}%."
       data:
         color: green
         tag: auto_laden
@@ -88,7 +88,7 @@ automation:
   - service: notify.bart_phone
     data:
       title: 🚙 Auto is aan het laden.
-      message: Nu {{states('sensor.car_1_soc')}}% = {{states('sensor.car_1_range')}} km.
+      message: Nu {{states('sensor.car_1_soc') | round()}}% = {{states('sensor.car_1_range')}} km.
         Nog {{states('sensor.car_1_remaining_charge_time')}} laden tot 100%.
       data:
         color: green
@@ -100,7 +100,7 @@ automation:
           uri: /eikenbos-dashboard/car
   - service: notify.madouce_phone
     data:
-      message: Nu {{states('sensor.car_1_soc')}}% = {{states('sensor.car_1_range')}} km.
+      message: Nu {{states('sensor.car_1_soc') | round()}}% = {{states('sensor.car_1_range')}} km.
         Nog {{states('sensor.car_1_remaining_charge_time')}} laden tot 100%.
       data:
         color: green
@@ -131,7 +131,7 @@ automation:
       - input_boolean.car_charge_net_busy
   - service: notify.bart_phone
     data:
-      message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.car_1_soc')}}%. {{states('sensor.car_1_range')}} km."
+      message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.car_1_soc') | round()}}%. {{states('sensor.car_1_range')}} km."
       data:
         color: green
         tag: auto_laden
@@ -142,7 +142,7 @@ automation:
           uri: /eikenbos-dashboard/car
   - service: notify.madouce_phone
     data:
-      message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.car_1_soc')}}%. {{states('sensor.car_1_range')}} km."
+      message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.car_1_soc') | round()}}%. {{states('sensor.car_1_range')}} km."
       data:
         color: green
         tag: auto_laden

@@ -1,0 +1,13 @@
+
+sensor:
+  - platform: integration
+    source: sensor.infrared_panel_power
+    name: infraroodpaneel energieverbruik
+    unit_prefix: k
+    round: 2
+
+utility_meter:
+  infrared_panel_energy_daily:
+    source: sensor.infraroodpaneel_energieverbruik
+    cycle: daily
+

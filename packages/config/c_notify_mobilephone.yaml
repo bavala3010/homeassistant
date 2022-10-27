@@ -11,6 +11,11 @@ notify:
     services:
       - service: mobile_app_sm_g975f
 
+  - name: bart_iphone
+    platform: group
+    services:
+      - service: mobile_app_bartiphone
+
   - name: madouce_phone
     platform: group
     services:
@@ -20,3 +25,8 @@ notify:
     platform: group
     services:
       - service: mobile_app_sm_a715f
+
+  - name: amilya_phone
+    platform: group
+    services:
+      - service: mobile_app_iphone

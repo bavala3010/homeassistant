@@ -159,7 +159,7 @@ automation:
           {% endif %}
   mode: single
   
-- alias: button nachtkastje Madouce (short press)
+- alias: button nachtkastje Madouce (short press) = matrasverwarmer uit 
   id: 'c2d4f8a2-3f38-40f2-8d8a-816813c65c59'
   description: ''
   trigger:
@@ -173,7 +173,7 @@ automation:
   action:
   - service: switch.turn_off
     target:
-      entity_id: switch.smart_power_strip_4
+      entity_id: switch.madouce_matrasverwarmer
   - condition: time
     after: '09:00:00'
     before: '23:00:00'
@@ -182,12 +182,12 @@ automation:
       entity_id: media_player.master_bedroom_speaker
       cache: false
       message: >-
-        {% if is_state('switch.smart_power_strip_4', 'off') %} De matras was al uit. 
+        {% if is_state('switch.madouce_matrasverwarmer', 'off') %} De matras was al uit. 
         {% else %} De matras wordt uitgeschakeld.
         {% endif %}
   mode: single
   
-- alias: button nachtkastje Madouce (long press)
+- alias: button nachtkastje Madouce (long press) = matrasverwarmer aan 
   id: '5339a7c4-6300-4169-ae2a-eb698d1dae39'
   description: ''
   trigger:
@@ -201,7 +201,7 @@ automation:
   action:
   - service: switch.turn_on
     target:
-      entity_id: switch.smart_power_strip_4
+      entity_id: switch.madouce_matrasverwarmer
   - condition: time
     after: '09:00:00'
     before: '23:00:00'
@@ -210,7 +210,7 @@ automation:
       entity_id: media_player.master_bedroom_speaker
       cache: false
       message: >-
-        {% if is_state('switch.smart_power_strip_4', 'on') %} De matras was al aan. Was het nog niet warm genoeg?
+        {% if is_state('switch.madouce_matrasverwarmer', 'on') %} De matras was al aan. Was het nog niet warm genoeg?
         {% else %} De matras wordt ingeschakeld. Geniet van de warmte.
         {% endif %}
   mode: single

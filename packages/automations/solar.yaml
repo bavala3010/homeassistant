@@ -61,7 +61,7 @@ automation:
     - service: notify.bart_phone
       data:
         title: Hoog energieverbruik
-        message: Er wordt nu {{ states('sensor.net_power') }} kW verbruikt van het net.
+        message: "Er wordt nu {{ states('sensor.net_power') }} kW verbruikt van het net."
         data:
           notification_icon: "mdi:lightning-bolt"
           color: red
@@ -73,7 +73,6 @@ automation:
 - alias: "begin van de zonne-energie productie"
   id: 'd488b323-d0d6-4cee-850c-8b0673c3df04'
   description: ''
-  mode: single
   trigger:
     - platform: numeric_state
       entity_id: sensor.solar_power
@@ -87,12 +86,12 @@ automation:
     - service: notify.bart_phone
       data:
         title: "Zonne-energie: een nieuwe dag met zonne-energie."
-        message: Start van de zonne-energie productie vandaag.
+        message: "Start van de zonne-energie productie vandaag. Vandaag tot {{ states('sensor.solar_sim_energy_today') }} kWh voorzien."
+  mode: single
 
 - alias: "einde van de zonne-energie productie voor vandaag"
   id: '9a576f40-1363-466d-bab3-915845c02e49'
   description: ''
-  mode: single
   trigger:
     - platform: numeric_state
       entity_id: sensor.solar_power
@@ -106,7 +105,7 @@ automation:
     - service: notify.bart_phone
       data:
         title: Zonne-energie
-        message: Einde van de zonne-energie productie vandaag.
-
+        message: "Einde van de zonne-energie productie vandaag. Vandaag heeft de zon {{ states('sensor.sma_today') }} kWh opgebracht."
+  mode: single
 
 

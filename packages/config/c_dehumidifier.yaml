@@ -1,0 +1,32 @@
+input_datetime:
+  dehumidifier_start_time:
+    name: "ontvochtiger starttijd"
+    has_date: true
+    has_time: true
+
+  dehumidifier_stop_time:
+    name: "ontvochtiger eindtijd"
+    has_date: true
+    has_time: true
+
+input_select:
+  dehumidifier_state:
+    name: "onvochtiger status"
+    options:
+      - aan
+      - uit
+
+sensor:
+  - platform: integration
+    source: sensor.dehumidifier_power
+    name: ontvochtiger energieverbruik
+    unit_prefix: k
+    round: 2
+    method: left
+    # apparaten die bij het starten pieken veroorzaken, moeten de left methode gebruiken
+    # creates a sensor called sensor.ontvochtiger_energieverbruik
+
+utility_meter:
+  dehumidifier_energy_daily:
+    source: sensor.ontvochtiger_energieverbruik
+    cycle: daily

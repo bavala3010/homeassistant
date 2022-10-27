@@ -36,7 +36,7 @@ automation:
     at: '19:00'
   condition:
   - condition: numeric_state
-    entity_id: sensor.audi_e_tron_sportback_outdoor_temperature
+    entity_id: sensor.temp_leuven24_wunderground
     below: 15
   - condition: state
     entity_id: person.bart
@@ -57,6 +57,7 @@ automation:
       data:
         tag: auto_climatisatie
         color: green
+        notification_icon: "mdi:car-seat-heater"
         actions:
         - action: URI
           title: zo ja, klik hier
@@ -73,13 +74,9 @@ automation:
       to: 'off'
       for: "00:00:05"
   condition:
-    or:
-      - condition: numeric_state
-        entity_id: sensor.audi_e_tron_sportback_outdoor_temperature
-        below: 15
-      - condition: numeric_state
-        entity_id: sensor.temp_leuven24_wunderground
-        below: 15
+    - condition: numeric_state
+      entity_id: sensor.temp_leuven24_wunderground
+      below: 15
   action:
   - choose:
     # indien aankomst thuis, niets doen
@@ -109,6 +106,7 @@ automation:
           data:
             tag: auto_climatisatie   
             color: green
+            notification_icon: "mdi:car-seat-heater"            
             actions:
             - action: URI
               title: zo ja, klik hier
@@ -149,6 +147,7 @@ automation:
           data:
             tag: auto_climatisatie 
             color: green
+            notification_icon: "mdi:car-seat-heater"            
             actions:
             - action: URI
               title: zo ja, klik hier
@@ -161,6 +160,7 @@ automation:
           data:
             tag: auto_climatisatie      
             color: green
+            notification_icon: "mdi:car-seat-heater"              
             actions:
             - action: URI
               title: zo ja, klik hier
@@ -174,6 +174,7 @@ automation:
         data:
           tag: auto_climatisatie
           color: green
+          notification_icon: "mdi:car-seat-heater"          
           actions:
           - action: URI
             title: zo ja, klik hier
@@ -202,13 +203,9 @@ automation:
       to: 'off'
       for: "00:00:05"
   condition:
-    or:
-      - condition: numeric_state
-        entity_id: sensor.audi_e_tron_sportback_outdoor_temperature
-        below: 15
-      - condition: numeric_state
-        entity_id: sensor.temp_leuven24_wunderground
-        below: 15
+    - condition: numeric_state
+      entity_id: sensor.temp_leuven24_wunderground
+      below: 15
   action:
   - choose:
     # indien aankomst thuis, niets doen
@@ -238,6 +235,7 @@ automation:
           data:
             tag: auto_climatisatie      
             color: green
+            notification_icon: "mdi:car-seat-heater"            
             actions:
             - action: URI
               title: zo ja, klik hier
@@ -290,6 +288,7 @@ automation:
           data:
             tag: auto_climatisatie      
             color: green
+            notification_icon: "mdi:car-seat-heater"            
             actions:
             - action: URI
               title: zo ja, klik hier
@@ -303,6 +302,7 @@ automation:
         data:
           tag: auto_climatisatie
           color: green
+          notification_icon: "mdi:car-seat-heater"          
           actions:
           - action: URI
             title: zo ja, klik hier
@@ -315,6 +315,7 @@ automation:
         data:
           tag: auto_climatisatie      
           color: green
+          notification_icon: "mdi:car-seat-heater"          
           actions:
           - action: URI
             title: zo ja, klik hier
@@ -345,6 +346,7 @@ automation:
       data:
         tag: auto_climatisatie
         color: green
+        notification_icon: "mdi:car-seat-heater"        
         actions:
         - action: URI
           title: Voor meer info, klik hier
@@ -433,6 +435,7 @@ automation:
       data:
         tag: auto_climatisatie
         color: green
+        notification_icon: "mdi:car-seat-heater"        
         actions:
         - action: URI
           title: Voor meer info, klik hier
@@ -468,6 +471,7 @@ automation:
       data:
         tag: auto_climatisatie
         color: green
+        notification_icon: "mdi:car-seat-heater"        
         actions:
         - action: URI
           title: Voor meer info, klik hier
@@ -557,6 +561,7 @@ automation:
       data:
         tag: auto_climatisatie
         color: green
+        notification_icon: "mdi:car-seat-heater"        
         actions:
         - action: URI
           title: Voor meer info, klik hier
