@@ -1,42 +1,10 @@
 automation:
 
-- alias: '♨️ Airco heating master bedroom: aan volgens schema'
-  id: 'edef1255-b457-4329-befe-d901277e91c3'
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.master_bedroom_temperature
-    below: 16
-  condition:
-  - condition: state
-    entity_id: schedule.master_bedroom_normal_temperature_schema
-    state: 'on'
-  - condition: state
-    entity_id: group.gezin
-    state: home
-  action:
-  - service: input_number.set_value
-    data:
-      value: >
-        {{ states('input_number.master_bedroom_normal_temperature') | float }}
-    target:
-      entity_id: input_number.master_bedroom_airco_target_temperature          
-  - service: input_number.set_value
-    data:
-      value: 30
-    target:
-      entity_id: input_number.master_bedroom_airco_timer_minutes
-  - service: script.master_bedroom_airco_start
-    data: {} 
-  mode: single
 
-- alias: '♨️ Airco heating master bedroom: uit volgens schema/verlaten huis/timer stop'
+- alias: '♨️ Airco heating master bedroom: uit bij verlaten huis/timer stop'
   id: '6f9dd54d-4168-49d5-8bc4-e9b6d157bb44'
   description: ''
   trigger:
-  - platform: state
-    entity_id: schedule.master_bedroom_normal_temperature_schema
-    to: 'off'
   - platform: state
     entity_id: group.gezin
     to: not_home

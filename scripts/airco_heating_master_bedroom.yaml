@@ -36,6 +36,7 @@ master_bedroom_airco_start:
       fan_mode: auto
     target:
       device_id: 64296bd295e4506b8a3ec42c8aae7e58
+  mode: restart
 
 master_bedroom_airco_19:
   sequence:

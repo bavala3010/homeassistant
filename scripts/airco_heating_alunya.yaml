@@ -2,6 +2,10 @@
 
 alunya_airco_start:
   sequence:
+  - condition: template
+    value_template: >-
+      {{ states('sensor.kamer_alunya_temperature') | float <
+      states('input_number.alunya_airco_target_temperature') | float }}  
   - service: timer.start
     data:
       duration: "{{ states('input_number.alunya_airco_timer_minutes') | float * 60 }}"
@@ -19,7 +23,8 @@ alunya_airco_start:
       hvac_mode: heat
       temperature: >
         {% set adj = states('input_number.alunya_airco_target_temperature') | float - states('sensor.kamer_alunya_temperature') | float %}
-        {{ (state_attr('climate.alunya_airco', 'current_temperature') + adj) | round(1, 'half', 0) }}
+        {{ (state_attr('climate.alunya_airco', 'current_temperature') + adj - 0.75) | round(1, 'half', 0) }}
+        # - 0.75 voor extra besparing ;)
     target:
       device_id: 3c12e341dfd1d1fe2327ec66f3613321
   - service: climate.set_preset_mode
@@ -37,7 +42,7 @@ alunya_airco_start:
       fan_mode: auto
     target:
       device_id: 3c12e341dfd1d1fe2327ec66f3613321  
-
+  mode: restart
 
 alunya_airco_19:
   sequence:

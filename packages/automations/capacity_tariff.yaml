@@ -1,0 +1,353 @@
+automation:
+
+- alias: Maximum maandpiek
+  id: 561d444e-028b-4d02-a957-5dd3e8cf072c
+  description: ''
+  mode: single
+  trigger:
+    - platform: template
+      value_template: '{{ (as_timestamp(now()))|timestamp_custom(''%d'', true) | int == 1 }}'
+  condition: []
+  action:
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: '{{ (as_timestamp(now()))|timestamp_custom(''%m'', true)|int == 2 }}'
+          sequence:
+            - condition: template
+              value_template: >
+                {{  states("sensor.max_peak") | float(default=0)> states("input_number.january_peak") | float(default=0)}}
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.january_peak
+              data:
+                value: >
+                  {{ states("sensor.max_peak") }}
+            - delay:
+                seconds: 5
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.max_peak
+              data:
+                value: 0.1
+            - delay:
+                minutes: 1
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.february_peak
+              data:
+                value: 2.5
+        - conditions:
+            - condition: template
+              value_template: '{{ (as_timestamp(now()))|timestamp_custom(''%m'', true)|int == 3 }}'
+          sequence:
+            - condition: template
+              value_template: >
+                {{  states("sensor.max_peak") | float(default=0)> states("input_number.february_peak") | float(default=0)}}
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.february_peak
+              data:
+                value: >
+                  {{ states("sensor.max_peak") }}
+            - delay:
+                seconds: 5
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.max_peak
+              data:
+                value: 0.1
+            - delay:
+                minutes: 1
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.march_peak
+              data:
+                value: 2.5
+        - conditions:
+            - condition: template
+              value_template: '{{ (as_timestamp(now()))|timestamp_custom(''%m'', true)|int == 4 }}'
+          sequence:
+            - condition: template
+              value_template: >
+                {{  states("sensor.max_peak") | float(default=0)> states("input_number.march_peak") | float(default=0)}}
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.march_peak
+              data:
+                value: >
+                  {{ states("sensor.max_peak") }}
+            - delay:
+                seconds: 5
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.max_peak
+              data:
+                value: 0.1
+            - delay:
+                minutes: 1
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.april_peak
+              data:
+                value: 2.5
+        - conditions:
+            - condition: template
+              value_template: '{{ (as_timestamp(now()))|timestamp_custom(''%m'', true)|int == 5 }}'
+          sequence:
+            - condition: template
+              value_template: >
+                {{  states("sensor.max_peak") | float(default=0)> states("input_number.april_peak") | float(default=0)}}
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.april_peak
+              data:
+                value: >
+                  {{ states("sensor.max_peak") }}
+            - delay:
+                seconds: 5
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.max_peak
+              data:
+                value: 0.1
+            - delay:
+                minutes: 1
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.may_peak
+              data:
+                value: 2.5
+        - conditions:
+            - condition: template
+              value_template: '{{ (as_timestamp(now()))|timestamp_custom(''%m'', true)|int == 6 }}'
+          sequence:
+            - condition: template
+              value_template: >
+                {{  states("sensor.max_peak") | float(default=0)> states("input_number.may_peak") | float(default=0)}}
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.may_peak
+              data:
+                value: >
+                  {{ states("sensor.max_peak") }}
+            - delay:
+                seconds: 5
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.max_peak
+              data:
+                value: 0.1
+            - delay:
+                minutes: 1
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.june_peak
+              data:
+                value: 2.5
+        - conditions:
+            - condition: template
+              value_template: '{{ (as_timestamp(now()))|timestamp_custom(''%m'', true)|int == 7 }}'
+          sequence:
+            - condition: template
+              value_template: >
+                {{  states("sensor.max_peak") | float(default=0)> states("input_number.june_peak") | float(default=0)}}
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.june_peak
+              data:
+                value: >
+                  {{ states("sensor.max_peak") }}
+            - delay:
+                seconds: 5
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.max_peak
+              data:
+                value: 0.1
+            - delay:
+                minutes: 1
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.july_peak
+              data:
+                value: 2.5
+        - conditions:
+            - condition: template
+              value_template: '{{ (as_timestamp(now()))|timestamp_custom(''%m'', true)|int == 8 }}'
+          sequence:
+            - condition: template
+              value_template: >
+                {{  states("sensor.max_peak") | float(default=0)> states("input_number.july_peak") | float(default=0)}}
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.july_peak
+              data:
+                value: >
+                  {{ states("sensor.max_peak") }}
+            - delay:
+                seconds: 5
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.max_peak
+              data:
+                value: 0.1
+            - delay:
+                minutes: 1
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.august_peak
+              data:
+                value: 2.5
+        - conditions:
+            - condition: template
+              value_template: '{{ (as_timestamp(now()))|timestamp_custom(''%m'', true)|int == 9 }}'
+          sequence:
+            - condition: template
+              value_template: >
+                {{  states("sensor.max_peak") | float(default=0)> states("input_number.august_peak") | float(default=0)}}
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.august_peak
+              data:
+                value: >
+                  {{ states("sensor.max_peak") }}
+            - delay:
+                seconds: 5
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.max_peak
+              data:
+                value: 0.1
+            - delay:
+                minutes: 1
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.september_peak
+              data:
+                value: 2.5
+        - conditions:
+            - condition: template
+              value_template: '{{ (as_timestamp(now()))|timestamp_custom(''%m'', true)|int == 10 }}'
+          sequence:
+            - condition: template
+              value_template: >
+                {{  states("sensor.max_peak") | float(default=0)> states("input_number.september_peak") | float(default=0)}}
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.september_peak
+              data:
+                value: >
+                  {{ states("sensor.max_peak") }}
+            - delay:
+                seconds: 5
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.max_peak
+              data:
+                value: 0.1
+            - delay:
+                minutes: 1
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.october_peak
+              data:
+                value: 2.5
+        - conditions:
+            - condition: template
+              value_template: '{{ (as_timestamp(now()))|timestamp_custom(''%m'', true)|int == 11 }}'
+          sequence:
+            - condition: template
+              value_template: >
+                {{  states("sensor.max_peak") | float(default=0)> states("input_number.october_peak") | float(default=0)}}
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.october_peak
+              data:
+                value: >
+                  {{ states("sensor.max_peak") }}
+            - delay:
+                seconds: 5
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.max_peak
+              data:
+                value: 0.1
+            - delay:
+                minutes: 1
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.november_peak
+              data:
+                value: 2.5
+        - conditions:
+            - condition: template
+              value_template: '{{ (as_timestamp(now()))|timestamp_custom(''%m'', true)|int == 12 }}'
+          sequence:
+            - condition: template
+              value_template: >
+                {{  states("sensor.max_peak") | float(default=0)> states("input_number.november_peak") | float(default=0)}}
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.november_peak
+              data:
+                value: >
+                  {{ states("sensor.max_peak") }}
+            - delay:
+                seconds: 5
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.max_peak
+              data:
+                value: 0.1
+            - delay:
+                minutes: 1
+            - service: input_number.set_value
+              target:
+                entity_id: input_number.december_peak
+              data:
+                value: 2.5
+      default:
+        - condition: template
+          value_template: >
+            {{  states("sensor.max_peak") | float(default=0)> states("input_number.december_peak") | float(default=0)}}
+        - service: input_number.set_value
+          target:
+            entity_id: input_number.december_peak
+          data:
+            value: >
+              {{ states("sensor.max_peak") }}
+        - delay:
+            seconds: 5
+        - service: input_number.set_value
+          target:
+            entity_id: input_number.max_peak
+          data:
+            value: 0.1
+        - delay:
+            minutes: 1
+        - service: input_number.set_value
+          target:
+            entity_id: input_number.january_peak
+          data:
+            value: 2.5
+
+
+- alias: Maximum piek 2
+  id: 54fda862-be40-4823-a939-7fcc08cf7b08
+  description: ''
+  mode: parallel
+  trigger:
+    - platform: state
+      entity_id: sensor.max_peak
+  condition:
+    - condition: template
+      value_template: >
+        {{  states("sensor.max_peak") | float(default=0)> states("input_number.max_peak") | float(default=0)}}
+  action:
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.max_peak
+      data:
+          value: >
+            {{ states("sensor.max_peak") | float(default=0)}}

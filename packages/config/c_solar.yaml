@@ -124,7 +124,39 @@ sensor:
           {% set c = states('input_number.elektriciteitsprijs_afname') | float() %}
           {{ ((sp - i ) * c ) | round(1) }}
 
+
+- platform: integration
+  source: sensor.sma_power_A_channel
+  name: solar terraszijde energie
+  unit_prefix: k
+  method: left
+  round: 2
+
+- platform: integration
+  source: sensor.sma_power_B_channel
+  name: solar voorzijde energie
+  unit_prefix: k
+  method: left
+  round: 2
+
+
 utility_meter:
+  solar_terraszijde_energie_daily:
+    source: sensor.solar_terraszijde_energie
+    cycle: daily
+
+  solar_terraszijde_energie_monthly:
+    source: sensor.solar_terraszijde_energie
+    cycle: monthly
+
+  solar_voorzijde_energie_daily:
+    source: sensor.solar_voorzijde_energie
+    cycle: daily
+
+  solar_voorzijde_energie_monthly:
+    source: sensor.solar_voorzijde_energie
+    cycle: monthly    
+
   net_injection_savings_monthly:
     source: sensor.net_injection_savings
     cycle: monthly

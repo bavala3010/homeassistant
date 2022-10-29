@@ -59,7 +59,7 @@ automation:
   - platform: template
     value_template: >
       {% set p = states('sensor.washing_machine_power') | float %}
-      {{ p > 4 and p < 300 }}
+      {{ p > 10 and p < 300 }}
   condition: []
   action:
   - service: input_select.select_option
@@ -100,8 +100,8 @@ automation:
       below: 1
   condition:
     - condition: state
-      entity_id: input_select.washing_machine_state
-      state: bezig
+      entity_id: input_select.washing_machine_phase
+      state: centrifugeren
   action:
     - service: input_datetime.set_datetime
       data:

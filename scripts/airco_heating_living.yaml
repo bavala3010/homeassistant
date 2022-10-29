@@ -35,6 +35,7 @@ living_airco_start:
       fan_mode: auto
     target:
       device_id: 1c560bbc7917f45d737e87d3e2bd0d89      
+  mode: restart
 
 living_airco_19:
   sequence:
