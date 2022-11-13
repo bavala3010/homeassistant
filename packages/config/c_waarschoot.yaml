@@ -1,0 +1,48 @@
+sensor:
+- platform: history_stats
+  name: Waarschoot verwarming keuken vandaag
+  entity_id: sensor.waarschoot_keuken_heating
+  state: "on"
+  type: time
+  start: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  end: "{{ now() }}"
+
+- platform: history_stats
+  name: Waarschoot verwarming living vandaag
+  entity_id: sensor.waarschoot_living_heating
+  state: "on"
+  type: time
+  start: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  end: "{{ now() }}"
+
+- platform: history_stats
+  name: Waarschoot verwarming zitput vandaag
+  entity_id: sensor.waarschoot_zitput_heating
+  state: "on"
+  type: time
+  start: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  end: "{{ now() }}"
+
+- platform: history_stats
+  name: Waarschoot verwarming overloop vandaag
+  entity_id: sensor.waarschoot_overloop_heating
+  state: "on"
+  type: time
+  start: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  end: "{{ now() }}"
+
+- platform: history_stats
+  name: Waarschoot verwarming badkamer vandaag
+  entity_id: sensor.waarschoot_badkamer_heating
+  state: "on"
+  type: time
+  start: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  end: "{{ now() }}"
+
+- platform: history_stats
+  name: Waarschoot verwarming slaapkamer vandaag
+  entity_id: sensor.waarschoot_slaapkamer_heating
+  state: "on"
+  type: time
+  start: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  end: "{{ now() }}"    

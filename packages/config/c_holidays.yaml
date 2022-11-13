@@ -1,0 +1,9 @@
+
+binary_sensor:
+  - platform: workday
+    country: BE
+    workdays: [mon, tue, wed, thu, fri]
+    excludes: [sat, sun, holiday]
+    add_holidays:
+      - '2022-04-15'  # goede vrijdag / bankholiday
+

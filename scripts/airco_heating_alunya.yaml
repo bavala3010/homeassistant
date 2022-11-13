@@ -24,7 +24,7 @@ alunya_airco_start:
       temperature: >
         {% set adj = states('input_number.alunya_airco_target_temperature') | float - states('sensor.kamer_alunya_temperature') | float %}
         {{ (state_attr('climate.alunya_airco', 'current_temperature') + adj - 0.75) | round(1, 'half', 0) }}
-        # - 0.75 voor extra besparing ;)
+# - 0.75 voor extra besparing ;)
     target:
       device_id: 3c12e341dfd1d1fe2327ec66f3613321
   - service: climate.set_preset_mode
@@ -48,7 +48,7 @@ alunya_airco_19:
   sequence:
   - service: input_number.set_value
     data:
-      value: 18
+      value: 19
     target:
       entity_id: input_number.alunya_airco_target_temperature          
   - service: input_number.set_value
@@ -64,7 +64,7 @@ alunya_airco_20:
   sequence:
   - service: input_number.set_value
     data:
-      value: 19
+      value: 20
     target:
       entity_id: input_number.alunya_airco_target_temperature          
   - service: input_number.set_value
@@ -80,7 +80,7 @@ alunya_airco_21:
   sequence:
   - service: input_number.set_value
     data:
-      value: 20
+      value: 21
     target:
       entity_id: input_number.alunya_airco_target_temperature          
   - service: input_number.set_value

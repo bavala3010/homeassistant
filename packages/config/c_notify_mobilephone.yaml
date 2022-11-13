@@ -30,3 +30,9 @@ notify:
     platform: group
     services:
       - service: mobile_app_iphone
+
+  - name: anita_phone
+    platform: group
+    services:
+      - service: mobile_app_nokia_8_1
+

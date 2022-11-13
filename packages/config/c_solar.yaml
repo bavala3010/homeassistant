@@ -124,6 +124,17 @@ sensor:
           {% set c = states('input_number.elektriciteitsprijs_afname') | float() %}
           {{ ((sp - i ) * c ) | round(1) }}
 
+    solar_terraszijde_efficiency:
+      unit_of_measurement: "%"
+      friendly_name: zonnepanelen terraszijde efficiëntie
+      value_template: >-
+        {{ (states('sensor.solar_terraszijde_energie_daily') | float / 6150 * 1000 * 100) | round(1) }}
+
+    solar_voorzijde_efficiency:
+      unit_of_measurement: "%"
+      friendly_name: zonnepanelen voorzijde efficiëntie
+      value_template: >-
+        {{ (states('sensor.solar_voorzijde_energie_daily') | float / 8610 * 1000 * 100) | round(1) }}
 
 - platform: integration
   source: sensor.sma_power_A_channel

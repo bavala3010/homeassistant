@@ -100,8 +100,8 @@ automation:
       below: 1
   condition:
     - condition: state
-      entity_id: input_select.washing_machine_phase
-      state: centrifugeren
+      entity_id: input_select.washing_machine_state
+      state: bezig
   action:
     - service: input_datetime.set_datetime
       data:
@@ -197,7 +197,7 @@ automation:
                 rate: -10%
   mode: single
 
-- alias: was gedaan en deur wasmachine wordt geopend = wasmachine uit
+- alias: was is klaar en deur wasmachine wordt geopend = wasmachine uit
   id: 'f0cb7490-e53a-4c30-add5-1e8849c228be'
   trigger:
     - platform: state
@@ -223,6 +223,16 @@ automation:
         option: uit
       target:
         entity_id: input_select.washing_machine_phase
+    - service: notify.madouce_phone
+      data:
+        message: "clear_notification"
+        data:
+          tag: wasmachine
+    - service: notify.bart_phone
+      data:
+        message: "clear_notification"
+        data:
+          tag: wasmachine
   mode: single
 
 
@@ -234,7 +244,10 @@ automation:
       entity_id: sensor.wasmachine_energieverbruik_laatste_8_minuten
       above: 1
       below: 4
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_select.washing_machine_phase
+    state: uit
   action:
     - service: input_select.select_option
       data:

@@ -1,0 +1,33 @@
+
+input_number:
+  weather_eikenbos_min_temp_today:
+    name: "Eikenbos minimum temperatuur vandaag"
+    min: -30
+    max: 50
+    step: 0.1
+    unit_of_measurement: °C
+
+  weather_eikenbos_max_temp_today:
+    name: "Eikenbos maximum temperatuur vandaag"
+    min: -30
+    max: 50
+    step: 0.1
+    unit_of_measurement: °C
+
+template:
+  - sensor:
+      - name: "weather_eikenbos_min_temp_tomorrow"
+        state: >
+          {{ state_attr('weather.eikenbos_met_no', 'forecast')[0].templow }}
+        device_class: temperature
+        state_class: measurement
+        unit_of_measurement: °C
+      - name: "weather_eikenbos_max_temp_tomorrow"
+        state: >
+          {{ state_attr('weather.eikenbos_met_no', 'forecast')[0].temperature }}
+        device_class: temperature
+        state_class: measurement
+        unit_of_measurement: °C
+
+
+

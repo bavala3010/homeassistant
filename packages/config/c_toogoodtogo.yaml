@@ -7,6 +7,6 @@
     access_token: 'e30.eyJzdWIiOiI0OTkyMTA1IiwiZXhwIjoxNjUwMTA4Mzg4LCJ0IjoiMVVuaHpIMEJRLWV3RTRwakVTRDBRZzowOjEifQ.1mkWH_bvNhWAHDT4-j9UOyY5zrBoG40dCgi0KHDRF-Q'
     refresh_token: 'e30.eyJzdWIiOiI0OTkyMTA1IiwiZXhwIjoxNjgxNDcxNTg4LCJ0IjoiUkVQQ3pUY19UMm1VWGRTejl2MXVIZzowOjAifQ.EE3A_1FPlbpBK47MSkCndqR_MBrEUZvKfGjktFnUPOA'
     user_id: '4992105'
-    scan_interval: 300
+    scan_interval: 150
 
     

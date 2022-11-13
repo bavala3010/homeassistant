@@ -400,7 +400,7 @@ automation:
   action:
   - service: input_datetime.set_datetime
     data:
-      time: "{{ (as_timestamp(now())  + (7.5 * 60 * 60) ) | timestamp_custom('%H:%M') }}"
+      datetime: "{{ (now().timestamp()  + (7.5 * 60 * 60) ) | timestamp_local() }}"
     target:
       entity_id: input_datetime.toyota_evere_expected_leaving_time
   - service: notify.madouce_phone
@@ -526,7 +526,7 @@ automation:
   action:
   - service: input_datetime.set_datetime
     data:
-      time: "{{ (as_timestamp(now())  + (7.25 * 60 * 60) ) | timestamp_custom('%H:%M') }}"
+      datetime: "{{ (now().timestamp()  + (7.5 * 60 * 60) ) | timestamp_local() }}"
     target:
       entity_id: input_datetime.toyota_diest_expected_leaving_time
   - service: notify.madouce_phone

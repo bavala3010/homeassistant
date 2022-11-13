@@ -112,3 +112,10 @@ naam:
       hvac_mode: 'off'
     target:
       device_id: 64296bd295e4506b8a3ec42c8aae7e58
+etenstijd_licht_living_links_aan:
+  alias: 'Etenstijd: licht living links aan'
+  sequence:
+  - service: light.turn_on
+    data: {}
+    entity_id: light.living_links
+  mode: single

@@ -1,6 +1,6 @@
 # Configure a default setup of Home Assistant (frontend, api, etc)
-# Ik heb default_config gedeactiveerd om de kaart (map) niet standaard in het menu te hebben
-default_config:
+# Als de default_config gedeactiveerd wordt, dan verschijnt kaart (map) niet standaard in het menu
+# default_config:
 
 # useful links
 # https://www.uuidgenerator.net/
@@ -28,6 +28,18 @@ default_config:
 #   value_template: '{{ (value.rstrip(" %") | float) }}'
 
 
+# OLD method
+# sensor:
+#   - platform: template
+#     sensors:
+#       energy_return:
+#
+# NEW method
+# template:
+#   - sensor:
+#       - name: "energy_return"
+
+
 # Enables in the left menu a map showing the location of tracked devices
 # map:
 conversation:           # to speak to Home Assistant
@@ -49,6 +61,7 @@ homeassistant_alerts:
 input_boolean:
 input_datetime:
 input_number:
+light:
 logbook:
 media_source:
 person:
@@ -299,7 +312,7 @@ sensor:
     sensors:
       temp_forecast_4_hours:
         friendly_name: "Forecast 4 hours"
-        value_template: "{{ state_attr('weather.openweathermap', 'forecast')[:4] | map(attribute='temperature') | average | round(1) }}"
+        value_template: "{{ state_attr('weather.eikenbos_openweather', 'forecast')[:4] | map(attribute='temperature') | average | round(1) }}"
         unit_of_measurement: °C
         device_class: temperature
 
@@ -379,14 +392,13 @@ sensor:
       day_max_temp_datetime:
         friendly_name: "max dagtemperatuur uur"
         unit_of_measurement: "h"
-        # entity_id: weather.openweathermap
         value_template: >
           {% set start = now().replace(hour=0,minute=0,second=0, microsecond=0) %}
           {% set end = (start + timedelta(days=1)) %}
           {% set start = start.strftime("%Y-%m-%dT%H:%M:%S+00:00") %}
           {% set end = end.strftime("%Y-%m-%dT%H:%M:%S+00:00") %}
           {% set ns = namespace(min_temp=100, max_temp=-100) %}
-          {% for i in state_attr('weather.openweathermap', 'forecast') -%}
+          {% for i in state_attr('weather.eikenbos_openweather', 'forecast') -%}
             {% if start <= i.datetime < end %}
               {% if i.temperature < ns.min_temp %}
                 {% set ns.min_temp = i.temperature %}
@@ -559,6 +571,12 @@ panel_iframe:
     title: "Portainer"
     url: "http://192.168.86.101:9000/"
     icon: mdi:docker
+    require_admin: true
+
+  automation_list:
+    title: "Automations"
+    url: "http://192.168.86.100:8123/config/automation/dashboard"
+    icon: mdi:list-box-outline
     require_admin: true
 
   duplicati:

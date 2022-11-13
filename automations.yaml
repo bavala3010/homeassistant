@@ -1,45 +1,3 @@
-- alias: RecycleApp notificaties
-  id: 50cbd530-9e44-4283-95f9-24f8ca182701
-  trigger:
-  - platform: time
-    at: '20:30:00'
-  condition:
-  - condition: not
-    conditions:
-    - condition: state
-      entity_id: sensor.recycleapp_morgen
-      state: Geen
-  action:
-  - service: notify.bart_phone
-    data:
-      title: '{{title}}'
-      message: '{{message}}'
-      data:
-        tag: recycle
-        actions:
-        - action: recycle_done
-          title: Ik heb het buiten gezet!
-  - service: notify.madouce_phone
-    data:
-      title: '{{title}}'
-      message: '{{message}}'
-      data:
-        tag: recycle
-        actions:
-        - action: recycle_done
-          title: Ik heb het buiten gezet!
-  variables:
-    title: '{% if state_attr(''sensor.recycleapp_gft'', ''Days_until'') == 1 %}Morgen
-      groene bak {%elif state_attr(''sensor.recycleapp_restafval'', ''Days_until'')
-      == 1 %}Morgen ophaling bruine zak. {%elif state_attr(''sensor.recycleapp_pmd'',
-      ''Days_until'') == 1 %}Morgen ophaling blauwe zak. {%elif state_attr(''sensor.recycleapp_papier'',
-      ''Days_until'') == 1 %}Morgen ophaling oud papier. {%endif%}'
-    message: '{% if state_attr(''sensor.recycleapp_gft'', ''Days_until'') == 1 %}
-      Zet de groene bak aan straat. {%elif state_attr(''sensor.recycleapp_restafval'',
-      ''Days_until'') == 1 %}Zet de bruine zak aan straat. {%elif state_attr(''sensor.recycleapp_pmd'',
-      ''Days_until'') == 1 %}Zet de blauwe zak aan straat. {%elif state_attr(''sensor.recycleapp_papier'',
-      ''Days_until'') == 1 %}Zet het oud papier aan straat. {%endif%}'
-  mode: single
 - alias: recycle_done
   id: 761e33f9-8fad-4537-8bf3-361aba8f5638
   trigger:
@@ -58,8 +16,8 @@
       message: clear_notification
       data:
         tag: recycle
-- alias: 'Waarschoot: alarm wordt uitgeschakeld (knop beneden)'
-  id: '1655128635738'
+- id: '1655128635738'
+  alias: 'Waarschoot: alarm wordt uitgeschakeld (knop beneden) tijdens vakantiemodus'
   description: ''
   trigger:
   - platform: state
@@ -154,16 +112,17 @@
     data:
       message: TTS
       data:
-        tts_text: Wil je het boodschappenlijstje zien?
+        tts_text: Dag Madouce. Het boodschappenlijstje is geopend.
         ttl: 0
         priority: high
         media_stream: alarm_stream_max
   - service: notify.madouce_phone
     data:
-      title: Welkom in de winkel.
-      message: Klik om het boodschappenlijstje te openen.
+      message: command_activity
       data:
-        clickAction: https://keep.google.com/u/0/#LIST/1tp-ZTk_c08ZlPeLqLHEUm10bx6DtTQbI9_IOigZVGtBjakrxKwJo4DiytWorvbiXyHGD
+        intent_package_name: com.google.android.keep
+        intent_action: android.intent.action.VIEW
+        intent_uri: https://keep.google.com/u/0/#LIST/1tp-ZTk_c08ZlPeLqLHEUm10bx6DtTQbI9_IOigZVGtBjakrxKwJo4DiytWorvbiXyHGD
   mode: single
 - id: '1662195373247'
   alias: Waze naar huis openen
@@ -266,7 +225,7 @@
       data:
         odometer: '{{ states(''sensor.audi_e_tron_sportback_mileage'') | float }}'
         date: '{{ now() }}'
-        planning: '{% set t = (now().date() + timedelta(days=1)) %} {% set car_use_day
+        planning: '{% set t = (now().date() + timedelta(days=0)) %} {% set car_use_day
           = ''input_select.car_use_day_'' ~ t.isoweekday() %}  {{ states(car_use_day)
           }}'
   mode: single
@@ -288,6 +247,10 @@
           }}'
         net_consumption_daily: '{{ states(''sensor.net_consumption_daily'') | float()
           }}'
+        solar_terraszijde_efficiency: '{{ (states(''sensor.solar_terraszijde_energie_daily'')
+          | float / 6150 * 1000 * 100) | round(1) }}%'
+        solar_voorzijde_efficiency: '{{ (states(''sensor.solar_voorzijde_energie_daily'')
+          | float / 8610 * 1000 * 100 ) | round(1) }}%'
         car_battery_charged_daily: '{{ states(''sensor.car_charger_energy_daily'')
           | float() }}'
         car_charge_solar_energy_daily: '{{ states(''sensor.car_charge_solar_energy_daily'')
@@ -439,4 +402,156 @@
     data: {}
     target:
       entity_id: timer.amilya_airco_timer
+  mode: single
+- id: '1667374982221'
+  alias: 'Waarschoot: verlaten huis = chauffage uit & alarm aan'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - person.anita
+    from: Waarschoot
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  condition: []
+  action:
+  - service: climate.set_preset_mode
+    data:
+      preset_mode: away
+    target:
+      entity_id:
+      - climate.waarschoot_keuken
+      - climate.waarschoot_living
+      - climate.waarschoot_zitput
+      - climate.waarschoot_overloop
+      - climate.waarschoot_badkamer
+      - climate.waarschoot_slaapkamer
+  - service: climate.set_hvac_mode
+    data:
+      hvac_mode: 'off'
+    target:
+      entity_id:
+      - climate.waarschoot_keuken
+      - climate.waarschoot_living
+      - climate.waarschoot_zitput
+      - climate.waarschoot_overloop
+      - climate.waarschoot_badkamer
+      - climate.waarschoot_slaapkamer
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id:
+      - switch.waarschoot_living_alarmknop
+      - switch.waarschoot_living_camera
+  - service: notify.anita_phone
+    data:
+      title: Verwarming uit en alarm aan
+      message: 'De verwarming wordt uitgeschakeld door het verlaten van het huis.
+        Het is nu nog {{ states(''sensor.waarschoot_living_temperature'') }} graden
+        in de living.
+
+        '
+  - service: notify.bart_phone
+    data:
+      title: Waarschoot:Verwarming uit en alarm aan
+      message: 'De verwarming wordt uitgeschakeld door het verlaten van het huis.
+        Het is nu nog {{ states(''sensor.waarschoot_living_temperature'') }} graden
+        in de living.
+
+        '
+  - service: notify.anita_phone
+    data:
+      message: TTS
+      data:
+        tts_text: Dag Anita. De verwarming wordt uitgeschakeld en het alarm wordt
+          ingeschakeld.
+        ttl: 0
+        priority: high
+        media_stream: alarm_stream_max
+  mode: single
+- id: '1667375930055'
+  alias: 'Waarschoot: aankomst thuis = verwarming op automatisch en alarm uit'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - person.anita
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 20
+    to: Waarschoot
+  condition: []
+  action:
+  - service: climate.set_preset_mode
+    data:
+      preset_mode: home
+    target:
+      entity_id:
+      - climate.waarschoot_keuken
+      - climate.waarschoot_living
+      - climate.waarschoot_zitput
+      - climate.waarschoot_overloop
+      - climate.waarschoot_badkamer
+      - climate.waarschoot_slaapkamer
+  - service: climate.set_hvac_mode
+    data:
+      hvac_mode: auto
+    target:
+      entity_id:
+      - climate.waarschoot_keuken
+      - climate.waarschoot_living
+      - climate.waarschoot_zitput
+      - climate.waarschoot_overloop
+      - climate.waarschoot_badkamer
+      - climate.waarschoot_slaapkamer
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id:
+      - switch.waarschoot_living_alarmknop
+      - switch.waarschoot_living_camera
+  - service: notify.anita_phone
+    data:
+      title: Verwarming aan (volgens schema)
+      message: 'De verwarming wordt ingeschakeld bij aankomst thuis. Het is nu nog
+        {{ states(''sensor.waarschoot_living_temperature'') }} graden in de living
+        en {{ states(''sensor.waarschoot_keuken_temperature'') }} graden in de keuken
+
+        '
+  - service: notify.bart_phone
+    data:
+      title: Waarschoot:Verwarming aan (volgens schema)
+      message: 'De verwarming wordt ingeschakeld bij aankomst thuis. Het is nu nog
+        {{ states(''sensor.waarschoot_living_temperature'') }} graden in de living
+        en {{ states(''sensor.waarschoot_keuken_temperature'') }} graden in de keuken
+
+        '
+  - service: notify.anita_phone
+    data:
+      message: TTS
+      data:
+        tts_text: Dag Anita. Welkom thuis. De verwarming wordt ingeschakeld.
+        ttl: 0
+        priority: high
+        media_stream: alarm_stream_max
+  mode: single
+- id: '1667380913240'
+  alias: Log Waarschoot alarm uitzetten met knop boven
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.waarschoot_boven_alarmknop
+    to: 'off'
+  condition: []
+  action:
+  - service: google_sheets.append_sheet
+    data:
+      config_entry: 2d4ff1f67e0a1e75255bae8b80df0d52
+      worksheet: Waarschoot
+      data:
+        switch.waarschoot_boven_alarmknop_uit: '{{ now() }}'
   mode: single

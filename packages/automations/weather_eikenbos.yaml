@@ -1,0 +1,23 @@
+automation:
+
+- alias: "At 23:00 transfer forecast minimum and max temperature to today sensor"
+  id: '39c677d6-5f19-4dbe-93cd-40c21cbf893b'
+  description: ""
+  trigger:
+  - platform: time
+    at: '23:00'
+  condition: []
+  action:
+    - service: input_number.set_value
+      data_template:
+        value: >
+          {{ states('sensor.weather_eikenbos_min_temp_tomorrow') | float() }}
+      target:
+        entity_id: input_number.weather_eikenbos_min_temp_today
+    - service: input_number.set_value
+      data_template:
+        value: >
+          {{ states('sensor.weather_eikenbos_max_temp_tomorrow') | float() }}
+      target:
+        entity_id: input_number.weather_eikenbos_max_temp_today        
+  mode: single

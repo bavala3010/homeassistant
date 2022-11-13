@@ -133,7 +133,7 @@ automation:
                 rate: -10%
   mode: single
 
-- alias: was gedaan en deur droogkast wordt geopend = droogkast uit
+- alias: was is klaar en deur droogkast wordt geopend = droogkast uit
   id: 'ad451208-4b61-47e4-944e-34fbddf9981d'
   trigger:
     - platform: state
@@ -150,4 +150,14 @@ automation:
         option: uit
       target:
         entity_id: input_select.dryer_state
+    - service: notify.bart_phone
+      data:
+        message: "clear_notification"
+        data:
+          tag: droogkast
+    - service: notify.madouce_phone
+      data:
+        message: "clear_notification"
+        data:
+          tag: droogkast                  
   mode: single  

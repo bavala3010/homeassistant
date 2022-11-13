@@ -1,0 +1,31 @@
+input_number:
+  heating_threshold_temperature_min:
+    name: "verwarmingsdrempel lage temperatuur"
+    min: -30
+    max: 50
+    step: 0.1
+    unit_of_measurement: °C
+    mode: box
+
+  heating_threshold_temperature_max:
+    name: "verwarmingsdrempel max temperatuur"
+    min: -30
+    max: 50
+    step: 0.1
+    unit_of_measurement: °C
+    mode: box
+    
+input_select:
+  heating_mode_from_weather_forecast:
+    options:
+      - 'off'
+      - 'eco'
+      - 'on'
+
+input_text:
+  heating_mode_from_weather_forecast_log:
+    max: 255
+
+  heating_season_startdate:
+  
+  heating_season_stopdate:

@@ -269,3 +269,13 @@ car_1_position:
   name: auto locatie 
   entities:
     - device_tracker.audi_e_tron_sportback_position
+
+Waarschoot_verwarming:
+  name: Waarschoot verwarming
+  entities:
+    - climate.waarschoot_keuken
+    - climate.waarschoot_living
+    - climate.waarschoot_zitput
+    - climate.waarschoot_overloop
+    - climate.waarschoot_badkamer
+    - climate.waarschoot_slaapkamer

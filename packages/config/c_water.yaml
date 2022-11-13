@@ -1,0 +1,4 @@
+utility_meter:
+  waterverbruik_vandaag:
+    source: sensor.watermeter_total_water_usage
+    cycle: daily

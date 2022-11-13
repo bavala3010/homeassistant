@@ -1,0 +1,80 @@
+automation:
+
+- alias: RecycleApp notificaties voor morgen
+  id: 50cbd530-9e44-4283-95f9-24f8ca182701
+  trigger:
+  - platform: time
+    at: '19:00:00'
+  - platform: time
+    at: '20:30:00'
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.recycleapp_morgen
+      state: Geen
+  action:
+  - service: notify.bart_phone
+    data:
+      title: '{{title}}'
+      message: '{{message}}'
+      data:
+        tag: recycle
+        actions:
+        - action: recycle_done
+          title: Ik heb het buiten gezet!
+  - service: notify.madouce_phone
+    data:
+      title: '{{title}}'
+      message: '{{message}}'
+      data:
+        tag: recycle
+        actions:
+        - action: recycle_done
+          title: Ik heb het buiten gezet!
+  variables:
+    title: >
+      {% if state_attr('sensor.recycleapp_gft', 'Days_until') == 1 %}Morgen groene bak
+      {%elif state_attr('sensor.recycleapp_restafval', 'Days_until') == 1 %}Morgen ophaling bruine zak.
+      {%elif state_attr('sensor.recycleapp_pmd','Days_until') == 1 %}Morgen ophaling blauwe zak.
+      {%elif state_attr('sensor.recycleapp_papier','Days_until') == 1 %}Morgen ophaling oud papier.
+      {%endif%}
+    message: >
+      {% if state_attr('sensor.recycleapp_gft', 'Days_until') == 1 %}Zet de groene bak aan straat.
+      {%elif state_attr('sensor.recycleapp_restafval','Days_until') == 1 %}Zet de bruine zak aan straat. 
+      {%elif state_attr('sensor.recycleapp_pmd','Days_until') == 1 %}Zet de blauwe zak aan straat.
+      {%elif state_attr('sensor.recycleapp_papier','Days_until') == 1 %}Zet het oud papier aan straat.
+      {%endif%}
+  mode: single
+
+- alias: RecycleApp notificaties voor later deze week
+  id: 6d8a1263-cfcc-48cd-92da-51303a3eadf8
+  trigger:
+  - platform: time
+    at: '13:00:00'
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: '{{title}}'
+      message: '{{message}}'
+      data:
+        tag: recycle
+  - service: notify.madouce_phone
+    data:
+      title: '{{title}}'
+      message: '{{message}}'
+      data:
+        tag: recycle
+  variables:
+    title: >
+      {% if state_attr('sensor.recycleapp_gft', 'Days_until') == 4 %}Over 4 dagen ({{ (now().date() + timedelta(days=4)).strftime('%A') }}) ophalen groene bak.
+      {% elif state_attr('sensor.recycleapp_gft', 'Days_until') == 3 %}Over 3 ({{ (now().date() + timedelta(days=3)).strftime('%A') }}) dagen ophalen groene bak.
+      {% elif state_attr('sensor.recycleapp_papier','Days_until') == 4 %}Over 4 dagen ({{ (now().date() + timedelta(days=4)).strftime('%A') }}) ophaling oud papier.
+      {% elif state_attr('sensor.recycleapp_papier','Days_until') == 3 %}Over 3 dagen ({{ (now().date() + timedelta(days=3)).strftime('%A') }}) ophaling oud papier.
+      {% endif %}
+    message: >
+      {% if 2 < state_attr('sensor.recycleapp_gft', 'Days_until') < 5 %}Je kan de groene bak al beginnen vullen.
+      {% elif 2 < state_attr('sensor.recycleapp_papier','Days_until') < 5 %}Je kan het papier al beginnen verzamelen.
+      {% endif %}
+  mode: single

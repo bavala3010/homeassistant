@@ -10,3 +10,10 @@ proximity:
       - device_tracker.madouce_s20
     tolerance: 50
     unit_of_measurement: km
+
+  anita_waarschoot:
+    zone: waarschoot
+    devices:
+      - device_tracker.nokia_8_1
+    tolerance: 50
+    unit_of_measurement: km

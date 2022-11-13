@@ -44,25 +44,12 @@ sensor:
     model: LCT015
 
   - platform: powercalc
-    entity_id: light.gang
-    manufacturer: signify
-    model: LCT003
-    multiply_factor: 3
-    
-  - platform: powercalc
-    entity_id: light.wasbak_rechts
-    manufacturer: signify
-    model: LCT003
-    
-  - platform: powercalc
-    entity_id: light.douche
-    manufacturer: signify
-    model: LCT003
-    
-  - platform: powercalc
-    entity_id: light.bad
-    manufacturer: signify
-    model: LCT003
+    create_group: badkamer alle lichten
+    entities:
+      -  entity_id: light.badkamer_bad
+      -  entity_id: light.badkamer_douche
+      -  entity_id: light.badkamer_wasbak_rechts
+    model: LTW013
 
   - platform: powercalc
     create_group: Alunya alle lichten
@@ -92,3 +79,33 @@ sensor:
     manufacturer: signify
     model: LCT015     # model 1744630P7 not found
     multiply_factor: 2
+
+  - platform: powercalc
+    create_group: tuin alle lichten
+    entities:
+      -  entity_id: light.tuin_spot_1
+      -  entity_id: light.tuin_spot_2
+      -  entity_id: light.tuin_spot_3
+      -  entity_id: light.tuin_spot_4
+      -  entity_id: light.tuin_spot_5
+    manufacturer: signify
+    model: LCS001
+
+  - platform: powercalc
+    create_group: gang alle lichten
+    entities:
+      -  entity_id: light.gang_spot_voor
+      -  entity_id: light.gang_spot_midden
+      -  entity_id: light.gang_spot_achter
+    manufacturer: signify
+    model: LTW013
+
+  - platform: powercalc
+    create_group: berging alle lichten
+    entities:
+      -  entity_id: light.berging_spot_1
+      -  entity_id: light.berging_spot_2
+      -  entity_id: light.berging_spot_3
+    manufacturer: signify
+    model: LWG001 
+

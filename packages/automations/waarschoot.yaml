@@ -8,7 +8,10 @@ automation:
     entity_id:
     - switch.waarschoot_living_alarmknop
     to: 'on'
-  condition: []
+  condition:
+  - condition: state
+    entity_id: switch.waarschoot_boven_alarmknop
+    state: 'off'
   action:
   - service: notify.bart_phone
     data:
@@ -24,7 +27,10 @@ automation:
     entity_id:
     - switch.waarschoot_boven_alarmknop
     to: 'on'
-  condition: []
+  condition:
+  - condition: state
+    entity_id: switch.waarschoot_living_alarmknop
+    state: 'off'  
   action:
   - service: notify.bart_phone
     data:
