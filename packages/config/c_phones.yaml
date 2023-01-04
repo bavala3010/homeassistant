@@ -100,12 +100,14 @@ device_tracker:
       track_new_devices: true
     hosts:
       amilya_iphone: 192.168.86.112
+      #alunya_iphone: 192.168.86.250
+      alunya_iphone: 192.168.86.113
       amilya_appletv: 192.168.86.48
       bart_iphone: 192.168.86.51
 
   - platform: ping
     hosts:
-      alunya_phone: 192.168.86.113
+      alunya_phone: 192.168.86.114
 
 binary_sensor:
   - platform: template

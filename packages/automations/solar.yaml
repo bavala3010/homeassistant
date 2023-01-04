@@ -1,5 +1,19 @@
 automation:
-  
+
+- alias: update van zonneproductie gisteren op dit uur
+  id: "6f18655a-e923-46b5-9a83-8d3340458e83"  
+  description: ""
+  trigger:
+    - platform: time_pattern
+      minutes: /10
+  condition: []
+  action:
+    - service: homeassistant.update_entity
+      data: {}
+      target:
+        entity_id: sensor.zonneproductie_gisteren_op_dit_uur
+  mode: single
+
 - alias: snelle polling sensoren berekening verbruik
   id: '92e4e452-ebb1-4db1-9b6a-0c1566a40b0c'
   description: ''
@@ -45,7 +59,7 @@ automation:
           Eventueel auto laden? Auto nu {{states('sensor.car_1_soc') | round()}}%.<br>
           Vandaag moet er geladen worden tot {{states('input_number.car_smart_charge_target_percentage') | round() }}%.
 
-- alias: Meer dan 2 kW verbruik van het net = melding
+- alias: Meer dan 3 kW verbruik van het net = melding
   id: '518c0b8f-2031-49cc-bbac-210b2728df07'
   description: ""
   mode: single
@@ -56,7 +70,7 @@ automation:
         hours: 0
         minutes: 5
         seconds: 0
-      above: "2000"
+      above: "3000"
   condition: []
   action:
     - service: notify.bart_phone
@@ -69,7 +83,7 @@ automation:
           actions:
           - action: URI
             title: meer info
-            uri: /eikenbos-dashboard/solar
+            uri: /lovelace-verbruik/zonne-energie
 
 - alias: "einde van de zonne-energie productie voor vandaag"
   id: '9a576f40-1363-466d-bab3-915845c02e49'

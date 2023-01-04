@@ -71,7 +71,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/car-charging
+          uri: /dashboard-car/car-charging
   mode: single   
 
 - alias: "🔋 charge mode sun bezig - check elke minuut tijdens zonneladen = meer dan 1.3 W voor lader"
@@ -239,7 +239,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/car-charging      
+          uri: /dashboard-car/car-charging      
   # stop charging
   - service: script.stop_charger
     data: {}

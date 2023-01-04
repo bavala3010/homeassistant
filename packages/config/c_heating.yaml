@@ -29,3 +29,66 @@ input_text:
   heating_season_startdate:
   
   heating_season_stopdate:
+
+input_boolean:
+  badkamer_18graden:
+    name: badkamer 18 graden
+    icon: mdi:heater
+
+sensor:
+  - platform: statistics
+    name: "living gem. verwarming laatste 24 uren"
+    entity_id: sensor.living_heating
+    state_characteristic: average_step
+    max_age:
+      hours: 24
+
+  - platform: statistics
+    name: "kamer Amilya gem. verwarming laatste 24 uren"
+    entity_id: sensor.kamer_amilya_heating
+    state_characteristic: average_step
+    max_age:
+      hours: 24
+
+  - platform: statistics
+    name: "veranda gem. verwarming laatste 24 uren"
+    entity_id: sensor.veranda_heating
+    state_characteristic: average_step
+    max_age:
+      hours: 24      
+
+  - platform: statistics
+    name: "berging gem. verwarming laatste 24 uren"
+    entity_id: sensor.berging_heating
+    state_characteristic: average_step
+    max_age:
+      hours: 24
+
+  - platform: statistics
+    name: "gang gem. verwarming laatste 24 uren"
+    entity_id: sensor.gang_heating
+    state_characteristic: average_step
+    max_age:
+      hours: 24      
+
+  - platform: statistics
+    name: "badkamer gem. verwarming laatste 24 uren"
+    entity_id: sensor.badkamer_heating
+    state_characteristic: average_step
+    max_age:
+      hours: 24
+
+  - platform: statistics
+    name: "kamer Alunya gem. verwarming laatste 24 uren"
+    entity_id: sensor.kamer_alunya_heating
+    state_characteristic: average_step
+    max_age:
+      hours: 24      
+
+  - platform: statistics
+    name: "master bedroom gem. verwarming laatste 24 uren"
+    entity_id: sensor.master_bedroom_heating
+    state_characteristic: average_step
+    max_age:
+      hours: 24
+

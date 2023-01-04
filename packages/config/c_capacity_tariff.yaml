@@ -4,7 +4,8 @@ sensor:
   sensors:
     max_peak:
       friendly_name: Maximum piek
-      unit_of_measurement: W
+      unique_id: '467b58be-1ac0-4f2d-9386-20acc93f836d'
+      unit_of_measurement: kW
       device_class: power
       value_template: >
         {% set peak = ((states.sensor.quarter_hourly_net_power.state | float(default=0)) * 4) %}
@@ -14,7 +15,8 @@ sensor:
 
     year_peak:
       friendly_name: Gemiddelde jaarpiek
-      unit_of_measurement: W
+      unique_id: d4092d00-fc23-41cc-a673-34b7971b3d2d
+      unit_of_measurement: kW
       device_class: power
       value_template: >
         {{ (( states('input_number.january_peak') | float(default=0) +
@@ -32,112 +34,116 @@ sensor:
         }}
 
 
+###########################################
+# helpers voor berekening capaciteitstarief
+###########################################
+
 utility_meter:
   quarter_hourly_net_power:
-    source: sensor.net_power
+    source: sensor.net_power_in_kwh
     cycle: quarter-hourly
 
 input_number:
   max_peak:
       name: Maximum piek
       min: 0.1
-      max: 12.0
+      max: 20000
       step: 0.001
       mode: box
-      unit_of_measurement: W
+      unit_of_measurement: kW
     
   january_peak:
     name: Piek januari
     min: 2.5
-    max: 12.0
+    max: 20
     step: 0.001
     mode: box
-    unit_of_measurement: W
+    unit_of_measurement: kW
   
   february_peak:
     name: Piek februari
     min: 2.5
-    max: 12.0
+    max: 20
     step: 0.001
     mode: box
-    unit_of_measurement: W
+    unit_of_measurement: kW
   
   march_peak:
     name: Piek maart
     min: 2.5
-    max: 12.0
+    max: 20
     step: 0.001
     mode: box
-    unit_of_measurement: W
+    unit_of_measurement: kW
 
   april_peak:
     name: Piek april
     min: 2.5
-    max: 12.0
+    max: 20
     step: 0.001
     mode: box
-    unit_of_measurement: W
+    unit_of_measurement: kW
 
   may_peak:
     name: Piek mei
     min: 2.5
-    max: 12.0
+    max: 20
     step: 0.001
     mode: box
-    unit_of_measurement: W
+    unit_of_measurement: kW
 
   june_peak:
     name: Piek juni
     min: 2.5
-    max: 12.0
+    max: 20
     step: 0.001
     mode: box
-    unit_of_measurement: W
+    unit_of_measurement: kW
 
   july_peak:
     name: Piek juli
     min: 2.5
-    max: 12.0
+    max: 20
     step: 0.001
     mode: box
-    unit_of_measurement: W
+    unit_of_measurement: kW
 
   august_peak:
     name: Piek augustus
     min: 2.5
-    max: 12.0
+    max: 20
     step: 0.001
     mode: box
-    unit_of_measurement: W
+    unit_of_measurement: kW
 
   september_peak:
     name: Piek september
     min: 2.5
-    max: 12.0
+    max: 20
     step: 0.001
     mode: box
-    unit_of_measurement: W
+    unit_of_measurement: kW
 
   october_peak:
     name: Piek oktober
     min: 2.5
-    max: 12.0
+    max: 20
     step: 0.001
     mode: box
-    unit_of_measurement: W
+    unit_of_measurement: kW
 
   november_peak:
     name: Piek november
     min: 2.5
-    max: 12.0
+    max: 20
     step: 0.001
     mode: box
-    unit_of_measurement: W
+    unit_of_measurement: kW
 
   december_peak:
     name: Piek december
     min: 2.5
-    max: 12.0
+    max: 20
     step: 0.001
     mode: box
-    unit_of_measurement: W
+    unit_of_measurement: kW

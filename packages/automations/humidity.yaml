@@ -43,7 +43,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /lovelace/humidity
+          uri: /lucht-vocht-temperatuur/vocht-gram
         
   mode: single
   
@@ -67,13 +67,14 @@ automation:
       message: "Vocht is {{states('sensor.master_bedroom_humidity')}}% en {{states('sensor.master_bedroom_thermal_absolutehumidity')}} gram
             water /m³.<br>Zet eventueel machine aan."
       data:
+        notification_icon: "mdi:water-percent-alert"      
         color: "#0E86D4"
         tag: window_master_bedroom
         channel: Vocht
         actions:
         - action: URI
           title: Meer info
-          uri: /lovelace/humidity
+          uri: /lucht-vocht-temperatuur/vocht-gram
   mode: single
 
 - alias: "💧 vocht gram in badkamer >14 gram/m³"
@@ -97,26 +98,28 @@ automation:
           message: "{{states('sensor.badkamer_thermal_absolutehumidity')}} gram
             water /m³ en {{states('sensor.badkamer_humidity')}}% vocht."
           data:
+            notification_icon: "mdi:water-percent-alert"          
             color: "#0E86D4"
             tag: window_badkamer
             channel: vocht
             actions:
             - action: URI
               title: meer info
-              uri: /lovelace/humidity
+              uri: /lucht-vocht-temperatuur/vocht-gram
       - service: notify.madouce_phone
         data:
           title: "Veel vocht in badkamer! Raam is {{states('sensor.badkamer_raam')}}."
           message: "{{states('sensor.badkamer_thermal_absolutehumidity')}} gram
             water /m³ en {{states('sensor.badkamer_humidity')}}% vocht."
           data:
+            notification_icon: "mdi:water-percent-alert"          
             color: "#0E86D4"
             tag: window_badkamer
             channel: vocht
             actions:
             - action: URI
               title: meer info
-              uri: /lovelace/humidity
+              uri: /lucht-vocht-temperatuur/vocht-gram
       - delay:
           hours: 1
   - service: notify.bart_phone
@@ -152,26 +155,28 @@ automation:
           message: "{{states('sensor.master_bedroom_thermal_absolutehumidity')}} gram
             water /m³ en {{states('sensor.master_bedroom_humidity')}}% vocht."
           data:
+            notification_icon: "mdi:water-percent-alert"          
             color: "#0E86D4"
             tag: window_master_bedroom
             channel: vocht
             actions:
             - action: URI
               title: meer info
-              uri: /lovelace/humidity
+              uri: /lucht-vocht-temperatuur/vocht-gram
       - service: notify.madouce_phone
         data:
           title: "Veel vocht in master bedroom! Raam is {{states('sensor.master_bedroom_raam')}}"
           message: "{{states('sensor.master_bedroom_thermal_absolutehumidity')}} gram
             water /m³ en {{states('sensor.master_bedroom_humidity')}}% vocht."
           data:
+            notification_icon: "mdi:water-percent-alert"          
             color: "#0E86D4"
             tag: window_master_bedroom
             channel: vocht
             actions:
             - action: URI
               title: meer info
-              uri: /lovelace/humidity
+              uri: /lucht-vocht-temperatuur/vocht-gram
       - delay:
           hours: 1
   - service: notify.bart_phone

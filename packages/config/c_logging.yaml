@@ -1,0 +1,5 @@
+notify:
+  - platform: file
+    name: ha_logging
+    filename: /config/www/csv_logs/ha_logging.csv
+

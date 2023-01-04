@@ -55,7 +55,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/car-charging
+          uri: /dashboard-car/car-charging
   mode: single
 
 - alias: "🔋 charge - laaddoel bereikt (enkel nu en timer) = laden stoppen + melding sturen (enkel thuis)"
@@ -86,7 +86,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/car-charging      
+          uri: /dashboard-car/car-charging      
   # stop charging
   - service: script.stop_charger
     data: {}

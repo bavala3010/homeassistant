@@ -55,8 +55,9 @@ automation:
       value: 30
     target:
       entity_id: input_number.alunya_airco_timer_minutes
+  - wait_template: ''
+    timeout: "00:00:02"
   - service: script.alunya_airco_start
-    data: {} 
   mode: restart
 
 

@@ -45,4 +45,46 @@ sensor:
   state: "on"
   type: time
   start: "{{ now().replace(hour=0, minute=0, second=0) }}"
-  end: "{{ now() }}"    
+  end: "{{ now() }}"
+
+- platform: statistics
+  name: "Waarschoot keuken gem. verwarming laatste 24 uren"
+  entity_id: sensor.waarschoot_keuken_heating
+  state_characteristic: average_step
+  max_age:
+    hours: 24
+
+- platform: statistics
+  name: "Waarschoot living gem. verwarming laatste 24 uren"
+  entity_id: sensor.waarschoot_living_heating
+  state_characteristic: average_step
+  max_age:
+    hours: 24
+
+- platform: statistics
+  name: "Waarschoot zitput gem. verwarming laatste 24 uren"
+  entity_id: sensor.waarschoot_zitput_heating
+  state_characteristic: average_step
+  max_age:
+    hours: 24
+
+- platform: statistics
+  name: "Waarschoot overloop gem. verwarming laatste 24 uren"
+  entity_id: sensor.waarschoot_overloop_heating
+  state_characteristic: average_step
+  max_age:
+    hours: 24
+
+- platform: statistics
+  name: "Waarschoot badkamer gem. verwarming laatste 24 uren"
+  entity_id: sensor.waarschoot_badkamer_heating
+  state_characteristic: average_step
+  max_age:
+    hours: 24
+
+- platform: statistics
+  name: "Waarschoot slaapkamer gem. verwarming laatste 24 uren"
+  entity_id: sensor.waarschoot_slaapkamer_heating
+  state_characteristic: average_step
+  max_age:
+    hours: 24

@@ -1,0 +1,51 @@
+automation:
+
+- alias: "log in CSV-bestand: dagelijkse energiewaarden en extra info"
+  id: 842e85fa-acd7-4ffb-b3fe-c7e33e874f81
+  description: ""
+  trigger:
+    - platform: time
+      at: "23:59:30"
+  condition: []
+  action:
+    - service: notify.ha_logging
+      data:
+        message: >
+          {{ states('sensor.date')}},
+          {{ states('sensor.eikenbos_gemiddelde_buitentemperatuur') | float()}},
+          {{ states('sensor.sma_today') | float() }},
+          {{ states('sensor.net_injection_daily') | float() }},
+          {{ states('sensor.net_consumption_daily') | float() }},
+          {{ (states('sensor.solar_terraszijde_energie_daily') | float / 6150 * 1000 * 100) | round(1) }},
+          {{ (states('sensor.solar_voorzijde_energie_daily') | float / 8610 * 1000 * 100 ) | round(1) }},
+          {{ states('sensor.car_charger_energy_daily') | float() }},
+          {{ states('sensor.car_charge_solar_energy_daily') | float() }},
+          {{ states('sensor.car_charge_net_energy_daily') | float() }},
+          {{ states('sensor.net_neutrality_home') | float() }},
+          {{ states('sensor.net_neutrality_car') | float() }},
+          {{ states('sensor.net_neutrality') | float() }},
+          {{ states('sensor.washing_machine_energy_daily') | float() }},
+          {{ states('sensor.dryer_energy_daily') | float() }},
+          {{ states('sensor.dehumidifier_energy_daily') | float() }},
+          {{ states('sensor.infrared_panel_energy_daily') | float() }},
+          {{ states('sensor.living_airco_daily_heat_energy_consumption') | float(default=0) }},
+          {{ states('sensor.amilya_airco_daily_heat_energy_consumption') | float(default=0) }},
+          {{ states('sensor.alunya_airco_daily_heat_energy_consumption') | float(default=0) }},
+          {{ states('sensor.master_bedroom_airco_daily_heat_energy_consumption') | float(default=0) }},
+          {{ states('sensor.badkamer_electric_heater_energy_daily') | float(default=0)}},
+          {{ states('sensor.living_gem_verwarming_laatste_24_uren') | float(default=0) }},
+          {{ states('sensor.kamer_amilya_gem_verwarming_laatste_24_uren') | float(default=0) }},
+          {{ states('sensor.veranda_gem_verwarming_laatste_24_uren') | float(default=0) }},
+          {{ states('sensor.berging_gem_verwarming_laatste_24_uren') | float(default=0) }},
+          {{ states('sensor.gang_gem_verwarming_laatste_24_uren') | float(default=0) }},
+          {{ states('sensor.badkamer_gem_verwarming_laatste_24_uren') | float(default=0) }},
+          {{ states('sensor.kamer_alunya_gem_verwarming_laatste_24_uren') | float(default=0) }},
+          {{ states('sensor.master_bedroom_gem_verwarming_laatste_24_uren') | float(default=0) }},
+          {{ states('sensor.living_airco_daily_cool_energy_consumption') | float(default=0) }},
+          {{ states('sensor.amilya_airco_daily_cool_energy_consumption') | float(default=0) }},
+          {{ states('sensor.alunya_airco_daily_cool_energy_consumption') | float(default=0) }},
+          {{ states('sensor.master_bedroom_airco_daily_cool_energy_consumption') | float(default=0) }},
+          {{ states('sensor.bart_thuis_vandaag') | float() }},
+          {{ states('sensor.madouce_thuis_vandaag') | float() }},
+          {{ states('sensor.amilya_thuis_vandaag') | float() }},
+          {{ states('sensor.alunya_thuis_vandaag') | float() }}

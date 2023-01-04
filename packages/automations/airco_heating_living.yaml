@@ -179,13 +179,13 @@ automation:
 
 ## NEW #####################
 
-- alias: "Living airco heating: aan als temperatuur living 1 graad lager is dan doeltemperatuur"
+- alias: "Living airco heating: aan als temperatuur living 0,75 graad lager is dan doeltemperatuur"
   id: '58254156-db9d-4c65-b655-502839dfafe5'
   description: ''
   trigger:
   - platform: template
     value_template: >
-      {{ ( states('input_number.living_airco_target_temperature') | float ) - ( states('sensor.living_temperature_tado') | float ) >= 1 }}
+      {{ ( states('input_number.living_airco_target_temperature') | float ) - ( states('sensor.living_temperature_tado') | float ) >= 0.75 }}
   condition:
   - condition: or
     conditions:
@@ -244,7 +244,7 @@ automation:
     value_template: >
   - platform: template
     value_template: >
-      {{ ( states('input_number.living_airco_target_temperature') | float ) - ( states('sensor.living_temperature_tado') | float ) <= 0.5  }}
+      {{ ( states('input_number.living_airco_target_temperature') | float ) - ( states('sensor.living_temperature_tado') | float ) <= 0.0  }}
   condition: []
   action:
     - service: climate.turn_off

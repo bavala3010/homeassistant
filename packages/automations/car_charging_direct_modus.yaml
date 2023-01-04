@@ -83,7 +83,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/car-charging      
+          uri: /dashboard-car/car-charging      
   # stop charging
   - service: script.stop_charger
     data: {}
@@ -104,8 +104,10 @@ automation:
             1400
           {% elif states('input_select.car_charge_net_max_power') == '2.2' %}
             2200
-          {% elif states('input_select.car_charge_net_max_power') == '4' %}            
+          {% elif states('input_select.car_charge_net_max_power') == '4' %}
             4000
+          {% elif states('input_select.car_charge_net_max_power') == '5.3' %}
+            5300
           {% endif %}
 
 

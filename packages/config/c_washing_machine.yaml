@@ -51,6 +51,7 @@ input_select:
       - wassen
       - spoelen
       - centrifugeren
+      - klaar
 
 sensor:
   - platform: statistics

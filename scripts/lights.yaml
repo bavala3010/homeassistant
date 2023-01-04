@@ -1,6 +1,7 @@
 
 
-avond_eten_lichten_aan:
+living_links_avondeten:
+  alias: living links avondeten
   sequence:
   - service: light.turn_on
     data:
@@ -9,4 +10,15 @@ avond_eten_lichten_aan:
     target:
       entity_id:
         - light.living_links
+  icon: mdi:track-light        
   mode: single
+
+living_links_home_work:
+  alias: living links home work
+  sequence:
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.living_links_1
+  mode: single
+  icon: mdi:track-light

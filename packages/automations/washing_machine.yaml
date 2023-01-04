@@ -150,7 +150,7 @@ automation:
   mode: single
 
 
-- alias: was nog steeds in wasmachine
+- alias: was nog in wasmachine = melding op smartphone
   id: '5c874c7e-b0c4-431d-be1f-3096330b6653'
   description: ""
   trigger:
@@ -174,27 +174,59 @@ automation:
     - service: notify.bart_phone
       data:
         title: Wasmachine
-        message: "Haal de was uit de wasmachine. De wasmachine was al klaar om {{ states('input_datetime.washing_machine_stop_time') }}."
+        message: "Haal de was uit de wasmachine. De wasmachine was klaar om {{ states('input_datetime.washing_machine_stop_time') }}."
         data:
           tag: wasmachine
           notification_icon: "mdi:washing-machine"        
     - service: notify.madouce_phone
       data:
         title: Wasmachine
-        message: "Haal de was uit de wasmachine. De wasmachine was al klaar om {{ states('input_datetime.washing_machine_stop_time') }}."
+        message: "Haal de was uit de wasmachine. De wasmachine was klaar om {{ states('input_datetime.washing_machine_stop_time') }}."
         data:
           tag: wasmachine
-          notification_icon: "mdi:washing-machine"                
-    - service: script.google_home_resume
-      data:
-        action:
-          - service: tts.edge_tts_say
+          notification_icon: "mdi:washing-machine"
+  mode: single
+
+- alias: was nog in wasmachine = melding op speaker
+  id: 'a619ad1d-0a66-4764-8aad-636524845152'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - input_select.washing_machine_state
+      to: "klaar"
+      for:
+        hours: 0
+        minutes: 15
+        seconds: 0
+  condition:
+    - condition: state
+      entity_id: binary_sensor.washing_machine_vibration
+      state: "off"
+      for:
+        hours: 0
+        minutes: 14
+        seconds: 0
+  action:
+    - repeat:
+        sequence:
+          - service: script.google_home_resume
             data:
-              entity_id: media_player.living_speaker
-              message: De was zit nog altijd in de wasmachine.
-              options:
-                pitch: +0Hz
-                rate: -10%
+              action:
+                - service: tts.edge_tts_say
+                  data:
+                    entity_id: media_player.living_speaker
+                    message: De was zit nog in de wasmachine.
+                    options:
+                      pitch: +0Hz
+                      rate: -10%
+          - delay:
+              minutes: 30
+        until:
+          not:
+            - condition: state
+              entity_id: input_select.washing_machine_state
+              state: "klaar"
   mode: single
 
 - alias: was is klaar en deur wasmachine wordt geopend = wasmachine uit

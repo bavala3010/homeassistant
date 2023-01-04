@@ -42,14 +42,14 @@ automation:
       message: '{{reason}}<br>{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}'
-      uri: "/lovelace/humidity"      
+      uri: "/lucht-vocht-temperatuur/vocht-gram"      
   - service: script.notify_madouce_windows_open
     data:  
       title: '{{title}}'
       message: '{{reason}}<br>{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}'
-      uri: "/lovelace/humidity"
+      uri: "/lucht-vocht-temperatuur/vocht-gram"
   variables:
     message: >
       Vocht living: {{states('sensor.gram_water_living')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
@@ -99,7 +99,7 @@ automation:
       message: '{{reason}}<br>{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}'
-      uri: "/lovelace/humidity" 
+      uri: "/lucht-vocht-temperatuur/vocht-gram" 
   variables:
     message: >
       Vocht kamer Amilya: {{states('sensor.gram_water_kamer_amilya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
@@ -146,7 +146,7 @@ automation:
       message: '{{reason}}<br>{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}'
-      uri: "/lovelace/humidity"
+      uri: "/lucht-vocht-temperatuur/vocht-gram"
   variables:
     message: >
       Vocht veranda {{states('sensor.gram_water_veranda')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
@@ -193,7 +193,7 @@ automation:
       message: '{{reason}}<br>{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}'
-      uri: "/lovelace/humidity"     
+      uri: "/lucht-vocht-temperatuur/vocht-gram"     
   variables:
     message: >
       Vocht berging {{states('sensor.gram_water_berging')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
@@ -240,7 +240,7 @@ automation:
       message: '{{reason}}<br>{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}'
-      uri: "/lovelace/humidity"
+      uri: "/lucht-vocht-temperatuur/vocht-gram"
   variables:  
     message: >
       Vocht  badkamer: {{states('sensor.gram_water_badkamer')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
@@ -290,7 +290,7 @@ automation:
       message: '{{reason}}<br>{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}'
-      uri: "/lovelace/humidity"
+      uri: "/lucht-vocht-temperatuur/vocht-gram"
   variables:  
     message: >
       Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
@@ -337,7 +337,7 @@ automation:
       message: '{{reason}}<br>{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}'
-      uri: "/lovelace/humidity"
+      uri: "/lucht-vocht-temperatuur/vocht-gram"
   variables:
     message: >
       Vocht master bedroom: {{states('sensor.gram_water_master_bedroom')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>

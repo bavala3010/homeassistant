@@ -1,0 +1,136 @@
+input_number:
+  car_target_soc_day_1:
+      name: maandag
+      min: 1
+      max: 100
+      step: 1
+      mode: slider
+      unit_of_measurement: "%"
+      icon: mdi:battery-charging-medium
+
+  car_target_soc_day_2:
+      name: dinsdag
+      min: 1
+      max: 100
+      step: 1
+      mode: slider
+      unit_of_measurement: "%"
+      icon: mdi:battery-charging-medium
+
+  car_target_soc_day_3:
+      name: woensdag
+      min: 1
+      max: 100
+      step: 1
+      mode: slider
+      unit_of_measurement: "%"
+      icon: mdi:battery-charging-medium
+
+  car_target_soc_day_4:
+      name: donderdag
+      min: 1
+      max: 100
+      step: 1
+      mode: slider
+      unit_of_measurement: "%"
+      icon: mdi:battery-charging-medium
+
+  car_target_soc_day_5:
+      name: vrijdag
+      min: 1
+      max: 100
+      step: 1
+      mode: slider
+      unit_of_measurement: "%"
+      icon: mdi:battery-charging-medium
+
+  car_target_soc_day_6:
+      name: zaterdag
+      min: 1
+      max: 100
+      step: 1
+      mode: slider
+      unit_of_measurement: "%"
+      icon: mdi:battery-charging-medium
+
+  car_target_soc_day_7:
+      name: zondag
+      min: 1
+      max: 100
+      step: 1
+      mode: slider
+      unit_of_measurement: "%"
+      icon: mdi:battery-charging-medium
+
+input_select:
+  car_use_day_1:
+    name: maandag
+    options:
+      - thuis
+      - Toyota Evere
+      - Toyota Diest
+      - 250 km
+      - maximum km
+    icon: mdi:calendar-range-outline
+
+  car_use_day_2:
+    name: dinsdag
+    options:
+      - thuis
+      - Toyota Evere
+      - Toyota Diest
+      - 250 km
+      - maximum km
+    icon: mdi:calendar-range-outline
+
+  car_use_day_3:
+    name: woensdag
+    options:
+      - thuis
+      - Toyota Evere
+      - Toyota Diest
+      - 250 km
+      - maximum km
+    icon: mdi:calendar-range-outline
+
+  car_use_day_4:
+    name: donderdag
+    options:
+      - thuis
+      - Toyota Evere
+      - Toyota Diest
+      - 250 km
+      - maximum km
+    icon: mdi:calendar-range-outline
+
+  car_use_day_5:
+    name: vrijdag
+    options:
+      - thuis
+      - Toyota Evere
+      - Toyota Diest
+      - 250 km
+      - maximum km
+    icon: mdi:calendar-range-outline
+
+  car_use_day_6:
+    name: zaterdag
+    options:
+      - thuis
+      - Toyota Evere
+      - Toyota Diest
+      - 250 km
+      - maximum km
+    icon: mdi:calendar-range-outline
+
+  car_use_day_7:
+    name: zondag
+    options:
+      - thuis
+      - Toyota Evere
+      - Toyota Diest
+      - 250 km
+      - maximum km
+    icon: mdi:calendar-range-outline 
+
+

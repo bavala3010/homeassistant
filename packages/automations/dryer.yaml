@@ -80,13 +80,13 @@ automation:
           - service: tts.edge_tts_say
             data:
               entity_id: media_player.living_speaker
-              message: De was zit nog altijd in de droogkast.
+              message: De droogkast is klaar! Je mag de was uithalen.
               options:
                 pitch: +0Hz
                 rate: -10%            
   mode: single
 
-- alias: was nog steeds in droogkast
+- alias: was nog in droogkast = melding op smartphone
   id: 'cb97cf23-41ac-4f3f-87ba-59338f89cb42'
   description: ""
   trigger:
@@ -110,14 +110,14 @@ automation:
     - service: notify.bart_phone
       data:
         title: Droogkast
-        message: "Haal de was uit de droogkast. De droogkast was al klaar om {{ states('input_datetime.dryer_stop_time') }}."
+        message: "Haal de was uit de droogkast. De droogkast was klaar om {{ states('input_datetime.dryer_stop_time') }}."
         data:
           tag: droogkast        
           notification_icon: "mdi:tumble-dryer"
     - service: notify.madouce_phone
       data:
         title: Droogkast
-        message: "Haal de was uit de droogkast. De droogkast was al klaar om {{ states('input_datetime.dryer_stop_time') }}."
+        message: "Haal de was uit de droogkast. De droogkast was klaar om {{ states('input_datetime.dryer_stop_time') }}."
         data:
           tag: droogkast        
           notification_icon: "mdi:tumble-dryer"          
@@ -131,6 +131,47 @@ automation:
               options:
                 pitch: +0Hz
                 rate: -10%
+  mode: single
+
+- alias: was nog in droogkast = melding op speaker
+  id: '1108e79f-cf27-41dd-a0e9-13db4df8900c'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - input_select.dryer_state
+      to: klaar
+      for:
+        hours: 0
+        minutes: 15
+        seconds: 0
+  condition:
+    - condition: state
+      entity_id: binary_sensor.dryer_vibration
+      state: "off"
+      for:
+        hours: 0
+        minutes: 14
+        seconds: 30
+  action:
+    - repeat:
+        sequence:
+          - service: script.google_home_resume
+            data:
+              action:
+                - service: tts.edge_tts_say
+                  data:
+                    entity_id: media_player.living_speaker
+                    message: De was zit nog in de droogkast.
+                    options:
+                      pitch: +0Hz
+                      rate: -10%
+          - delay:
+              minutes: 30
+        until:
+          - condition: state
+            entity_id: input_select.dryer_state
+            state: "uit"
   mode: single
 
 - alias: was is klaar en deur droogkast wordt geopend = droogkast uit

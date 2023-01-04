@@ -119,3 +119,48 @@ etenstijd_licht_living_links_aan:
     data: {}
     entity_id: light.living_links
   mode: single
+badkamer_chauffage_op_18_graden_gedurende_30_minuten:
+  alias: Badkamer chauffage op 18 graden gedurende 30 minuten
+  sequence:
+  - service: climate.set_temperature
+    data:
+      temperature: 18
+    target:
+      entity_id: climate.badkamer
+  - if:
+    - condition: template
+      value_template: '{{trigger.to_state.context.user_id == ''7e508a5d2a5c42029f3d9238f0cc4648''}}'
+    then:
+    - service: notify.alunya_phone
+      data:
+        title: Verwarming badkamer
+        message: De verwarming is ingeschakeld.
+    - delay:
+        hours: 0
+        minutes: 15
+        seconds: 0
+        milliseconds: 0
+    - service: notify.alunya_phone
+      data:
+        message: De badkamer is ondertussen verwarmd.
+        title: Verwarming badkamer
+  - delay:
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0
+  - service: climate.set_temperature
+    data:
+      hvac_mode: auto
+    target:
+      entity_id: climate.badkamer
+  mode: single
+nieuw_script:
+  alias: Nieuw script
+  sequence:
+  - service: light.turn_on
+    data:
+      color_temp: 240
+    target:
+      entity_id: light.living_links_1
+  mode: single

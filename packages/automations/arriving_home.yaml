@@ -115,7 +115,7 @@ automation:
     zone: zone.home
   condition: []
   action:
-  - service: notify.mobile_app_alunya_a71
+  - service: notify.alunya_phone
     data:
       message: TTS
       data:

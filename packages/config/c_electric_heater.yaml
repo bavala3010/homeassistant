@@ -1,0 +1,12 @@
+sensor:
+  - platform: integration
+    source: sensor.badkamer_electric_heater_power
+    name: badkamer elektrische verwarming energieverbruik
+    unit_prefix: k
+    round: 2
+    method: left
+
+utility_meter:
+  badkamer_electric_heater_energy_daily:
+    source: sensor.badkamer_elektrische_verwarming_energieverbruik
+    cycle: daily

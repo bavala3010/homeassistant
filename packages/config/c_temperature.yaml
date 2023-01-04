@@ -1,0 +1,30 @@
+
+
+sensor:
+  - platform: average
+    name: 'Eikenbos gemiddelde buitentemperatuur'
+    duration:
+      days: 1
+    entities:
+      - sensor.eikenbos_openweather_temperature
+
+  - platform: derivative
+    source: sensor.living_temperature
+    name: living temperatuursverandering per uur
+    round: 1
+    unit_time: h # the resulting "unit_of_measurement" will be °C/h if the sensor.temperate has set °C as its unit
+    time_window: "01:00:00"  # we look at the change over the last hour
+
+  - platform: derivative
+    source: sensor.kamer_amilya_temperature
+    name: kamer Amilya temperatuursverandering per uur
+    round: 1
+    unit_time: h # the resulting "unit_of_measurement" will be °C/h if the sensor.temperate has set °C as its unit
+    time_window: "01:00:00"  # we look at the change over the last hour
+
+  - platform: derivative
+    source: sensor.master_bedroom_temperature
+    name: master bedroom temperatuursverandering per uur
+    round: 1
+    unit_time: h # the resulting "unit_of_measurement" will be °C/h if the sensor.temperate has set °C as its unit
+    time_window: "01:00:00"  # we look at the change over the last hour

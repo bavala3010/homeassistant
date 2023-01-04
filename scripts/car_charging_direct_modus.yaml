@@ -32,6 +32,6 @@ direct_mode_start:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/car-charging
+          uri: /dashboard-car/car-charging
 
 

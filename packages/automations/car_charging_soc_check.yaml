@@ -78,7 +78,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/car-charging      
+          uri: /dashboard-car/car-charging      
   - service: notify.madouce_phone
     data:
       title: Verbind de laadkabel!
@@ -89,5 +89,5 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/car-charging
+          uri: /dashboard-car/car-charging
   mode: single

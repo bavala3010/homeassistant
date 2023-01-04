@@ -61,7 +61,7 @@ automation:
         actions:
         - action: URI
           title: zo ja, klik hier
-          uri: /eikenbos-dashboard/car-heater
+          uri: /dashboard-car/car-heater
   mode: single
 
 - alias: 🚗 Bart verlaat auto
@@ -110,7 +110,7 @@ automation:
             actions:
             - action: URI
               title: zo ja, klik hier
-              uri: /eikenbos-dashboard/car-heater          
+              uri: /dashboard-car/car-heater          
     # indien aankomst bij winkel, niets vragen en climatisatie blijven houden
     - conditions:
         - condition: or
@@ -151,7 +151,7 @@ automation:
             actions:
             - action: URI
               title: zo ja, klik hier
-              uri: /eikenbos-dashboard/car-heater
+              uri: /dashboard-car/car-heater
       - wait_template: ''
         timeout: '01:00:00'
       - service: notify.bart_phone
@@ -164,7 +164,7 @@ automation:
             actions:
             - action: URI
               title: zo ja, klik hier
-              uri: /eikenbos-dashboard/car-heater
+              uri: /dashboard-car/car-heater
     # alle andere locaties
     default:
     - service: notify.bart_phone
@@ -178,7 +178,7 @@ automation:
           actions:
           - action: URI
             title: zo ja, klik hier
-            uri: /eikenbos-dashboard/car-heater
+            uri: /dashboard-car/car-heater
     - wait_template: ''
       timeout: '01:00:00'
     - service: notify.bart_phone
@@ -190,7 +190,7 @@ automation:
           actions:
           - action: URI
             title: zo ja, klik hier
-            uri: /eikenbos-dashboard/e-tron-heate
+            uri: /dashboard-car/e-tron-heate
   mode: restart          
 
 - alias: 🚗 Madouce verlaat auto
@@ -239,7 +239,7 @@ automation:
             actions:
             - action: URI
               title: zo ja, klik hier
-              uri: /eikenbos-dashboard/car-heater          
+              uri: /dashboard-car/car-heater          
     # indien aankomst bij winkel, niets vragen en climatisatie laten aanstaan
     - conditions:
         - condition: or
@@ -279,7 +279,7 @@ automation:
             actions:
             - action: URI
               title: zo ja, klik hier
-              uri: /eikenbos-dashboard/car-heater
+              uri: /dashboard-car/car-heater
       - wait_template: ''
         timeout: '01:00:00'
       - service: notify.madouce_phone
@@ -292,7 +292,7 @@ automation:
             actions:
             - action: URI
               title: zo ja, klik hier
-              uri: /eikenbos-dashboard/car-heater
+              uri: /dashboard-car/car-heater
     # alle andere locaties
     default:
     - service: notify.madouce_phone
@@ -306,7 +306,7 @@ automation:
           actions:
           - action: URI
             title: zo ja, klik hier
-            uri: /eikenbos-dashboard/car-heater
+            uri: /dashboard-car/car-heater
     - wait_template: ''
       timeout: '01:00:00'
     - service: notify.madouce_phone
@@ -319,7 +319,7 @@ automation:
           actions:
           - action: URI
             title: zo ja, klik hier
-            uri: /eikenbos-dashboard/e-tron-heate
+            uri: /dashboard-car/e-tron-heate
   mode: restart
 
 
@@ -350,7 +350,7 @@ automation:
         actions:
         - action: URI
           title: Voor meer info, klik hier
-          uri: /eikenbos-dashboard/car-heater
+          uri: /dashboard-car/car-heater
   - service: script.auto_start_climatisatie_nu
   mode: single 
 
@@ -439,7 +439,7 @@ automation:
         actions:
         - action: URI
           title: Voor meer info, klik hier
-          uri: /eikenbos-dashboard/car-heater
+          uri: /dashboard-car/car-heater
   - service: script.auto_start_climatisatie_nu          
   mode: single
 
@@ -475,7 +475,7 @@ automation:
         actions:
         - action: URI
           title: Voor meer info, klik hier
-          uri: /eikenbos-dashboard/car-heater
+          uri: /dashboard-car/car-heater
   - service: script.auto_start_climatisatie_nu
   mode: single
 
@@ -565,6 +565,6 @@ automation:
         actions:
         - action: URI
           title: Voor meer info, klik hier
-          uri: /eikenbos-dashboard/car-heater
+          uri: /dashboard-car/car-heater
   - service: script.auto_start_climatisatie_nu          
   mode: single

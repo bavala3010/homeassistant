@@ -50,7 +50,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/car      
+          uri: /dashboard-car/car      
   - service: notify.madouce_phone
     data:
       title: Auto niet op slot!
@@ -62,7 +62,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/car        
+          uri: /dashboard-car/car        
   - service: lock.lock
     target:
       entity_id: lock.audi_e_tron_sportback_door_lock
@@ -134,7 +134,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/car        
+          uri: /dashboard-car/car        
   - service: notify.madouce_phone
     data:
       title: Auto niet op slot!
@@ -146,7 +146,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/car        
+          uri: /dashboard-car/car        
   - service: lock.lock
     target:
       entity_id: lock.audi_e_tron_sportback_door_lock

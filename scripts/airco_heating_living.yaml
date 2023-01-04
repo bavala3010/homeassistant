@@ -34,7 +34,17 @@ living_airco_start:
     data:
       fan_mode: auto
     target:
-      device_id: 1c560bbc7917f45d737e87d3e2bd0d89      
+      device_id: 1c560bbc7917f45d737e87d3e2bd0d89
+  - delay:
+      minutes: 5
+  - service: climate.set_temperature
+    data:
+      hvac_mode: heat
+      temperature: >
+        {% set adj = states('input_number.living_airco_target_temperature') | float - states('sensor.living_temperature') | float %}
+        {{ (state_attr('climate.living_airco', 'current_temperature') + adj) | round(1, 'half', 0) }}
+    target:
+      device_id: 1c560bbc7917f45d737e87d3e2bd0d89               
   mode: restart
 
 living_airco_19:

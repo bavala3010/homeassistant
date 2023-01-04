@@ -40,10 +40,11 @@
 #       - name: "energy_return"
 
 
-# Enables in the left menu a map showing the location of tracked devices
-# map:
-conversation:           # to speak to Home Assistant
 
+backup:
+bluetooth:
+conversation:           # to speak to Home Assistant
+counter:
 daikin_residential:
   email: bartland@gmail.com
   password: Qc#DHeq9!7!WEe*
@@ -54,18 +55,47 @@ device_tracker:
     username: root
     password: admin
     http_id: TID3fac41d84c91e1a8
+dhcp:
 discovery:
 energy:
+frontend:
+  themes: !include_dir_merge_named themes
+  extra_module_url:
+    - /hacsfiles/hass-hue-icons/hass-hue-icons.js
+    - /hacsfiles/lovelace-card-mod/card-mod.js
+hardware:
 history:
 homeassistant_alerts:
+#image:
 input_boolean:
+input_button:
 input_datetime:
 input_number:
+input_text:
+  trigger_source:
+    name: Trigger Source  #String om bij te houden welke sensor het alarm triggert
 light:
 logbook:
+logger:
+  default: error
+# map:  # Enables in the left menu a map showing the location of tracked devices
 media_source:
+mobile_app:
+my:
 person:
-
+scene: !include scenes.yaml
+schedule:
+script: !include_dir_merge_named scripts
+stream:
+sun:
+system_health:
+tag:
+timer:
+  car_climatisation:
+    icon: mdi:radiator
+usb:
+zeroconf:
+zone:
 
 # lovelace:
 #   mode: yaml
@@ -73,13 +103,12 @@ person:
 #     - url: /hacsfiles/battery-state-card/battery-state-card.js
 #       type: module
 
-#python_script is not the same as pyscript. It is less advanced.
-python_script:
-
-#pyscript is more advanced than python_script. pyscript can do imports of libraries
-pyscript:
-  allow_all_imports: true
-  hass_is_global: true
+# python_script is not the same as pyscript. It is less advanced.
+# python_script:
+# pyscript is more advanced than python_script. pyscript can do imports of libraries
+# pyscript:
+#   allow_all_imports: true
+#   hass_is_global: true
 
 
 ##### Text to speech ##########################################
@@ -97,19 +126,21 @@ tts:
 ##### YAML file locations #####################################    
 group: !include groups.yaml
 automation: !include automations.yaml
-script: !include_dir_merge_named scripts
-scene: !include scenes.yaml
+
 google_assistant: !include google_assistant_integration.yaml
 
-frontend:
-  themes: !include_dir_merge_named themes
-  extra_module_url:
-    - /hacsfiles/hass-hue-icons/hass-hue-icons.js
-    - /hacsfiles/lovelace-card-mod/card-mod.js
+
 
 
 #####################################################
 homeassistant:
+  name: Eikenbos
+  country: BE
+  currency: EUR
+  external_url: https://ha.bartland.duckdns.org
+  internal_url: http://192.168.86.100:8123
+  time_zone: "Europe/Brussels"
+
   allowlist_external_dirs:
     - "/config"
 
@@ -146,8 +177,7 @@ homeassistant:
       device_class: energy
       state_class: total_increasing
 
-  # external_url: http://bartland.duckdns.org
-  time_zone: "Europe/Brussels"
+
 
   # secrets should not be mentioned in this file; it is automatic !
   # secrets: !include secrets.yaml
@@ -194,9 +224,8 @@ http:
   trusted_proxies:
     - 192.168.86.0/24   # the IP address of the proxy server
     - 192.168.155.0/24  # the IP range of the Droidland hotspot  
-    - 172.18.0.8        # TO DO : dit is het ip-adres van nginx in docker
+    - 172.18.0.8        # dit is het ip-adres van nginx in docker
     - 172.18.0.0/24
-    - 172.19.0.1        # TO DO : dit is het ip-adres van nginx in docker
     - 172.18.0.2        # the IP address of the Wireguard server
     - 172.18.0.3        # ???
     - 10.13.13.2        # WireGuard client Bart gsm
@@ -277,15 +306,16 @@ influxdb:
 #    token: !secret purifier_3H_token
 #    model: zhimi.airpurifier.mb3
 
-# netatmo:
+netatmo:
 # create client_id and client_secret at https://dev.netatmo.com/apps
-# Waarschoot
+
+# Eikenbos (bart@van-landschoot.be)
+  client_id: 639ccb520c005b86eb0280a2
+  client_secret: SHtT5LrjtoCwT3IcrSiSCsDySu9eyva2zkJt2uivk5ko
+
+# Waarschoot (bartland@gmail.com)
 #  client_id: 60d72f7458da3d00f57f4fd5 
 #  client_secret: cEP5HXSCw74AEey7KkpEFIBwrzO
-
-# Eikenbos
-#  client_id: 60e3e87226bd613977210595
-#  client_secret: t3OJP8WvSQR538Wb1WpAXqARxfzq
 
 alarm_control_panel:
   - platform: manual
@@ -301,10 +331,8 @@ alarm_control_panel:
       arming_time: 0
       delay_time: 0
 
-#String om bij te houden welke sensor het alarm triggert
-input_text:
-  trigger_source:
-    name: Trigger Source
+
+
 
 
 sensor:
@@ -348,16 +376,14 @@ sensor:
       - 'time'
       - 'date'
       - "date_time"
+      
 
   - platform: min_max
     type: mean
     name: avg_outside_temp
     entity_ids:
-      - sensor.buitensensor_vooraan_temperature
-      - sensor.buitensensor_deur_temperature
-      - sensor.temp_leuven24_wunderground
-      - sensor.temp_leuven24_wunderground
-      - sensor.temp_leuven24_wunderground
+      - sensor.buienalarm_temperature
+      - sensor.buienradar_temperature
     round_digits: 2
     
   - platform: min_max
@@ -386,6 +412,37 @@ sensor:
       - sensor.master_bedroom_temperature
     round_digits: 1
 
+  - platform: history_stats
+    name: "Bart thuis vandaag"
+    entity_id: person.bart
+    state: 'home'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "Madouce thuis vandaag"
+    entity_id: person.madouce
+    state: 'home'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "Amilya thuis vandaag"
+    entity_id: person.amilya
+    state: 'home'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "Alunya thuis vandaag"
+    entity_id: person.alunya
+    state: 'home'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
 
   - platform: template
     sensors:
@@ -434,7 +491,7 @@ sensor:
 
   - platform: integration
     # creates a sensor called: sensor.huis_energieverbruik in kWh
-    source: sensor.huis_verbruik
+    source: sensor.huisverbruik
     name: huis energieverbruik
     unit_prefix: k
     round: 2
@@ -535,9 +592,7 @@ binary_sensor:
     host: 8.8.8.8
     scan_interval: 5    # scan every 5 minutes
 
-timer:
-  car_climatisation:
-    icon: mdi:radiator
+
 
 rest_command:
 # webhook om meterstanden op de site energieid te posten

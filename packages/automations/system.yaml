@@ -36,7 +36,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/netwerk
+          uri: /lovelace-systeem/1
   mode: single
   
 - alias: 🚀 Pi CPU > 50% = melding
@@ -59,7 +59,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/netwerk
+          uri: /lovelace-systeem/1
   - repeat:
       while:
       - condition: numeric_state
@@ -76,7 +76,7 @@ automation:
             actions:
             - action: URI
               title: meer info
-              uri: /eikenbos-dashboard/netwerk
+              uri: /lovelace-systeem/1
       - delay:
           hours: 0
           minutes: 15
@@ -92,7 +92,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /eikenbos-dashboard/netwerk
+          uri: /lovelace-systeem/1
   mode: single
 
 - alias: 🚀 HA stopt
@@ -158,6 +158,7 @@ automation:
     entity_id: binary_sensor.google_server
     from: 'on'
     to: 'off'
+    for: "00:01:00"
   condition: []
   action:
   - service: notify.bart_phone

@@ -47,10 +47,11 @@ automation:
       data:
         tag: car_charging
         color: green
-        actions:
-        - action: URI
-          title: meer info
-          uri: /eikenbos-dashboard/car-charging        
+        clickAction: "/dashboard-car/car-charging"
+        # actions:
+        # - action: URI
+        #   title: meer info
+        #   uri: /dashboard-car/car-charging        
   mode: single
 
 - alias: "🔋 charge - laadkabel zopas ingeplugd = melding (enkel thuis)"
@@ -78,10 +79,11 @@ automation:
         data:
           tag: car_charging
           color: green
-          actions:
-            - action: URI
-              title: meer info
-              uri: /eikenbos-dashboard/car-charging
+          clickAction: "/dashboard-car/car-charging"          
+          # actions:
+          #   - action: URI
+          #     title: meer info
+          #     uri: /dashboard-car/car-charging
     - service: notify.madouce_phone
       data:
         title: De laadkabel is zopas ingeplugd.
@@ -89,10 +91,11 @@ automation:
         data:
           tag: car_charging
           color: green
-          actions:
-            - action: URI
-              title: meer info
-              uri: /eikenbos-dashboard/car-charging
+          clickAction: "/dashboard-car/car-charging"
+          # actions:
+          #   - action: URI
+          #     title: meer info
+          #     uri: /dashboard-car/car-charging
   variables:
     message: >
       {% set soc = states('sensor.car_1_soc') | round(default=0) %} {% set
@@ -133,10 +136,11 @@ automation:
         data:
           tag: car_charging
           color: green
-          actions:
-            - action: URI
-              title: meer info
-              uri: /eikenbos-dashboard/car-charging
+          clickAction: "/dashboard-car/car-charging"          
+          # actions:
+          #   - action: URI
+          #     title: meer info
+          #     uri: /dashboard-car/car-charging
     - service: notify.madouce_phone
       data:
         title: De laadkabel is zopas ingeplugd.
@@ -144,10 +148,11 @@ automation:
         data:
           tag: car_charging
           color: green
-          actions:
-            - action: URI
-              title: meer info
-              uri: /eikenbos-dashboard/car-charging
+          clickAction: "/dashboard-car/car-charging"
+          # actions:
+          #   - action: URI
+          #     title: meer info
+          #     uri: /dashboard-car/car-charging
   variables:
     message: >
       OPGELET: Er is geen laadmodus ingesteld. Kies laden met timer, direct of met
@@ -185,10 +190,11 @@ automation:
       data:
         tag: car_charging
         color: green
-        actions:
-        - action: URI
-          title: meer info
-          uri: /eikenbos-dashboard/car-charging        
+        clickAction: "/dashboard-car/car-charging"
+        # actions:
+        # - action: URI
+        #   title: meer info
+        #   uri: /dashboard-car/car-charging        
   mode: single
 
 - alias: "🔋 charge - laadkabel losgekoppeld = laden stoppen"

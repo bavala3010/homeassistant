@@ -40,7 +40,7 @@ automation:
   mode: single
 
 
-- alias: "♨️ >21 °C gevraagd in kamer Amilya = chauffage op automatisch"
+- alias: "♨️ >21 °C gevraagd in kamer Amilya = verwarming op automatisch"
   id: '95335e38-c593-48a6-b356-1be5f78db02c'
   description: ''
   trigger:
@@ -60,7 +60,7 @@ automation:
       hvac_mode: auto      
   mode: single
   
-- alias: "♨️ >20 °C gevraagd in kamer Amilya 's nachts = chauffage op automatisch"
+- alias: "♨️ >20 °C gevraagd in kamer Amilya 's nachts = verwarming op automatisch"
   id: 'b5bc7134-9f34-455e-9f89-447ae445cce8'
   description: ''
   trigger:
@@ -83,7 +83,7 @@ automation:
       hvac_mode: auto
   mode: single
 
-- alias: "♨️ >20 °C gevraagd in kamer Amilya overdag = chauffage op 19"
+- alias: "♨️ >20 °C gevraagd in kamer Amilya overdag = verwarming op 19"
   id: '434ae070-ac26-40a4-8700-7d5a86b7c2c9'
   description: ''
   trigger:
@@ -106,7 +106,7 @@ automation:
       entity_id: climate.kamer_amilya
   mode: single
 
-- alias: "♨️ >20 °C gevraagd in kamer Alunya overdag = chauffage op 19"
+- alias: "♨️ >20 °C gevraagd in kamer Alunya overdag = verwarming op 19"
   id: 'aefc61ee-9acc-41c0-abd1-1cacc925262f'
   description: ''
   trigger:
@@ -129,7 +129,7 @@ automation:
       entity_id: climate.kamer_alunya
   mode: single
 
-- alias: "♨️ Chauffage Alunya 's nachts op automatisch"
+- alias: "♨️ verwarming Alunya 's nachts op automatisch"
   id: '0c41db26-ed5a-46c8-b2f5-ba93514fb638'
   description: ''
   trigger:
@@ -150,7 +150,7 @@ automation:
       hvac_mode: auto
   mode: single
   
-- alias: "♨️ Chauffage Amilya 's nachts op automatisch"
+- alias: "♨️ verwarming Amilya 's nachts op automatisch"
   id: 'a9ed4d73-ab63-48f1-a05b-e252d9d60694'
   description: ''
   trigger:
@@ -171,4 +171,93 @@ automation:
       hvac_mode: auto
   mode: single
 
-# - alias: chauffage badkamer aan + raam open = chauffage uit
+# - alias: verwarming badkamer aan + raam open = verwarming uit
+
+
+- alias: ♨️ verwarming badkamer aan 10 minuten voor alarm Madouce (tussen 6 en 7)
+  id: 'f41f7eb5-1432-4514-b8b5-83d53808a262'
+  description: ''
+  trigger:
+  - platform: template
+    value_template: >
+      {{ as_timestamp(states('sensor.sm_g986b_next_alarm')) | int() ==
+      as_timestamp(now() + timedelta(minutes=10)) | int() }}
+  condition:
+  - condition: template
+    value_template: >
+      {% set alarm = as_local(as_datetime(states('sensor.sm_g986b_next_alarm'))) %}
+      {% set alarm_decimal = alarm.hour + (alarm.minute/100) %}
+      {{ alarm_decimal }}
+      {{ 5.3 <  alarm_decimal < 7 }}
+  - condition: numeric_state
+    entity_id: sensor.badkamer_temperature
+    below: 17.5      
+  action:
+  - service: climate.set_temperature
+    data:
+      temperature: 18
+    target:
+      entity_id: climate.badkamer
+  - delay:
+      minutes: 25
+  - service: climate.set_hvac_mode
+    data:
+      hvac_mode: auto
+    target:
+      entity_id: climate.badkamer
+  mode: single
+
+
+
+# berekening alarm naar decimaal getal (uur,minuten)
+# {{ as_timestamp(states('sensor.sm_g986b_next_alarm')) | timestamp_custom('%H', true) | int + ((as_timestamp(states('sensor.sm_g986b_next_alarm')) | timestamp_custom('%M', true) | int) / 100 )}}
+
+
+- alias: ♨️ badkamer verwarming op 18 graden gedurende 30 minuten
+  id: 'e46919a3-f143-48ac-b9cd-451664e2f1fd'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+      - input_boolean.badkamer_18graden
+    from: "off"
+    to: "on"
+  condition: []
+  action:
+  - service: climate.set_temperature
+    data:
+      temperature: 18
+    target:
+      entity_id: climate.badkamer
+  - if:
+    - condition: template
+      value_template: "{{trigger.to_state.context.user_id == '7e508a5d2a5c42029f3d9238f0cc4648'}}"
+    then:
+    - service: notify.alunya_phone
+      data:
+        title: Verwarming badkamer
+        message: De verwarming is ingeschakeld.
+    - delay:
+        hours: 0
+        minutes: 15
+        seconds: 0
+        milliseconds: 0
+    - service: notify.alunya_phone
+      data:
+        message: De badkamer is ondertussen verwarmd.
+        title: Verwarming badkamer
+  - delay:
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0
+  - service: climate.set_hvac_mode
+    data:
+      hvac_mode: auto
+    target:
+      entity_id: climate.badkamer
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.badkamer_18graden      
+  mode: restart

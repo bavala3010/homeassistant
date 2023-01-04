@@ -102,3 +102,32 @@ automation:
         color: red
         clickAction: "{{ state_attr('sensor.tgtg_hoegaards_broodje', 'Item URL') }}"
   mode: single
+
+- alias: "TGTG Spar"
+  id: 'c4f27cc4-d554-4fde-a14b-ad1841c204c7'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.tgtg_spar_kessel_lo
+    from: '0'
+  condition:
+  - condition: template
+    value_template: "{{ states('sensor.tgtg_spar_kessel_lo') | float >= 1}}"
+  action:
+  - service: notify.madouce_phone
+    data:
+      title: "Too Good To Go: Spar Kessel-Lo"
+      message: "Nog {{states('sensor.tgtg_spar_kessel_lo')}} over aan {{ state_attr('sensor.tgtg_spar_kessel_lo', 'TGT Price') }}."
+      data:
+        tag: toogoodtogo
+        color: red
+        clickAction: "{{ state_attr('sensor.tgtg_spar_kessel_lo', 'Item URL') }}"
+  - service: notify.bart_phone
+    data:
+      title: "Too Good To Go: Spar Kessel-Lo"
+      message: "Nog {{states('sensor.tgtg_spar_kessel_lo')}} over aan {{ state_attr('sensor.tgtg_spar_kessel_lo', 'TGT Price') }}."
+      data:
+        tag: toogoodtogo
+        color: red
+        clickAction: "{{ state_attr('sensor.tgtg_spar_kessel_lo', 'Item URL') }}"
+  mode: single

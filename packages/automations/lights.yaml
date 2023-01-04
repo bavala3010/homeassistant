@@ -260,6 +260,45 @@ automation:
       entity_id: light.living_bol
   mode: single
 
+- alias: living licht uit wanneer buiten voldoende licht
+  id: 'b3a7d875-e7c9-4612-a5a5-407f280c2e78'
+  description: ""
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.oprit_bewegingssensor_light_level
+      above: 1000
+  condition: []
+  action:
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id:
+          - light.living_links
+          - light.living_rechts
+  mode: single
+
+- alias: living licht uit wanneer buiten onvoldoende licht en laptop aan
+  id: 'ac4fb59a-e33f-464d-805f-c939d7e0d14e'
+  description: ""
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.oprit_bewegingssensor_light_level
+      below: 500
+  condition:
+    - condition: state
+      entity_id: switch.madouce_laptop_tme_a_b_1801581_windows_device
+      state: "on"
+      for:
+        minutes: 30
+  action:
+    - service: light.turn_on
+      data: {}
+      target:
+        entity_id:
+          - light.living_links_2
+  mode: single
+
+
 
 #################################################  
 # Master bedroom
@@ -328,6 +367,50 @@ automation:
   - service: light.turn_off
     target:
       entity_id: group.master_bedroom_lichten
+  mode: single
+
+
+#################################################  
+# Veranda
+#################################################
+
+- alias: veranda licht uit wanneer buiten voldoende licht
+  id: 'e10f25e1-54d6-486d-8661-023145492c6b'
+  description: ""
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.terras_light_level
+      above: 350
+  condition: []
+  action:
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id:
+          - light.veranda
+          - light.veranda_staande_lamp
+  mode: single
+
+
+- alias: veranda licht aan wanneer buiten onvoldoende licht en laptop aan
+  id: 'd92b6fd4-f928-422e-a2f0-20604bb7f7cb'
+  description: ""
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.terras_light_level
+      below: 350
+  condition: 
+    - condition: state
+      entity_id: switch.bart_laptop_brum05007458
+      state: "on"
+      for:
+        minutes: 30
+  action:
+    - service: light.turn_on
+      data: {}
+      target:
+        entity_id:
+          - light.veranda_staande_lamp
   mode: single
 
 

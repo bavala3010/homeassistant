@@ -19,6 +19,8 @@ automation:
       title: '{{title}}'
       message: '{{message}}'
       data:
+        notification_icon: "mdi:recycle"
+        color: "#44DE22"              
         tag: recycle
         actions:
         - action: recycle_done
@@ -28,6 +30,8 @@ automation:
       title: '{{title}}'
       message: '{{message}}'
       data:
+        notification_icon: "mdi:recycle"
+        color: "#44DE22"        
         tag: recycle
         actions:
         - action: recycle_done
@@ -59,17 +63,21 @@ automation:
       title: '{{title}}'
       message: '{{message}}'
       data:
+        notification_icon: "mdi:recycle"      
         tag: recycle
+        color: "#44DE22"        
   - service: notify.madouce_phone
     data:
       title: '{{title}}'
       message: '{{message}}'
       data:
+        notification_icon: "mdi:recycle"      
         tag: recycle
+        color: "#44DE22"        
   variables:
     title: >
       {% if state_attr('sensor.recycleapp_gft', 'Days_until') == 4 %}Over 4 dagen ({{ (now().date() + timedelta(days=4)).strftime('%A') }}) ophalen groene bak.
-      {% elif state_attr('sensor.recycleapp_gft', 'Days_until') == 3 %}Over 3 ({{ (now().date() + timedelta(days=3)).strftime('%A') }}) dagen ophalen groene bak.
+      {% elif state_attr('sensor.recycleapp_gft', 'Days_until') == 3 %}Over 3 dagen ({{ (now().date() + timedelta(days=3)).strftime('%A') }}) ophalen groene bak.
       {% elif state_attr('sensor.recycleapp_papier','Days_until') == 4 %}Over 4 dagen ({{ (now().date() + timedelta(days=4)).strftime('%A') }}) ophaling oud papier.
       {% elif state_attr('sensor.recycleapp_papier','Days_until') == 3 %}Over 3 dagen ({{ (now().date() + timedelta(days=3)).strftime('%A') }}) ophaling oud papier.
       {% endif %}

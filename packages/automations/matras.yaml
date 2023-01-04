@@ -11,7 +11,7 @@ automation:
     entity_id: person.madouce
     state: home
   - condition: numeric_state
-    entity_id: sensor.eikenbos_temperature
+    entity_id: sensor.eikenbos_openweather_temperature
     below: '15'
   action:
   - service: switch.turn_on
@@ -32,7 +32,7 @@ automation:
     after: '22:15'
     before: '02:00'
   - condition: numeric_state
-    entity_id: sensor.eikenbos_temperature
+    entity_id: sensor.eikenbos_openweather_temperature
     below: '15'
   action:
   - service: switch.turn_on

@@ -136,6 +136,16 @@ sensor:
       value_template: >-
         {{ (states('sensor.solar_voorzijde_energie_daily') | float / 8610 * 1000 * 100) | round(1) }}
 
+
+# # Get the sensor value at a specified time
+# Do not define the SQL in this config file, but put it in the integration via the GUI
+# Do not forget to disable updates in the SQL integration (via systeeminstellingen)
+# - platform: sql
+#   queries:
+#     - name: zonneproductie gisteren op dit uur
+#       query: "SELECT state FROM states WHERE entity_id = 'sensor.sma_today' AND CAST(strftime('%s', last_updated) AS integer) > (CAST(strftime('%s', 'now') AS integer) - 86400) ORDER BY last_updated LIMIT 1"
+#       column: "state"
+
 - platform: integration
   source: sensor.sma_power_A_channel
   name: solar terraszijde energie
@@ -149,6 +159,13 @@ sensor:
   unit_prefix: k
   method: left
   round: 2
+
+# net power in W should be converted to kWh to be used for "kwartierpiek"
+- platform: integration
+  source: sensor.net_power
+  name: net power in kWh
+  unit_prefix: k
+  round: 3
 
 
 utility_meter:
@@ -231,4 +248,5 @@ utility_meter:
   realised_sun_production_today:
     unique_id: 'aa95f490-df7d-4c80-b798-33225a1afe4d'  
     source: sensor.gerealiseerde_zonneproductie
-    cycle: daily    
+    cycle: daily
+

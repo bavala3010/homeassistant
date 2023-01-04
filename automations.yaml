@@ -39,13 +39,13 @@
     target:
       entity_id: switch.waarschoot_living_alarmknop
   mode: single
-- alias: Send a camera snapshot when motion is detected
-  id: '1657712996549'
+- id: '1657712996549'
+  alias: Send a camera snapshot when motion is detected
   description: ''
   use_blueprint:
     path: vorion/send-camera-snapshot-notification-on-motion.yaml
     input:
-      motion_sensor: binary_sensor.buitensensor_deur_motion
+      motion_sensor: binary_sensor.voordeur_bewegingssensor_motion
       camera: camera.netatmo_eikenbos_oprit
       notify_device: b5d28be91fff8c03aece377f73b28dd2
       notification_title: Beweging aan voordeur
@@ -204,11 +204,12 @@
     entity_id: sun.sun
     state: below_horizon
   action:
-  - service: light.turn_on
-    data: {}
+  - service: netatmo.set_camera_light
+    data:
+      camera_light_mode: 'on'
     target:
       entity_id:
-      - light.netatmo_eikenbos_oprit
+      - light.eikenbos_oprit
   mode: single
 - id: '1665942731812'
   alias: 'log  in Google Sheets: km auto '
@@ -220,17 +221,16 @@
   action:
   - service: google_sheets.append_sheet
     data:
-      config_entry: 2d4ff1f67e0a1e75255bae8b80df0d52
+      config_entry: a76dccf14ff43d5199650ea4986f6eb9
       worksheet: AudiEtron
       data:
         odometer: '{{ states(''sensor.audi_e_tron_sportback_mileage'') | float }}'
-        date: '{{ now() }}'
         planning: '{% set t = (now().date() + timedelta(days=0)) %} {% set car_use_day
           = ''input_select.car_use_day_'' ~ t.isoweekday() %}  {{ states(car_use_day)
           }}'
   mode: single
 - id: '1666249229359'
-  alias: 'log  in Google Sheets: dagelijkse energiewaarden '
+  alias: 'log  in Google Sheets: dagelijkse energiewaarden en extra info'
   description: ''
   trigger:
   - platform: time
@@ -239,9 +239,11 @@
   action:
   - service: google_sheets.append_sheet
     data:
-      config_entry: 2d4ff1f67e0a1e75255bae8b80df0d52
+      config_entry: a76dccf14ff43d5199650ea4986f6eb9
       worksheet: Energy
       data:
+        Eikenbos_gemiddelde_buitentemperatuur: '{{ states(''sensor.Eikenbos_gemiddelde_buitentemperatuur'')
+          | float() }}'
         solar_production: '{{ states(''sensor.sma_today'') | float() }}'
         net_injection_daily: '{{ states(''sensor.net_injection_daily'') | float()
           }}'
@@ -269,21 +271,54 @@
         infrared_panel_energy_daily: '{{ states(''sensor.infrared_panel_energy_daily'')
           | float() }}'
         living_airco_daily_heat_energy_consumption: '{{ states(''sensor.living_airco_daily_heat_energy_consumption'')
-          | float() }}'
+          | float(default=0) }}'
         amilya_airco_daily_heat_energy_consumption: '{{ states(''sensor.amilya_airco_daily_heat_energy_consumption'')
-          | float() }}'
+          | float(default=0) }}'
         alunya_airco_daily_heat_energy_consumption: '{{ states(''sensor.alunya_airco_daily_heat_energy_consumption'')
-          | float() }}'
+          | float(default=0) }}'
         master_bedroom_airco_daily_heat_energy_consumption: '{{ states(''sensor.master_bedroom_airco_daily_heat_energy_consumption'')
-          | float() }}'
+          | float(default=0) }}'
+        badkamer_elektrische_verwarming_energieverbruik: '{{ states(''sensor.badkamer_electric_heater_energy_daily'')
+          | float(default=0) }}'
+        living_gem_verwarming_laatste_24_uren: '{{ states(''sensor.living_gem_verwarming_laatste_24_uren'')
+          | float(default=0) }}'
+        kamer_amilya_gem_verwarming_laatste_24_uren: '{{ states(''sensor.kamer_amilya_gem_verwarming_laatste_24_uren'')
+          | float(default=0) }}'
+        veranda_gem_verwarming_laatste_24_uren: '{{ states(''sensor.veranda_gem_verwarming_laatste_24_uren'')
+          | float(default=0) }}'
+        berging_gem_verwarming_laatste_24_uren: '{{ states(''sensor.berging_gem_verwarming_laatste_24_uren'')
+          | float(default=0) }}'
+        gang_gem_verwarming_laatste_24_uren: '{{ states(''sensor.gang_gem_verwarming_laatste_24_uren'')
+          | float(default=0) }}'
+        badkamer_gem_verwarming_laatste_24_uren: '{{ states(''sensor.badkamer_gem_verwarming_laatste_24_uren'')
+          | float(default=0) }}'
+        kamer_alunya_gem_verwarming_laatste_24_uren: '{{ states(''sensor.kamer_alunya_gem_verwarming_laatste_24_uren'')
+          | float(default=0) }}'
+        master_bedroom_gem_verwarming_laatste_24_uren: '{{ states(''sensor.master_bedroom_gem_verwarming_laatste_24_uren'')
+          | float(default=0) }}'
         living_airco_daily_cool_energy_consumption: '{{ states(''sensor.living_airco_daily_cool_energy_consumption'')
-          | float() }}'
+          | float(default=0) }}'
         amilya_airco_daily_cool_energy_consumption: '{{ states(''sensor.amilya_airco_daily_cool_energy_consumption'')
-          | float() }}'
+          | float(default=0) }}'
         alunya_airco_daily_cool_energy_consumption: '{{ states(''sensor.alunya_airco_daily_cool_energy_consumption'')
-          | float() }}'
+          | float(default=0) }}'
         master_bedroom_airco_daily_cool_energy_consumption: '{{ states(''sensor.master_bedroom_airco_daily_cool_energy_consumption'')
-          | float() }}'
+          | float(default=0) }}'
+        bart_thuis_vandaag: '{{ states(''sensor.bart_thuis_vandaag'') | float() }}
+
+          '
+        madouce_thuis_vandaag: '{{ states(''sensor.madouce_thuis_vandaag'') | float()
+          }}
+
+          '
+        amilya_thuis_vandaag: '{{ states(''sensor.amilya_thuis_vandaag'') | float()
+          }}
+
+          '
+        alunya_thuis_vandaag: '{{ states(''sensor.alunya_thuis_vandaag'') | float()
+          }}
+
+          '
   mode: single
 - id: '1666291531081'
   alias: 'Alunya airco heating: ''s nachts niet meer dan 18 graden'
@@ -554,4 +589,116 @@
       worksheet: Waarschoot
       data:
         switch.waarschoot_boven_alarmknop_uit: '{{ now() }}'
+  mode: single
+- id: '1668774395681'
+  alias: Zonnestopcontact
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.net_power
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    below: -20
+    id: enough injection
+  - platform: numeric_state
+    entity_id: sensor.net_power
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    above: -20
+    id: not enough injection
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: enough injection
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id: switch.living_zonnestopcontact
+    - conditions:
+      - condition: trigger
+        id: not enough injection
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.living_zonnestopcontact
+  mode: single
+- id: '1670006028162'
+  alias: test alarm als trigger
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{ as_timestamp(states(''sensor.sm_g975f_next_alarm'')) | int()
+      == as_timestamp(now() + timedelta(minutes=10)) | int() }}
+
+      '
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      message: het werkt
+      title: het werkt
+  - delay:
+      hours: 0
+      minutes: 25
+      seconds: 0
+      milliseconds: 0
+  mode: single
+- id: '1671288400613'
+  alias: 'Bij extreem piekverbruik: melding en laden auto stoppen'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.huisverbruik
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    above: 8000
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data_template:
+      title: 'Extreem hoog verbruik: {{ states(''sensor.huisverbruik'')}} W. Risico
+        dat elektriciteit uitvalt.'
+      message: Het laden van de auto is automatisch gestopt.
+      data:
+        notification_icon: mdi:lightning-bolt
+        color: red
+  - service: script.charge_button_stop
+    data: {}
+  mode: single
+- id: '1672855767572'
+  alias: kwartierpiek is gewijzigd
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.max_peak
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.max_peak
+    above: 2.5
+  action:
+  - service: input_datetime.set_datetime
+    data_template:
+      datetime: '{{ now().timestamp() | timestamp_local }}'
+    target:
+      entity_id: input_datetime.peak_date_time
+  - service: notify.bart_phone
+    data:
+      title: Nieuwe kwartierpiek
+      message: 'Nieuwe maandelijkse piek is nu {{ states(''sensor.max_peak'') }} kW.
+
+        '
+      data:
+        tag: peak
+        color: red
   mode: single

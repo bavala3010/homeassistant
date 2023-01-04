@@ -258,13 +258,7 @@ automation:
       - service: switch.turn_on
         target:
           entity_id:
-          - switch.toilet_douche_ventilatie
-  - service: google_sheets.append_sheet
-    data:
-      config_entry: 2d4ff1f67e0a1e75255bae8b80df0d52
-      worksheet: Douche
-      data:
-        light.badkamer_douche off: "{{ now() }}"          
+          - switch.toilet_douche_ventilatie      
   - delay:
       hours: 0
       minutes: 10
@@ -303,3 +297,27 @@ automation:
       - switch.toilet_douche_ventilatie
   mode: single
 
+
+##############################
+# CO2 meter
+##############################
+
+- alias: Check om 20u C02-niveau in master bedroom
+  id: '2708d0cb-ef37-4efe-b6e6-1159df5d82bb'
+  description: ""
+  trigger:
+    - platform: time
+      at: "20:00:00"
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.kooldioxide_detector_carbon_dioxide
+      above: 1000
+  action:
+    - service: notify.bart_phone
+      data:
+        title: Verlucht master bedroom.
+        message: >
+          CO2 waarde is {{ states('sensor.kooldioxide_detector_carbon_dioxide')}}.
+        data:
+          color: red          
+  mode: single

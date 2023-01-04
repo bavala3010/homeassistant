@@ -13,7 +13,7 @@ sensor:
     
   - platform: history_stats
     name: "Laptop Bart Fortis aan vandaag"
-    entity_id: switch.bart_laptop_fortis_brum05007458
+    entity_id: switch.bart_laptop_brum05007458
     state: "on"
     type: time
     start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
