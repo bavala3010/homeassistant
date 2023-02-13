@@ -1,0 +1,46 @@
+
+automation:
+
+  - alias: 'goodkoopste startuur elektriciteit morgen'
+    id: 'b18ebd1e-4d28-494f-9697-ec4413b4e193'
+    description: ''
+    trigger:
+    - platform: time
+      at: '23:10:00'
+    - platform: homeassistant
+      event: start     
+    condition:
+    - condition: not
+      conditions:
+      - condition: state
+        entity_id: sensor.cheapest_hours_electricity_tomorrow
+        state: unknown
+    action:
+    - service: input_datetime.set_datetime
+      data:
+        time: '{{ as_timestamp(states(''sensor.cheapest_hours_electricity_tomorrow'')) | timestamp_custom(''%H:%M'') }}'
+      target:
+        entity_id: input_datetime.cheapest_hours_electricity_start_time
+    mode: single
+
+  - alias: 'duurste startuur elektriciteit morgen'
+    id: '26602583-052e-4a16-ba49-feeb5b36452f'
+    description: ''
+    trigger:
+    - platform: time
+      at: '23:10:00'
+    - platform: homeassistant
+      event: start     
+    condition:
+    - condition: not
+      conditions:
+      - condition: state
+        entity_id: sensor.mostexpensive_hours_electricity_tomorrow
+        state: unknown
+    action:
+    - service: input_datetime.set_datetime
+      data:
+        time: '{{ as_timestamp(states(''sensor.mostexpensive_hours_electricity_tomorrow'')) | timestamp_custom(''%H:%M'') }}'
+      target:
+        entity_id: input_datetime.mostexpensive_hours_electricity_start_time
+    mode: single    

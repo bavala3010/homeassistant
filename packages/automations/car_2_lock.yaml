@@ -1,0 +1,112 @@
+automation:
+
+- alias: 🚗 car 2 // slot // Auto 's avonds op slot?
+  id: 'ad77f336-403e-4682-9718-84e0ac874c3b'
+  description: Stuur een bericht als auto om 21u30 nog open is.
+  trigger:
+  - platform: time
+    at: '21:30:00'
+  condition:
+  # doors are open
+  - condition: state
+    entity_id: group.car_2_locks
+    state: 'on'
+  # no phone is connected to the car with bluetooth (= meaning: we are still driving the car)
+  - condition: state
+    entity_id: binary_sensor.bart_phone_connected_to_car_2
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.madouce_phone_connected_to_car_2
+    state: 'off'
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Toyota niet op slot!
+      message: 🚙 Toyota niet op slot!
+      data:
+        channel: Important
+        tag: auto_2_sluiten
+        color: red
+        notification_icon: mdi:car
+        actions:
+        - action: URI
+          title: meer info
+          uri: /dashboard-car/car-2 
+  - service: notify.madouce_phone
+    data:
+      title: Toyota niet op slot!
+      message: 🚙 Toyota niet op slot!
+      data:
+        channel: Important
+        tag: auto_2_sluiten
+        color: red
+        notification_icon: mdi:car        
+        actions:
+        - action: URI
+          title: meer info
+          uri: /dashboard-car/car-2
+  mode: single
+
+- alias: 🚗 car 2 // slot // Auto 15 minuten niet op slot
+  id: '201802dd-7164-47a0-b1c4-deac66a2a90e'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.car_2_locks
+    to: 'on'
+    for: '00:15:00'
+  condition:
+  # no phone is connected to the car with bluetooth (= meaning: we are still driving the car)
+  - condition: state
+    entity_id: binary_sensor.bart_phone_connected_to_car_2
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.madouce_phone_connected_to_car_2
+    state: 'off'
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Toyota niet op slot!
+      message: 🚙 Toyota niet op slot!
+      data:
+        channel: Important
+        tag: auto_2_sluiten
+        color: red
+        actions:
+        - action: URI
+          title: meer info
+          uri: /dashboard-car/car-2   
+  - service: notify.madouce_phone
+    data:
+      title: Toyota niet op slot!
+      message: 🚙 Toyota niet op slot!
+      data:
+        channel: Important
+        tag: auto_2_sluiten
+        color: red
+        actions:
+        - action: URI
+          title: meer info
+          uri: /dashboard-car/car-2
+  mode: single
+
+- alias: 🚗 car 2 // slot // auto is op slot (clear_notification)
+  id: 'e17c1d4c-6d9a-411f-b9df-2cf0c66de58e'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.car_2_locks
+    to: 'off'
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: auto_2_sluiten
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: auto_2_sluiten        
+  mode: single

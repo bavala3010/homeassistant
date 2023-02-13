@@ -174,14 +174,14 @@ automation:
     - service: notify.bart_phone
       data:
         title: Wasmachine
-        message: "Haal de was uit de wasmachine. De wasmachine was klaar om {{ states('input_datetime.washing_machine_stop_time') }}."
+        message: "Haal de was uit de wasmachine. De wasmachine was klaar om {{ states('input_datetime.washing_machine_stop_time') | as_timestamp| timestamp_custom('%d/%-m %H:%M') }}."
         data:
           tag: wasmachine
           notification_icon: "mdi:washing-machine"        
     - service: notify.madouce_phone
       data:
         title: Wasmachine
-        message: "Haal de was uit de wasmachine. De wasmachine was klaar om {{ states('input_datetime.washing_machine_stop_time') }}."
+        message: "Haal de was uit de wasmachine. De wasmachine was klaar om {{ states('input_datetime.washing_machine_stop_time') | as_timestamp| timestamp_custom('%d/%-m %H:%M') }}."
         data:
           tag: wasmachine
           notification_icon: "mdi:washing-machine"

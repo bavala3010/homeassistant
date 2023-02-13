@@ -1,7 +1,7 @@
 automation:
 
 
-- alias: garagepoort staat lang open
+- alias: 🔑 garage // garagepoort staat lang open
   id: '89cce371-bbfd-4154-a909-1ffeab77f9de'
   description: ''
   trigger:
@@ -42,7 +42,7 @@ automation:
 # tag buiten
 ##########################################################################
 
-- alias: 🔐 garagepoorttag buiten gescand door Bart
+- alias: 🔑 garage // garagepoorttag buiten gescand door Bart
   id: '15550e2d-9a16-4d69-9342-c753548c534b'
   description: ''
   trigger:
@@ -74,7 +74,7 @@ automation:
         channel: home_access
   mode: single
 
-- alias: 🔐 garagepoorttag buiten gescand door Madouce
+- alias: 🔑 garage // garagepoorttag buiten gescand door Madouce
   id: '43cd43bd-9577-4e30-b825-61ea11e9ee7c'
   description: ''
   trigger:
@@ -206,7 +206,7 @@ automation:
         channel: home_access
   mode: single
 
-- alias: "Amilya doet garagepoort open met app"
+- alias: "🔑 garage // Amilya doet garagepoort open met app"
   id: 'd7df792b-d77c-4a5e-b174-f0a86c821f43'
   description: ""
   trigger:
@@ -230,7 +230,7 @@ automation:
   mode: single
 
 
-- alias: "Alunya doet garagepoort open met app"
+- alias: "🔑 garage // Alunya doet garagepoort open met app"
   id: '819a3053-5c92-46ff-9679-31372411f598'
   description: ""
   trigger:
@@ -253,7 +253,7 @@ automation:
                 rate: -10%
   mode: single
 
-- alias: "Bart doet garagepoort open met app"
+- alias: "🔑 garage // Bart doet garagepoort open met app"
   id: '93673ccd-ff15-4ed2-8624-687e2c9c6236'
   description: ""
   trigger:
@@ -276,7 +276,7 @@ automation:
                 rate: -10%
   mode: single
 
-- alias: "Madouce doet garagepoort open met app"
+- alias: "🔑 garage // Madouce doet garagepoort open met app"
   id: '4434f09e-471c-46d7-bc67-cd856b858f6b'
   description: ""
   trigger:
@@ -293,7 +293,7 @@ automation:
           - service: tts.edge_tts_say
             data:
               entity_id: media_player.living_speaker
-              message: Madouce doet garagepoort open.
+              message: Madoes doet garagepoort open.
               options:
                 pitch: +0Hz
                 rate: -10%

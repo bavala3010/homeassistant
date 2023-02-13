@@ -14,7 +14,7 @@ automation:
 # Auto climatisatie
 #########################  
 
-- alias: 🚗 start auto climatisatie op uur bepaald in GUI
+- alias: 🚗 car 1 // climate // start op uur bepaald in GUI
   id: '583aabff-84db-4aac-a7de-023aee0d79f1'
   trigger:
   - platform: template
@@ -28,7 +28,7 @@ automation:
   - service: script.auto_start_climatisatie_nu
   mode: restart
 
-- alias: 🚗 Om 19u in Waarschoot en koud = vraag auto climatiseren
+- alias: 🚗 car 1 // climate // Om 19u in Waarschoot en koud = vraag auto climatiseren
   id: '8fa06ed3-7c9f-453d-80d4-a246df6633f8'
   description: ''
   trigger:
@@ -64,12 +64,12 @@ automation:
           uri: /dashboard-car/car-heater
   mode: single
 
-- alias: 🚗 Bart verlaat auto
+- alias: 🚗 car 1 // climate // Bart verlaat auto
   id: '63ee4ac0-2944-4531-bc17-a2a6d60ff341'
   description: ''
   trigger:
     - platform: state
-      entity_id: binary_sensor.bart_phone_connected_to_car
+      entity_id: binary_sensor.bart_phone_connected_to_car_1
       from: 'on'
       to: 'off'
       for: "00:00:05"
@@ -193,12 +193,12 @@ automation:
             uri: /dashboard-car/e-tron-heate
   mode: restart          
 
-- alias: 🚗 Madouce verlaat auto
+- alias: 🚗 car 1 // climate // Madouce verlaat auto
   id: '24b7df67-875f-48f9-8a96-4960bb91687a'
   description: ''
   trigger:
     - platform: state
-      entity_id: binary_sensor.madouce_phone_connected_to_car
+      entity_id: binary_sensor.madouce_phone_connected_to_car_1
       from: 'on'
       to: 'off'
       for: "00:00:05"
@@ -327,7 +327,7 @@ automation:
 # Werkdag Toyota Evere
 #########################
 
-- alias: 🚗 Auto climatisatie voor vertrek naar Toyota Evere
+- alias: 🚗 car 1 // climate // climatisatie voor vertrek naar Toyota Evere
   id: 'caf13c49-2daa-4e8c-b275-a6811621cf50'
   description: ''
   trigger:
@@ -354,38 +354,8 @@ automation:
   - service: script.auto_start_climatisatie_nu
   mode: single 
 
-- alias: 🚗 Start Waze naar Toyota Evere
-  id: '0bcdf52c-712b-44b0-a3be-cd93afb95bc7'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.madouce_phone_connected_to_car
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: template
-    value_template: >
-      {% set car_use_day = 'input_select.car_use_day_' ~ now().isoweekday() %}
-      {%if states(car_use_day) == "Toyota Evere"%} true {% endif %}
-  - condition: time
-    after: '07:30:00'
-    before: '13:00:00'
-    weekday:
-      - mon
-      - tue
-      - wed
-      - thu
-      - fri      
-  action:
-  - service: notify.madouce_phone
-    data:
-      message: "command_activity"
-      data:
-        intent_package_name: "com.waze"
-        intent_action: "android.intent.action.VIEW"
-        intent_uri: "https://waze.com/ul?favorite=Work&navigate=yes"
 
-- alias: 🚗 Bij aankomst Toyota Evere starttijd bepalen voor climatisatie
+- alias: 🚗 car 1 // climate // Bij aankomst Toyota Evere starttijd bepalen voor climatisatie
   id: '4ed1d4be-1e9b-42b0-90b9-e32d9f584de0'
   description: ''
   trigger:
@@ -413,7 +383,7 @@ automation:
         media_stream: alarm_stream  
   mode: single
 
-- alias: 🚗 Auto climatisatie op einde werkdag bij Toyota Evere
+- alias: 🚗 car 1 // climate // climatisatie op einde werkdag bij Toyota Evere
   id: '2e05b1aa-1980-4c0d-b3a7-ee1df7fef055'
   description: ''
   trigger:
@@ -448,7 +418,7 @@ automation:
 # Werkdag Toyota Diest
 #########################
 
-- alias: 🚗 Auto climatisatie voor vertrek naar Toyota Diest
+- alias: 🚗 car 1 // climate // climatisatie voor vertrek naar Toyota Diest
   id: 'a9955e82-bda5-452a-86d0-b8a320c0b837'
   description: ''
   trigger:
@@ -479,39 +449,8 @@ automation:
   - service: script.auto_start_climatisatie_nu
   mode: single
 
-- alias: 🚗 Start Waze naar Toyota Diest
-  id: '83b8431f-02e6-45d1-a770-579f1b6ad5fc'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.madouce_phone_connected_to_car
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: time
-    after: '07:30:00'
-    before: '13:00:00'
-    weekday:
-      - mon
-      - tue
-      - wed
-      - thu
-      - fri  
-  - condition: template
-    value_template: >
-      {% set car_use_day = 'input_select.car_use_day_' ~ now().isoweekday() %}
-      {%if states(car_use_day) == "Toyota Diest"%} true {% endif %}
-  action:
-  - service: notify.madouce_phone
-    data:
-      message: "command_activity"
-      data:
-        intent_package_name: "com.waze"
-        intent_action: "android.intent.action.VIEW"
-        intent_uri: "https://waze.com/ul?favorite=Toyota%20Diest&navigate=yes"
 
-
-- alias: 🚗 Bij aankomst Toyota Diest starttijd bepalen voor climatisatie
+- alias: 🚗 car 1 // climate // Bij aankomst Toyota Diest starttijd bepalen voor climatisatie
   id: '0862a5c1-640f-48b9-b484-4bfc0f5efb41'
   description: ''
   trigger:
@@ -539,7 +478,7 @@ automation:
         media_stream: alarm_stream
   mode: single
 
-- alias: 🚗 Auto climatisatie op einde werkdag bij Toyota Diest
+- alias: 🚗 car 1 // climate // Auto climatisatie op einde werkdag bij Toyota Diest
   id: '7c5f1cfa-b20a-4b5b-be63-8ad01ec4e57f'
   description: ''
   trigger:

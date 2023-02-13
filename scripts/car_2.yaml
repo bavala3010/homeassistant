@@ -1,0 +1,7 @@
+reload_toyota_aygo:
+  alias: reload Toyota Aygo
+  sequence:
+  - service: homeassistant.reload_config_entry
+    data: {}
+    target:
+      device_id: sensor.aygo_x_current_month_statistics

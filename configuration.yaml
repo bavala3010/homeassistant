@@ -128,7 +128,7 @@ group: !include groups.yaml
 automation: !include automations.yaml
 
 google_assistant: !include google_assistant_integration.yaml
-
+shell_command: !include shell_commands.yaml
 
 
 
@@ -284,22 +284,7 @@ influxdb:
   tags_attributes:
     - friendly_name
 
-
-###############################################################################
-# Defines the Xiaomi devices (2 fans + 1 air purifier)
-###############################################################################
-
-#fan:
-#  - platform: xiaomi_miio_fan
-#    name: Xiaomi Smart Fan 3C
-#    host: 192.168.86.29
-#    token: !secret fan_3C_token
-#    
-#  - platform: xiaomi_miio_fan
-#    name: Xiaomi Smart Fan 1C
-#    host: 192.168.86.28
-#    token: !secret fan_1C_token
-#    
+#fan:    
 #  - platform: xiaomi_miio_airpurifier
 #    name: Xiaomi Air Purifier 3H
 #    host: 192.168.86.247
@@ -645,11 +630,15 @@ panel_iframe:
     url: "http://192.168.86.101:8086/orgs/6fe6192d84027fb4/dashboards/096bf9184c088000?lower=now%28%29%20-%202d"
     icon: mdi:backup-restore
     require_admin: true
+  
+panel_custom:
+  - name: automations-tree
+    # url_path needs to be unique for each panel_custom config
+    url_path: automations-tree
+    sidebar_title: Automations
+    sidebar_icon: mdi:robot
+    module_url: /local/tree-panel/automations-tree.js  
 
-shell_command:
-  raspi_maintenance: ssh -i /config/ssh/id_rsa -o 'StrictHostKeyChecking=no' bart@192.168.86.101 '~/sys_maintenance'
-  
-  
 battery_sim:
   auto_batterij:
     name: auto batterij
@@ -657,7 +646,15 @@ battery_sim:
     export_sensor: sensor.unload_battery
     max_discharge_rate_kw: 11.0
     size_kwh: 90.0
-    energy_tariff: 0.30
+    # energy_tariff: 0.30
+
+  thuisbatterij:
+    name: thuisbatterij
+    import_sensor: sensor.solar_power
+    export_sensor: sensor.unload_battery
+    max_discharge_rate_kw: 11.0
+    size_kwh: 10.0
+    # energy_tariff: 0.00
 
 #media_player:
 #  - platform: samsungtv_custom
@@ -676,28 +673,4 @@ camera:
   - platform: ffmpeg
     input: rtsp://192.168.86.21/ch0_1.h264
     name: LSC indoor camera
-
-# multiscrape:
-#   - resource: 'https://www.vakantieveilingen.be/veilingen/wellness/sauna-en-wellness/thermen-londerzeel/4174'
-#     scan_interval: 60
-#     sensor:
-#       - unique_id: veiling_wellness_londerzeel_huidig_bod
-#         name: Wellness Londerzeel huidig bod
-#         select: ".css-mxr28r"
-#         value_template: "{{ value[2:] }}"
-#         unit_of_measurement: Euro
-#       - unique_id: veiling_wellness_londerzeel_bieders
-#         name: Wellness Londerzeel aantal bieders
-#         select: ".css-j7qwjs+ .css-j7qwjs .css-mxr28r"
-#         value_template: "{{ value | int }}"
-#         unit_of_measurement: persons
-#       - unique_id: veiling_wellness_londerzeel_resterende_tijd
-#         name: Wellness Londerzeel resterende tijd
-#         select: ".css-46im1e"
-#         # value_template: "{{ strptime(value, '%H:%M:%S' ) }}"
-#       - unique_id: veiling_wellness_londerzeel_sluitingstijd
-#         name: Wellness Londerzeel sluitingstijd
-#         select: ".css-1wr7ib4"
-#         value_template: "{{ value | replace('Veiling sluit om ','') }}"
-
 

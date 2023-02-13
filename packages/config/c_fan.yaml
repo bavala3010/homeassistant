@@ -1,0 +1,11 @@
+# fan:
+#   - platform: xiaomi_miio_fan
+#     name: Xiaomi Smart Fan 3C
+#     host: 192.168.86.38
+#     token: !secret fan_3C_token
+
+#   - platform: xiaomi_miio_fan
+#     name: Xiaomi Smart Fan 1C
+#     host: 192.168.86.28
+#     token: !secret fan_1C_token
+

@@ -112,11 +112,11 @@ device_tracker:
 binary_sensor:
   - platform: template
     sensors:
-      bart_phone_connected_to_car:
-        friendly_name: 'Telefoon Bart verbonden met auto'
+      bart_phone_connected_to_car_1:
+        friendly_name: 'Telefoon Bart verbonden met auto 1' 
         device_class: connectivity
         icon_template: >-
-          {% if is_state('binary_sensor.bart_phone_connected_to_car', 'on') %}
+          {% if is_state('binary_sensor.bart_phone_connected_to_car_1', 'on') %}
             mdi:car-connected
           {% else %}
             mdi:car
@@ -124,16 +124,38 @@ binary_sensor:
         value_template: "{{ '98:49:14:C1:37:0B (Audi_MMI_9131)' in state_attr('sensor.sm_g975f_bluetooth_connection', 'connected_paired_devices') }}"    
         # do not forget to activate the bluetooth sensor in the Home Assistant companion app on smartphone
 
-  - platform: template
-    sensors:
-      madouce_phone_connected_to_car:
-        friendly_name: 'Telefoon Madouce verbonden met auto'
+      madouce_phone_connected_to_car_1:
+        friendly_name: 'Telefoon Madouce verbonden met auto 1'
         device_class: connectivity
         icon_template: >-
-          {% if is_state('binary_sensor.madouce_phone_connected_to_car', 'on') %}
+          {% if is_state('binary_sensor.madouce_phone_connected_to_car_1', 'on') %}
             mdi:car-connected
           {% else %}
             mdi:car
           {% endif %}
         value_template: "{{ '98:49:14:C1:37:0B (Audi_MMI_9131)' in state_attr('sensor.sm_g986b_bluetooth_connection', 'connected_paired_devices') }}"    
         # do not forget to activate the bluetooth sensor in the Home Assistant companion app on smartphone
+
+      bart_phone_connected_to_car_2:
+        friendly_name: 'Telefoon Bart verbonden met auto 2'
+        device_class: connectivity
+        icon_template: >-
+          {% if is_state('binary_sensor.bart_phone_connected_to_car_2', 'on') %}
+            mdi:car-connected
+          {% else %}
+            mdi:car
+          {% endif %}
+        value_template: "{{ '1C:E1:92:AB:76:E9 (Toyota Smart Connect)' in state_attr('sensor.sm_g975f_bluetooth_connection', 'connected_paired_devices') }}"
+        # do not forget to activate the bluetooth sensor in the Home Assistant companion app on smartphone
+
+      madouce_phone_connected_to_car_2:
+        friendly_name: 'Telefoon Madouce verbonden met auto 2'
+        device_class: connectivity
+        icon_template: >-
+          {% if is_state('binary_sensor.madouce_phone_connected_to_car_2', 'on') %}
+            mdi:car-connected
+          {% else %}
+            mdi:car
+          {% endif %}
+        value_template: "{{ '1C:E1:92:AB:76:E9 (Toyota Smart Connect)' in state_attr('sensor.sm_g986b_bluetooth_connection', 'connected_paired_devices') }}"    
+        # do not forget to activate the bluetooth sensor in the Home Assistant companion app on smartphone        

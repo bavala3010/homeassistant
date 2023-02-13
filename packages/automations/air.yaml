@@ -4,36 +4,8 @@ automation:
 # verluchting kamers
 ##############################
 
-- alias: Om 11 uur bepaal max dagtemperatuur uur
-  id: 'ed9969de-ed32-4d1d-94ed-48e3622c94b4'
-  description: ''
-  trigger:
-  - platform: time
-    at: '11:00'
-  condition: []
-  action:
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.max_dagtemperatuur_uur
-    data:
-      time: "{{ states('sensor.day_max_temp_datetime') }}"
-  mode: single
-  
-- alias: max temperatuur van de dag bereikt = melding
-  id: '91ed3a1c-ce13-47db-a612-4dc6d912fb89'
-  description: ''
-  trigger:
-  - platform: time
-    at: input_datetime.max_dagtemperatuur_uur
-  condition: []
-  action:
-  - service: notify.bart_phone
-    data:
-      title: Nu is het warmste moment van de dag.
-      message: Nu is het warmste moment van de dag.
-  mode: single
 
-- alias: 🪟 raam Amilya openen op warmste moment van de dag
+- alias: 💨 air // 🪟 raam Amilya // openen op warmste moment van de dag
   id: '63cf0cbd-bc53-422d-9095-90cffa3eea3e'
   description: ''
   trigger:
@@ -60,7 +32,7 @@ automation:
       tag: window_kamer_amilya
   mode: single
 
-- alias: 🪟 raam Alunya openen op warmste moment van de dag
+- alias: 💨 air // 🪟 raam Alunya // openen op warmste moment van de dag
   id: 'f2d84987-861d-460a-9ff0-79535903143a'
   description: ''
   trigger:
@@ -87,7 +59,7 @@ automation:
       tag: window_kamer_alunya      
   mode: single
 
-- alias: 🪟 raam keuken openen op warmste moment van dag
+- alias: 💨 air // 🪟 raam keuken // openen op warmste moment van dag
   id: 615fc634-795d-489e-9c25-4f36d912b7ca
   description: als het raam nog niet geopend geweest is vandaag = melding sturen op warmste moment van de dag
   trigger:
@@ -120,45 +92,8 @@ automation:
 ##############################
 # ventilatie toilet
 ##############################
-
-- alias: 💨 beweging in toilet = ventilator aan na 1,5 minuten tot 5 minuten na laatste beweging
-  id: '8215c271-a2bb-4a05-a083-9e31db80b3a1'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.toilet_motion_sensor_motion
-    to: 'on'
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 30
-  # only trigger when there is more than 1,5 minutes of motion    
-  condition:
-  - condition: time
-    after: '07:00'
-    before: '23:30'
-  action:
-  - service: switch.turn_on
-    target:
-      entity_id:
-      - switch.toilet_douche_ventilatie
-  - service: notify.bart_phone
-    data:
-      message: Ventilatie toilet START nu.
-  - delay:
-      hours: 0
-      minutes: 5
-      seconds: 0
-      milliseconds: 0
-  - service: switch.turn_off
-    target:
-      entity_id: switch.toilet_douche_ventilatie
-  - service: notify.bart_phone
-    data:
-      message: Ventilatie toilet STOPT nu.
-  mode: restart
   
-- alias: 💨 1,5 min. licht in toilet = ventilator aan gedurende 3 minuten
+- alias: 💨 air // ventilator // 1,5 min. licht in toilet = ventilator aan gedurende 3 minuten
   id: 'b5f5d558-a745-409f-8989-f0749a5992b4'
   description: ''
   trigger:
@@ -190,7 +125,7 @@ automation:
 # ventilatie badkamer
 ##############################
 
-- alias: 🪟 badkamer raam wijd open = ventilator uit
+- alias: 💨 air // ventilator // badkamer raam wijd open = ventilator uit
   id: '09185cc1-4293-4cc0-9f89-831f0be7a74e'
   description: ''
   trigger:
@@ -217,26 +152,7 @@ automation:
       entity_id: switch.toilet_douche_ventilatie
   mode: restart  
 
-- alias: 💨 ventilator al 20 minuten aan = ventilator uit
-  id: '6754188c-c368-4013-89cc-1acc82b30ad3'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: switch.toilet_douche_ventilatie
-    to: 'on'
-    for:
-      hours: 0
-      minutes: 20
-      seconds: 0
-  condition: []
-  action:
-  - service: switch.turn_off
-    target:
-      entity_id:
-      - switch.toilet_douche_ventilatie
-  mode: single
-
-- alias: 💨 licht in douche = ventilator aan zolang licht brandt + 10 minuten
+- alias: 💨 air // ventilator // licht in douche = ventilator aan zolang licht brandt + 10 minuten
   id: 'c4f8b201-16f1-41db-a285-7fb33b277343'
   description: ''
   trigger:
@@ -274,7 +190,7 @@ automation:
 # ventilator (algemeen)
 ##############################
 
-- alias: Ventilator 10 min aan
+- alias: 💨 air // ventilator // al 10 min aan = ventilator uit
   id: 'b1f343ba-5201-43ee-9502-f1d96abe99f9'
   trigger:
   - platform: event
@@ -298,11 +214,31 @@ automation:
   mode: single
 
 
+- alias: 💨 air // ventilator // al 20 minuten aan = ventilator uit
+  id: '6754188c-c368-4013-89cc-1acc82b30ad3'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.toilet_douche_ventilatie
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 20
+      seconds: 0
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id:
+      - switch.toilet_douche_ventilatie
+  mode: single
+
+
 ##############################
 # CO2 meter
 ##############################
 
-- alias: Check om 20u C02-niveau in master bedroom
+- alias: 💨 air // check om 20u C02-niveau in master bedroom
   id: '2708d0cb-ef37-4efe-b6e6-1159df5d82bb'
   description: ""
   trigger:

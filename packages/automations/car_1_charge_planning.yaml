@@ -10,7 +10,7 @@ automation:
 # charge planning
 ######################################
 
-- alias: "🔋 charge planning is veranderd = bepaal minimum SOC per dag"
+- alias: "🚗 car 1 // 🔋 charge // planning // planning is veranderd = bepaal minimum SOC per dag"
   id: '6a3d5cef-5531-4e6e-9f94-1777e1217a4a'
   description: ''
   trigger:
@@ -34,7 +34,7 @@ automation:
         {% set car_target_soc_day = 'input_number.car_target_soc_day_' ~ t.isoweekday() %}  
         {{ states(car_target_soc_day) | float(default=0) }}  
 
-- alias: "🔋 charge planning - om 7u bepaal ideale SOC voor de dag"
+- alias: "🚗 car 1 // 🔋 charge // planning // om 7u bepaal ideale SOC voor de dag"
   id: '5d3113d4-e1ae-46d6-ac8b-ab5951e71beb'
   trigger:
   - platform: time
@@ -49,7 +49,7 @@ automation:
         {% set soc = 'input_number.car_ideal_target_soc_day_' ~ t.isoweekday() %}  
         {{ states(soc) | round(default=0) }} 
 
-- alias: "🔋 charge planning - om 7u00 bepaal minimum SOC per dag"
+- alias: "🚗 car 1 // 🔋 charge // planning // om 7u00 bepaal minimum SOC per dag"
   id: '2a4d4e65-51b0-44b4-80fc-d22a39dde38b'
   description: ''
   trigger:
@@ -58,7 +58,7 @@ automation:
   action:
   - service: script.set_target_soc_based_on_calendar
 
-- alias: "🔋 charge planning - om 6u30 bepaal min SOC op basis van planning"
+- alias: "🚗 car 1 // 🔋 charge // planning // om 6u30 bepaal min SOC op basis van planning"
   id: '275aac64-70ee-42c5-bcf7-3d522de6a8e5'
   trigger:
   - platform: time

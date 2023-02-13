@@ -1,12 +1,12 @@
 ############################ Table of Contents ############################ 
 # 
 #   Automations
-#   🔋 charge - charge mode nu ingeschakeld
-#   🔋 charge - charge mode nu uitgeschakeld
-#   🔋 charge - charge mode net ingeschakeld
-#   🔋 charge - charge mode net uitgeschakeld
-#   🔋 charge - charge mode zon ingeschakeld
-#   🔋 charge - charge mode zon uitgeschakeld
+#   🚗 car 1 // 🔋 charge // charge mode nu ingeschakeld
+#   🚗 car 1 // 🔋 charge // charge mode nu uitgeschakeld
+#   🚗 car 1 // 🔋 charge // charge mode timer ingeschakeld
+#   🚗 car 1 // 🔋 charge // charge mode timer uitgeschakeld
+#   🚗 car 1 // 🔋 charge // charge mode zon ingeschakeld
+#   🚗 car 1 // 🔋 charge // charge mode zon uitgeschakeld
 
 
 ############################ Automations ################################## 
@@ -17,7 +17,7 @@ automation:
 # charge modus toggle
 ######################################
 
-- alias: "🔋 charge - directe modus ingeschakeld"
+- alias: "🚗 car 1 // 🔋 charge // modus select // directe modus ingeschakeld"
   id: 'eb33ffea-2365-4147-9419-4b223f04b921'
   description: ''
   trigger:
@@ -60,7 +60,7 @@ automation:
   - service: script.charger_define_and_write_register_based_on_ampere
   mode: restart
 
-- alias: "🔋 charge - directe modus uitgeschakeld"
+- alias: "🚗 car 1 // 🔋 charge // modus select // directe modus uitgeschakeld"
   id: 'f1791b1c-4799-4e85-890f-9a6cd31f7e54'
   description: ''
   trigger:
@@ -78,12 +78,12 @@ automation:
     data: {}
   mode: restart
 
-- alias: "🔋 charge - timer modus ingeschakeld"
+- alias: "🚗 car 1 // 🔋 charge // modus select // timer modus ingeschakeld"
   id: '6e284b34-555e-418a-ad8f-c7a7afe2b121'
   description: ''
   trigger:
   - platform: state
-    entity_id: input_boolean.car_charge_mode_net
+    entity_id: input_boolean.car_charge_mode_timer
     to: 'on'
   condition: []
   action:
@@ -107,12 +107,12 @@ automation:
           uri: /dashboard-car/car-charging
   mode: restart
 
-- alias: "🔋 charge - timer modus uitgeschakeld"
+- alias: "🚗 car 1 // 🔋 charge // modus select // timer modus uitgeschakeld"
   id: '10103bac-9dc6-4cae-8db7-5d9c2de8360f'
   description: ''
   trigger:
   - platform: state
-    entity_id: input_boolean.car_charge_mode_net
+    entity_id: input_boolean.car_charge_mode_timer
     to: 'off'
   condition: []
   action:
@@ -126,7 +126,7 @@ automation:
     data: {}
   mode: restart
 
-- alias: "🔋 charge - zon modus ingeschakeld"
+- alias: "🚗 car 1 // 🔋 charge // modus select // zon modus ingeschakeld"
   id: 'a8ea0be1-580c-4645-bd01-d16d57be3018'
   description: ''
   trigger:
@@ -152,7 +152,7 @@ automation:
       value: "{{ ((( states('sensor.net_power') | float ) / 1000 ) | abs ) - 1 }}"
   mode: restart
 
-- alias: "🔋 charge - zon modus uitgeschakeld"
+- alias: "🚗 car 1 // 🔋 charge // modus select // zon modus uitgeschakeld"
   id: '4ec2782b-8638-44d0-9aa3-45ae916ccf86'
   description: ''
   trigger:

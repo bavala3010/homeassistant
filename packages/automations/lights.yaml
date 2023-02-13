@@ -1,156 +1,42 @@
 ############################ Table of Contents ############################ 
 # 
 #   Automations
-#     💡 Amilya niet thuis = licht uit
-#     💡 Amilya licht badkamer brandt langer dan 20 minuten
-#     💡 Alunya niet thuis = licht uit
-#     💡 Alunya lichten uit om 1u en 2u 's nachts
-#     💡 bij donker living bol inschakelen
-#     💡 Donker, <20° buiten en thuis = licht aan
-#     💡 Master bedroom deurswitch
-#     💡 Licht in garage aan > 10 min
-#     💡 TV aan + zon onder = TV strip aan
-#     💡 TV uit = TV strip uit
-#     💡 master bedroom TV aan 's avonds = gezellig licht
+#     💡 lights // Amilya niet thuis = licht uit
+#     💡 lights // Amilya licht badkamer brandt langer dan 20 minuten
+#     💡 lights // Alunya niet thuis = licht uit
+#     💡 lights // Alunya lichten uit om 1u en 2u 's nachts
+#     💡 lights // bij donker living bol inschakelen
+#     💡 lights // Donker, <20° buiten en thuis = licht aan
+#     💡 lights // Master bedroom deurswitch
+#     💡 lights // Licht in garage aan > 10 min
+#     💡 lights // TV aan + zon onder = TV strip aan
+#     💡 lights // TV uit = TV strip uit
+#     💡 lights // master bedroom TV aan 's avonds = gezellig licht
+
+############################ Information ################################## 
+# Hoeveel lux is er (minimum) nodig in ruimtes?
+# werkplek	      500
+# algemene ruimte 300
+# gang            100
+# toilet          100
+
+# Een bureau dat goed verlicht is, verbetert de productiviteit
+# en helpt bij activiteiten zoals studeren, werken of lezen.
+# Om geconcentreerd te kunnen werken, heb je helder wit licht nodig.
+# Een kleurtemperatuur van 3000K is hier aanbevolen.
+
 
 ############################ Automations ################################## 
 
 automation:
 
-#################################################  
-# Amilya
-#################################################
-
-- alias: 💡 Amilya niet thuis = lichten uit
-  id: 'c5fc-389d-42e8-8f3f-78f'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: person.amilya
-    to: 'not_home'
-    for: 00:03:00
-    from: 'home'
-  condition: []
-  action:
-  - service: light.turn_off
-    target:
-      entity_id:
-        - light.amilya_badkamer
-        - light.amilya_plafond_1
-        - light.amilya_plafond_2
-        - light.amilya_bol
-        - light.amilya_strip
-        - light.amilya_strip
-  mode: single
-  
-- alias: 💡 Amilya licht badkamer brandt langer dan 15 minuten -> licht uit
-  id: 3e894234-e24b-4c8c-a497-87a05abc3453
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: light.amilya_badkamer
-    to: 'on'
-    for:
-      hours: 0
-      minutes: 15
-      seconds: 0
-      milliseconds: 0
-  condition: []
-  action:
-  - service: light.turn_off
-    target:
-      entity_id: light.amilya_badkamer
-  mode: single
-
-- alias: 💡 Amilya lichtschakelaar deur ingedrukt = badkamerlicht aan voor 2 minuten
-  # de andere lichten gaan ook gewoon aan, maar enkel licht badkamer gaat nadien uit
-  id: 'd40b0f01-3e2f-4382-9480-971874f9d4f6'
-  description: ''
-  trigger:
-  - device_id: 925e49167bd25df143efa1a2e317424d
-    domain: hue
-    platform: device
-    type: short_release
-    subtype: 1
-    unique_id: beaaeaf3-d5e1-4d50-8aa9-1dfc2065073e
-  condition: []
-  action:
-  - delay:
-      hours: 0
-      minutes: 2
-      seconds: 0
-      milliseconds: 0
-  - service: light.turn_off
-    target:
-      entity_id: light.amilya_badkamer
-  mode: single
-
-- alias: 💡 Amilya lichten plafond onbereikbaar = lichten plafond uit
-  id: '64602e2b-48aa-4304-809c-387d24ca9eee'
-  trigger:
-  - platform: state
-    entity_id: group.amilya_plafond_1
-    to: unavailable
-  condition: []
-  action:
-  - service: light.turn_off
-    target:
-      entity_id:
-      - light.amilya_plafond_1
-      - light.amilya_plafond_2
-  mode: single
-
-
-#################################################  
-# Alunya
-#################################################
-
-- alias: 💡 Alunya niet thuis = licht uit
-  id: 'b31b70d7-e8c0-4bb8-8a45-335d57d427b8'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: person.alunya
-    to: 'not_home'
-    for: 00:03:00
-  condition: []
-  action:
-  - service: light.turn_off
-    target:
-      entity_id:
-        - light.alunya_bol
-        - light.alunya_staande_lamp
-        - light.alunya_wasbak
-  mode: single
-
-- alias: 💡 Alunya lichten uit om 1u, 2u, 3u en 4u 's nachts
-  id: 'ee497cc7-cb83-4a8d-afd9-dedaf4fe56ff'
-  description: ''
-  trigger:
-  - platform: time
-    at: 01:00:00
-  - platform: time
-    at: 02:00:00
-  - platform: time
-    at: 03:00:00
-  - platform: time
-    at: 04:00:00
-  condition: []
-  action:
-  - service: light.turn_off
-    target:
-      entity_id:
-        - light.alunya_bol
-        - light.alunya_staande_lamp
-        - light.alunya_wasbak
-  mode: single
 
 
 #################################################  
 # living
 #################################################
 
-- alias: 💡 Donker, <20° buiten en thuis = licht aan
+- alias: 💡 lights // living // Donker, <20° buiten en thuis = 1 licht links aan
   id: '9652f025-25a5-4eb0-8eb4-6f61ecb57936'
   description: ''
   trigger:
@@ -173,7 +59,7 @@ automation:
       device_id: a0297c6061546a2108b2d33e01ed449d 
   mode: single
 
-- alias: 💡 TV aan + zon onder = TV strip aan
+- alias: 💡 lights // TV aan + zon onder = TV strip aan
   id: 'decc48cf-f977-42e0-8d54-52cc3fad75d1'
   description: ''
   trigger:
@@ -205,7 +91,7 @@ automation:
       entity_id: light.living_bol
   mode: single
 
-- alias: 💡 Google TV living playing + zon onder = Hue sync aan
+- alias: 💡 lights // living // Google TV living playing + zon onder = Hue sync aan
   id: 'cf1702e9-33d4-43cc-be9c-67cafc91d105'
   trigger:
   - platform: state
@@ -225,7 +111,7 @@ automation:
         intensity: subtle
   mode: single
 
-- alias: 💡 TV uit = TV strip uit
+- alias: 💡 lights // living // TV uit = TV strip uit
   id: 'dfbb4779-8083-49e3-9b83-b045c4db5d43'
   description: ''
   trigger:
@@ -243,7 +129,7 @@ automation:
       -  light.tv_strip
   mode: single
 
-- alias: 💡 Het wordt donker = living bol inschakelen
+- alias: 💡 lights // living // Het wordt donker = living bol inschakelen
   id: 'd754582e-1ba3-44f2-93ef-32a7f9bbc2af'
   description: ''
   trigger:
@@ -260,13 +146,25 @@ automation:
       entity_id: light.living_bol
   mode: single
 
-- alias: living licht uit wanneer buiten voldoende licht
+- alias: 💡 lights // living // licht uit wanneer buiten voldoende licht
   id: 'b3a7d875-e7c9-4612-a5a5-407f280c2e78'
   description: ""
   trigger:
     - platform: numeric_state
       entity_id: sensor.oprit_bewegingssensor_light_level
+      above: 400
+      for:
+        minutes: 3
+    - platform: numeric_state
+      entity_id: sensor.oprit_bewegingssensor_light_level
+      above: 700
+      for:
+        minutes: 3        
+    - platform: numeric_state
+      entity_id: sensor.oprit_bewegingssensor_light_level
       above: 1000
+      for:
+        minutes: 3          
   condition: []
   action:
     - service: light.turn_off
@@ -277,19 +175,26 @@ automation:
           - light.living_rechts
   mode: single
 
-- alias: living licht uit wanneer buiten onvoldoende licht en laptop aan
+- alias: 💡 lights // living // licht aan wanneer buiten onvoldoende licht en laptop aan
   id: 'ac4fb59a-e33f-464d-805f-c939d7e0d14e'
   description: ""
   trigger:
     - platform: numeric_state
       entity_id: sensor.oprit_bewegingssensor_light_level
-      below: 500
+      below: 400
+      for:
+        minutes: 3
+    - platform: numeric_state
+      entity_id: sensor.oprit_bewegingssensor_light_level
+      below: 300
+      for:
+        minutes: 3         
   condition:
     - condition: state
       entity_id: switch.madouce_laptop_tme_a_b_1801581_windows_device
       state: "on"
       for:
-        minutes: 30
+        minutes: 10
   action:
     - service: light.turn_on
       data: {}
@@ -299,12 +204,219 @@ automation:
   mode: single
 
 
+#################################################  
+# Amilya
+#################################################
+
+- alias: 💡 lights // Amilya // Amilya niet thuis = lichten uit
+  id: 'c5fc-389d-42e8-8f3f-78f'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: person.amilya
+    to: 'not_home'
+    for: 00:03:00
+    from: 'home'
+  condition: []
+  action:
+  - service: light.turn_off
+    target:
+      entity_id:
+        - light.amilya_badkamer
+        - light.amilya_plafond_1
+        - light.amilya_plafond_2
+        - light.amilya_bol
+        - light.amilya_strip
+        - light.amilya_strip
+  mode: single
+  
+- alias: 💡 lights // Amilya // Amilya licht badkamer brandt langer dan 15 minuten -> licht uit
+  id: 3e894234-e24b-4c8c-a497-87a05abc3453
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: light.amilya_badkamer
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0
+  condition: []
+  action:
+  - service: light.turn_off
+    target:
+      entity_id: light.amilya_badkamer
+  mode: single
+
+- alias: 💡 lights // Amilya // Amilya lichtschakelaar deur ingedrukt = badkamerlicht aan voor 2 minuten
+  # de andere lichten gaan ook gewoon aan, maar enkel licht badkamer gaat nadien uit
+  id: 'd40b0f01-3e2f-4382-9480-971874f9d4f6'
+  description: ''
+  trigger:
+  - device_id: 925e49167bd25df143efa1a2e317424d
+    domain: hue
+    platform: device
+    type: short_release
+    subtype: 1
+    unique_id: beaaeaf3-d5e1-4d50-8aa9-1dfc2065073e
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  - service: light.turn_off
+    target:
+      entity_id: light.amilya_badkamer
+  mode: single
+
+- alias: 💡 lights // Amilya // Amilya lichten plafond onbereikbaar = lichten plafond uit
+  id: '64602e2b-48aa-4304-809c-387d24ca9eee'
+  trigger:
+  - platform: state
+    entity_id: light.amilya_plafond_1
+    to: unavailable
+  - platform: state
+    entity_id: light.amilya_plafond_2
+    to: unavailable
+  condition: []
+  action:
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.amilya_plafond_1
+      - light.amilya_plafond_2
+  mode: single
+
+
+#################################################  
+# Veranda
+#################################################
+
+- alias: 💡 lights // veranda // uit wanneer buiten voldoende licht
+  id: 'e10f25e1-54d6-486d-8661-023145492c6b'
+  description: ""
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.terras_light_level
+      above: 350
+      for:
+        minutes: 3  
+    - platform: numeric_state
+      entity_id: sensor.terras_light_level
+      above: 700
+      for:
+        minutes: 3
+    - platform: numeric_state
+      entity_id: sensor.terras_light_level
+      above: 900
+      for:
+        minutes: 3          
+  condition: []
+  action:
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id:
+          - light.veranda
+          - light.veranda_staande_lamp
+  mode: single
+
+
+- alias: 💡 lights // veranda // aan wanneer buiten onvoldoende licht en laptop aan
+  id: 'd92b6fd4-f928-422e-a2f0-20604bb7f7cb'
+  description: ""
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.terras_light_level
+      below: 350
+      for:
+        minutes: 3
+    - platform: numeric_state
+      entity_id: sensor.terras_light_level
+      below: 200
+      for:
+        minutes: 3
+  condition: 
+    - condition: state
+      entity_id: switch.bart_laptop_brum05007458
+      state: "on"
+      for:
+        minutes: 30
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+      after: "09:00:00"
+      before: "17:00:00"
+    - condition: state
+      entity_id: person.bart
+      state: "home"
+  action:
+    - service: light.turn_on
+      data: {}
+      target:
+        entity_id:
+          - light.veranda_staande_lamp
+  mode: single
+
+
+
+#################################################  
+# Alunya
+#################################################
+
+- alias: 💡 lights // Alunya // Alunya niet thuis = licht uit
+  id: 'b31b70d7-e8c0-4bb8-8a45-335d57d427b8'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: person.alunya
+    to: 'not_home'
+    for: 00:03:00
+  condition: []
+  action:
+  - service: light.turn_off
+    target:
+      entity_id:
+        - light.alunya_bol
+        - light.alunya_staande_lamp
+        - light.alunya_wasbak
+  mode: single
+
+- alias: 💡 lights // Alunya // uit om 1u, 2u, 3u en 4u 's nachts
+  id: 'ee497cc7-cb83-4a8d-afd9-dedaf4fe56ff'
+  description: ''
+  trigger:
+  - platform: time
+    at: 01:00:00
+  - platform: time
+    at: 02:00:00
+  - platform: time
+    at: 03:00:00
+  - platform: time
+    at: 04:00:00
+  condition: []
+  action:
+  - service: light.turn_off
+    target:
+      entity_id:
+        - light.alunya_bol
+        - light.alunya_staande_lamp
+        - light.alunya_wasbak
+  mode: single
+
 
 #################################################  
 # Master bedroom
 #################################################
 
-- alias: 💡 master bedroom TV aan 's avonds = gezellig licht
+- alias: 💡 lights // master bedroom // master bedroom TV aan 's avonds = gezellig licht
   id: 62b15358-7447-43f7-9c76-b2d72db61875
   description: ''
   trigger:
@@ -330,7 +442,7 @@ automation:
       entity_id: light.master_bedroom_staande_lamp
   mode: single
 
-- alias: 💡 Master bedroom deurswitch
+- alias: 💡 lights // master bedroom // deurswitch
   id: '0ca77314-116c-4d39-bf43-fd51e9771514'
   description: ''
   trigger:
@@ -354,7 +466,7 @@ automation:
       brightness_pct: 75
   mode: single
 
-- alias: 💡 Madouce en Bart niet thuis = licht uit
+- alias: 💡 lights // master bedroom // Madouce en Bart niet thuis = licht uit
   id: '428317ff-aba5-4c2e-96c6-e1d97eb6ddb8'
   description: ''
   trigger:
@@ -370,60 +482,18 @@ automation:
   mode: single
 
 
-#################################################  
-# Veranda
-#################################################
-
-- alias: veranda licht uit wanneer buiten voldoende licht
-  id: 'e10f25e1-54d6-486d-8661-023145492c6b'
-  description: ""
-  trigger:
-    - platform: numeric_state
-      entity_id: sensor.terras_light_level
-      above: 350
-  condition: []
-  action:
-    - service: light.turn_off
-      data: {}
-      target:
-        entity_id:
-          - light.veranda
-          - light.veranda_staande_lamp
-  mode: single
-
-
-- alias: veranda licht aan wanneer buiten onvoldoende licht en laptop aan
-  id: 'd92b6fd4-f928-422e-a2f0-20604bb7f7cb'
-  description: ""
-  trigger:
-    - platform: numeric_state
-      entity_id: sensor.terras_light_level
-      below: 350
-  condition: 
-    - condition: state
-      entity_id: switch.bart_laptop_brum05007458
-      state: "on"
-      for:
-        minutes: 30
-  action:
-    - service: light.turn_on
-      data: {}
-      target:
-        entity_id:
-          - light.veranda_staande_lamp
-  mode: single
 
 
 #################################################  
 # Gang, toilet, garage
 #################################################
 
-- alias: '💡 licht in garage'
+- alias: '💡 lights // garage // melding licht lang aan'
   id: c3801d8a-dd6e-444e-9a25-0adc8c0655d8
   description: ''
   trigger:
   - platform: numeric_state
-    entity_id: sensor.garage_sensor_light_level
+    entity_id: sensor.garage_bewegingssensor_light_level
     for:
       hours: 0
       minutes: 10
@@ -435,7 +505,7 @@ automation:
   - repeat:
       while:
       - condition: numeric_state
-        entity_id: sensor.garage_sensor_light_level
+        entity_id: sensor.garage_bewegingssensor_light_level
         above: '4'
       sequence:
       - service: notify.bart_phone
@@ -461,7 +531,7 @@ automation:
         tag: garage_licht
   mode: single
 
-- alias: 💡 licht gang uit na 3 minuten
+- alias: 💡 lights // gang // uit na 3 minuten
   id: 'd268f950-cbb3-4220-a017-850bb950ec4a'
   description: ''
   trigger:
@@ -484,7 +554,7 @@ automation:
         - light.gang_spot_voor
   mode: single
 
-- alias: 💡 licht toilet uit na 5 minuten
+- alias: 💡 lights // toilet // uit na 5 minuten
   id: cb7ab5c4-1930-4495-a55a-85d1d6e26a8b
   description: ''
   trigger:
@@ -500,7 +570,7 @@ automation:
       - light.toilet
   mode: single
 
-- alias: 💡 licht toilet 's nachts gedimd
+- alias: 💡 lights // toilet // 's nachts dimmen
   id: be544a45-af8d-4b1a-b5d9-69c5591f44d6
   description: ''
   trigger:
@@ -520,7 +590,7 @@ automation:
       entity_id: light.toilet
   mode: single
   
-- alias: 💡 licht toilet overdag helder
+- alias: 💡 lights // licht toilet overdag helder
   id: 94fb34e5-4b03-49b9-9586-f922960cb5c0
   description: ''
   trigger:
@@ -540,7 +610,7 @@ automation:
       entity_id: light.toilet
   mode: single  
 
-- alias: "💡 licht gang: zon onder = gedimd"
+- alias: "💡 lights // licht gang: zon onder = gedimd"
   id: 151c0615-8998-408b-a0ab-0a31af6c3ea8
   description: ''
   trigger:
@@ -560,7 +630,7 @@ automation:
       entity_id: light.gang
   mode: single
 
-- alias: "💡 licht gang: zon op = helder"
+- alias: "💡 lights // licht gang: zon op = helder"
   id: 80b10678-6e3b-41a7-ba87-fdb427cfc2ce
   description: ''
   trigger:
@@ -579,3 +649,28 @@ automation:
     target:
       entity_id: light.gang
   mode: single
+
+- alias: 💡 lights // beweging inkomhal = licht aan
+  id: '5a0fc2cc-355d-4274-a816-0508fbf8bdce'
+  description: ''
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.hal_motion_sensor_occupancy
+      to: "on"
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.hal_motion_sensor_illuminance
+      below: 350
+  action:
+    - service: light.turn_on
+      data: {}
+      target:
+        entity_id: light.inkomhal
+    - wait_template: ''
+      timeout: 00:00:30
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id: light.inkomhal      
+  mode: restart

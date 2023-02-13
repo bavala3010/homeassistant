@@ -10,7 +10,7 @@ automation:
 # car charge: timer charging
 ######################################
 
-- alias: "🔋 charge timer - starten op datum en uur van timer"
+- alias: "🚗 car 1 // 🔋 charge //  timer modus // starten op datum en uur van timer"
   id: '7bcf7836-3149-4eb2-9d40-f0f3f309a249'
   description: ''
   trigger:
@@ -24,7 +24,7 @@ automation:
     value_template: "{{ states('sensor.car_1_soc')| int(2) < (states('input_number.car_charge_target_percentage') | int(2)) }}"
   # only when 'charge mode net' is ON
   - condition: state
-    entity_id: input_boolean.car_charge_mode_net
+    entity_id: input_boolean.car_charge_mode_timer
     state: 'on'
   # only when 'charge busy' is OFF  
   - condition: state
@@ -58,7 +58,7 @@ automation:
           uri: /dashboard-car/car-charging
   mode: single
 
-- alias: "🔋 charge - laaddoel bereikt (enkel nu en timer) = laden stoppen + melding sturen (enkel thuis)"
+- alias: "🚗 car 1 // 🔋 charge //  timer modus // laaddoel bereikt (enkel nu en timer) = laden stoppen + melding sturen (enkel thuis)"
   id: 'b7a22897-2c7b-4e07-bf71-380271658908'
   description: ''
   trigger:
@@ -93,7 +93,7 @@ automation:
     
   mode: single
 
-- alias: "🔋 charge - laaddoeluur bereikt = laden stoppen + verzetten naar 's anderendaags"
+- alias: "🚗 car 1 // 🔋 charge //  timer modus // laaddoeluur bereikt = laden stoppen + verzetten naar 's anderendaags"
   id: '94c89ef0-a331-4a74-a2bc-d03289b73354'
   description: ''
   trigger:

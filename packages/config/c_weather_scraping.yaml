@@ -2,66 +2,81 @@
 # Scrape weather info from the local weather station
 ###############################################################################
 
-sensor:    
-  - platform: scrape
-    resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
-#   resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
+scrape:
+- resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
+  # resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
+  scan_interval: 240
+  sensor:
+  - name: temp_leuven24_wunderground
     select: "#main-page-content > div > div > div > div:nth-child(2) > div > lib-tile-current-conditions > div > div.module__body > div > div.small-4.columns.text-left.conditions-temp > div.main-temp > lib-display-unit > span > span.wu-value.wu-value-to"
-    name: temp_leuven24_wunderground
-#   convert Farenheit to Celcius
+    # convert Farenheit to Celcius
     value_template: '{{ ((value | float(default=0) -32) * (5/9)) |round(1) }}'
-    scan_interval: 240
     unit_of_measurement: "°C"
-    
-  - platform: scrape
-    resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
-#   resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
+
+- resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
+  # resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
+  scan_interval: 600
+  sensor:
+  - name: online_status_leuven24_wunderground
     select: '<span _ngcontent-app-root-c173="">Offline</span>'
-    name: online_status_leuven24_wunderground
-    scan_interval: 600
-    
-  - platform: scrape
-    resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
-#   resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
-    name: humidity_leuven24_wunderground
+
+- resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
+  # resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
+  scan_interval: 240
+  sensor:
+  - name: humidity_leuven24_wunderground  
     select: "#main-page-content > div > div > div > div:nth-child(2) > div > lib-tile-current-conditions > div > div.module__body > div > div.weather__summary > div:nth-child(4) > div > div.weather__text > lib-display-unit > span > span.wu-value.wu-value-to"
-    scan_interval: 240
     unit_of_measurement: "%"
 
-  - platform: scrape  
-    resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
-#   resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
-    # hoeveelheid huidige neerslag
-    name: precip_rate_leuven24_wunderground
+- resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
+  # resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
+  # hoeveelheid huidige neerslag
+  scan_interval: 180
+  sensor:
+  - name: precip_rate_leuven24_wunderground
     select: "#main-page-content > div > div > div > div:nth-child(8) > div > lib-tile-precipitation > div > div.module__body > div > div.small-5.columns > div > div:nth-child(2) > lib-display-unit > span > span.wu-value.wu-value-to"
     # convert inch to mm
-    value_template: '{{ (value | float(default=0) * 25.4 ) | round(2) }}'
-    scan_interval: 180
+    value_template: '{{ (value | float(default=0) * 25.4 ) | round(2) }}'  
     unit_of_measurement: "mm/u"
 
-  - platform: scrape
-    resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
-#   resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
-    # hoeveelheid neerslag vandaag
-    name: precip_total_leuven24_wunderground
-#   select: "#main-page-content > div > div > div > div:nth-child(2) > div > lib-tile-current-conditions > div > div.module__body > div > div.weather__summary > div:nth-child(5) > div > div.weather__text > lib-display-unit > span > span.wu-value.wu-value-to"
+- resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
+  # resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
+  # hoeveelheid neerslag vandaag
+  scan_interval: 600
+  sensor:
+  - name: precip_total_leuven24_wunderground
     select: "#main-page-content > div > div > div > div:nth-child(8) > div > lib-tile-precipitation > div > div.module__body > div > div.small-5.columns > div > div:nth-child(4) > lib-display-unit > span > span.wu-value.wu-value-to"
     # convert inch to mm
     value_template: '{{ (value | float(default=0) * 25.4 ) | round(2) }}'
-    scan_interval: 600
     unit_of_measurement: "l/m²"
     
-  - platform: scrape
-    resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
-#   resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
-    # UV index
-    name: uvindex_leuven24_wunderground
+- resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
+  # resource: "https://www.wunderground.com/dashboard/pws/ILEUVE22"
+  # UV index
+  scan_interval: 600
+  sensor:
+  - name: uvindex_leuven24_wunderground
     select: "#main-page-content > div > div > div > div:nth-child(9) > div > lib-tile-uv > div > div.module__body > div > div.small-5.columns > div > div:nth-child(2) > lib-display-unit > span > span.wu-value.wu-value-to"
-    scan_interval: 600
     unit_of_measurement: "index"
 
-  - platform: scrape
-    resource: "https://www.wunderground.com/precipitation/be/leuven/ILEUVE24?cm_ven=localwx_modprecip"
-    name: precipitation_statement
+- resource: "https://www.wunderground.com/precipitation/be/leuven/ILEUVE24?cm_ven=localwx_modprecip"
+  scan_interval: 1200
+  sensor:
+  - name: precipitation_statement
     select: "#precip-graph > div > lib-precipitation-graph-alert > div > h2 > span"
-    scan_interval: 1200
+
+
+
+sensor:
+  - platform: filter
+    name: "temp leuven outdoor"
+    entity_id: sensor.temp_leuven24_wunderground
+    filters:
+      - filter: outlier
+        window_size: 4
+        radius: 2.0
+      - filter: lowpass
+        time_constant: 10
+      - filter: time_simple_moving_average
+        window_size: "00:05"
+        precision: 2

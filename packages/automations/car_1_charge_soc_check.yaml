@@ -6,7 +6,7 @@ automation:
 # Check lading 's avonds om 21u30
 ######################################
   
-- alias: 🔋 morgen naar Toyota Evere = check 21u30 voldoende geladen?
+- alias: 🚗 car 1 // 🔋 charge // soc check // morgen naar Toyota Evere = check 21u30 voldoende geladen?
   id: 'e03b771a-c1d0-49ed-a0d7-8e833e3c228e'
   description: ''
   trigger:
@@ -29,7 +29,7 @@ automation:
       message: "Nu {{states('sensor.car_1_soc')}}%. {% if states('sensor.car_1_soc') |round() > 24 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen. Best 20% à 25%.{% endif %}"
   mode: single
   
-- alias: 🔋 morgen naar Toyota Diest = check 21u30 voldoende geladen?
+- alias: 🚗 car 1 // 🔋 charge // soc check // morgen naar Toyota Diest = check 21u30 voldoende geladen?
   id: 'dfb0156e-1033-4259-82d0-08c5bc687860'
   description: ''
   trigger:
@@ -52,7 +52,7 @@ automation:
       message: "Nu {{states('sensor.car_1_soc')}}%. {% if states('sensor.car_1_soc') |round() > 38 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen. Best +/- 40%.{% endif %}"
   mode: single
 
-- alias: 🔋 check om 21u30 batterij tov laaddoel
+- alias: 🚗 car 1 // 🔋 charge // soc check // check om 21u30 batterij tov laaddoel
   id: '19c7cda6-2abb-4e28-9025-0ea5c4e1caa1'
   description: ''
   trigger:

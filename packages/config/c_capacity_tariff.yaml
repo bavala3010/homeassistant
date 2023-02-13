@@ -54,7 +54,7 @@ input_number:
     
   january_peak:
     name: Piek januari
-    min: 2.5
+    min: 2.500
     max: 20
     step: 0.001
     mode: box
@@ -62,7 +62,7 @@ input_number:
   
   february_peak:
     name: Piek februari
-    min: 2.5
+    min: 2.500
     max: 20
     step: 0.001
     mode: box
@@ -70,7 +70,7 @@ input_number:
   
   march_peak:
     name: Piek maart
-    min: 2.5
+    min: 2.500
     max: 20
     step: 0.001
     mode: box
@@ -78,7 +78,7 @@ input_number:
 
   april_peak:
     name: Piek april
-    min: 2.5
+    min: 2.500
     max: 20
     step: 0.001
     mode: box
@@ -86,7 +86,7 @@ input_number:
 
   may_peak:
     name: Piek mei
-    min: 2.5
+    min: 2.500
     max: 20
     step: 0.001
     mode: box
@@ -94,7 +94,7 @@ input_number:
 
   june_peak:
     name: Piek juni
-    min: 2.5
+    min: 2.500
     max: 20
     step: 0.001
     mode: box
@@ -102,7 +102,7 @@ input_number:
 
   july_peak:
     name: Piek juli
-    min: 2.5
+    min: 2.500
     max: 20
     step: 0.001
     mode: box
@@ -110,7 +110,7 @@ input_number:
 
   august_peak:
     name: Piek augustus
-    min: 2.5
+    min: 2.500
     max: 20
     step: 0.001
     mode: box
@@ -118,7 +118,7 @@ input_number:
 
   september_peak:
     name: Piek september
-    min: 2.5
+    min: 2.500
     max: 20
     step: 0.001
     mode: box
@@ -142,7 +142,7 @@ input_number:
 
   december_peak:
     name: Piek december
-    min: 2.5
+    min: 2.500
     max: 20
     step: 0.001
     mode: box

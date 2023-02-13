@@ -11,6 +11,6 @@ sensor:
         icon_template: mdi:transmission-tower
         device_class: power
         value_template: >
-          {{ expand('group.all_lights_power') 
+          {{ expand('group.alle_lichten_power') 
           | rejectattr('state', 'in', ['unavailable', 'unknown'])
           | map(attribute='state') | map('float') | sum | round(2) }}

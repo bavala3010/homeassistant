@@ -1,0 +1,7 @@
+
+
+raspi_maintenance: ssh -i /config/ssh/id_rsa -o 'StrictHostKeyChecking=no' bart@192.168.86.100 '~/sys_maintenance'
+
+#shell_mobile_vikings: '/config/mobile_vikings.sh'
+
+shell_mobile_vikings: ssh -i /config/ssh_keys/id_rsa -o 'StrictHostKeyChecking=no' bart@192.168.86.100 '/config/mobile_vikings.sh'

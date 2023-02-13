@@ -1,133 +1,386 @@
 automation:
 
-- alias: "TGTG Bakkerij Gielis (brood & co)"
-  id: '345730fa-b1c4-4232-977e-3e4ae9e9d412'
+- alias: "TGTG brood"
+  id: '48b0468e-6e19-4cf5-9008-7d52710e2807'
   description: ''
   trigger:
   - platform: state
-    entity_id: sensor.tgtg_bakkerij_gielis_kessel_lo
-    from: '0'
-  condition:
-  - condition: template
-    value_template: "{{ states('sensor.tgtg_bakkerij_gielis_kessel_lo') | float >= 1}}"
+    entity_id: 
+      - sensor.tgtg_bakkerij_gielis_kessel_lo
+      - sensor.tgtg_t_krok_r_antje_kessel_lo
+      - sensor.tgtg_bakkerij_het_brood_kessel_lo_diestsesteenweg_brood_co
+    to: ~
+  condition: []
   action:
-  - service: notify.madouce_phone
-    data:
-      title: "Too Good To Go: Bakkerij Gielis in Kessel-Lo (brood & co)"
-      message: "Nog {{states('sensor.tgtg_bakkerij_gielis_kessel_lo')}} over aan {{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo', 'TGT Price') }}."
-      data:
-        tag: toogoodtogo
-        color: red
-        clickAction: "{{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo', 'Item URL') }}"
-  - service: notify.bart_phone
-    data:
-      title: "Too Good To Go: Bakkerij Gielis in Kessel-Lo (brood & co)"
-      message: "Nog {{states('sensor.tgtg_bakkerij_gielis_kessel_lo')}} over aan {{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo', 'TGT Price') }}."
-      data:
-        tag: toogoodtogo
-        color: red
-        clickAction: "{{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo', 'Item URL') }}"
+    - alias: "Send or dismiss"
+      choose:
+        - conditions: "{{ trigger.to_state.state == '0' }}"
+          sequence:
+            - service: notify.bart_phone
+              data:
+                message: "clear_notification"
+                data:
+                  tag: "TGTG-{{ trigger.entity_id }}"
+            - service: notify.madouce_phone
+              data:
+                message: "clear_notification"
+                data:
+                  tag: "TGTG-{{ trigger.entity_id }}"              
+      default:
+        - service: notify.bart_phone
+          data:
+            title: "{{ trigger.to_state.name }}"
+            message: >
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+            data:
+              tag: TGTG-{{ trigger.entity_id }}
+              channel: TGTG
+              ttl: 0
+              priority: high
+              notification_icon: mdi:baguette
+              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"
+        - service: notify.madouce_phone
+          data:
+            title: "{{ trigger.to_state.name }}"
+            message: >
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+            data:
+              tag: TGTG-{{ trigger.entity_id }}
+              channel: TGTG
+              ttl: 0
+              priority: high
+              notification_icon: mdi:baguette
+              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"
+        - if:
+            - condition: state
+              entity_id: person.madouce
+              state: home
+            - condition: template
+              value_template: >
+                {% set loc = states('person.madouce') %}
+                {{ loc != "Toyota Diest" and loc != "Toyota Evere" }}
+            - condition: template
+              value_template: "{{ now() - this.attributes.last_triggered > timedelta(minutes=30) }}"                    
+          then:
+            - service: notify.madouce_phone
+              data:
+                message: TTS
+                data:
+                  tts_text: Dag Madoes. Brood beschikbaar.
+                  ttl: 0
+                  priority: high
+                  media_stream: alarm_stream_max
   mode: single
 
-- alias: "TGTG Bakkerij Gielis (gebak)"
-  id: '460ac55c-f0c8-4aea-9636-4f7fec6c13e0'
+
+- alias: "TGTG Gielis gebak"
+  id: 'b5532678-b9b0-4bee-8d60-25a8313dfc1c'
   description: ''
   trigger:
   - platform: state
-    entity_id: sensor.tgtg_bakkerij_gielis_kessel_lo_gebak
-    from: '0'
-  condition:
-  - condition: template
-    value_template: "{{ states('sensor.tgtg_bakkerij_gielis_kessel_lo_gebak') | float >= 1}}"
+    entity_id: 
+      - sensor.tgtg_bakkerij_gielis_kessel_lo_gebak
+    to: ~
+  condition: []
   action:
-  - service: notify.madouce_phone
-    data:
-      title: "Too Good To Go: Bakkerij Gielis in Kessel-Lo (gebak)"
-      message: "Nog {{states('sensor.tgtg_bakkerij_gielis_kessel_lo_gebak')}} over aan {{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo', 'TGT Price') }}."
-      data:
-        tag: toogoodtogo
-        color: red
-        clickAction: "{{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo_gebak', 'Item URL') }}"
-  - service: notify.bart_phone
-    data:
-      title: "Too Good To Go: Bakkerij Gielis in Kessel-Lo (gebak)"
-      message: "Nog {{states('sensor.tgtg_bakkerij_gielis_kessel_lo_gebak')}} over aan {{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo', 'TGT Price') }}."
-      data:
-        tag: toogoodtogo
-        color: red
-        clickAction: "{{ state_attr('sensor.tgtg_bakkerij_gielis_kessel_lo_gebak', 'Item URL') }}"
+    - alias: "Send or dismiss"
+      choose:
+        - conditions: "{{ trigger.to_state.state == '0' }}"
+          sequence:
+            - service: notify.bart_phone
+              data:
+                message: "clear_notification"
+                data:
+                  tag: "TGTG-{{ trigger.entity_id }}"
+            - service: notify.madouce_phone
+              data:
+                message: "clear_notification"
+                data:
+                  tag: "TGTG-{{ trigger.entity_id }}"              
+      default:
+        - service: notify.bart_phone
+          data:
+            title: "{{ trigger.to_state.name }}"
+            message: >
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+            data:
+              tag: TGTG-{{ trigger.entity_id }}
+              channel: TGTG
+              ttl: 0
+              priority: high
+              notification_icon: mdi:cake-variant
+              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"
+        - service: notify.madouce_phone
+          data:
+            title: "{{ trigger.to_state.name }}"
+            message: >
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+            data:
+              tag: TGTG-{{ trigger.entity_id }}
+              channel: TGTG
+              ttl: 0
+              priority: high
+              notification_icon: mdi:cake-variant
+              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"
+        - if:
+            - condition: state
+              entity_id: person.madouce
+              state: home
+            - condition: template
+              value_template: >
+                {% set loc = states('person.madouce') %}
+                {{ loc != "Toyota Diest" and loc != "Toyota Evere" }}
+            - condition: template
+              value_template: "{{ now() - this.attributes.last_triggered > timedelta(minutes=30) }}"                    
+          then:
+            - service: notify.madouce_phone
+              data:
+                message: TTS
+                data:
+                  tts_text: Dag Madoes. Gebak beschikbaar bij Gielis.
+                  ttl: 0
+                  priority: high
+                  media_stream: alarm_stream_max                       
+  mode: single
+
+
+- alias: "TGTG gebak"
+  id: '756e5278-a06b-4837-93ad-d2b2e0edc5c5'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: 
+      - sensor.tgtg_au_flan_breton_haasrode
+      - sensor.tgtg_au_flan_breton_linden
+      - sensor.tgtg_les_tartes_de_francoise_leuven_zoet
+    to: ~
+  condition: []
+  action:
+    - alias: "Send or dismiss"
+      choose:
+        - conditions: "{{ trigger.to_state.state == '0' }}"
+          sequence:
+            - service: notify.bart_phone
+              data:
+                message: "clear_notification"
+                data:
+                  tag: "TGTG-{{ trigger.entity_id }}"
+            - service: notify.madouce_phone
+              data:
+                message: "clear_notification"
+                data:
+                  tag: "TGTG-{{ trigger.entity_id }}"              
+      default:
+        - service: notify.bart_phone
+          data:
+            title: "{{ trigger.to_state.name }}"
+            message: >
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+            data:
+              tag: TGTG-{{ trigger.entity_id }}
+              channel: TGTG
+              ttl: 0
+              priority: high
+              notification_icon: mdi:cake-variant
+              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"
+        - service: notify.madouce_phone
+          data:
+            title: "{{ trigger.to_state.name }}"
+            message: >
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+            data:
+              tag: TGTG-{{ trigger.entity_id }}
+              channel: TGTG
+              ttl: 0
+              priority: high
+              notification_icon: mdi:cake-variant
+              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"                     
+  mode: single
+
+
+- alias: "TGTG sushi"
+  id: '287f0700-22c5-46b0-937f-a9a45d63a60b'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: 
+      - sensor.tgtg_izakaya_delhaize_kessel_lo
+    to: ~
+  condition: []
+  action:
+    - alias: "Send or dismiss"
+      choose:
+        - conditions: "{{ trigger.to_state.state == '0' }}"
+          sequence:
+            - service: notify.bart_phone
+              data:
+                message: "clear_notification"
+                data:
+                  tag: "TGTG-{{ trigger.entity_id }}"
+            - service: notify.madouce_phone
+              data:
+                message: "clear_notification"
+                data:
+                  tag: "TGTG-{{ trigger.entity_id }}"              
+      default:
+        - service: notify.bart_phone
+          data:
+            title: "{{ trigger.to_state.name }}"
+            message: >
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+            data:
+              tag: TGTG-{{ trigger.entity_id }}
+              channel: TGTG
+              ttl: 0
+              priority: high
+              notification_icon: mdi:cake-variant
+              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"
+        - service: notify.madouce_phone
+          data:
+            title: "{{ trigger.to_state.name }}"
+            message: >
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+            data:
+              tag: TGTG-{{ trigger.entity_id }}
+              channel: TGTG
+              ttl: 0
+              priority: high
+              notification_icon: mdi:cake-variant
+              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"
+        - if:
+            - condition: state
+              entity_id: person.madouce
+              state: home
+            - condition: template
+              value_template: >
+                {% set loc = states('person.madouce') %}
+                {{ loc != "Toyota Diest" and loc != "Toyota Evere" }}
+            - condition: template
+              value_template: "{{ now() - this.attributes.last_triggered > timedelta(minutes=30) }}"                    
+          then:
+            - service: notify.madouce_phone
+              data:
+                message: TTS
+                data:
+                  tts_text: Dag Madoes. Sushi beschikbaar.
+                  ttl: 0
+                  priority: high
+                  media_stream: alarm_stream_max                       
+  mode: single
+
+- alias: "TGTG winkels eten"
+  id: '696bfac0-b0e4-4aca-8a8b-85c90c2c3483'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+      - sensor.tgtg_frituur_giraffe_kessel_lo
+      - sensor.tgtg_spar_kessel_lo
+      - sensor.tgtg_carrefour_express_leefdaal
+      # - sensor.tgtg_louis_delhaize_kessel_lo
+    to: ~
+  condition: []
+  action:
+    - alias: "Send or dismiss"
+      choose:
+        - conditions: "{{ trigger.to_state.state == '0' }}"
+          sequence:
+            - service: notify.bart_phone
+              data:
+                message: "clear_notification"
+                data:
+                  tag: "TGTG-{{ trigger.entity_id }}"
+            - service: notify.madouce_phone
+              data:
+                message: "clear_notification"
+                data:
+                  tag: "TGTG-{{ trigger.entity_id }}"              
+      default:
+        - service: notify.bart_phone
+          data:
+            title: "{{ trigger.to_state.name }}"
+            message: >
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+            data:
+              tag: TGTG-{{ trigger.entity_id }}
+              channel: TGTG
+              ttl: 0
+              priority: high
+              notification_icon: mdi:shopping
+              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"
+        - service: notify.madouce_phone
+          data:
+            title: "{{ trigger.to_state.name }}"
+            message: >
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+            data:
+              tag: TGTG-{{ trigger.entity_id }}
+              channel: TGTG
+              ttl: 0
+              priority: high
+              notification_icon: mdi:shopping
+              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"            
+  mode: single
+
+- alias: "TGTG planten"
+  id: '5e6425aa-9a69-4d5b-9777-f3eb4799dd0f'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: 
+      - sensor.tgtg_tuin_in_potten_leuven_klein_pakket
+    to: ~
+  condition: []
+  action:
+    - alias: "Send or dismiss"
+      choose:
+        - conditions: "{{ trigger.to_state.state == '0' }}"
+          sequence:
+            - service: notify.bart_phone
+              data:
+                message: "clear_notification"
+                data:
+                  tag: "TGTG-{{ trigger.entity_id }}"
+            - service: notify.madouce_phone
+              data:
+                message: "clear_notification"
+                data:
+                  tag: "TGTG-{{ trigger.entity_id }}"              
+      default:
+        - service: notify.bart_phone
+          data:
+            title: "{{ trigger.to_state.name }}"
+            message: >
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+            data:
+              tag: TGTG-{{ trigger.entity_id }}
+              channel: TGTG
+              ttl: 0
+              priority: high
+              notification_icon: mdi:shopping
+              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"
+        - service: notify.madouce_phone
+          data:
+            title: "{{ trigger.to_state.name }}"
+            message: >
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+            data:
+              tag: TGTG-{{ trigger.entity_id }}
+              channel: TGTG
+              ttl: 0
+              priority: high
+              notification_icon: mdi:shopping
+              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"            
   mode: single  
-
-
-- alias: "TGTG Tartes de Françoise"
-  id: '207d49b9-192c-4fc6-ae8c-fe7f51b05501'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: sensor.tgtg_les_tartes_de_francoise_leuven_zoet
-    from: '0'
-  condition:
-  - condition: template
-    value_template: "{{ states('sensor.tgtg_les_tartes_de_francoise_leuven_zoet') | float >= 1}}"
-  action:
-  - service: notify.madouce_phone
-    data:
-      title: "Too Good To Go: Tartes de Françoise in Leuven"
-      message: "Nog {{states('sensor.tgtg_les_tartes_de_francoise_leuven_zoet')}} over aan {{ state_attr('sensor.tgtg_les_tartes_de_francoise_leuven_zoet', 'TGT Price') }} ipv aan {{ state_attr('sensor.tgtg_les_tartes_de_francoise_leuven_zoet', 'Original value') }}."
-      data:
-        tag: toogoodtogo
-        color: red
-        clickAction: "{{ state_attr('sensor.tgtg_les_tartes_de_francoise_leuven_zoet', 'Item URL') }}"
-  mode: single
-
-- alias: "TGTG Hoegaards broodje Leuven"
-  id: 'a9676920-dc3b-4dda-bf9e-11fe53915a74'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: sensor.tgtg_hoegaards_broodje
-    from: '0'
-  condition:
-  - condition: template
-    value_template: "{{ states('sensor.tgtg_hoegaards_broodje') | float >= 1}}"
-  action:
-  - service: notify.madouce_phone
-    data:
-      title: "Too Good To Go: Hoegaards broodje in Leuven"
-      message: >
-        "Nog {{states('sensor.tgtg_hoegaards_broodje')}} over aan {{ state_attr('sensor.tgtg_hoegaards_broodje', 'TGT Price') }} ipv aan {{ state_attr('sensor.tgtg_hoegaards_broodje', 'Original value') }}.<br>
-        Ophalen tussen {{ state_attr('sensor.tgtg_hoegaards_broodje', 'Pickup start') }} en {{ state_attr('sensor.tgtg_hoegaards_broodje', 'Pickup stop') }}".
-      data:
-        tag: toogoodtogo
-        color: red
-        clickAction: "{{ state_attr('sensor.tgtg_hoegaards_broodje', 'Item URL') }}"
-  mode: single
-
-- alias: "TGTG Spar"
-  id: 'c4f27cc4-d554-4fde-a14b-ad1841c204c7'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: sensor.tgtg_spar_kessel_lo
-    from: '0'
-  condition:
-  - condition: template
-    value_template: "{{ states('sensor.tgtg_spar_kessel_lo') | float >= 1}}"
-  action:
-  - service: notify.madouce_phone
-    data:
-      title: "Too Good To Go: Spar Kessel-Lo"
-      message: "Nog {{states('sensor.tgtg_spar_kessel_lo')}} over aan {{ state_attr('sensor.tgtg_spar_kessel_lo', 'TGT Price') }}."
-      data:
-        tag: toogoodtogo
-        color: red
-        clickAction: "{{ state_attr('sensor.tgtg_spar_kessel_lo', 'Item URL') }}"
-  - service: notify.bart_phone
-    data:
-      title: "Too Good To Go: Spar Kessel-Lo"
-      message: "Nog {{states('sensor.tgtg_spar_kessel_lo')}} over aan {{ state_attr('sensor.tgtg_spar_kessel_lo', 'TGT Price') }}."
-      data:
-        tag: toogoodtogo
-        color: red
-        clickAction: "{{ state_attr('sensor.tgtg_spar_kessel_lo', 'Item URL') }}"
-  mode: single

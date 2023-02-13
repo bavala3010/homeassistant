@@ -2,7 +2,7 @@ automation:
 
 # device_id airco living = 1c560bbc7917f45d737e87d3e2bd0d89
 
-- alias: "old Living airco heating: aan volgens schema normale temp of aankomst"
+- alias: "♨️ airco heating // living // aan volgens schema normale temp of aankomst"
   id: 'ddf200ed-b5d7-4bab-aee4-8c1a37bb7d56'
   description: ""
   trigger:
@@ -28,7 +28,7 @@ automation:
         {{ states('sensor.living_temperature') | float <
         states('input_number.living_normal_temperature') | float }}
     - condition: state
-      entity_id: binary_sensor.living_raam
+      entity_id: group.living_ramen
       state: "off"
   action:
     - service: climate.set_temperature
@@ -59,7 +59,7 @@ automation:
   mode: single
 
 
-- alias: 'old Living airco heating: aan volgens schema comfort temperatuur'
+- alias: '♨️ airco heating // living // aan volgens schema comfort temperatuur'
   id: '9bb6cb31-9f9f-42c2-a4ac-f551cc970eb7'
   description: ''
   trigger:
@@ -111,7 +111,7 @@ automation:
       entity_id: input_number.living_airco_target_temperature      
   mode: single
 
-- alias: "old Living airco heating: uit volgens schema/verlaten huis/timer stop"
+- alias: "♨️ airco heating // living // uit volgens schema/verlaten huis/timer stop"
   id: '075c660b-6d9b-4190-b6fb-3acb07a7f7ce'
   description: ""
   trigger:
@@ -124,7 +124,7 @@ automation:
       entity_id: group.gezin
       to: not_home
     - platform: state
-      entity_id: binary_sensor.living_raam
+      entity_id: group.living_ramen
       to: "on"
     - platform: time
       at: input_datetime.living_airco_timer_stop
@@ -155,7 +155,7 @@ automation:
 # Handmatige aanpassing
 ########################
 
-- alias: 'old Living airco heating: aan gedurende 30 minuten bij hogere gewenste temperatuur'
+- alias: '♨️ airco heating // living // aan gedurende 30 minuten bij hogere gewenste temperatuur'
   id: 'f747ffe1-4135-4e72-af50-fd6052de540b'
   description: ''
   trigger:
@@ -179,7 +179,7 @@ automation:
 
 ## NEW #####################
 
-- alias: "Living airco heating: aan als temperatuur living 0,75 graad lager is dan doeltemperatuur"
+- alias: "♨️ airco heating // living // aan als temperatuur living 0,75 graad lager is dan doeltemperatuur"
   id: '58254156-db9d-4c65-b655-502839dfafe5'
   description: ''
   trigger:
@@ -236,7 +236,7 @@ automation:
   mode: single
 
 
-- alias: "Living airco heating: uit als doeltemperatuur (ongeveer) bereikt is"
+- alias: "♨️ airco heating // living // uit als doeltemperatuur (ongeveer) bereikt is"
   id: '99579020-6dc1-4869-a91e-0631e04698f1'
   description: ''
   trigger:

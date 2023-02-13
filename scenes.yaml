@@ -83,7 +83,7 @@
 - id: '1633813705916'
   name: TV kijken in master bedroom
   entities:
-    switch.master_bedroom_tv_chromecast_chromecast:
+    switch.master_bedroom_tv_chromecast:
       restored: true
       supported_features: 0
       friendly_name: Master bedroom TV Chromecast (Google Android device)

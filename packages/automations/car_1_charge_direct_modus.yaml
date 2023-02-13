@@ -12,7 +12,7 @@
 ############################ Automations ################################## 
 automation:
 
-- alias: "🔋 charge mode direct bezig - pas elke minuut het vermogen van de lader aan"
+- alias: "🚗 car 1 // 🔋 charge // direct modus // pas elke minuut het vermogen van de lader aan"
   id: '362cc8ae-99e6-4ddc-95d1-feb6a0daeb1e'
   trigger:
   - platform: time_pattern
@@ -53,7 +53,7 @@ automation:
     - service: script.charger_define_and_write_register_based_on_ampere
   mode: single
 
-- alias: "🔋 charge mode direct - check SOC tov laaddoel"
+- alias: "🚗 car 1 // 🔋 charge // direct modus // check SOC tov laaddoel"
   id: 'b008edb7-44dc-49dc-bf27-6987bfaf4790'
   trigger:
   - platform: state
@@ -89,7 +89,7 @@ automation:
     data: {}
   mode: single
 
-- alias: "🔋 charge mode direct - maximum netverbruik veranderd"
+- alias: "🚗 car 1 // 🔋 charge // direct modus // maximum netverbruik veranderd"
   id: '6a180451-efc5-4e27-9e7e-f2e152d3ec31'
   trigger:
   - platform: state
@@ -109,5 +109,3 @@ automation:
           {% elif states('input_select.car_charge_net_max_power') == '5.3' %}
             5300
           {% endif %}
-
-

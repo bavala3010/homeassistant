@@ -1,0 +1,137 @@
+input_datetime:
+  cheapest_hours_electricity_start_time:
+    name: startuur goedkoopste elektriciteit
+    has_time: true
+    has_date: false
+
+  mostexpensive_hours_electricity_start_time:
+    name: startuur duurste elektriciteit
+    has_time: true
+    has_date: false
+
+input_number:
+  cheapest_hours_electricity_period:
+    name: uren goedkoopste elektriciteit
+    min: 1
+    max: 24
+
+  mostexpensive_hours_electricity_period:
+    name: uren duurste elektriciteit
+    min: 1
+    max: 24
+
+sensor:
+  - platform: nordpool_diff
+    nordpool_entity: sensor.nordpool_kwh_be_eur_5_05_0
+
+  - platform: nordpool
+    VAT: False
+    currency: "EUR"
+    price_in_cents: true
+    low_price_cutoff: 0.5
+    region: "BE"
+    precision: 5
+    price_type: kWh
+    additional_costs: >
+      {% set VAT = 0.06 %}
+      {% set netwerkkosten = 0.0394475 %}
+      {% set federale_accijns = 0.014416 %}
+      {% set energiebijdrage = 0.0020417 %}
+      {% set groenestroom_wkk = 0.02184 %}
+      {% set marge = 0.002040 %}
+      {% set correctie = 0.002 %}
+      {{((current_price + marge) * VAT + netwerkkosten + federale_accijns + energiebijdrage + groenestroom_wkk + correctie) |float}}
+
+  - platform: nordpool
+    VAT: False
+    currency: "EUR"
+    price_in_cents: true
+    region: "BE"
+    precision: 5
+    price_type: kWh
+
+# code reused from: https://www.creatingsmarthome.com/index.php/2022/09/17/home-assistant-nord-pool-spot-prices-and-how-to-automate-devices-for-cheapest-hours/
+  - platform: template
+    sensors:
+      cheapest_hours_electricity_tomorrow:
+        device_class: timestamp
+        friendly_name: Goedkoopste opeenvolgende uren elektriciteit
+        value_template: >
+          {%- set numberOfSequentialHours = states('input_number.cheapest_hours_electricity_period') | int -%}
+          {%- set lastHour = 23 -%}
+          {%- set firstHour = 0 -%}
+          {%- if state_attr('sensor.nordpool_kwh_be_eur_5_05_0', 'tomorrow_valid') == true -%}
+            {%- set ns = namespace(counter=0, list=[], cheapestHour=today_at("00:00") + timedelta( hours = (24)), cheapestPrice=999.00) -%}
+            {%- for i in range(firstHour + numberOfSequentialHours, lastHour+1) -%}
+              {%- set ns.counter = 0.0 -%}
+              {%- for j in range(i-numberOfSequentialHours, i) -%}
+                {%- set ns.counter = ns.counter + state_attr('sensor.nordpool_kwh_be_eur_5_05_0', 'tomorrow')[j] -%}
+              {%- endfor -%}
+              {%- set ns.list = ns.list + [ns.counter] -%}
+              {%- if ns.counter < ns.cheapestPrice -%}
+                {%- set ns.cheapestPrice = ns.counter -%}
+                {%- set ns.cheapestHour = today_at("00:00") + timedelta( hours = (24 + i - numberOfSequentialHours)) -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {{ ns.cheapestHour }}
+            {%- set ns.cheapestPrice = ns.cheapestPrice / numberOfSequentialHours -%}
+          {%- endif -%}
+
+      cheapest_hour_electricity_tomorrow_9_16:
+        device_class: timestamp
+        friendly_name: Goedkoopste uur elektriciteit tussen 9u en 17u
+        value_template: >
+          {%- set numberOfSequentialHours = 1 -%}
+          {%- set firstHour = 9 -%}
+          {%- set lastHour = 16 -%}
+          {%- if state_attr('sensor.nordpool_kwh_be_eur_5_05_0', 'tomorrow_valid') == true -%}
+            {%- set ns = namespace(counter=0, list=[], cheapestHour=today_at("00:00") + timedelta( hours = (24)), cheapestPrice=999.00) -%}
+            {%- for i in range(firstHour + numberOfSequentialHours, lastHour+1) -%}
+              {%- set ns.counter = 0.0 -%}
+              {%- for j in range(i-numberOfSequentialHours, i) -%}
+                {%- set ns.counter = ns.counter + state_attr('sensor.nordpool_kwh_be_eur_5_05_0', 'tomorrow')[j] -%}
+              {%- endfor -%}
+              {%- set ns.list = ns.list + [ns.counter] -%}
+              {%- if ns.counter < ns.cheapestPrice -%}
+                {%- set ns.cheapestPrice = ns.counter -%}
+                {%- set ns.cheapestHour = today_at("00:00") + timedelta( hours = (24 + i - numberOfSequentialHours)) -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {{ ns.cheapestHour }}
+            {%- set ns.cheapestPrice = ns.cheapestPrice / numberOfSequentialHours -%}
+          {%- endif -%}
+
+      mostexpensive_hours_electricity_tomorrow:
+        device_class: timestamp
+        friendly_name: Duurste opeenvolgende uren elektriciteit
+        value_template: >
+          {%- set numberOfSequentialHours = states('input_number.mostexpensive_hours_electricity_period') | int -%}
+          {%- set lastHour = 23 -%}
+          {%- set firstHour = 0 -%}
+          {%- if state_attr('sensor.nordpool_kwh_be_eur_5_05_0', 'tomorrow_valid') == true -%}
+            {%- set ns = namespace(counter=0, list=[], mostexpensiveHour=today_at("00:00") + timedelta( hours = (24)), mostexpensivePrice=0.00) -%}
+            {%- for i in range(firstHour + numberOfSequentialHours, lastHour+1) -%}
+              {%- set ns.counter = 0.0 -%}
+              {%- for j in range(i-numberOfSequentialHours, i) -%}
+                {%- set ns.counter = ns.counter + state_attr('sensor.nordpool_kwh_be_eur_5_05_0', 'tomorrow')[j] -%}
+              {%- endfor -%}
+              {%- set ns.list = ns.list + [ns.counter] -%}
+              {%- if ns.counter > ns.mostexpensivePrice -%}
+                {%- set ns.mostexpensivePrice = ns.counter -%}
+                {%- set ns.mostexpensiveHour = today_at("00:00") + timedelta( hours = (24 + i - numberOfSequentialHours)) -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {{ ns.mostexpensiveHour }}
+            {%- set ns.mostexpensivePrice = ns.mostexpensivePrice / numberOfSequentialHours -%}
+          {%- endif -%}
+
+template:
+  - binary_sensor:
+      - name: current_electricity_price_within_cheapest_range
+        # Is het huidig uur bij de n goedkoopste uren van de dag? Ja=on Neen=off
+        state: >
+          {%- set cheapest_n_hours = states('input_number.cheapest_hours_electricity_period') | int -%}
+          {%- set ns = namespace(sorted_prices = [], highest_pricepoint = 0.0) -%}
+          {%- set ns.sorted_prices = state_attr('sensor.nordpool_kwh_be_eur_5_05_0', 'today')|sort -%}
+          {%- set ns.highest_pricepoint = ns.sorted_prices[cheapest_n_hours - 1] -%}
+          {{ state_attr('sensor.nordpool_kwh_be_eur_5_05_0', 'current_price') <= ns.highest_pricepoint }}

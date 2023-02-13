@@ -2,38 +2,38 @@ sensor:
   - platform: thermal_comfort
     sensors:
       outside_thermal:
-        friendly_name: outside
         temperature_sensor: sensor.temp_leuven24_wunderground
         humidity_sensor: sensor.humidity_leuven24_wunderground
+        unique_id: 6fe97956-c6ec-4bd7-90e5-c4779f621575
       living_thermal:
-        friendly_name: living
         temperature_sensor: sensor.living_temperature
         humidity_sensor: sensor.living_humidity
+        unique_id: b4be2dbf-d0ae-4d07-83d5-77b2bbce756e
       kamer_amilya_thermal:
-        friendly_name: kamer Amilya
         temperature_sensor: sensor.kamer_amilya_temperature
         humidity_sensor: sensor.kamer_amilya_humidity
+        unique_id: d4b898a7-d781-49b7-856f-02fe8fcee2eb
       veranda_thermal:
-        friendly_name: veranda
         temperature_sensor: sensor.veranda_temperature
         humidity_sensor: sensor.veranda_humidity
+        unique_id: caae7475-c15e-45b5-a6e8-94883ef65709      
       berging_thermal:
-        friendly_name: berging
         temperature_sensor: sensor.berging_temperature
         humidity_sensor: sensor.berging_humidity
+        unique_id: 81639397-d613-4ccf-967b-a44b7d2809f0
       gang_thermal:
-        friendly_name: gang
         temperature_sensor: sensor.gang_temperature
         humidity_sensor: sensor.gang_humidity
+        unique_id: 4ce1c052-969f-4196-b08f-d6afe0f87b60
       badkamer_thermal:
-        friendly_name: badkamer
         temperature_sensor: sensor.badkamer_temperature
         humidity_sensor: sensor.badkamer_humidity
+        unique_id: 06369545-5b6b-44b5-8aa2-fc3d7cbaf497
       kamer_alunya_thermal:
-        friendly_name: kamer Alunya
         temperature_sensor: sensor.kamer_alunya_temperature
         humidity_sensor: sensor.kamer_alunya_humidity
+        unique_id: b8ed9d12-8872-4c4d-9524-ae1262825cc2
       master_bedroom_thermal:
-        friendly_name: master bedroom
         temperature_sensor: sensor.master_bedroom_temperature
         humidity_sensor: sensor.master_bedroom_humidity
+        unique_id: 013d786b-dc05-4852-bf3c-2a7a3efe36dd

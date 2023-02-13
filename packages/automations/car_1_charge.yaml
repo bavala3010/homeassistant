@@ -1,9 +1,9 @@
 ############################ Table of Contents ############################ 
 # 
 #   Automations
-#   🚗 autolader is verbonden (niet thuis) = melding
-#   🚗 auto laadt (niet thuis) = melding
-#   🚗 auto gedaan met laden = melding
+#   🚗 // charge //  autolader is verbonden (niet thuis) = melding
+#   🚗 // charge //  auto laadt (niet thuis) = melding
+#   🚗 // charge //  auto gedaan met laden = melding
 #
 #   🔋 charge planning is veranderd = bepaal SOC per dag
 #   🔋 charge planning - om 7u00 bepaal target SOC per dag op basis van planning
@@ -37,7 +37,7 @@ automation:
 # gewoon laden (niet thuis)
 ######################################
 
-- alias: 🚗 autolader is verbonden (niet thuis) = melding
+- alias: 🚗 car 1 // 🔋 charge // autolader is verbonden (niet thuis) = melding
   id: 'cdd4783a-a810-4b0a-b46d-1b1bf58eb80e'
   description: ''
   trigger:
@@ -73,7 +73,7 @@ automation:
           uri: /dashboard-car/car        
   mode: single
 
-- alias: 🚗 auto laadt (niet thuis) = melding
+- alias: 🚗 car 1 // 🔋 charge // auto laadt (niet thuis) = melding
   id: '10f06a54-7eea-4d86-9bf8-2ef07549a4d6'
   description: ''
   trigger:
@@ -112,7 +112,7 @@ automation:
           uri: /dashboard-car/car
   mode: single
 
-- alias: 🚗 auto gedaan met laden = melding
+- alias: 🚗 car 1 // 🔋 charge // auto gedaan met laden = melding
   id: '23ebfe4a-e944-49dc-aa3f-e8a1983e8a56'
   description: ''
   trigger:
@@ -158,7 +158,7 @@ automation:
 # Target range / SOC
 ######################################
 
-- alias: 🔋 charge target percentage is veranderd
+- alias: 🚗 car 1 // 🔋 charge // charge target percentage is veranderd
   id: 'bc9713f6-225f-4e87-99eb-6bb78aa18653'
   description: ''
   trigger:
@@ -176,7 +176,7 @@ automation:
   mode: single
   max_exceeded: silent
 
-- alias: 🔋 charge target range is veranderd
+- alias: 🚗 car 1 // 🔋 charge // charge target range is veranderd
   id: '79d535f9-0b79-4eb6-98cb-5786bf032300'
   description: ''
   trigger:
@@ -199,7 +199,7 @@ automation:
 # Car charger: define ampère and phases
 #######################################
 
-- alias: "🔋 gewenst Wattage laadpaal is veranderd = bepaal laadminuten voor 1%"
+- alias: "🚗 car 1 // 🔋 charge // gewenst Wattage laadpaal is veranderd = bepaal laadminuten voor 1%"
   id: 'baae9f5a-73dd-45f6-98b4-5130a50a903d'
   description: ''
   trigger:
@@ -214,7 +214,7 @@ automation:
       value: "{{ ( 56.925 / (states('input_number.car_charger_watt') | float ) ) | round(2) }}"
   mode: restart
 
-- alias: "🔋 gewenst Wattage laadpaal is veranderd = zet de fasen op 1 of 3"
+- alias: "🚗 car 1 // 🔋 charge // gewenst Wattage laadpaal is veranderd = zet de fasen op 1 of 3"
   id: 'f27a3c48-775c-471f-bd6d-33d23c638826'
   description: ''
   trigger:
@@ -229,7 +229,7 @@ automation:
   - service: script.charger_define_phase_1_or_3_based_on_watt
   mode: restart
 
-- alias: "🔋 gewenst Wattage laadpaal is veranderd = bepaal Ampère"
+- alias: "🚗 car 1 // 🔋 charge // gewenst Wattage laadpaal is veranderd = bepaal Ampère"
   id: 'd4197275-7e4b-453d-b3ea-3ea91c2e19d8'
   description: ''
   trigger:
@@ -245,7 +245,7 @@ automation:
     data: {}
   mode: restart
 
-- alias: "🔋 Ampère laadpaal is veranderd = bepaal waarde en stuur naar register"
+- alias: "🚗 car 1 // 🔋 charge // Ampère laadpaal is veranderd = bepaal waarde en stuur naar register"
   id: '9550cbe2-2979-4c7f-9974-ec7eaebc249e'
   description: ''
   trigger:
@@ -265,7 +265,7 @@ automation:
 # car charge: red hours
 ######################################
 
-- alias: "🔋 charge - red hours: week 6u-8u -> lader op timer (enkel thuis)"
+- alias: "🚗 car 1 // 🔋 charge // red hours: week 6u-8u -> lader op timer (enkel thuis)"
   id: '0a0bce79-42d8-4184-9dab-9ed54f30f3bf'  
   description: ''
   trigger:
@@ -297,7 +297,7 @@ automation:
       action: start_charger
   mode: single
   
-- alias: "🔋 charge - red hours: zaterdag 7u-9u -> lader op timer (enkel thuis)"
+- alias: "🚗 car 1 // 🔋 charge // red hours: zaterdag 7u-9u -> lader op timer (enkel thuis)"
   id: '31e6ff24-3423-4332-b4f9-da785af82b26'
   description: ''
   trigger:
@@ -325,7 +325,7 @@ automation:
       action: start_charger
   mode: single
 
-- alias: "🔋 charge - red hours: zondag 8u-12u -> lader op timer (enkel thuis)"
+- alias: "🚗 car 1 // 🔋 charge // red hours: zondag 8u-12u -> lader op timer (enkel thuis)"
   id: '81cb1458-debb-4378-9313-d34f4029f693'
   description: ''
   trigger:
@@ -355,7 +355,7 @@ automation:
 # car charge: varia
 ######################################
 
-- alias: "🔋 charge - ververs status auto tijdens het laden"
+- alias: "🚗 car 1 // 🔋 charge // ververs status auto tijdens het laden"
   id: '05fea2a8-3699-41b6-b535-a1a6e49be1b1'
   description: ''
   trigger:
@@ -380,7 +380,7 @@ automation:
           milliseconds: 0
   mode: single
 
-- alias: "🔋 hernieuw ampère en W op laadpaal (bij aftellen counter)"
+- alias: "🚗 car 1 // 🔋 charge // hernieuw ampère en W op laadpaal (bij aftellen counter)"
   id: '227ab015-24f0-461e-a977-4600c813ac98'
   description: ''
   trigger:

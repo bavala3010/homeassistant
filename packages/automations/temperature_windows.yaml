@@ -4,6 +4,35 @@
 
 automation:
 
+- alias: Om 11 uur bepaal max dagtemperatuur uur
+  id: 'ed9969de-ed32-4d1d-94ed-48e3622c94b4'
+  description: ''
+  trigger:
+  - platform: time
+    at: '11:00'
+  condition: []
+  action:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.max_dagtemperatuur_uur
+    data:
+      time: "{{ states('sensor.day_max_temp_datetime') }}"
+  mode: single
+  
+- alias: max temperatuur van de dag bereikt = melding
+  id: '91ed3a1c-ce13-47db-a612-4dc6d912fb89'
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.max_dagtemperatuur_uur
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Nu is het warmste moment van de dag.
+      message: Nu is het warmste moment van de dag.
+  mode: single
+
 - alias: te warm in kamer Amilya - open raam (Bart)
   id: 'ae5bbb04-af4b-42e2-ba7a-5d57a411c6bc'
   description: ''
@@ -181,10 +210,10 @@ automation:
   action:
     - service: input_boolean.turn_on
       target:
-        entity_id: input_boolean.veranda_raam_moet_open
+        entity_id: input_boolean.veranda_schuifraam_moet_open
     - service: input_boolean.turn_off
       target:
-        entity_id: input_boolean.veranda_raam_moet_dicht
+        entity_id: input_boolean.veranda_schuifraam_moet_dicht
     - service: notify.bart_phone
       data:
         title: Raam in veranda mag open

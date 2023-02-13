@@ -1,0 +1,287 @@
+############################ Table of Contents ############################ 
+# 
+#   Automations
+#     Bart, Madouce en/of Alunya komt thuis (zone) = alarm uit
+#     niemand thuis (enkel melding)
+#     iemand thuis (enkel melding)
+#     niemand thuis = alarm aanzetten
+#     Iemand komt thuis (wifi) = alarm uitzetten
+#     alarm ingeschakeld aan voordeur
+#     alarm uitgeschakeld aan voordeur
+#     alarm bij beweging
+#     garagepoort staat lang open
+#     beweging op oprit
+
+############################ Automations ################################## 
+
+automation:
+
+- alias: 🚨 alarm // Bart, Madouce en/of Alunya komt thuis (zone) = alarm uit
+  id: '8bc11499-60b0-4b90-9c5b-e36dcd5d03fc'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: person.bart
+    to: 'home'
+  - platform: state
+    entity_id: person.madouce
+    to: 'home'
+  - platform: state
+    entity_id: person.alunya
+    to: 'home'
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_away
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Alarm
+      message: '✅  Alarm is automatisch uitgeschakeld door thuiskomst.'
+      data:
+        color: red
+        notification_icon: mdi:security     
+  - service: alarm_control_panel.alarm_disarm
+    target:
+      entity_id: alarm_control_panel.home_alarm
+    data:
+      code: !secret alarm_code
+  mode: single
+
+- alias: 🚨 alarm // niemand thuis (wifi) = alarm automatisch aanzetten
+  id: '71de9fe1-32d9-4a62-ae3a-635d6103daac'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.gezin
+    to: 'not_home'
+    for: 00:05:00
+  condition: []
+  action:
+  - service: alarm_control_panel.alarm_arm_away
+    data:
+      code: !secret alarm_code
+    target:
+      entity_id: alarm_control_panel.home_alarm 
+  - service: notify.bart_phone
+    data:
+      title: Alarm
+      message: '⛔ Alarm is automatisch ingeschakeld wegens niemand thuis.' 
+      data:
+        color: red
+        notification_icon: mdi:security    
+  mode: single
+
+- alias: 🚨 alarm // Iemand komt thuis (wifi) = alarm automatisch uitzetten
+  id: 'f17014e2-4cf5-43f0-90ae-be7d609f2a28'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.gezin
+    to: 'home'
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_away
+  action:
+  - service: alarm_control_panel.alarm_disarm
+    target:
+      entity_id: alarm_control_panel.home_alarm
+  - service: notify.bart_phone
+    data:
+      title: Alarm
+      message: '✅  Alarm is automatisch uitgeschakeld door thuiskomst.' 
+      data:
+        color: red
+        notification_icon: mdi:security
+  mode: single
+
+- alias: 🚨 alarm // alarm ingeschakeld aan voordeur
+  id: '1acceb9a-ca45-49b3-ab22-166314aa9cf0'
+  description: OK
+  trigger:
+  - platform: tag
+    tag_id: !secret tag_voordeur_arm_alarm
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      message: ⛔ Alarm ingeschakeld aan voordeur.
+      title: ''
+      data:
+        color: blue
+        actions:
+        - action: URI
+          title: Meer info
+          uri: /lovelace/humidity
+  - service: alarm_control_panel.alarm_arm_away
+    target:
+      entity_id: alarm_control_panel.home_alarm
+    data:
+      code: !secret alarm_code
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.living_speaker
+      volume_level: 0.7
+  - service: tts.google_say
+    data:
+      entity_id: media_player.living_speaker
+      message: "Alarm ingeschakeld!
+      {% if is_state('group.alle_ramen', 'off') %} Alle ramen zijn dicht!
+      {% else %} De volgende ramen staan nog open: {{ expand(states.binary_sensor.kamer_amilya_raam, states.binary_sensor.kamer_alunya_raam, states.binary_sensor.kamer_alunya_schuifraam, states.binary_sensor.badkamer_raam_kantel, states.binary_sensor.badkamer_raam_wijd, states.binary_sensor.berging_raam, states.binary_sensor.keuken_raam, states.binary_sensor.living_oprit_raam, states.binary_sensor.living_tuin_raam, states.binary_sensor.master_bedroom_raam_kantel, states.binary_sensor.master_bedroom_raam_wijd, states.binary_sensor.veranda_schuifraam) | selectattr('state','eq','on') | map(attribute='name')| list }}
+      {% endif %}"
+  - wait_template: ''
+    timeout: 00:00:02
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.living_speaker
+      volume_level: 0.4
+  mode: queued
+
+- alias: 🚨 alarm // alarm uitgeschakeld aan voordeur
+  id: 'dc004044-06a8-4ad2-acb8-cafe5f617d1f'
+  description: OK
+  trigger:
+  - platform: tag
+    tag_id: !secret tag_voordeur_disarm_alarm
+  condition: []
+  action:
+  - device_id: !secret id_tel_bart
+    domain: mobile_app
+    type: notify
+    title: ''
+    message: ✅ Alarm uitgeschakeld aan voordeur.
+  - service: alarm_control_panel.alarm_disarm
+    data:
+      code: !secret alarm_code
+    target:
+      entity_id: alarm_control_panel.home_alarm
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.living_speaker
+      volume_level: 0.8
+  - service: tts.google_say
+    data:
+      entity_id: media_player.living_speaker
+      message: Alarm uitgeschakeld!
+  - delay: 00:00:10
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.living_speaker
+      volume_level: 0.4
+  mode: single
+  
+- alias: 🚨 alarm // alarm bij beweging
+  id: 'f4cc29aa-ef63-411b-a755-343f97a9b721'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    # bewegingssensoren
+    - binary_sensor.berging_bewegingssensor_motion
+    - binary_sensor.garage_bewegingssensor_motion
+    - binary_sensor.keldertrap_bewegingssensor_motion
+    - binary_sensor.trap_boven_bewegingssensor_motion
+    # raam sensoren
+    - binary_sensor.kamer_alunya_raam
+    - binary_sensor.kamer_alunya_schuifraam
+    - binary_sensor.kamer_amilya_raam
+    - binary_sensor.badkamer_raam_kantel
+    - binary_sensor.badkamer_raam_wijd
+    - binary_sensor.berging_raam
+    - binary_sensor.keuken_raam
+    - binary_sensor.living_oprit_raam
+    - binary_sensor.living_tuin_raam
+    - binary_sensor.master_bedroom_raam_kantel
+    - binary_sensor.master_bedroom_raam_wijd
+    - binary_sensor.veranda_schuifraam
+    - binary_sensor.voordeur
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_away
+  action:
+  - service: input_text.set_value
+    data:
+      entity_id: input_text.alarm_trigger_source
+      value: '{{ trigger.to_state.attributes.friendly_name }}'
+  - service: alarm_control_panel.alarm_trigger
+    entity_id: alarm_control_panel.home_alarm
+  mode: single
+
+- alias: 🚨 alarm // melding bij alarm trigger
+  id: '5fef4d2e-d1e1-4247-9c1f-0cb97130c86e'
+  description: NOK
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.home_alarm
+    to: 'triggered'
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      message: TTS
+      tts_text: Alarm in Eikenboslaan!
+      data:
+        notification_icon: mdi:security        
+        color: red
+        actions:
+        - action: URI
+          title: Meer info
+          uri: /lovelace/alarm
+        vibrationPattern: 10, 10, 10, 10, 10, 10, 10
+        channel: alarm
+  - service: notify.bart_phone
+    data:
+      title: '🚨 alarm // Alarm!'
+      message: 'Alarm in Eikenbos: beweging aan {{ states(''input_text.alarm_trigger_source'')}}'
+      data:
+        notification_icon: mdi:security      
+        color: red
+        channel: alarm
+  - service: notify.madouce_phone
+    data:
+      title: '🚨 alarm // Alarm!'
+      message: 'Alarm in Eikenbos: beweging aan {{ states(''input_text.alarm_trigger_source'')}}'
+      data:
+        notification_icon: mdi:security      
+        color: red
+        channel: alarm
+  #  - service: media_player.volume_set
+  #    data:
+  #      entity_id: media_player.nestaudio3875
+  #      volume_level: 0.8
+  #  - service: media_player.play_media
+  #    data:
+  #      entity_id: media_player.living_speaker
+  #      media_content_id: http://192.168.86.101:8123/local/siren.mp3
+  #      media_content_type: music
+  #  - service: media_player.play_media
+  #    data:
+  #      entity_id: media_player.nestaudio3875
+  #      media_content_id: http://192.168.86.101:8123/local/siren.mp3
+  #      media_content_type: music
+  #  - service: media_player.volume_set
+  #    data:
+  #      entity_id: media_player.nestaudio3875
+  #      volume_level: 0.8
+  mode: queued
+
+- alias: set_alarm_arm_away
+  id: 'b2531e01-aa6d-4a32-b6d7-8627e1450c7e'
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: set_alarm_arm_away
+  action:
+  - service: alarm_control_panel.alarm_arm_away
+    data:
+      code: !secret alarm_code
+    target:
+      entity_id: alarm_control_panel.home_alarm
+  mode: single
+  
+

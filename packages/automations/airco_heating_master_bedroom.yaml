@@ -1,7 +1,7 @@
 automation:
 
 
-- alias: '♨️ Airco heating master bedroom: uit bij verlaten huis/timer stop'
+- alias: '♨️ airco heating // master bedroom // uit bij verlaten huis/timer stop'
   id: '6f9dd54d-4168-49d5-8bc4-e9b6d157bb44'
   description: ''
   trigger:
@@ -25,7 +25,7 @@ automation:
       entity_id: timer.master_bedroom_airco_timer
   mode: single
 
-- alias: "♨️ Airco heating master bedroom: Bart en/of Madouce niet thuis = airco master bedroom uit"
+- alias: "♨️ airco heating // master bedroom // Bart en/of Madouce niet thuis = airco master bedroom uit"
   id: 'c31e15a9-6392-4101-945f-d8070319bac3'
   description: ''
   trigger:

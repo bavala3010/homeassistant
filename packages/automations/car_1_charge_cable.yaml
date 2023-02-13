@@ -11,7 +11,7 @@ automation:
 # car charge: check cable and session
 ############################################
 
-- alias: "🔋 charge - om 10u, 21u30 en 22u30 check of laadkabel ingeplugd is voor charge binnen de volgende 10 uren"
+- alias: "🚗 car 1 // 🔋 charge // om 10u, 21u30 en 22u30 check of laadkabel ingeplugd is voor charge binnen de volgende 10 uren"
   id: '995d850b-435f-46a6-9e5a-9ab89701ddf4'
   description: ''
   trigger:
@@ -54,7 +54,7 @@ automation:
         #   uri: /dashboard-car/car-charging        
   mode: single
 
-- alias: "🔋 charge - laadkabel zopas ingeplugd = melding (enkel thuis)"
+- alias: "🚗 car 1 // 🔋 charge // laadkabel zopas ingeplugd = melding (enkel thuis)"
   id: '7d9ccd84-6dd5-4ab3-9595-f31eaff66c87'
   description: ""
   trigger:
@@ -69,7 +69,7 @@ automation:
       entity_id: sensor.charger_status
       state: connected
     - condition: state
-      entity_id: input_boolean.car_charge_mode_net
+      entity_id: input_boolean.car_charge_mode_timer
       state: "on"
   action:
     - service: notify.bart_phone
@@ -108,7 +108,7 @@ automation:
       timestamp_custom("%a %-Hu%M") }}.<br> Er wordt geladen van {{ soc }}% naar
       {{ targetsoc }}% = {{ targetrange }} km.
 
-- alias: "🔋 charge - laadkabel zopas ingeplugd zonder laadmodus = melding (enkel thuis)"
+- alias: "🚗 car 1 // 🔋 charge // laadkabel zopas ingeplugd zonder laadmodus = melding (enkel thuis)"
   id: 'c5e1ffbb-0efe-4802-ab3a-cf38fa31900d'
   description: ""
   trigger:
@@ -123,7 +123,7 @@ automation:
       entity_id: sensor.charger_status
       state: connected
     - condition: state
-      entity_id: input_boolean.car_charge_mode_net
+      entity_id: input_boolean.car_charge_mode_timer
       state: "off"
     - condition: state
       entity_id: input_boolean.car_charge_mode_sun
@@ -159,7 +159,7 @@ automation:
       zon.
 
 
-- alias: "🔋 charge - laadkabel verbonden maar sessie op laadpaal niet gestart (enkel thuis)"
+- alias: "🚗 car 1 // 🔋 charge // laadkabel verbonden maar sessie op laadpaal niet gestart (enkel thuis)"
   id: '8add47e4-3af1-43f9-b9f3-56e39c333e1e'
   description: ''
   trigger:
@@ -197,7 +197,7 @@ automation:
         #   uri: /dashboard-car/car-charging        
   mode: single
 
-- alias: "🔋 charge - laadkabel losgekoppeld = laden stoppen"
+- alias: "🚗 car 1 // 🔋 charge // laadkabel losgekoppeld = laden stoppen"
   id: '13076d4e-aabf-4fa9-9f90-6d1392e29f69'
   description: ''
   trigger:

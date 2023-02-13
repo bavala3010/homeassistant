@@ -15,7 +15,7 @@ automation:
 # - Alunya is in de kamer (of thuis)
 # - kamertemperatuur is lager dan normale temperatuur
 
-- alias: "♨️ Airco heating Alunya: aan volgens schema/te koud/aankomst"
+- alias: "♨️ airco heating // Alunya // aan volgens schema/te koud/aankomst"
   id: '97872037-539d-496f-807e-26248fb4cae2'
   description: ""
   trigger:
@@ -71,8 +71,8 @@ automation:
 # - pp einduur van de timer
 # - wanneer het raam opengaat
 
-- alias: "♨️ Airco heating Alunya: uit volgens volgens schema/verlaten huis/timer stop"
-  id: 'dd0ae256-6054-431e-bb12-506191798b6e'
+- alias: "♨️ airco heating // Alunya // uit volgens volgens schema/verlaten huis/timer stop"
+  id: '1428f07e-3f83-4afe-a24e-fcb00f88ae7e'
   description: ""
   trigger:
     - platform: state
@@ -113,7 +113,7 @@ automation:
 # Handmatige aanpassing
 ########################
 
-- alias: '♨️ Airco heating Alunya: aan gedurende 30 minuten bij hogere gewenste temperatuur'
+- alias: '♨️ airco heating // Alunya // aan gedurende 30 minuten bij hogere gewenste temperatuur'
   id: 'da19679e-5318-4bd2-85f3-1b5153f0ab08'
   description: ''
   trigger:
@@ -135,7 +135,7 @@ automation:
   mode: restart
 
 
-- alias: '♨️ Airco heating Alunya: uit als huidige temperatuur hoger is dan gewenste temperatuur'
+- alias: '♨️ airco heating // Alunya // uit als huidige temperatuur hoger is dan gewenste temperatuur'
   id: 'ce181e9e-3206-404a-8588-46583be2e248'
   description: ''
   trigger:
@@ -164,13 +164,13 @@ automation:
       entity_id: timer.alunya_airco_timer
   mode: single
 
-- alias: '♨️ Airco heating Alunya: uit als verwarming 10 min aan staat buiten de normale uren'
+- alias: '♨️ airco heating // Alunya // uit als verwarming 10 min aan staat buiten de normale uren'
   id: 'ec418031-ba50-4aca-b396-d6c864ddbe59'
   description: ''
   trigger:
   - platform: template
     value_template: >
-      {{ states('climate.amilya_airco') = "verwamen" }}
+      {{ states('climate.amilya_airco') == "verwamen" }}
     for:
       hours: 0
       minutes: 10

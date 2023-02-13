@@ -1,0 +1,13 @@
+automation:
+
+- alias: sensoren Toyota Aygo niet bereikbaar
+  id: '26c3c595-2438-4fae-bf9c-a17f299c5b7c'
+  trigger:
+  - platform: state
+    entity_id: sensor.aygo_x_current_month_statistics
+    to: unavailable
+  condition: []
+  action:
+  - service: script.reload_toyota_aygo
+    data: {}
+  mode: single

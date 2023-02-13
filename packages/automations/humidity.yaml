@@ -18,7 +18,7 @@
 
 automation:
 
-- alias: "💧 Vocht in huis >70%"
+- alias: "💧 humidity // Vocht in huis >70%"
   id: '466f577f-83c4-4954-b17e-335ad7fa83f6'
   description: ''
   trigger:
@@ -47,7 +47,7 @@ automation:
         
   mode: single
   
-- alias: "💧 check vocht % master bedroom om 20u30"
+- alias: "💧 humidity // check vocht % master bedroom om 20u30"
   id: '9309eba6-275f-4a93-953a-908b937358ec'
   description: ''
   trigger:
@@ -64,7 +64,7 @@ automation:
   - service: notify.bart_phone
     data:
       title: Veel vocht in master bedroom. Raam is {{states('sensor.master_bedroom_raam')}}.
-      message: "Vocht is {{states('sensor.master_bedroom_humidity')}}% en {{states('sensor.master_bedroom_thermal_absolutehumidity')}} gram
+      message: "Vocht is {{states('sensor.master_bedroom_humidity')}}% en {{states('sensor.master_bedroom_thermal_absolute_humidity')}} gram
             water /m³.<br>Zet eventueel machine aan."
       data:
         notification_icon: "mdi:water-percent-alert"      
@@ -77,25 +77,25 @@ automation:
           uri: /lucht-vocht-temperatuur/vocht-gram
   mode: single
 
-- alias: "💧 vocht gram in badkamer >14 gram/m³"
+- alias: "💧 humidity // vocht gram in badkamer >14 gram/m³"
   id: 8358a61f-74f1-4045-ba75-563bbca3b4e3
   description: ''
   trigger:
   - platform: numeric_state
-    entity_id: sensor.badkamer_thermal_absolutehumidity
+    entity_id: sensor.badkamer_thermal_absolute_humidity
     above: '14'
   condition: []
   action:
   - repeat:
       while:
       - condition: numeric_state
-        entity_id: sensor.badkamer_thermal_absolutehumidity
+        entity_id: sensor.badkamer_thermal_absolute_humidity
         above: '14'
       sequence:
       - service: notify.bart_phone
         data:
           title: "Veel vocht in badkamer! Raam is {{states('sensor.badkamer_raam')}}."
-          message: "{{states('sensor.badkamer_thermal_absolutehumidity')}} gram
+          message: "{{states('sensor.badkamer_thermal_absolute_humidity')}} gram
             water /m³ en {{states('sensor.badkamer_humidity')}}% vocht."
           data:
             notification_icon: "mdi:water-percent-alert"          
@@ -109,7 +109,7 @@ automation:
       - service: notify.madouce_phone
         data:
           title: "Veel vocht in badkamer! Raam is {{states('sensor.badkamer_raam')}}."
-          message: "{{states('sensor.badkamer_thermal_absolutehumidity')}} gram
+          message: "{{states('sensor.badkamer_thermal_absolute_humidity')}} gram
             water /m³ en {{states('sensor.badkamer_humidity')}}% vocht."
           data:
             notification_icon: "mdi:water-percent-alert"          
@@ -134,7 +134,7 @@ automation:
         tag: badkamer_vocht
   mode: single
   
-- alias: "💧 vocht % in master bedroom >80%"
+- alias: "💧 humidity // vocht % in master bedroom >80%"
   id: 'e1a0cee2-ee78-4e66-a133-9ea28f3a4fb8'
   description: ''
   trigger:
@@ -152,7 +152,7 @@ automation:
       - service: notify.bart_phone
         data:
           title: "Veel vocht in master bedroom! Raam is {{states('sensor.master_bedroom_raam')}}"
-          message: "{{states('sensor.master_bedroom_thermal_absolutehumidity')}} gram
+          message: "{{states('sensor.master_bedroom_thermal_absolute_humidity')}} gram
             water /m³ en {{states('sensor.master_bedroom_humidity')}}% vocht."
           data:
             notification_icon: "mdi:water-percent-alert"          
@@ -166,7 +166,7 @@ automation:
       - service: notify.madouce_phone
         data:
           title: "Veel vocht in master bedroom! Raam is {{states('sensor.master_bedroom_raam')}}"
-          message: "{{states('sensor.master_bedroom_thermal_absolutehumidity')}} gram
+          message: "{{states('sensor.master_bedroom_thermal_absolute_humidity')}} gram
             water /m³ en {{states('sensor.master_bedroom_humidity')}}% vocht."
           data:
             notification_icon: "mdi:water-percent-alert"          
@@ -190,3 +190,83 @@ automation:
       data:
         tag: master_bedroom_vocht
   mode: single
+
+- alias: "💧 humidity // vocht % in kamer Alunya >80%"
+  id: 'f8d84a81-37f6-429b-be52-c772b4f45570'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.kamer_alunya_humidity
+    above: '80'
+  condition: []
+  action:
+  - repeat:
+      while:
+      - condition: numeric_state
+        entity_id: sensor.kamer_alunya_humidity
+        above: '80'
+      sequence:
+      - service: notify.bart_phone
+        data:
+          title: "Veel vocht in kamer Alunya! Raam is {{states('binary_sensor.kamer_alunya_raam')}}"
+          message: "{{states('sensor.kamer_alunya_thermal_absolute_humidity')}} gram
+            water /m³ en {{states('sensor.kamer_alunya_humidity')}}% vocht."
+          data:
+            notification_icon: "mdi:water-percent-alert"          
+            color: "#0E86D4"
+            tag: kamer_alunya_vocht
+            channel: vocht
+            actions:
+            - action: URI
+              title: meer info
+              uri: /lucht-vocht-temperatuur/vocht-gram
+      - service: notify.madouce_phone
+        data:
+          title: "Veel vocht in kamer Alunya! Raam is {{states('binary_sensor.kamer_alunya_raam')}}"
+          message: "{{states('sensor.kamer_alunya_thermal_absolute_humidity')}} gram
+            water /m³ en {{states('sensor.kamer_alunya_humidity')}}% vocht."
+          data:
+            notification_icon: "mdi:water-percent-alert"          
+            color: "#0E86D4"
+            tag: kamer_alunya_vocht
+            channel: vocht
+            actions:
+            - action: URI
+              title: meer info
+              uri: /lucht-vocht-temperatuur/vocht-gram
+      - delay:
+          hours: 1
+  - service: notify.bart_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: kamer_alunya_vocht
+  - service: notify.madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: kamer_alunya_vocht
+  mode: single
+
+
+- alias: 💧 humidity // badkamer ventilator aan (hygrostat)
+  id: 'cf03f8c4-fb46-4583-abc1-cdbba273e6c8'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.bathroom_hygrostat
+    to: 'on'
+  action:
+    - service: switch.turn_on
+      entity_id: switch.toilet_douche_ventilatie
+  mode: single
+
+- alias: badkamer ventilator aan (hygrostat)
+  id: 'ce94d975-1d1c-4ce3-bff1-c49e04cd3fc1'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.bathroom_hygrostat
+    to: 'off'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.toilet_douche_ventilatie
+  mode: single      

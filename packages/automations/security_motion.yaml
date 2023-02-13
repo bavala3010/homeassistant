@@ -1,0 +1,349 @@
+automation:
+
+- alias: 👀 motion // beweging op oprit
+  id: 'c9b40a57-f31d-424f-80fb-c2a8c25c4d21'
+  description: Beweging op oprit = melding op living speaker
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.oprit_bewegingssensor_motion
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - parallel:
+    - service: script.google_home_resume
+      data:
+        action:
+          - service: tts.edge_tts_say
+            data:
+              entity_id: media_player.living_speaker
+              message: Beweging op oprit!
+              options:
+                pitch: +0Hz
+                rate: -10%
+    - service: script.google_home_resume
+      data:
+        action:
+          - service: tts.edge_tts_say
+            data:
+              entity_id: media_player.veranda_speaker
+              message: Beweging op oprit!
+  # - wait_template: ''
+  #   timeout: 00:00:10
+  - service: camera.play_stream
+    data:
+      format: hls
+      media_player: media_player.living_speaker
+    target:
+      entity_id: camera.eikenbos_oprit
+  - wait_template: ''
+    timeout: 00:00:30
+  - service: media_player.media_stop
+    data: {}
+    target:
+      entity_id: media_player.living_speaker  
+  mode: single
+  max_exceeded: silent
+
+- alias: 👀 motion // beweging in tuin en alarm ingeschakeld = melding smartphone
+  id: '28641c60-8f5e-4856-96a9-e69ceb8c9cc8'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.tuin_bewegingssensor_motion
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_away
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_home  
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Beweging in tuin! 
+      message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }}."
+      data:
+        color: red
+        tag: beweging_in_tuin
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.tuin_motion_first_trigger
+    data:
+      timestamp: "{{ now().timestamp() }}"
+  - repeat:
+      while:
+      - condition: state
+        entity_id: binary_sensor.tuin_bewegingssensor_motion
+        state: 'on'
+      sequence:
+      - delay:
+          seconds: 15
+      - service: notify.bart_phone      
+        data:
+          title: Beweging in tuin!
+          message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }} en duurt al {{((as_timestamp(now()) - state_attr('input_datetime.tuin_motion_first_trigger', 'timestamp')) / 60 )| round(1)  }} min."
+          data:
+            color: red
+            tag: beweging_in_tuin
+            alert_once: true
+            actions:
+            - action: tuin_detector_pause_1u
+              title: pauzeer detector 1u
+            - action: tuin_detector_pause_2u
+              title: pauzeer detector 2u
+  - service: notify.bart_phone      
+    data:
+      title: "Geen beweging in tuin meer."
+      message: "Beweging begon om {{ state_attr('input_datetime.tuin_motion_first_trigger', 'timestamp') | timestamp_custom('%H:%M:%S') }} en duurde {{((as_timestamp(now()) - state_attr('input_datetime.tuin_motion_first_trigger', 'timestamp')) / 60 )| round(1) }} min."
+      data:
+        color: red
+        tag: beweging_in_tuin
+        actions:
+        - action: tuin_detector_pause_1u
+          title: pauzeer detector 1u
+        - action: tuin_detector_pause_2u
+          title: pauzeer detector 2u
+  mode: single
+  max_exceeded: silent
+
+- alias: 👀 motion // beweging op terras en alarm ingeschakeld = melding smartphone
+  id: '554afe6c-1cde-4bbd-93e2-dc4851424fc6'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.terras_bewegingssensor_motion
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_away
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_home
+  action:
+  - service: notify.bart_phone
+    data:
+      title: 🚨 alarm // Beweging op terras! 
+      message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }}."
+      data:
+        color: red
+        tag: beweging_op_terras
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.terras_motion_first_trigger
+    data:
+      timestamp: "{{ now().timestamp() }}"        
+  - repeat:
+      while:
+      - condition: state
+        entity_id: binary_sensor.terras_bewegingssensor_motion
+        state: 'on'
+      sequence:
+      - delay:
+          seconds: 15
+      - service: notify.bart_phone      
+        data:
+          title: 🚨 alarm // Beweging op terras!
+          message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }} en duurt al {{((as_timestamp(now()) - state_attr('input_datetime.terras_motion_first_trigger', 'timestamp')) / 60 )| round(1)  }} min."
+          data:
+            color: red
+            tag: beweging_op_terras
+            alert_once: true
+            actions:
+            - action: terras_detector_pause_1u
+              title: pauzeer detector 1u
+            - action: terras_detector_pause_2u
+              title: pauzeer detector 2u
+  - service: notify.bart_phone      
+    data:
+      title: "Geen beweging op terras meer."
+      message: "Beweging begon om {{ state_attr('input_datetime.terras_motion_first_trigger', 'timestamp') | timestamp_custom('%H:%M:%S') }} en duurde {{((as_timestamp(now()) - state_attr('input_datetime.terras_motion_first_trigger', 'timestamp')) / 60 )| round(1) }} min."
+      data:
+        color: red
+        tag: beweging_op_terras
+        actions:
+        - action: terras_detector_pause_1u
+          title: pauzeer detector 1u
+        - action: terras_detector_pause_2u
+          title: pauzeer detector 2u        
+  mode: single
+  max_exceeded: silent  
+
+- alias: 👀 motion // terras_detector_pause_1u
+  id: '6f475717-a594-4024-8407-4c15dd75201d'
+  description: ''
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: terras_detector_pause_1u
+  condition: []    
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.terras_detector_pause
+  - service: switch.turn_off
+    target:
+      entity_id: switch.terras_bewegingssensor_motion
+  - wait_template: ''
+    timeout: 01:00:00
+  - service: switch.turn_on
+    target:
+      entity_id: switch.terras_bewegingssensor_motion
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.terras_detector_pause
+  mode: single
+
+- alias: 👀 motion // terras_detector_pause_2u
+  id: '7a3b00ef-69b3-4f22-97ff-7d2b9068fcae'
+  description: ''
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: terras_detector_pause_2u
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.terras_detector_pause  
+  - service: switch.turn_off
+    target:
+      entity_id: switch.terras_bewegingssensor_motion
+  - wait_template: ''
+    timeout: 02:00:00
+  - service: switch.turn_on
+    target:
+      entity_id: switch.terras_bewegingssensor_motion   
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.terras_detector_pause
+  mode: single      
+
+- alias: 👀 motion // tuin_detector_pause_1u
+  id: '082ea053-c093-45b6-ae7f-c5f5494b474c'
+  description: ''
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: tuin_detector_pause_1u
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.tuin_detector_pause
+  - service: switch.turn_off
+    target:
+      entity_id: switch.tuin_bewegingssensor_motion
+  - wait_template: ''
+    timeout: 01:00:00
+  - service: switch.turn_on
+    target:
+      entity_id: switch.tuin_bewegingssensor_motion  
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.tuin_detector_pause
+  mode: single
+
+- alias: 👀 motion // tuin_detector_pause_2u
+  id: '1130caee-1ecf-4ef9-922c-51e7aaf2f357'
+  description: ''
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: tuin_detector_pause_2u
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.tuin_detector_pause  
+  - service: switch.turn_off
+    target:
+      entity_id: switch.tuin_bewegingssensor_motion
+  - wait_template: ''
+    timeout: 02:00:00
+  - service: switch.turn_on
+    target:
+      entity_id: switch.tuin_bewegingssensor_motion    
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.tuin_detector_pause
+  mode: single
+
+
+
+- alias: "👀 motion // beweging oprit of pad = spot van camera aan"
+  id: 'ec57dfb8-864c-4d8d-8aec-4e9f6c6e56cc'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.voordeur_bewegingssensor_motion
+      to: "on"
+    - platform: state
+      entity_id:
+        - binary_sensor.oprit_bewegingssensor_motion
+      to: "on"      
+  condition:
+    - condition: state
+      entity_id: sun.sun
+      state: below_horizon
+  action:
+    - service: netatmo.set_camera_light
+      data:
+        camera_light_mode: "on"
+      target:
+        entity_id:
+          - light.eikenbos_oprit
+    - wait_template: ''
+      timeout: 00:02:00
+    - service: netatmo.set_camera_light
+      data:
+        camera_light_mode: "off"
+      target:
+        entity_id:
+          - light.eikenbos_oprit           
+  mode: single
+
+
+- alias: "👀 motion // Persoon op oprit gedetecteerd door camera"
+  id: 'e49a9511-ca85-4cdb-874a-7f5e5de8e86a'
+  description: ''
+  trigger:
+    - event_type: netatmo_event
+      platform: event
+      event_data:
+        type: human # other possible types: animal, vehicle
+  action:
+    - service: notify.bart_phone  
+      data_template:
+        title: Persoon op oprit
+        message: >
+          Er is een persoon op de oprit
+        # {{ trigger.event.data["data"]["message"] }}
+        # te {{ trigger.event.data["data"]["home_name"] }} 
+        # url {{ trigger.event.data["data"]["snapshot_url"] }}
+        # om {{now().strftime("%X op %d %m %Y")}}
+
+
+- alias: "👀 motion // Kat op oprit gedetecteerd door camera"
+  id: '5f635c15-2417-4165-bab8-1aab6449fc2f'
+  description: ''
+  trigger:
+    - event_type: netatmo_event
+      platform: event
+      event_data:
+        type: animal # other possible types: human, vehicle
+  action:
+    - service: notify.bart_phone  
+      data_template:
+        title: Kat op oprit
+        message: >
+          Er is een kat op de oprit

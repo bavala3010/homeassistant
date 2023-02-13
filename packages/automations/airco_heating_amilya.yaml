@@ -15,7 +15,7 @@ automation:
 # - Amilya is in de kamer (of thuis)
 # - kamertemperatuur is lager dan normale temperatuur
 
-- alias: "♨️ Airco heating Amilya: aan volgens schema/te koud/aankomst"
+- alias: "♨️ airco heating // Amilya // aan volgens schema/te koud/aankomst"
   id: 'b0416de4-e1a6-440f-857d-9371d5ddc258'
   description: ""
   trigger:
@@ -71,7 +71,7 @@ automation:
 # - op einduur van de timer
 # - wanneer het raam opengaat
 
-- alias: "♨️ Airco heating Amilya: uit volgens volgens schema/verlaten huis/timer stop"
+- alias: "♨️ airco heating // Amilya // uit volgens volgens schema/verlaten huis/timer stop"
   id: '7163ee3e-c1ee-47db-ac1a-f93c58ccee76'
   description: ""
   trigger:
@@ -113,7 +113,7 @@ automation:
 # Handmatige aanpassing
 ########################
 
-- alias: '♨️ Airco heating Amilya: aan gedurende 30 minuten bij hogere gewenste temperatuur'
+- alias: '♨️ airco heating // Amilya //: aan gedurende 30 minuten bij hogere gewenste temperatuur'
   id: 'b2300335-cc58-49e3-a3ca-51f184ef4133'
   description: ''
   trigger:
@@ -138,7 +138,7 @@ automation:
   mode: restart
 
 
-- alias: '♨️ Airco heating Amilya: uit als huidige temperatuur hoger is dan gewenste temperatuur'
+- alias: '♨️ airco heating // Amilya // uit als huidige temperatuur hoger is dan gewenste temperatuur'
   id: 'd66d9475-6fb5-4c28-b05f-dec14cc883b7'
   description: ''
   trigger:
@@ -167,13 +167,13 @@ automation:
       entity_id: timer.amilya_airco_timer          
   mode: single
 
-- alias: '♨️ Airco heating Amilya: uit als verwarming 10 min aan staat buiten de normale uren'
+- alias: '♨️ airco heating // Amilya // uit als verwarming 10 min aan staat buiten de normale uren'
   id: '2a22e365-aebc-41ab-87dc-3f461cab1d4d'
   description: ''
   trigger:
   - platform: template
     value_template: >
-      {{ states('climate.amilya_airco') = "verwamen" }}
+      {{ states('climate.amilya_airco') == "verwamen" }}
     for:
       hours: 0
       minutes: 10

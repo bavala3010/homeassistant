@@ -110,14 +110,14 @@ automation:
     - service: notify.bart_phone
       data:
         title: Droogkast
-        message: "Haal de was uit de droogkast. De droogkast was klaar om {{ states('input_datetime.dryer_stop_time') }}."
+        message: "Haal de was uit de droogkast. De droogkast was klaar om {{ states('input_datetime.dryer_stop_time') | timestamp_custom('%d-%m-%y %H:%M') }}."
         data:
           tag: droogkast        
           notification_icon: "mdi:tumble-dryer"
     - service: notify.madouce_phone
       data:
         title: Droogkast
-        message: "Haal de was uit de droogkast. De droogkast was klaar om {{ states('input_datetime.dryer_stop_time') }}."
+        message: "Haal de was uit de droogkast. De droogkast was klaar om {{ states('input_datetime.dryer_stop_time') | as_timestamp| timestamp_custom('%d/%-m %H:%M') }}."
         data:
           tag: droogkast        
           notification_icon: "mdi:tumble-dryer"          

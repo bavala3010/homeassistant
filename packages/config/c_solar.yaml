@@ -1,5 +1,13 @@
 
 sensor:
+
+- platform: average
+  name: "7-daags gemiddelde verwachte zonneopbrengst"
+  duration:
+    days: 7
+  entities:
+    - sensor.solar_sim_energy_today
+
 - platform: template
   sensors:
     solar_power:
@@ -210,6 +218,10 @@ utility_meter:
     source: sensor.net_injection_energy_total
     cycle: daily
 
+##############################################
+# sensor.net_energy wordt niet gebruikt
+##############################################
+
   net_energy_daily:
     unique_id: '003c3f3c-5a3e-495b-81d6-2d74ea356b57'
     source: sensor.net_energy
@@ -224,6 +236,9 @@ utility_meter:
     unique_id: '4b4078f6-b1e6-4f73-9ac7-3968369ddeae'  
     source: sensor.net_energy
     cycle: yearly
+
+##############################################
+
 
   solar_energy_daily:
     unique_id: 'fde4c082-6b5d-43c6-9988-c7f3d25b4152'

@@ -1,0 +1,11 @@
+ring_iphone_bart:
+  sequence:
+    - service: notify.bart_iphone
+      data:
+        message: "Wie zoekt, die vindt."
+        data:
+          push:
+            sound:
+              name: default
+              critical: 1
+              volume: 1.0

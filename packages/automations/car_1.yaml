@@ -14,7 +14,7 @@ automation:
 # Status auto verversen
 #########################   
 
-- alias: Bart 3 km van thuis = verversen status auto
+- alias: 🚗 car 1 // Bart 3 km van thuis = verversen status auto
   id: '37cfe751-fb7d-4f9b-9a1e-772eeba15f64'
   trigger:
   - platform: numeric_state
@@ -30,7 +30,7 @@ automation:
       vin: WAUZZZGE6MB019131
   mode: single
   
-- alias: Madouce 3 km van thuis = verversen status auto
+- alias: 🚗 car 1 // Madouce 3 km van thuis = verversen status auto
   id: '533ee396-e37b-450b-a5e6-c981a9696b31'
   trigger:
   - platform: numeric_state
@@ -46,7 +46,7 @@ automation:
       vin: WAUZZZGE6MB019131
   mode: single  
   
-- alias: Car sim km veranderd
+- alias: 🚗 car 1 // 🔋 charge // Car sim km veranderd
   id: '0813a89b-64b9-4fa8-934e-7e4ee91ee033'
   description: ''
   trigger:
@@ -65,7 +65,7 @@ automation:
     timeout: '00:00:02'
   mode: single
 
-- alias: Car sim batterij veranderd
+- alias: 🚗 car 1 // 🔋 charge // car sim batterij veranderd
   id: '85f8fbeb-4132-41f4-ad9b-5662d75946e2'
   description: ''
   trigger:
@@ -88,7 +88,7 @@ automation:
 # Reistijd
 ######################################
 
-- alias: Meld reistijd naar Toyota Evere (bij ochtendwekker + 7u15 en 7u45)
+- alias: 🚗 car 1 // travel time // Meld reistijd naar Toyota Evere (bij ochtendwekker + 7u15 en 7u45)
   id: '0195b18e-5fd6-48a8-ae22-ca0e692fde6c'
   description: ''
   trigger:
@@ -112,7 +112,7 @@ automation:
         tag: auto_laden
   mode: single
   
-- alias: Meld reistijd naar Toyota Diest (bij ochtendwekker + 7u15 en 7u45)
+- alias: 🚗 car 1 // travel time // Meld reistijd naar Toyota Diest (bij ochtendwekker + 7u15 en 7u45)
   id: '5d976c12-4cdf-4534-821f-332dc180e65d'
   description: ''
   trigger:
@@ -141,7 +141,7 @@ automation:
 # A Better Route Planner (ABPR)
 ######################################
 
-- alias: Stuur auto info naar A Better Route Planner
+- alias: 🚗 car 1 // Stuur auto info naar A Better Route Planner
   id: '3301406f-a0d7-4ef8-b0dc-3edfa4aad868'
   trigger:
   # at every change of the SOC

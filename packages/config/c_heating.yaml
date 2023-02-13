@@ -35,6 +35,12 @@ input_boolean:
     name: badkamer 18 graden
     icon: mdi:heater
 
+input_datetime:
+  badkamer_18graden_starttime:
+    name: badkamer 18 graden start
+    has_date: true
+    has_time: true
+
 sensor:
   - platform: statistics
     name: "living gem. verwarming laatste 24 uren"

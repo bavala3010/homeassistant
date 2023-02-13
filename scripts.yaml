@@ -164,3 +164,9 @@ nieuw_script:
     target:
       entity_id: light.living_links_1
   mode: single
+mobile_vikings_verversen:
+  alias: mobile vikings verversen
+  sequence:
+  - service: shell_command.shell_mobile_vikings
+    data: {}
+  mode: single

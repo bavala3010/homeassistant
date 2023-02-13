@@ -1,0 +1,64 @@
+automation:
+
+- alias: 🚗 car 1 // Waze // Start Waze naar Toyota Evere
+  id: '0bcdf52c-712b-44b0-a3be-cd93afb95bc7'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.madouce_phone_connected_to_car
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: template
+    value_template: >
+      {% set car_use_day = 'input_select.car_use_day_' ~ now().isoweekday() %}
+      {%if states(car_use_day) == "Toyota Evere"%} true {% endif %}
+  - condition: time
+    after: '07:30:00'
+    before: '13:00:00'
+    weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri      
+  action:
+  - service: notify.madouce_phone
+    data:
+      message: "command_activity"
+      data:
+        intent_package_name: "com.waze"
+        intent_action: "android.intent.action.VIEW"
+        intent_uri: "https://waze.com/ul?favorite=Work&navigate=yes"
+
+
+- alias: 🚗 car 1 // Waze // Start Waze naar Toyota Diest
+  id: '83b8431f-02e6-45d1-a770-579f1b6ad5fc'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.madouce_phone_connected_to_car
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: time
+    after: '07:30:00'
+    before: '13:00:00'
+    weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri  
+  - condition: template
+    value_template: >
+      {% set car_use_day = 'input_select.car_use_day_' ~ now().isoweekday() %}
+      {%if states(car_use_day) == "Toyota Diest"%} true {% endif %}
+  action:
+  - service: notify.madouce_phone
+    data:
+      message: "command_activity"
+      data:
+        intent_package_name: "com.waze"
+        intent_action: "android.intent.action.VIEW"
+        intent_uri: "https://waze.com/ul?favorite=Toyota%20Diest&navigate=yes"

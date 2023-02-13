@@ -5,6 +5,7 @@ sensor:
     name: infraroodpaneel energieverbruik
     unit_prefix: k
     round: 2
+    method: left
 
 utility_meter:
   infrared_panel_energy_daily:

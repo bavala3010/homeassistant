@@ -39,7 +39,7 @@ automation:
     at: "20:00"
   condition:
   - condition: state
-    entity_id: switch.bart_laptop_fortis_brum05007458
+    entity_id: switch.bart_laptop_brum05007458
     state: 'on'
   action:
   - service: notify.bart_phone

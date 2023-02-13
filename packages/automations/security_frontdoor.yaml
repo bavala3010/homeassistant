@@ -11,7 +11,7 @@
 
 automation:
 
-- alias: om 22u30, 23u00 en 24u00 doe voordeur op slot
+- alias: security // om 22u30, 23u00 en 24u00 doe voordeur op slot
   id: '35bab60f-cbaf-4969-839c-46a117a46e50'
   description: ""
   mode: single
@@ -21,7 +21,9 @@ automation:
     - platform: time
       at: "23:00:00"
     - platform: time
-      at: "00:00:00"            
+      at: "00:00:00"
+    - platform: time
+      at: "01:00:00"                 
   condition: []
   action:
     - service: lock.lock
@@ -29,7 +31,7 @@ automation:
       target:
         entity_id: lock.voordeur_nuki
 
-- alias: Niemand meer thuis = doe voordeur op slot
+- alias: security // Niemand meer thuis = doe voordeur op slot
   id: '97b2e13f-ab8c-4346-983a-970cfacb4c4e'
   description: ''
   trigger:
@@ -59,7 +61,7 @@ automation:
   mode: single
 
         
-- alias: kind(eren) alleen thuis = doe voordeur op slot
+- alias: security // kind(eren) alleen thuis = doe voordeur op slot
   id: '70541658-6b67-46f1-8e90-64a0600c646d'
   description: ''
   trigger:
@@ -99,7 +101,7 @@ automation:
         color: red
   mode: single
   
-- alias: Bart alleen thuis = doe voordeur op slot
+- alias: security // Bart alleen thuis = doe voordeur op slot
   id: '77234403-213e-41a5-ad01-a159f3b0978c'
   description: ''
   trigger:
@@ -122,7 +124,7 @@ automation:
         color: red
   mode: single
 
-- alias: Madouce alleen thuis = doe voordeur op slot
+- alias: security // Madouce alleen thuis = doe voordeur op slot
   id: 'eb26f9a9-6603-4ab5-a224-e845e45790fd'
   description: ''
   trigger:
@@ -143,4 +145,81 @@ automation:
       message: Madouce, je bent alleen thuis.
       data:
         color: red
+  mode: single
+
+- alias: security // Voordeur staat lang open
+  id: 'c1657da2-d8b2-4c18-a2c4-ae5c3c11b85e'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.voordeur
+    from: 'off'
+    to: 'on'
+    for: '00:03:00'
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Voordeur staat al lang open! 
+      message: "Staat al {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.voordeur.last_changed)) / 60 )| int() }} minuten open."
+      data:
+        color: red
+        tag: voordeur_staat_open
+  - repeat:
+      while:
+      - condition: state
+        entity_id: binary_sensor.voordeur
+        state: 'on'
+      sequence:
+      - delay:
+          minutes: 1
+      - service: notify.bart_phone      
+        data:
+          title: Voordeur staat al lang open!
+          message: >-
+            Staat al {{ ((as_timestamp(now()) - as_timestamp(state_attr('automation.voordeur_staat_lang_open', 'last_triggered') )) / 60 )| int() }} minuten open.
+          data:
+            color: red
+            tag: voordeur_staat_open
+            alert_once: true
+  - service: notify.bart_phone
+    data:
+      title: "Voordeur is nu terug dicht."
+      # + 3 = automation is triggered when the door is already 3 minutes open
+      message: >-
+        Stond {{ (((as_timestamp(now()) - as_timestamp(state_attr('automation.voordeur_staat_lang_open', 'last_triggered') )) / 60 ) + 3) | int() }} minuten open.
+      data:
+        tag: voordeur_staat_open
+  mode: single
+
+- alias: security // Niemand meer thuis en Bart in auto = check voordeur
+  id: '2a2c5a0a-36e5-45c8-bc20-a18d20fc4388'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.gezin
+    to: not_home
+  condition:
+  - condition: state
+    entity_id: lock.voordeur_nuki
+    state: 'on'
+  - condition: state
+    entity_id: binary_sensor.bart_phone_connected_to_car_1
+    state: 'on'    
+  action:
+  - service: notify.bart_phone
+    data:
+      message: TTS
+      data:
+        tts_text: De voordeur is niet op slot. Ik zal ze nu vergrendelen.
+        color: red
+        actions:
+        - action: URI
+          title: Meer info
+          uri: /lovelace/alarm
+        vibrationPattern: 10, 10, 10, 10, 10, 10, 10
+        media_stream: alarm_stream
+  - service: lock.lock
+    target:
+      entity_id: lock.voordeur_nuki
   mode: single
