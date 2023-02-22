@@ -6,7 +6,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: group.gezin
+    entity_id: group.bart_madouce
     to: not_home
   - platform: state
     entity_id: binary_sensor.master_bedroom_raam_kantel

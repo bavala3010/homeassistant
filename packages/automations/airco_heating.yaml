@@ -1,6 +1,6 @@
 automation:
 
-- alias: "♨️ airco heating // slaapkamers // verwarm van 21u45 tot 22u15" 
+- alias: "♨️ airco heating // master bedroom // verwarm van 21u45 tot 22u15" 
   id: '90ff19bc-3090-4950-a9d2-e2263c9c37da'
   description: ''
   trigger:
@@ -26,6 +26,17 @@ automation:
         - delay:
             seconds: 2
         - service: script.master_bedroom_airco_start
+          data: {}
+
+
+- alias: "♨️ airco heating // Amilya // verwarm van 21u45 tot 22u15" 
+  id: '7c8962bd-a60f-4038-b578-3a750e0619ae'
+  description: ''
+  trigger:
+  - platform: time
+    at: '21:45:00'
+  condition: []
+  action:
     - if:
         - condition: state
           entity_id: person.amilya
@@ -44,6 +55,17 @@ automation:
         - delay:
             seconds: 2
         - service: script.amilya_airco_start
+          data: {}        
+
+
+- alias: "♨️ airco heating // Alunya // verwarm van 21u45 tot 22u15" 
+  id: '616e5f62-43b2-4737-80b9-376214057555'
+  description: ''
+  trigger:
+  - platform: time
+    at: '21:45:00'
+  condition: []
+  action:
     - if:
         - condition: state
           entity_id: person.alunya
@@ -67,3 +89,4 @@ automation:
         - delay:
             seconds: 2
         - service: script.alunya_airco_start
+          data: {}        

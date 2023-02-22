@@ -89,7 +89,7 @@ automation:
     data: {}
   mode: single
 
-- alias: "🚗 car 1 // 🔋 charge // direct modus // maximum netverbruik veranderd"
+- alias: "🚗 car 1 // 🔋 charge // direct modus // maximum netverbruik is veranderd"
   id: '6a180451-efc5-4e27-9e7e-f2e152d3ec31'
   trigger:
   - platform: state

@@ -1,0 +1,20 @@
+# Dit werkt nog niet.
+# Geprobeerd om te configureren op 19/02/2023
+# info: https://github.com/home-assistant/core/issues/59093
+
+
+switch:
+  - platform: command_line
+    switches:
+      pihole_switch:
+        command_on: "curl -X GET 'http://192.168.86.101:8081/admin/api.php?enable&auth='"
+        command_off: "curl -X GET 'http://192.168.86.101:8081/admin/api.php?disable=3600&auth='"
+        command_state: "curl -X GET 'http://192.168.86.101:8081/admin/api.php?status'"
+        value_template: "{{ value_json.status == 'enabled' }}"
+        friendly_name: Pi-Hole in-/uitschakelen
+
+sensor:
+  - platform: command_line
+    name: Pi-Hole status
+    command: "curl -X GET 'http://192.168.86.101:8081/admin/api.php?status'"
+    value_template: "{{ value_json.status == 'enabled' }}"        

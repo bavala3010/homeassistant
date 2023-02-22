@@ -1,0 +1,23 @@
+sensor:
+  - platform: rest
+    name: mazoutprijs
+    resource: https://www.mazoutvoordeel.be/nl/ajax/graphic-prices/
+    value_template: "{{value_json[-1:][0].y}}"
+    scan_interval: 3600
+    device_class: monetary
+    unit_of_measurement: "€/l"
+    json_attributes_path: "$[-1:]"
+    json_attributes:
+      - label
+      - y
+    state_class: measurement
+
+
+multiscrape:
+  - name: mazoutprijs_morgen_2000l
+    resource: https://www.mazout-on-line.be/nl/
+    scan_interval: 3600
+    sensor:
+      - name: mazoutprijs_morgen_2000l
+        select: '<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5"><b data-icon="s"></b>0,9484€</div>'
+

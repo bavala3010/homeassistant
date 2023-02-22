@@ -108,12 +108,43 @@ automation:
         entity_id: timer.amilya_airco_timer
   mode: single
 
+- alias: "♨️ airco heating // Amilya // 's nachts niet meer dan 18 graden"
+  id: '5faa266c-6f69-4e3c-919f-d95201ef89a4'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: input_number.amilya_airco_target_temperature
+    above: 18
+  condition:
+  - condition: time
+    after: '23:00:00'
+    before: 06:15:00
+  - condition: template
+    value_template: "{{trigger.to_state.context.user_id == '7678e64f5e984bc2aac5d1d92cc318eb'}}"
+  action:
+  - service: notify.amilya_phone
+    data:
+      title: De temperatuur wordt 's nachts beperkt.
+      message: '{{ states(''input_number.amilya_airco_target_temperature'') }} graden
+        is niet mogelijk.'
+  - service: notify.bart_phone
+    data:
+      title: De temperatuur wordt 's nachts beperkt.
+      message: >
+        Amilya probeerde temperatuur op {{ states('input_number.amilya_airco_target_temperature')}} graden in te stellen.
+        De kamertemperatuur was {{ states('sensor.kamer_amilya_temperature') }} graden.
+  - service: input_number.set_value
+    data:
+      value: 14
+    target:
+      entity_id: input_number.amilya_airco_target_temperature
+  mode: single
 
 ########################
 # Handmatige aanpassing
 ########################
 
-- alias: '♨️ airco heating // Amilya //: aan gedurende 30 minuten bij hogere gewenste temperatuur'
+- alias: '♨️ airco heating // Amilya // aan gedurende 30 minuten bij hogere gewenste temperatuur'
   id: 'b2300335-cc58-49e3-a3ca-51f184ef4133'
   description: ''
   trigger:

@@ -30,7 +30,7 @@ automation:
     state: 'disconnected'
   # voorwaarde: als start tijd < nu + 10 uren (dus starttijd voor 20u)
   - condition: template
-    value_template: "{% if as_timestamp(states('sensor.car_charge_start_time')) | timestamp_custom('%Y-%m-%d %H:%M', false) < ((as_timestamp(now())  + (10 * 60 * 60)) | timestamp_custom('%Y-%m-%d %H:%M')) %}true{% endif %}"
+    value_template: "{% if as_timestamp(states('sensor.car_charge_stoptimer_starttime')) | timestamp_custom('%Y-%m-%d %H:%M', false) < ((as_timestamp(now())  + (10 * 60 * 60)) | timestamp_custom('%Y-%m-%d %H:%M')) %}true{% endif %}"
   # voorwaarde: enkel als SOC < gewenst laaddoel
   - condition: template
     value_template: "{{ states('sensor.car_1_soc')| int(2) < (states('input_number.car_charge_target_percentage') | int(2)) }}"
@@ -42,7 +42,7 @@ automation:
         {% set soc = states('sensor.car_1_soc') | round(default=0) %}
         {% set targetsoc = states('input_number.car_charge_target_percentage') | round(default=0) %}
         {% set targetrange = states('input_number.car_charge_target_range') | round(default=0) %}
-        De auto zou moeten laden op {{ as_timestamp(states('sensor.car_charge_start_time')) | timestamp_custom('%a %-Hu%M', false) }} maar de kabel steekt niet in.
+        De auto zou moeten laden op {{ as_timestamp(states('sensor.car_charge_stoptimer_starttime')) | timestamp_custom('%a %-Hu%M', false) }} maar de kabel steekt niet in.
         Huidige lading is {{ soc }}%. Laaddoel is {{ targetsoc }}% = {{ targetrange }} km.
       data:
         tag: car_charging
@@ -69,7 +69,7 @@ automation:
       entity_id: sensor.charger_status
       state: connected
     - condition: state
-      entity_id: input_boolean.car_charge_mode_timer
+      entity_id: input_boolean.car_charge_mode_stoptimer
       state: "on"
   action:
     - service: notify.bart_phone
@@ -102,7 +102,7 @@ automation:
       targetsoc = states('input_number.car_charge_target_percentage') |
       round(default=0) %} {% set targetrange =
       states('input_number.car_charge_target_range') | round(default=0) %} Laden
-      met timer van {{ as_timestamp(states('sensor.car_charge_start_time')) |
+      met timer van {{ as_timestamp(states('sensor.car_charge_stoptimer_starttime')) |
       timestamp_custom('%a %-Hu%M', false)}} tot {{
       state_attr('input_datetime.car_charge_target_time', 'timestamp') |
       timestamp_custom("%a %-Hu%M") }}.<br> Er wordt geladen van {{ soc }}% naar
@@ -123,7 +123,7 @@ automation:
       entity_id: sensor.charger_status
       state: connected
     - condition: state
-      entity_id: input_boolean.car_charge_mode_timer
+      entity_id: input_boolean.car_charge_mode_stoptimer
       state: "off"
     - condition: state
       entity_id: input_boolean.car_charge_mode_sun

@@ -33,14 +33,14 @@ sensor:
   - platform: integration
     source: sensor.car_net_wattmeter
     name: car charge net energy
-    method: trapezoidal  # left method does not give the correct kWH
+    method: left
     unit_prefix: k
     unit_time: h
 
   - platform: integration
     source: sensor.car_solar_wattmeter
     name: car charge solar energy
-    method: trapezoidal  # left method does not give the correct kWH
+    method: left
     unit_prefix: k
     unit_time: h
 

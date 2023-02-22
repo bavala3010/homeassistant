@@ -124,22 +124,6 @@
       title: Fout bij laden auto
       message: Status van auto is in "error"
   mode: single
-- id: '1663095466898'
-  alias: Bart en/of Madouce niet thuis = airco master bedroom uit
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - group.bart_madouce
-    to: not_home
-  condition: []
-  action:
-  - service: climate.set_hvac_mode
-    data:
-      hvac_mode: 'off'
-    target:
-      device_id: 64296bd295e4506b8a3ec42c8aae7e58
-  mode: single
 - id: '1664611616733'
   alias: Forceer update huisverbruik-meter bij aanpassing zonneproductie-meter
   description: ''
@@ -288,72 +272,6 @@
           }}
 
           '
-  mode: single
-- id: '1666291531081'
-  alias: 'Alunya airco heating: ''s nachts niet meer dan 18 graden'
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: input_number.alunya_airco_target_temperature
-    above: 18
-  condition:
-  - condition: time
-    after: '23:00:00'
-    before: 05:30:00
-  - condition: template
-    value_template: '{{trigger.to_state.context.user_id == ''7e508a5d2a5c42029f3d9238f0cc4648''
-      }}
-
-      '
-  action:
-  - service: notify.alunya_phone
-    data:
-      title: De temperatuur wordt 's nachts beperkt.
-      message: '{{ states(''input_number.alunya_airco_target_temperature'') }} graden
-        is niet mogelijk.'
-  - service: notify.bart_phone
-    data:
-      title: De temperatuur wordt 's nachts beperkt.
-      message: Alunya probeerde temperatuur op {{ states('input_number.alunya_airco_target_temperature')
-        }} graden in te stellen.
-  - service: input_number.set_value
-    data:
-      value: 14
-    target:
-      entity_id: input_number.alunya_airco_target_temperature
-  mode: single
-- id: '1666293716042'
-  alias: 'Amilya airco heating: ''s nachts niet meer dan 18 graden'
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: input_number.amilya_airco_target_temperature
-    above: 18
-  condition:
-  - condition: time
-    after: '23:00:00'
-    before: 06:00:00
-  - condition: template
-    value_template: '{{trigger.to_state.context.user_id == ''7678e64f5e984bc2aac5d1d92cc318eb''
-      }}
-
-      '
-  action:
-  - service: notify.amilya_phone
-    data:
-      title: De temperatuur wordt 's nachts beperkt.
-      message: '{{ states(''input_number.amilya_airco_target_temperature'') }} graden
-        is niet mogelijk.'
-  - service: notify.bart_phone
-    data:
-      title: De temperatuur wordt 's nachts beperkt.
-      message: Amilya probeerde temperatuur op {{ states('input_number.amilya_airco_target_temperature')
-        }} graden in te stellen.
-  - service: input_number.set_value
-    data:
-      value: 14
-    target:
-      entity_id: input_number.amilya_airco_target_temperature
   mode: single
 - id: '1666509207517'
   alias: 'log  in Google Sheets: licht douche aan'
@@ -670,15 +588,4 @@
       data:
         tag: peak
         color: red
-  mode: single
-- id: '1673818491749'
-  alias: 'badkamer 18 graden starten via timer '
-  description: ''
-  trigger:
-  - platform: time
-    at: input_datetime.badkamer_18graden_starttime
-  condition: []
-  action:
-  - service: script.badkamer_chauffage_18_graden
-    data: {}
   mode: single

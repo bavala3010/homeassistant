@@ -109,6 +109,38 @@ automation:
   mode: single
 
 
+- alias: "♨️ airco heating // Alunya // 's nachts niet meer dan 18 graden"
+  id: '5c6555ab-8472-4c68-8c14-459d96d9e4f8'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: input_number.alunya_airco_target_temperature
+    above: 18
+  condition:
+  - condition: time
+    after: '23:00:00'
+    before: 06:15:00
+  - condition: template
+    value_template: "{{trigger.to_state.context.user_id == '7e508a5d2a5c42029f3d9238f0cc4648'}}"
+  action:
+  - service: notify.alunya_phone
+    data:
+      title: De temperatuur wordt 's nachts beperkt.
+      message: "{{ states('input_number.alunya_airco_target_temperature') }} graden is niet mogelijk."
+  - service: notify.bart_phone
+    data:
+      title: De temperatuur wordt 's nachts beperkt.
+      message: >
+        Alunya probeerde temperatuur op {{ states('input_number.alunya_airco_target_temperature') }} graden in te stellen.
+        De kamertemperatuur was {{ states('sensor.kamer_alunya_temperature') }} graden.
+  - service: input_number.set_value
+    data:
+      value: 14
+    target:
+      entity_id: input_number.alunya_airco_target_temperature
+  mode: single
+
+
 ########################
 # Handmatige aanpassing
 ########################

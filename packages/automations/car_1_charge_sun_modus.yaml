@@ -10,7 +10,7 @@ automation:
 # car charge: sun mode
 ######################################
 
-- alias: "🚗 car 1 // 🔋 charge // mode sun // start - check elke minuut of er meer dan 2 kW injectie is"
+- alias: "🚗 car 1 // 🔋 charge // mode sun // start - check elke minuut of er de gevraagde injectie is"
   id: 'fff013ea-12e1-427f-8283-617a0f2e94ad'
   description: ''
   trigger:
@@ -18,10 +18,10 @@ automation:
     minutes: /1
   condition:
   # minimum charge for the car is 1,3 kW
-  # only start when more than 2 kW injection
+  # only start when the wattmater is below the number defined in input_number.car_charge_sun_start_wattmeter
   - condition: numeric_state
     entity_id: sensor.net_power
-    below: '-2000'
+    below: input_number.car_charge_sun_start_wattmeter
   # only if charger cable is connected to home charger or in status "charging"
   - condition: or
     conditions:
@@ -55,7 +55,16 @@ automation:
     target:
       entity_id: input_number.car_charger_watt
     data:
-      value: "{{ (( states('sensor.net_power') | float(default=0)  / 1000 ) | abs ) - 1  }}"
+      value: >-
+        {% set charger = states('sensor.charger_real_power') | float(default=0) / 1000 %}        
+        {% set maxpower = states('input_number.car_charge_net_max_power') | float(default=0) %}
+        {% set net = states('sensor.net_power') | float(default=0) %}
+        {% set adjustment = [-net, maxpower] | max %}
+        {% if net < 0 %}
+        {{ charger +  (-net / 1000) }}
+        {% elif net >= 0 %}
+        {{ ([charger - net, maxpower ] | max ) / 1000 }}
+        {% endif %}
   - wait_template: ''
     timeout: '00:00:05'
   - service: script.charger_define_phase_1_or_3_based_on_watt
@@ -77,7 +86,7 @@ automation:
           uri: /dashboard-car/car-charging
   mode: single   
 
-- alias: "🚗 car 1 // 🔋 charge // mode sun //  bezig - check elke minuut tijdens zonneladen = meer dan 1.3 W voor lader"
+- alias: "🚗 car 1 // 🔋 charge // mode sun //  bezig - check elke minuut tijdens zonneladen = minder dan 1,5 kW netverbruik = verder met laden"
   id: '258101bc-919c-4944-96e4-bb290cbe8922'
   trigger:
   - platform: time_pattern
@@ -133,7 +142,7 @@ automation:
     - service: script.charger_define_and_write_register_based_on_ampere
   mode: single    
 
-- alias: "🚗 car 1 // 🔋 charge // mode sun // bezig - check elke minuut tijdens zonneladen = minder dan 1.3 kW beschikbaar voor lader = stoppen met laden"
+- alias: "🚗 car 1 // 🔋 charge // mode sun // bezig - check elke minuut tijdens zonneladen = meer dan 1.5 kW netverbruik = stoppen met laden"
   id: 'e2e2dc57-1a3d-4a19-ba4e-7a850b98ab3c'
   trigger:
   - platform: time_pattern

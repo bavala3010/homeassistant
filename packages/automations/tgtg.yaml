@@ -31,32 +31,35 @@ automation:
           data:
             title: "{{ trigger.to_state.name }}"
             message: >
-              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
-              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['item_price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['pickup_end'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
             data:
               tag: TGTG-{{ trigger.entity_id }}
               channel: TGTG
               ttl: 0
               priority: high
               notification_icon: mdi:baguette
-              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"
+              clickAction: "{{ trigger.to_state.attributes['item_url'] }}"
         - service: notify.madouce_phone
           data:
             title: "{{ trigger.to_state.name }}"
             message: >
-              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
-              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['item_price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['pickup_end'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
             data:
               tag: TGTG-{{ trigger.entity_id }}
               channel: TGTG
               ttl: 0
               priority: high
               notification_icon: mdi:baguette
-              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"
+              clickAction: "{{ trigger.to_state.attributes['item_url'] }}"
         - if:
             - condition: state
               entity_id: person.madouce
               state: home
+            - condition: time
+              after: "10:00:00"
+              before: "22:00:00"
             - condition: template
               value_template: >
                 {% set loc = states('person.madouce') %}
@@ -104,32 +107,35 @@ automation:
           data:
             title: "{{ trigger.to_state.name }}"
             message: >
-              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
-              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['item_price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['pickup_end'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
             data:
               tag: TGTG-{{ trigger.entity_id }}
               channel: TGTG
               ttl: 0
               priority: high
               notification_icon: mdi:cake-variant
-              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"
+              clickAction: "{{ trigger.to_state.attributes['item_url'] }}"
         - service: notify.madouce_phone
           data:
             title: "{{ trigger.to_state.name }}"
             message: >
-              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
-              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['item_price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['pickup_end'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
             data:
               tag: TGTG-{{ trigger.entity_id }}
               channel: TGTG
               ttl: 0
               priority: high
               notification_icon: mdi:cake-variant
-              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"
+              clickAction: "{{ trigger.to_state.attributes['item_url'] }}"
         - if:
             - condition: state
               entity_id: person.madouce
               state: home
+            - condition: time
+              after: "10:00:00"
+              before: "22:00:00"              
             - condition: template
               value_template: >
                 {% set loc = states('person.madouce') %}
@@ -179,28 +185,28 @@ automation:
           data:
             title: "{{ trigger.to_state.name }}"
             message: >
-              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
-              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['item_price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['pickup_end'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
             data:
               tag: TGTG-{{ trigger.entity_id }}
               channel: TGTG
               ttl: 0
               priority: high
               notification_icon: mdi:cake-variant
-              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"
+              clickAction: "{{ trigger.to_state.attributes['item_url'] }}"
         - service: notify.madouce_phone
           data:
             title: "{{ trigger.to_state.name }}"
             message: >
-              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
-              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['item_price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['pickup_end'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
             data:
               tag: TGTG-{{ trigger.entity_id }}
               channel: TGTG
               ttl: 0
               priority: high
               notification_icon: mdi:cake-variant
-              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"                     
+              clickAction: "{{ trigger.to_state.attributes['item_url'] }}"                     
   mode: single
 
 
@@ -233,32 +239,35 @@ automation:
           data:
             title: "{{ trigger.to_state.name }}"
             message: >
-              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
-              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['item_price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['pickup_end'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
             data:
               tag: TGTG-{{ trigger.entity_id }}
               channel: TGTG
               ttl: 0
               priority: high
               notification_icon: mdi:cake-variant
-              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"
+              clickAction: "{{ trigger.to_state.attributes['item_url'] }}"
         - service: notify.madouce_phone
           data:
             title: "{{ trigger.to_state.name }}"
             message: >
-              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
-              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['item_price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['pickup_end'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
             data:
               tag: TGTG-{{ trigger.entity_id }}
               channel: TGTG
               ttl: 0
               priority: high
               notification_icon: mdi:cake-variant
-              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"
+              clickAction: "{{ trigger.to_state.attributes['item_url'] }}"
         - if:
             - condition: state
               entity_id: person.madouce
               state: home
+            - condition: time
+              after: "10:00:00"
+              before: "22:00:00"              
             - condition: template
               value_template: >
                 {% set loc = states('person.madouce') %}
@@ -308,28 +317,28 @@ automation:
           data:
             title: "{{ trigger.to_state.name }}"
             message: >
-              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
-              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['item_price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['pickup_end'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
             data:
               tag: TGTG-{{ trigger.entity_id }}
               channel: TGTG
               ttl: 0
               priority: high
               notification_icon: mdi:shopping
-              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"
+              clickAction: "{{ trigger.to_state.attributes['item_url'] }}"
         - service: notify.madouce_phone
           data:
             title: "{{ trigger.to_state.name }}"
             message: >
-              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
-              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['item_price'] }} per pakket aan {{ trigger.to_state.attributes['item_price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['pickup_end'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
             data:
               tag: TGTG-{{ trigger.entity_id }}
               channel: TGTG
               ttl: 0
               priority: high
               notification_icon: mdi:shopping
-              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"            
+              clickAction: "{{ trigger.to_state.attributes['item_url'] }}"            
   mode: single
 
 - alias: "TGTG planten"
@@ -361,26 +370,43 @@ automation:
           data:
             title: "{{ trigger.to_state.name }}"
             message: >
-              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
-              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['item_price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['pickup_end'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
             data:
               tag: TGTG-{{ trigger.entity_id }}
               channel: TGTG
               ttl: 0
               priority: high
               notification_icon: mdi:shopping
-              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"
+              clickAction: "{{ trigger.to_state.attributes['item_url'] }}"
         - service: notify.madouce_phone
           data:
             title: "{{ trigger.to_state.name }}"
             message: >
-              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket aan {{ trigger.to_state.attributes['TGTG Price'] }} per pakket.<br>
-              Ophalen van {{ trigger.to_state.attributes['Pickup start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['Pickup stop'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
+              Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['item_price'] }} per pakket aan {{ trigger.to_state.attributes['item_price'] }} per pakket.<br>
+              Ophalen van {{ trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['pickup_end'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
             data:
               tag: TGTG-{{ trigger.entity_id }}
               channel: TGTG
               ttl: 0
               priority: high
               notification_icon: mdi:shopping
-              clickAction: "{{ trigger.to_state.attributes['Item URL'] }}"            
-  mode: single  
+              clickAction: "{{ trigger.to_state.attributes['item_url'] }}"            
+  mode: single
+
+- alias: TGTG // niet meer beschikbaar
+  id: 'c83b4e5c-c7af-4a76-862b-e5d4c520bb9f'
+  description: ''
+  trigger:
+    - platform: state
+      entity_id:
+        - sensor.tgtg_bakkerij_gielis_kessel_lo
+      to: unavailable
+      for:
+        hours: 1
+  action:
+    - service: notify.bart_phone
+      data:
+        title: "Too Good To Go werkt niet meer in Home Assistant"
+        message: "Laad de tokens opnieuw met de routine tgtg_get_tokens.py"
+  mode: single

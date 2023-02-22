@@ -62,6 +62,67 @@ input_number:
       unit_of_measurement: "%"
       icon: mdi:battery-charging-medium
 
+
+
+
+  car_charge_ideal_percentage:
+    name: ideaal laadpercentage auto
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+
+  car_ideal_target_soc_day_1:
+    name: ideale SOC maandag
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+
+  car_ideal_target_soc_day_2:
+    name: ideale SOC dinsdag
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+
+  car_ideal_target_soc_day_3:
+    name: ideale SOC woensdag
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+
+  car_ideal_target_soc_day_4:
+    name: ideale SOC donderdag
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+
+  car_ideal_target_soc_day_5:
+    name: ideale SOC vrijdag
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+
+  car_ideal_target_soc_day_6:
+    name: ideale SOC zaterdag
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+
+  car_ideal_target_soc_day_7:
+    name: ideale SOC zondag
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+
+
+
 input_select:
   car_use_day_1:
     name: maandag

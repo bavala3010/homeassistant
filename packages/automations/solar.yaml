@@ -13,6 +13,7 @@ automation:
       target:
         entity_id: sensor.zonneproductie_gisteren_op_dit_uur
   mode: single
+ 
 
 - alias: snelle polling sensoren berekening verbruik
   id: '92e4e452-ebb1-4db1-9b6a-0c1566a40b0c'
@@ -85,7 +86,7 @@ automation:
             title: meer info
             uri: /lovelace-verbruik/zonne-energie
 
-- alias: "einde van de zonne-energie productie voor vandaag"
+- alias: "solar // einde van de zonne-energie productie voor vandaag"
   id: '9a576f40-1363-466d-bab3-915845c02e49'
   description: ''
   trigger:
@@ -105,3 +106,19 @@ automation:
         data: 
           notification_icon: mdi:sun-wireless-outline
   mode: single
+
+- alias: solar // bewaar zonneproductie van vandaag
+  id: "e1f01cf4-6cca-4cdc-81ff-372f65eabffd"  
+  description: ""
+  trigger:
+    - platform: time
+      at: "23:45:00"
+  condition: []
+  action:
+  - service: input_number.set_value
+    data: {}
+    target:
+      entity_id: input_number.solar_production_endofday
+    data:
+      value: "{{ states('sensor.sma_today') }}"
+  mode: single 

@@ -1,0 +1,7 @@
+input_number:
+  car_charge_sun_start_wattmeter:
+    name: auto zonnemodus start wattmeter
+    min: -3000
+    max: 3000
+    unit_of_measurement: W
+

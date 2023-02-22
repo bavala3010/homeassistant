@@ -213,7 +213,7 @@ automation:
 # {{ as_timestamp(states('sensor.sm_g986b_next_alarm')) | timestamp_custom('%H', true) | int + ((as_timestamp(states('sensor.sm_g986b_next_alarm')) | timestamp_custom('%M', true) | int) / 100 )}}
 
 
-- alias: ♨️ badkamer verwarming op 18 graden gedurende 30 minuten
+- alias: ♨️ badkamer // 18 graden gevraagd
   id: 'e46919a3-f143-48ac-b9cd-451664e2f1fd'
   description: ''
   trigger:
@@ -224,40 +224,52 @@ automation:
     to: "on"
   condition: []
   action:
-  - service: climate.set_temperature
-    data:
-      temperature: 18
-    target:
-      entity_id: climate.badkamer
-  - if:
-    - condition: template
-      value_template: "{{trigger.to_state.context.user_id == '7e508a5d2a5c42029f3d9238f0cc4648'}}"
-    then:
-    - service: notify.alunya_phone
-      data:
-        title: Verwarming badkamer
-        message: De verwarming is ingeschakeld.
-    - delay:
-        hours: 0
-        minutes: 15
-        seconds: 0
-        milliseconds: 0
-    - service: notify.alunya_phone
-      data:
-        message: De badkamer is ondertussen verwarmd.
-        title: Verwarming badkamer
-  - delay:
-      hours: 0
-      minutes: 15
-      seconds: 0
-      milliseconds: 0
-  - service: climate.set_hvac_mode
-    data:
-      hvac_mode: auto
-    target:
-      entity_id: climate.badkamer
-  - service: input_boolean.turn_off
-    data: {}
-    target:
-      entity_id: input_boolean.badkamer_18graden      
+    - if:
+        - condition: template
+          value_template: " {{ states('binary_sensor.badkamer_raam_kantel') == 'on' }}"
+      then:
+        - service: input_boolean.turn_off
+          data: {}
+          target:
+            entity_id: input_boolean.badkamer_18graden      
+        - if:
+            - condition: template
+              value_template: "{{trigger.to_state.context.user_id == '87d0c2e6c3d4403396d34b43046072ae'}}"
+          then:
+            - service: notify.bart_phone
+              data:
+                title: Verwarming badkamer
+                message: "Het raam staat nog open: de verwarming is niet ingeschakeld."
+        - if:
+            - condition: template
+              value_template: "{{trigger.to_state.context.user_id == '12bbc36927b7443c915b9492d89f6c24'}}"
+          then:
+            - service: notify.madouce_phone
+              data:
+                title: Verwarming badkamer
+                message: "Het raam staat nog open: de verwarming is niet ingeschakeld."
+        - if:
+            - condition: template
+              value_template: "{{trigger.to_state.context.user_id == '7678e64f5e984bc2aac5d1d92cc318eb'}}"
+          then:
+            - service: notify.amilya_phone
+              data:
+                title: Verwarming badkamer
+                message: "Het raam staat nog open: de verwarming is niet ingeschakeld."
+      else:
+        - service: script.badkamer_chauffage_18_graden_30_min
+          data: {}
   mode: restart
+
+
+- alias: "♨️ badkamer // timer gestart = 18 graden"
+  id: '8672a60f-20a5-4b28-8f77-614939b031b8'
+  description: ""
+  trigger:
+    - platform: time
+      at: input_datetime.badkamer_18graden_starttime
+  condition: []
+  action:
+    - service: script.badkamer_chauffage_18_graden_30_min
+      data: {}
+  mode: single 

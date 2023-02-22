@@ -3,8 +3,8 @@
 #   Automations
 #   🚗 car 1 // 🔋 charge // charge mode nu ingeschakeld
 #   🚗 car 1 // 🔋 charge // charge mode nu uitgeschakeld
-#   🚗 car 1 // 🔋 charge // charge mode timer ingeschakeld
-#   🚗 car 1 // 🔋 charge // charge mode timer uitgeschakeld
+#   🚗 car 1 // 🔋 charge // charge mode stoptimer ingeschakeld
+#   🚗 car 1 // 🔋 charge // charge mode stoptimer uitgeschakeld
 #   🚗 car 1 // 🔋 charge // charge mode zon ingeschakeld
 #   🚗 car 1 // 🔋 charge // charge mode zon uitgeschakeld
 
@@ -78,26 +78,21 @@ automation:
     data: {}
   mode: restart
 
-- alias: "🚗 car 1 // 🔋 charge // modus select // timer modus ingeschakeld"
-  id: '6e284b34-555e-418a-ad8f-c7a7afe2b121'
+- alias: "🚗 car 1 // 🔋 charge // modus select // starttimer modus ingeschakeld"
+  id: '1323e532-64a5-41e3-9405-a6702fe540a0'
   description: ''
   trigger:
   - platform: state
-    entity_id: input_boolean.car_charge_mode_timer
+    entity_id: input_boolean.car_charge_mode_starttimer
     to: 'on'
   condition: []
   action:
-  - service: input_number.set_value
-    target:
-      entity_id: input_number.car_charger_watt
-    data:
-      value: 5.5 
   - service: notify.bart_phone
     data:
-      title: "Laden met netstroom"
+      title: "Laden met starttimer"
       message: >
-        Laden van {{ as_timestamp(states('sensor.car_charge_start_time')) | timestamp_custom('%a %-Hu%M', false)}} tot {{ state_attr('input_datetime.car_charge_target_time', 'timestamp') | timestamp_custom("%a %-Hu%M") }}.<br>
-        Er wordt geladen van {{states('sensor.car_1_soc') | round() }}% naar {{states('input_number.car_charge_target_percentage') | round() }}%.
+        Het laden start om {{ state_attr('input_datetime.car_charge_starttimer_starttime','timestamp') | timestamp_custom('%-Hu%M',false) }}.<br>
+        Er wordt geladen van {{states('sensor.car_1_soc') | round(default=0) }}% naar {{states('input_number.car_charge_target_percentage') | round(default=0) }}%.
       data:
         tag: car_charging
         color: green
@@ -107,12 +102,41 @@ automation:
           uri: /dashboard-car/car-charging
   mode: restart
 
-- alias: "🚗 car 1 // 🔋 charge // modus select // timer modus uitgeschakeld"
+- alias: "🚗 car 1 // 🔋 charge // modus select // stoptimer modus ingeschakeld"
+  id: '6e284b34-555e-418a-ad8f-c7a7afe2b121'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.car_charge_mode_stoptimer
+    to: 'on'
+  condition: []
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.car_charger_watt
+    data:
+      value: "{{ states('input_number.car_charge_mode_stoptimer_charger_watt') | float }}"
+  - service: notify.bart_phone
+    data:
+      title: "Laden met doeltimer"
+      message: >
+        Laden van {{ as_timestamp(states('sensor.car_charge_stoptimer_starttime'),0) | timestamp_custom('%a %d %b %-Hu%M', false) }} tot {{ state_attr('input_datetime.car_charge_target_time','timestamp') | timestamp_custom('%a %d %b %-Hu%M',) }}.<br>
+        Er wordt geladen van {{states('sensor.car_1_soc') | round(default=0) }}% naar {{states('input_number.car_charge_target_percentage') | round(default=0) }}%.
+      data:
+        tag: car_charging
+        color: green
+        actions:
+        - action: URI
+          title: meer info
+          uri: /dashboard-car/car-charging
+  mode: restart
+
+- alias: "🚗 car 1 // 🔋 charge // modus select // stoptimer modus uitgeschakeld"
   id: '10103bac-9dc6-4cae-8db7-5d9c2de8360f'
   description: ''
   trigger:
   - platform: state
-    entity_id: input_boolean.car_charge_mode_timer
+    entity_id: input_boolean.car_charge_mode_stoptimer
     to: 'off'
   condition: []
   action:

@@ -8,6 +8,14 @@ sensor:
   entities:
     - sensor.solar_sim_energy_today
 
+- platform: average
+  name: "7-daags gemiddelde zonneopbrengst"
+  duration:
+    days: 7
+  entities:
+    - input_number.solar_production_endofday
+
+
 - platform: template
   sensors:
     solar_power:
@@ -36,7 +44,7 @@ sensor:
         {{ s1 + s2 }}
 
     solar_sim_energy_tomorrow:
-      # totaal van de gesimuleerde energie  (= solar integratie)
+      # totaal van de gesimuleerde energie (= solar integratie)
       unit_of_measurement: "kWh"
       friendly_name: "zonne-energie productie simulatie morgen"
       icon_template: "mdi:solar-power"
@@ -44,6 +52,29 @@ sensor:
         {% set s1 = states('sensor.energy_production_tomorrow')  | float(default=0) %}
         {% set s2 = states('sensor.energy_production_tomorrow_2')| float(default=0) %}
         {{ s1 + s2 }}
+
+    solar_sim_energy_today_adj:
+      # zonneproductie vandaag met aangepaste waarden
+      unit_of_measurement: "kWh"
+      friendly_name: "zonne-energie productie simulatie vandaag (gecorrigeerd)"
+      icon_template: "mdi:solar-power"
+      value_template: >-
+        {% set avgfuture = states('sensor.7_daags_gemiddelde_verwachte_zonneopbrengst') | round(1) %}
+        {% set avgpast = states('sensor.7_daags_gemiddelde_zonneopbrengst') | round(1) %}
+        {% set today = states('sensor.solar_sim_energy_today') | round(1) %}
+        {{ today * ( avgpast / avgfuture ) | round(1) }}
+
+    solar_sim_energy_tomorrow_adj:
+      # zonneproductie morgen met aangepaste waarden
+      unit_of_measurement: "kWh"
+      friendly_name: "zonne-energie productie simulatie morgen (gecorrigeerd)"
+      icon_template: "mdi:solar-power"
+      value_template: >-
+        {% set avgfuture = states('sensor.7_daags_gemiddelde_verwachte_zonneopbrengst') | round(1) %}
+        {% set avgpast = states('sensor.7_daags_gemiddelde_zonneopbrengst') | round(1) %}
+        {% set tomorrow = states('sensor.solar_sim_energy_tomorrow') | round(1) %}
+        {{ tomorrow * ( avgpast / avgfuture ) | round(1) }}
+
 
     # Code voor het wegfilteren van exuberante waarden
     # https://www.zonstraal.be/forum/viewtopic.php?t=23979&start=45
@@ -265,3 +296,11 @@ utility_meter:
     source: sensor.gerealiseerde_zonneproductie
     cycle: daily
 
+
+input_number:
+  solar_production_endofday:
+    name: zonneproductie einde dag
+    min: 0
+    max: 100
+    unit_of_measurement: kWh
+    
