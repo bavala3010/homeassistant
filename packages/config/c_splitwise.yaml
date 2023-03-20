@@ -1,0 +1,5 @@
+sensor:
+  - platform: splitwise
+    client_id: 'DDGWFxJVETfmpunZrJ10OwsF3l0OWiv09a2AuVxh'
+    client_secret: 'ilOPbB9qXTxejHhfwFTdNzYoKZZZqgGftWKaqiyk'
+  

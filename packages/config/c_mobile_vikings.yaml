@@ -1,0 +1,44 @@
+sensor:
+- platform: command_line
+  name: Mobile Vikings Madouce
+  value_template: "{{ value_json.value }}"
+  json_attributes:
+    - 'Madouce Bijvank '
+  command: "python3 /config/scripts/mobile_vikings_madouce.py"
+  scan_interval: 900
+
+- platform: command_line
+  name: Mobile Vikings Alunya
+  json_attributes:
+  - Madouce Bijvank 1
+  command: "python3 /config/scripts/mobile_vikings_madouce.py"
+  value_template: "{{ value_json['Madouce Bijvank 1']['data_percentage'] }}"
+  scan_interval: 900
+  unit_of_measurement: "%"  
+
+- platform: command_line
+  name: Mobile Vikings Amilya
+  json_attributes:
+  - Madouce Bijvank 2
+  command: "python3 /config/scripts/mobile_vikings_madouce.py"
+  value_template: "{{ value_json['Madouce Bijvank 2']['data_percentage'] }}"
+  scan_interval: 900
+  unit_of_measurement: "%"  
+
+- platform: command_line
+  name: Mobile Vikings Anita
+  json_attributes:
+  - 'Anita Stock '
+  command: "python3 /config/scripts/mobile_vikings_anita.py"
+  value_template: "{{ value_json['Anita Stock ']['data_percentage'] }}"
+  scan_interval: 900
+  unit_of_measurement: "%"  
+
+- platform: command_line
+  name: Mobile Vikings Bart
+  json_attributes:
+  - 'Bart Van Landschoot '
+  command: "python3 /config/scripts/mobile_vikings_bart.py"
+  value_template: "{{ value_json['Bart Van Landschoot ']['data_percentage'] }}"
+  scan_interval: 900
+  unit_of_measurement: "%"  

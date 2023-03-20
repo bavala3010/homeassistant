@@ -1,0 +1,9 @@
+template:
+  - sensor:
+      - name: "car charge stoptimer starttime"
+        state: >
+          {% set targetsoc = states('input_number.car_charge_target_percentage') | float(default=0) %}
+          {% set soc = states('sensor.car_1_soc') | float(default=0) %}
+          {% set socdelta = [targetsoc - soc, 0] | max %}
+          {% set charging_minutes = socdelta * states('input_number.car_1_min_per_1pct') | round(2) %}
+          {{ strptime((as_timestamp(states('input_datetime.car_charge_target_time')) - (( charging_minutes | float(default=0) + 10 ) * 60) ) | timestamp_custom('%Y-%m-%d %H:%M',false), '%Y-%m-%d %H:%M') }}

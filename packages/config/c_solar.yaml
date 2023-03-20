@@ -124,7 +124,7 @@ sensor:
         {{ (car_sun / (car_net + car_sun) * 100 ) | round(1)}}
 
     solar_self_consumption:
-      unit_of_measurement: "kWh"
+      unit_of_measurement: "kWh"  # of kWh ?
       friendly_name: "zelfverbruik zonne-energie"
       icon_template: "mdi:solar-power"
       value_template: >-

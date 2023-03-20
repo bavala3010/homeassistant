@@ -196,33 +196,35 @@
       worksheet: Energy
       data:
         Eikenbos_gemiddelde_buitentemperatuur: '{{ states(''sensor.Eikenbos_gemiddelde_buitentemperatuur'')
-          | float() }}'
-        solar_production: '{{ states(''sensor.sma_today'') | float() }}'
-        net_injection_daily: '{{ states(''sensor.net_injection_daily'') | float()
+          | float(default=0) }}'
+        solar_production: '{{ states(''sensor.sma_today'') | float(default=0) }}'
+        net_injection_daily: '{{ states(''sensor.net_injection_daily'') | float(default=0)
           }}'
-        net_consumption_daily: '{{ states(''sensor.net_consumption_daily'') | float()
+        net_consumption_daily: '{{ states(''sensor.net_consumption_daily'') | float(default=0)
           }}'
         solar_terraszijde_efficiency: '{{ (states(''sensor.solar_terraszijde_energie_daily'')
           | float / 6150 * 1000 * 100) | round(1) }}%'
         solar_voorzijde_efficiency: '{{ (states(''sensor.solar_voorzijde_energie_daily'')
           | float / 8610 * 1000 * 100 ) | round(1) }}%'
         car_battery_charged_daily: '{{ states(''sensor.car_charger_energy_daily'')
-          | float() }}'
+          | float(default=0) }}'
         car_charge_solar_energy_daily: '{{ states(''sensor.car_charge_solar_energy_daily'')
-          | float() }}'
+          | float(default=0) }}'
         car_charge_net_energy_daily: '{{ states(''sensor.car_charge_net_energy_daily'')
-          | float() }}'
-        net_neutrality_home: '{{ states(''sensor.net_neutrality_home'') | float()
+          | float(default=0) }}'
+        net_neutrality_home: '{{ states(''sensor.net_neutrality_home'') | float(default=0)
           }}'
-        net_neutrality_car: '{{ states(''sensor.net_neutrality_car'') | float() }}'
-        net_neutrality: '{{ states(''sensor.net_neutrality'') | float() }}'
+        net_neutrality_car: '{{ states(''sensor.net_neutrality_car'') | float(default=0)
+          }}'
+        net_neutrality: '{{ states(''sensor.net_neutrality'') | float(default=0) }}'
         washing_machine_energy_daily: '{{ states(''sensor.washing_machine_energy_daily'')
-          | float() }}'
-        dryer_energy_daily: '{{ states(''sensor.dryer_energy_daily'') | float() }}'
+          | float(default=0) }}'
+        dryer_energy_daily: '{{ states(''sensor.dryer_energy_daily'') | float(default=0)
+          }}'
         dehumidifier_energy_daily: '{{ states(''sensor.dehumidifier_energy_daily'')
-          | float() }}'
+          | float(default=0) }}'
         infrared_panel_energy_daily: '{{ states(''sensor.infrared_panel_energy_daily'')
-          | float() }}'
+          | float(default=0) }}'
         living_airco_daily_heat_energy_consumption: '{{ states(''sensor.living_airco_daily_heat_energy_consumption'')
           | float(default=0) }}'
         amilya_airco_daily_heat_energy_consumption: '{{ states(''sensor.amilya_airco_daily_heat_energy_consumption'')
@@ -257,18 +259,19 @@
           | float(default=0) }}'
         master_bedroom_airco_daily_cool_energy_consumption: '{{ states(''sensor.master_bedroom_airco_daily_cool_energy_consumption'')
           | float(default=0) }}'
-        bart_thuis_vandaag: '{{ states(''sensor.bart_thuis_vandaag'') | float() }}
-
-          '
-        madouce_thuis_vandaag: '{{ states(''sensor.madouce_thuis_vandaag'') | float()
+        bart_thuis_vandaag: '{{ states(''sensor.bart_thuis_vandaag'') | float(default=0)
           }}
 
           '
-        amilya_thuis_vandaag: '{{ states(''sensor.amilya_thuis_vandaag'') | float()
+        madouce_thuis_vandaag: '{{ states(''sensor.madouce_thuis_vandaag'') | float(default=0)
           }}
 
           '
-        alunya_thuis_vandaag: '{{ states(''sensor.alunya_thuis_vandaag'') | float()
+        amilya_thuis_vandaag: '{{ states(''sensor.amilya_thuis_vandaag'') | float(default=0)
+          }}
+
+          '
+        alunya_thuis_vandaag: '{{ states(''sensor.alunya_thuis_vandaag'') | float(default=0)
           }}
 
           '
@@ -588,4 +591,13 @@
       data:
         tag: peak
         color: red
+  mode: single
+- id: '1677240491831'
+  description: ''
+  trigger: []
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.net_power
+    below: 5
+  action: []
   mode: single

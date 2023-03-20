@@ -13,11 +13,11 @@ sensor:
     state_class: measurement
 
 
-multiscrape:
-  - name: mazoutprijs_morgen_2000l
-    resource: https://www.mazout-on-line.be/nl/
-    scan_interval: 3600
-    sensor:
-      - name: mazoutprijs_morgen_2000l
-        select: '<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5"><b data-icon="s"></b>0,9484€</div>'
+# multiscrape:
+#   - name: mazoutprijs_morgen_2000l
+#     resource: https://www.mazout-on-line.be/nl/
+#     scan_interval: 3600
+#     sensor:
+#       - name: mazoutprijs_morgen_2000l
+#         select: '<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5"><b data-icon="s"></b>0,9484€</div>'
 

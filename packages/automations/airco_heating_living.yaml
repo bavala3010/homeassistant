@@ -185,7 +185,7 @@ automation:
   trigger:
   - platform: template
     value_template: >
-      {{ ( states('input_number.living_airco_target_temperature') | float ) - ( states('sensor.living_temperature_tado') | float ) >= 0.75 }}
+      {{ ( states('input_number.living_airco_target_temperature') | float ) - ( states('sensor.living_temperature') | float ) >= 0.75 }}
   condition:
   - condition: or
     conditions:
@@ -207,7 +207,7 @@ automation:
       data:
         hvac_mode: heat
         temperature: >
-          {% set adj = (states('input_number.living_airco_target_temperature') | float) - (states('sensor.living_temperature_tado') | float) %}
+          {% set adj = (states('input_number.living_airco_target_temperature') | float) - (states('sensor.living_temperature') | float) %}
           {{ (state_attr('climate.living_airco', 'current_temperature') + adj) | round(1, 'half', 0) }} 
       target:
         entity_id: climate.living_airco          
@@ -232,7 +232,7 @@ automation:
         title: Verwarming living aan
         message: >
           Airco living wordt opnieuw ingeschakeld om gewenste temperatuur {{ states('input_number.living_airco_target_temperature') }} te bereiken.
-          Huidige temperatuur: {{ states('sensor.living_temperature_tado') }}
+          Huidige temperatuur: {{ states('sensor.living_temperature') }}
   mode: single
 
 
@@ -244,7 +244,7 @@ automation:
     value_template: >
   - platform: template
     value_template: >
-      {{ ( states('input_number.living_airco_target_temperature') | float ) - ( states('sensor.living_temperature_tado') | float ) <= 0.0  }}
+      {{ ( states('input_number.living_airco_target_temperature') | float ) - ( states('sensor.living_temperature') | float ) <= 0.0  }}
   condition: []
   action:
     - service: climate.turn_off
@@ -256,5 +256,5 @@ automation:
         title: Verwarming living uit
         message: >
           Airco living heeft doeltemperatuur {{ states('input_number.living_airco_target_temperature') }} bereikt. Wordt tijdelijk uitgeschakeld.
-          Huidige temperatuur: {{ states('sensor.living_temperature_tado') }}
+          Huidige temperatuur: {{ states('sensor.living_temperature') }}
   mode: single

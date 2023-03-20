@@ -51,7 +51,11 @@ automation:
   - service: notify.bart_phone
     data:
       title: "🚙 Autolader is verbonden." 
-      message: "Nu {{states('sensor.car_1_soc')}}%. Nog {{states('sensor.car_1_remaining_charge_time')}} laden."
+      message: >
+        {% set Hour, Minute = states.sensor.car_1_remaining_charge_time.state.split(':') %}
+        {% set minutes = Hour | int *60 + Minute | int %}
+        Nu {{states('sensor.car_1_soc')}}%. Nog {{states('sensor.car_1_remaining_charge_time')}} laden tot 100%.
+        Geschat einduur: {{ (as_timestamp(now()) + (minutes | float(default=0) * 60)) | timestamp_custom('%a %d %b %-Hu%M') }}.
       data:
         color: green
         tag: auto_laden
@@ -62,7 +66,11 @@ automation:
           uri: /dashboard-car/car        
   - service: notify.madouce_phone
     data:
-      message: "🚙 Autolader is verbonden. Nu {{states('sensor.car_1_soc') |round()}}%."
+      message: >
+        {% set Hour, Minute = states.sensor.car_1_remaining_charge_time.state.split(':') %}
+        {% set minutes = Hour | int *60 + Minute | int %}
+        Nu {{states('sensor.car_1_soc')}}%. Nog {{states('sensor.car_1_remaining_charge_time')}} laden tot 100%.
+        Geschat einduur: {{ (as_timestamp(now()) + (minutes | float(default=0) * 60)) | timestamp_custom('%a %d %b %-Hu%M') }}.
       data:
         color: green
         tag: auto_laden
@@ -209,7 +217,7 @@ automation:
   action:
   - service: input_number.set_value
     target:
-      entity_id: input_number.minuten_voor_1_laden
+      entity_id: input_number.car_1_min_per_1pct
     data:
       value: "{{ ( 56.925 / (states('input_number.car_charger_watt') | float ) ) | round(2) }}"
   mode: restart

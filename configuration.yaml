@@ -511,9 +511,8 @@ template:
   - sensor:
 
       # this is the new way to define sensors via templates
-      # this works !
       - name: net_consumption_energy_total
-        unit_of_measurement: kWh
+        unit_of_measurement: kWh # dit moet kWh (exact zo geschreven)
         device_class: energy    
         state_class: total    # or "measurement"
         # total of the energy calculated by Shelly 3EM
@@ -532,7 +531,7 @@ template:
       # this is the new way to define sensors via templates
       # this works !
       - name: net_injection_energy_total
-        unit_of_measurement: kWh
+        unit_of_measurement: kWh # dit moet kWh (exact zo geschreven)
         device_class: energy
         state_class: total    # or "measurement"
         state: >
@@ -547,6 +546,14 @@ template:
         attributes:         
           last_reset: '1970-01-01T00:00:00+00:00'
 
+
+      # - name: "car charge stoptimer starttime"
+      #   state: >
+      #     {% set target = states('input_number.car_charge_target_percentage') | float(default=0) %}
+      #     {% set soc = states('sensor.audi_e_tron_sportback_state_of_charge') | float(default=0) %}
+      #     {% set nog_te_laden_procent = [target - soc, 0] | max %}
+      #     {% set nog_te_laden_minuten = nog_te_laden_procent * states('input_number.minuten_voor_1_laden') | round(2) %}
+      #     {{ strptime((as_timestamp(states('input_datetime.car_charge_target_time')) - ((nog_te_laden_minuten | float(default=0) + 10 ) * 60) ) | timestamp_custom('%Y-%m-%d %H:%M',false), '%Y-%m-%d %H:%M') }}
 
       - name: "verwachte zonneproductie morgen"
         unit_of_measurement: kWh
@@ -667,4 +674,5 @@ camera:
   - platform: ffmpeg
     input: rtsp://192.168.86.21/ch0_1.h264
     name: LSC indoor camera
+
 

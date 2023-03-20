@@ -1,0 +1,8 @@
+# sensor:
+#   - platform: delijn
+#     sub_key: '<put your data.delijn.be subscriptionkey here>'
+#     nextpassage:
+#     - stop_id: '200552'
+#       max_passages: 10
+#     - stop_id: '201169'
+#       max_passages: 5

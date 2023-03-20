@@ -1,5 +1,5 @@
 modbus:
-  - name: charger
+  - name: car_charger
     type: tcp
     host: 192.168.1.2
     port: 502

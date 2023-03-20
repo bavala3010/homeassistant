@@ -45,8 +45,8 @@ automation:
       message: >
         {% set targetsoc = states('input_number.car_charge_target_percentage') | round(default=0) %}
         {% set soc = states('sensor.car_1_soc') | round(default=0) %}
-        {% set nog_te_laden_procent = [targetsoc - soc, 0] | max %}
-        {% set nog_te_laden_minuten = nog_te_laden_procent * states('input_number.minuten_voor_1_laden') | round(2) %}
+        {% set deltasoc = [targetsoc - soc, 0] | max %}
+        {% set nog_te_laden_minuten = deltasoc * states('input_number.minuten_voor_1_laden') | round(2) %}
         {% set targetrange = states('input_number.car_charge_target_range') | round(default=0) %}
         Laden duurt vermoedelijk tot {{ (as_timestamp(now()) + (nog_te_laden_minuten | float(default=0) * 60)) | timestamp_custom('%a %d %b %-Hu%M') }}.<br>
         Er wordt geladen van {{ soc }}% naar {{ targetsoc }}% = {{ targetrange }} km.

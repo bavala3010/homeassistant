@@ -44,9 +44,8 @@ sensor:
         value_template: >
           {% set targetsoc = states('input_number.car_charge_target_percentage') | float(default=0) %}
           {% set soc = states('sensor.car_1_soc') | float(default=0) %}
-          {% set nog_te_laden_procent = [targetsoc - soc, 0] | max %}
-          {{ nog_te_laden_procent * states('input_number.minuten_voor_1_laden') | round(2) }}        
-
+          {% set socdif = [targetsoc - soc, 0] | max %}
+          {{ socdif * states('input_number.car_1_min_per_1pct') | round(2) }}        
 
 
 utility_meter:

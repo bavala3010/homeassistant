@@ -60,6 +60,40 @@ automation:
   - service: script.alunya_airco_start
   mode: restart
 
+- alias: "♨️ airco heating // Alunya // verwarm van 21u45 tot 22u15" 
+  id: '616e5f62-43b2-4737-80b9-376214057555'
+  description: ''
+  trigger:
+  - platform: time
+    at: '21:45:00'
+  condition: []
+  action:
+    - if:
+        - condition: state
+          entity_id: person.alunya
+          state: home
+        - condition: state
+          entity_id: binary_sensor.kamer_alunya_ramen
+          state: 'off'
+        - condition: numeric_state
+          entity_id: sensor.kamer_alunya_temperature
+          below: 15
+      then:
+        - service: input_number.set_value
+          data:
+            value: 21
+          target:
+            entity_id: input_number.alunya_airco_target_temperature          
+        - service: input_number.set_value
+          data:
+            value: 30
+          target:
+            entity_id: input_number.alunya_airco_timer_minutes
+        - delay:
+            seconds: 2
+        - service: script.alunya_airco_start
+          data: {}   
+
 
 ##################
 # Uit

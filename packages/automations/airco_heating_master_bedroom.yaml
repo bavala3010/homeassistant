@@ -45,5 +45,34 @@ automation:
       entity_id: timer.master_bedroom_airco_timer      
   mode: single
 
-
+- alias: "♨️ airco heating // master bedroom // verwarm van 21u45 tot 22u15" 
+  id: '90ff19bc-3090-4950-a9d2-e2263c9c37da'
+  description: ''
+  trigger:
+  - platform: time
+    at: '21:45:00'
+  condition: []
+  action:
+    - if:
+        - condition: state
+          entity_id: group.bart_madouce
+          state: home
+        - condition: state
+          entity_id: binary_sensor.master_bedroom_raam_kantel
+          state: 'off'
+      then:
+        - service: input_number.set_value
+          data:
+            value: 21
+          target:
+            entity_id: input_number.master_bedroom_airco_target_temperature  
+        - service: input_number.set_value
+          data:
+            value: 30
+          target:
+            entity_id: input_number.master_bedroom_airco_timer_minutes
+        - delay:
+            seconds: 2
+        - service: script.master_bedroom_airco_start
+          data: {}
 

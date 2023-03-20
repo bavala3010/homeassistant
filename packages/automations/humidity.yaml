@@ -37,14 +37,13 @@ automation:
     - service: notify.bart_phone
       data:
         title: Vocht
-        message: "Vocht % in huis is heel hoog: {{states('sensor.avg_inside_humidity')}}%."
-        data:
-          color: "#0E86D4"
+        message: >
+          Vocht % in huis is heel hoog: {{states('sensor.avg_inside_humidity')}}%.
+        color: "#0E86D4"
         actions:
         - action: URI
           title: meer info
           uri: /lucht-vocht-temperatuur/vocht-gram
-        
   mode: single
   
 - alias: "💧 humidity // check vocht % master bedroom om 20u30"
@@ -64,8 +63,9 @@ automation:
   - service: notify.bart_phone
     data:
       title: Veel vocht in master bedroom. Raam is {{states('sensor.master_bedroom_raam')}}.
-      message: "Vocht is {{states('sensor.master_bedroom_humidity')}}% en {{states('sensor.master_bedroom_thermal_absolute_humidity')}} gram
-            water /m³.<br>Zet eventueel machine aan."
+      message: >
+        Vocht is {{states('sensor.master_bedroom_humidity')}}% en {{states('sensor.master_bedroom_thermal_absolute_humidity') | round(1)}} gram
+        water /m³.<br>Zet eventueel machine aan.
       data:
         notification_icon: "mdi:water-percent-alert"      
         color: "#0E86D4"
@@ -95,7 +95,7 @@ automation:
       - service: notify.bart_phone
         data:
           title: "Veel vocht in badkamer! Raam is {{states('sensor.badkamer_raam')}}."
-          message: "{{states('sensor.badkamer_thermal_absolute_humidity')}} gram
+          message: "{{states('sensor.badkamer_thermal_absolute_humidity') | round(1) }} gram
             water /m³ en {{states('sensor.badkamer_humidity')}}% vocht."
           data:
             notification_icon: "mdi:water-percent-alert"          
@@ -109,7 +109,7 @@ automation:
       - service: notify.madouce_phone
         data:
           title: "Veel vocht in badkamer! Raam is {{states('sensor.badkamer_raam')}}."
-          message: "{{states('sensor.badkamer_thermal_absolute_humidity')}} gram
+          message: "{{states('sensor.badkamer_thermal_absolute_humidity') | round(1) }} gram
             water /m³ en {{states('sensor.badkamer_humidity')}}% vocht."
           data:
             notification_icon: "mdi:water-percent-alert"          
@@ -152,7 +152,7 @@ automation:
       - service: notify.bart_phone
         data:
           title: "Veel vocht in master bedroom! Raam is {{states('sensor.master_bedroom_raam')}}"
-          message: "{{states('sensor.master_bedroom_thermal_absolute_humidity')}} gram
+          message: "{{states('sensor.master_bedroom_thermal_absolute_humidity') | round(1)}} gram
             water /m³ en {{states('sensor.master_bedroom_humidity')}}% vocht."
           data:
             notification_icon: "mdi:water-percent-alert"          
@@ -166,7 +166,7 @@ automation:
       - service: notify.madouce_phone
         data:
           title: "Veel vocht in master bedroom! Raam is {{states('sensor.master_bedroom_raam')}}"
-          message: "{{states('sensor.master_bedroom_thermal_absolute_humidity')}} gram
+          message: "{{states('sensor.master_bedroom_thermal_absolute_humidity') | round(1)}} gram
             water /m³ en {{states('sensor.master_bedroom_humidity')}}% vocht."
           data:
             notification_icon: "mdi:water-percent-alert"          
@@ -209,7 +209,7 @@ automation:
       - service: notify.bart_phone
         data:
           title: "Veel vocht in kamer Alunya! Raam is {{states('binary_sensor.kamer_alunya_raam')}}"
-          message: "{{states('sensor.kamer_alunya_thermal_absolute_humidity')}} gram
+          message: "{{states('sensor.kamer_alunya_thermal_absolute_humidity') | round(1)}} gram
             water /m³ en {{states('sensor.kamer_alunya_humidity')}}% vocht."
           data:
             notification_icon: "mdi:water-percent-alert"          
@@ -223,7 +223,7 @@ automation:
       - service: notify.madouce_phone
         data:
           title: "Veel vocht in kamer Alunya! Raam is {{states('binary_sensor.kamer_alunya_raam')}}"
-          message: "{{states('sensor.kamer_alunya_thermal_absolute_humidity')}} gram
+          message: "{{states('sensor.kamer_alunya_thermal_absolute_humidity') | round(1)}} gram
             water /m³ en {{states('sensor.kamer_alunya_humidity')}}% vocht."
           data:
             notification_icon: "mdi:water-percent-alert"          

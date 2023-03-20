@@ -1,7 +1,7 @@
 ########################################################################### 
 #   Directe modus
 #   - neemt automatisch een deel van de zon (als die opbrengt)
-#   - netverbruik wordt beperkt tot een maximum (input_number.car_charge_net_max_power) 
+#   - netverbruik wordt beperkt tot een maximum (input_number.car_charge_minimum_wattage) 
 
 
 ############################ Table of Contents ############################ 
@@ -12,7 +12,7 @@
 ############################ Automations ################################## 
 automation:
 
-- alias: "🚗 car 1 // 🔋 charge // direct modus // pas elke minuut het vermogen van de lader aan"
+- alias: "🚗 car 1 // 🔋 charge // direct modus // start en bezig: pas elke minuut het vermogen van de lader aan"
   id: '362cc8ae-99e6-4ddc-95d1-feb6a0daeb1e'
   trigger:
   - platform: time_pattern
@@ -38,13 +38,13 @@ automation:
       data:
         value: >-
           {% set charger = states('sensor.charger_real_power') | float(default=0) / 1000 %}        
-          {% set maxpower = states('input_number.car_charge_net_max_power') | float(default=0) %}
+          {% set maxpower = states('input_number.car_charge_minimum_wattage') | float(default=0) %}
           {% set net = states('sensor.net_power') | float(default=0) %}
           {% set adjustment = [-net, maxpower] | max %}
-          {% if net < 0 %}
-          {{ charger +  (-net / 1000) }}
-          {% elif net >= 0 %}
-          {{ ([charger - net, maxpower ] | max ) / 1000 }}
+          {% if net + charger < maxpower %}
+          {{ [(-net + charger) / 1000, maxpower] | max }}
+          {% elif net + charger > maxpower %}
+          {{ maxpower }}
           {% endif %}
     - wait_template: ''
       timeout: '00:00:05'
@@ -53,7 +53,7 @@ automation:
     - service: script.charger_define_and_write_register_based_on_ampere
   mode: single
 
-- alias: "🚗 car 1 // 🔋 charge // direct modus // check SOC tov laaddoel"
+- alias: "🚗 car 1 // 🔋 charge // direct modus // stop bij bereiken laaddoel"
   id: 'b008edb7-44dc-49dc-bf27-6987bfaf4790'
   trigger:
   - platform: state
@@ -76,7 +76,7 @@ automation:
         {% set soc = states('sensor.car_1_soc') | round(default=0) %}
         {% set targetsoc = states('input_number.car_charge_target_percentage') | round(default=0) %}
         {% set range = ( soc * (states('sensor.car_range_per_10percent') | float(default=0)) / 10 ) | int(0) %}
-        Laaddoel van {{ targetsoc }}% is bereikt. Huidige lading: {{ soc }}% = {{ range }} km
+        Laaddoel {{ targetsoc }}% is bereikt. Huidige lading: {{ soc }}% = {{ range }} km
       data:
         tag: car_charging
         color: green
@@ -89,23 +89,23 @@ automation:
     data: {}
   mode: single
 
-- alias: "🚗 car 1 // 🔋 charge // direct modus // maximum netverbruik is veranderd"
+- alias: "🚗 car 1 // 🔋 charge // direct modus // minimum wattage is veranderd in dropdownlijst"
   id: '6a180451-efc5-4e27-9e7e-f2e152d3ec31'
   trigger:
   - platform: state
-    entity_id: input_select.car_charge_net_max_power
+    entity_id: input_select.car_charge_minimum_wattage
   action:
     - service: input_number.set_value
       target:
-        entity_id: input_number.car_charge_net_max_power
+        entity_id: input_number.car_charge_minimum_wattage
       data:
-        value: >-
-          {% if states('input_select.car_charge_net_max_power') == '1.4' %}
-            1400
-          {% elif states('input_select.car_charge_net_max_power') == '2.2' %}
-            2200
-          {% elif states('input_select.car_charge_net_max_power') == '4' %}
-            4000
-          {% elif states('input_select.car_charge_net_max_power') == '5.3' %}
-            5300
-          {% endif %}
+        value: "{{ states('input_select.car_charge_minimum_wattage') [0:3] }}"
+
+
+# gebruikt vroeger:
+# input_select.car_charge_minimum_wattage
+# input_number.car_charge_minimum_wattage
+
+# vervangen door:
+# input_select.car_charge_minimum_wattage
+# input_number.car_charge_minimum_wattage
