@@ -117,7 +117,7 @@ tts:
     cache: false
     cache_dir: /tmp/tts
     time_memory: 57600    #min 60 max 57600 (16 hours)
-    base_url: http://192.168.86.101:8123
+    base_url: http://192.168.86.100:8123
     service_name: google_say
     language: 'nl'
   - platform: edge_tts
@@ -497,9 +497,9 @@ sensor:
     filters:
       - filter: outlier
         window_size: 6   # number of samples taken
-        radius: 4.0
-      # - filter: time_simple_moving_average
-      #   window_size: "00:05"
+        radius: 10000  # ignore readings if difference is bigger than 10000
+      - filter: time_simple_moving_average
+        window_size: "00:05"
       # - filter: throttle
       #   window_size: 120
 
@@ -657,12 +657,11 @@ battery_sim:
     size_kwh: 10.0
     # energy_tariff: 0.00
 
-#media_player:
-#  - platform: samsungtv_custom
-#    host: 192.168.86.57
-#    port: 8001
-#    sourcelist: '{"PlayStation": "KEY_HDMI1", "RaspberryPi": "KEY_HDMI2", "Chromecast": "KEY_HDMI3"}'
-
+# media_player:
+#   - platform: samsungtv_custom
+#     host: 192.168.86.204
+#     port: 8001
+#     sourcelist: '{"PlayStation": "KEY_HDMI1", "RaspberryPi": "KEY_HDMI2", "Chromecast": "KEY_HDMI3"}'
 
 # camera:
 #   - platform: generic

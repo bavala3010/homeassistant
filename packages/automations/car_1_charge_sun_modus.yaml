@@ -18,12 +18,12 @@ automation:
   - platform: time_pattern
     minutes: /1
   - platform: numeric_state
-    entity_id: sensor.net_power
+    entity_id: sensor.net_power_avg
     below: input_number.car_charge_sun_start_wattage
     for: "00:05:00"
   condition:
   - condition: numeric_state
-    entity_id: sensor.net_power
+    entity_id: sensor.net_power_avg
     below: input_number.car_charge_sun_start_wattage
     # for: "00:05:00"
   # only if charger cable is connected to home charger or in status "charging"
@@ -60,7 +60,7 @@ automation:
       value: >-
           {% set charger = states('sensor.charger_real_power') | float(default=0) / 1000 %}        
           {% set maxpower = states('input_number.car_charge_minimum_wattage') | float(default=0) %}
-          {% set net = states('sensor.net_power') | float(default=0) %}
+          {% set net = states('sensor.net_power_avg') | float(default=0) %}
           {% if net + charger < maxpower %}
           {{ [(-net + charger) / 1000, maxpower] | max }}
           {% elif net + charger > maxpower %}
@@ -124,7 +124,7 @@ automation:
           data:
             value: >-
               {% set charger = states('sensor.charger_real_power') | float(default=0) / 1000 %}        
-              {% set net = states('sensor.net_power') | float(default=0) %}
+              {% set net = states('sensor.net_power_avg') | float(default=0) %}
               {{ wattage / 1000 }}
         - wait_template: ''
           timeout: '00:00:05'
@@ -147,7 +147,7 @@ automation:
       wattage: >
         {% set charger = states('sensor.charger_real_power') | float(default=0) %}        
         {% set maxpower = states('input_number.car_charge_sun_max_netwattage') | float(default=0) %}
-        {% set net = states('sensor.net_power') | float(default=0) %}
+        {% set net = states('sensor.net_power_avg') | float(default=0) %}
         {{ - (net - maxpower - charger) }}
   mode: single    
 

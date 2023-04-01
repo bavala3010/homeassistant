@@ -22,9 +22,9 @@ automation:
     - platform: state
       entity_id: schedule.kamer_alunya_normal_temperature_schema
       to: "on"
-    - platform: state
-      entity_id: person.alunya
-      to: home
+    # - platform: state
+    #   entity_id: person.alunya
+    #   to: home
     - platform: template
       value_template: >
         {{ states('sensor.kamer_alunya_temperature') | float <

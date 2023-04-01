@@ -16,7 +16,7 @@ automation:
       - sensor.net_power
   mode: single
 
-- alias: injectie meer dan 2,5 kW = melding dat auto kan worden geladen
+- alias: injectie meer dan 2,5 kW = melding dat auto kan worden geladen of machine aangezet
   id: '2d15d773-5a7f-4c83-ab27-fceef60120ae'
   description: ""
   mode: single
@@ -30,30 +30,39 @@ automation:
       below: "-2500"
   condition: []
   action:
-    - service: notify.bart_phone
-      data:
-        title: Gebruik de zonne-energie verstandig
-        message: >
-          Nu {{ states('sensor.net_power') | float | round(0) | abs }} W injectie in het net.<br>
-          Eventueel auto laden? Auto nu {{states('sensor.car_1_soc') | round()}}%.<br>
-          Vandaag moet er geladen worden tot {{states('input_number.car_charge_target_percentage') | round() }}%.
+  - if:
+    - condition: template
+      # check in calendar if car is supposed to be at home
+      value_template: >
+        {% set t = 'input_select.car_use_day_' ~ now().date().isoweekday() %}
+        {% set loc = states(t) %}
+        {% if loc =="thuis" %}true
+        {% endif %}
+    then:
+      - service: notify.bart_phone
         data:
-          color: yellow
-          tag: solar
-          channel: solar
-    - service: notify.madouce_phone
-      data:
-        title: Gebruik de zonne-energie verstandig
-        message: >
-          Nu {{ states('sensor.net_power') | float | round(0) | abs }} W injectie in het net.<br>
-          Eventueel auto laden? Auto nu {{states('sensor.car_1_soc') | round()}}%.<br>
-          Vandaag moet er geladen worden tot {{states('input_number.car_charge_target_percentage') | round() }}%.
+          title: Gebruik de zonne-energie verstandig
+          message: >
+            Nu {{ states('sensor.net_power') | float | round(0) | abs }} W injectie in het net.<br>
+            Eventueel auto laden? Auto nu {{states('sensor.car_1_soc') | round()}}%.<br>
+            Vandaag moet er geladen worden tot {{states('input_number.car_charge_target_percentage') | round() }}%.
+          data:
+            color: yellow
+            tag: solar
+            channel: solar
+    else:
+      - service: notify.bart_phone
         data:
-          color: yellow
-          tag: solar
-          channel: solar
+          title: Gebruik de zonne-energie verstandig
+          message: >
+            Nu {{ states('sensor.net_power') | float | round(0) | abs }} W injectie in het net.<br>
+            Eventueel vaatwasser, wasmachine of droger aanzetten?
+          data:
+            color: yellow
+            tag: solar
+            channel: solar   
 
-- alias: Meer dan 3 kW verbruik van het net = melding
+- alias: Meer dan 4 kW verbruik van het net = melding
   id: '518c0b8f-2031-49cc-bbac-210b2728df07'
   description: ""
   mode: single
@@ -64,7 +73,7 @@ automation:
         hours: 0
         minutes: 5
         seconds: 0
-      above: "3000"
+      above: "4000"
   condition: []
   action:
     - service: notify.bart_phone
