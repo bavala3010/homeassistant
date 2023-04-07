@@ -92,21 +92,7 @@ automation:
         entity_id: sensor.badkamer_thermal_absolute_humidity
         above: '14'
       sequence:
-      - service: notify.bart_phone
-        data:
-          title: "Veel vocht in badkamer! Raam is {{states('sensor.badkamer_raam')}}."
-          message: "{{states('sensor.badkamer_thermal_absolute_humidity') | round(1) }} gram
-            water /m³ en {{states('sensor.badkamer_humidity')}}% vocht."
-          data:
-            notification_icon: "mdi:water-percent-alert"          
-            color: "#0E86D4"
-            tag: window_badkamer
-            channel: vocht
-            actions:
-            - action: URI
-              title: meer info
-              uri: /lucht-vocht-temperatuur/vocht-gram
-      - service: notify.madouce_phone
+      - service: notify.bart_madouce_phone
         data:
           title: "Veel vocht in badkamer! Raam is {{states('sensor.badkamer_raam')}}."
           message: "{{states('sensor.badkamer_thermal_absolute_humidity') | round(1) }} gram
@@ -122,12 +108,7 @@ automation:
               uri: /lucht-vocht-temperatuur/vocht-gram
       - delay:
           hours: 1
-  - service: notify.bart_phone
-    data:
-      message: "clear_notification"
-      data:
-        tag: badkamer_vocht
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       message: "clear_notification"
       data:
@@ -149,21 +130,7 @@ automation:
         entity_id: sensor.master_bedroom_humidity
         above: '80'
       sequence:
-      - service: notify.bart_phone
-        data:
-          title: "Veel vocht in master bedroom! Raam is {{states('sensor.master_bedroom_raam')}}"
-          message: "{{states('sensor.master_bedroom_thermal_absolute_humidity') | round(1)}} gram
-            water /m³ en {{states('sensor.master_bedroom_humidity')}}% vocht."
-          data:
-            notification_icon: "mdi:water-percent-alert"          
-            color: "#0E86D4"
-            tag: window_master_bedroom
-            channel: vocht
-            actions:
-            - action: URI
-              title: meer info
-              uri: /lucht-vocht-temperatuur/vocht-gram
-      - service: notify.madouce_phone
+      - service: notify.bart_madouce_phone
         data:
           title: "Veel vocht in master bedroom! Raam is {{states('sensor.master_bedroom_raam')}}"
           message: "{{states('sensor.master_bedroom_thermal_absolute_humidity') | round(1)}} gram
@@ -179,16 +146,12 @@ automation:
               uri: /lucht-vocht-temperatuur/vocht-gram
       - delay:
           hours: 1
-  - service: notify.bart_phone
+  - service: notify.bart_madouce_phone
     data:
       message: "clear_notification"
       data:
         tag: master_bedroom_vocht
-  - service: notify.madouce_phone
-    data:
-      message: "clear_notification"
-      data:
-        tag: master_bedroom_vocht
+
   mode: single
 
 - alias: "💧 humidity // vocht % in kamer Alunya >80%"
@@ -206,21 +169,7 @@ automation:
         entity_id: sensor.kamer_alunya_humidity
         above: '80'
       sequence:
-      - service: notify.bart_phone
-        data:
-          title: "Veel vocht in kamer Alunya! Raam is {{states('binary_sensor.kamer_alunya_raam')}}"
-          message: "{{states('sensor.kamer_alunya_thermal_absolute_humidity') | round(1)}} gram
-            water /m³ en {{states('sensor.kamer_alunya_humidity')}}% vocht."
-          data:
-            notification_icon: "mdi:water-percent-alert"          
-            color: "#0E86D4"
-            tag: kamer_alunya_vocht
-            channel: vocht
-            actions:
-            - action: URI
-              title: meer info
-              uri: /lucht-vocht-temperatuur/vocht-gram
-      - service: notify.madouce_phone
+      - service: notify.bart_madouce_phone
         data:
           title: "Veel vocht in kamer Alunya! Raam is {{states('binary_sensor.kamer_alunya_raam')}}"
           message: "{{states('sensor.kamer_alunya_thermal_absolute_humidity') | round(1)}} gram
@@ -236,12 +185,7 @@ automation:
               uri: /lucht-vocht-temperatuur/vocht-gram
       - delay:
           hours: 1
-  - service: notify.bart_phone
-    data:
-      message: "clear_notification"
-      data:
-        tag: kamer_alunya_vocht
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       message: "clear_notification"
       data:

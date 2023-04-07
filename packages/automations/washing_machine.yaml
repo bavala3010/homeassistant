@@ -123,20 +123,13 @@ automation:
         option: klaar
       target:
         entity_id: input_select.washing_machine_phase
-    - service: notify.bart_phone
+    - service: notify.bart_madouce_phone
       data:
         message: De wasmachine is klaar!
         title: 👕👙 Wasmachine
         data:
           tag: wasmachine
-          notification_icon: "mdi:washing-machine"
-    - service: notify.madouce_phone
-      data:
-        message: De wasmachine is klaar!
-        title: 👕👙 Wasmachine
-        data:
-          tag: wasmachine
-          notification_icon: "mdi:washing-machine"            
+          notification_icon: "mdi:washing-machine"          
     - service: script.google_home_resume
       data:
         action:
@@ -171,14 +164,7 @@ automation:
         minutes: 14
         seconds: 0  
   action:
-    - service: notify.bart_phone
-      data:
-        title: Wasmachine
-        message: "Haal de was uit de wasmachine. De wasmachine was klaar om {{ states('input_datetime.washing_machine_stop_time') | as_timestamp| timestamp_custom('%d/%-m %H:%M') }}."
-        data:
-          tag: wasmachine
-          notification_icon: "mdi:washing-machine"        
-    - service: notify.madouce_phone
+    - service: notify.bart_madouce_phone
       data:
         title: Wasmachine
         message: "Haal de was uit de wasmachine. De wasmachine was klaar om {{ states('input_datetime.washing_machine_stop_time') | as_timestamp| timestamp_custom('%d/%-m %H:%M') }}."
@@ -255,12 +241,7 @@ automation:
         option: uit
       target:
         entity_id: input_select.washing_machine_phase
-    - service: notify.madouce_phone
-      data:
-        message: "clear_notification"
-        data:
-          tag: wasmachine
-    - service: notify.bart_phone
+    - service: notify.bart_madouce_phone
       data:
         message: "clear_notification"
         data:

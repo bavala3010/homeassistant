@@ -2,8 +2,8 @@
 
 automation:
 
-# You can find the device_id of the Aqara mini switch via the Developer options / Events. The "listen" to "deconz_event" events (fill in deconz_event and click on the start to listen button)
-# Then click on the (physical) Aquara mini switch. A report will be displayed in the listener, including the device_id
+# You can find the device_id of the switch/button (Aqara/ Philips) via the Developer options / Events. The "listen" to "zha_event" events, fill in zha_event and click on the start to listen button.
+# Then click on the (physical) switch/button. A report will be displayed in the listener, including the device_id
 
 # buttons supports: single click, double click, long press
 # remote_button_short_press
@@ -213,4 +213,85 @@ automation:
         {% if is_state('switch.madouce_matrasverwarmer', 'on') %} De matras was al aan. Was het nog niet warm genoeg?
         {% else %} De matras wordt ingeschakeld. Geniet van de warmte.
         {% endif %}
+  mode: single
+
+- alias: "dimmer nachtkastje Madouce: on/off = licht aan/uit"
+  id: 'bc55baca-8fb9-4b7a-a61b-cb480c204800'
+  description: ''
+  trigger:
+  - device_id: 3657c229241277d9a3b5e045468e0377
+    domain: zha
+    platform: device
+    type: remote_button_short_release
+    subtype: turn_on
+  condition: []
+  action:
+  - service: light.toggle
+    data: {}
+    target:
+      entity_id:
+        - light.master_bedroom_staande_lamp
+        - light.master_bedroom_play_madouce
+        - light.master_bedroom_play_bart
+  mode: single
+
+- alias: "dimmer nachtkastje Madouce: off = licht uit"
+  id: '2d90865a-3cd4-49f8-bea0-c9d6eb2576ca'
+  description: ''
+  trigger:
+  - device_id: 3657c229241277d9a3b5e045468e0377
+    domain: zha
+    platform: device
+    type: remote_button_short_release
+    subtype: turn_off
+  condition: []
+  action:
+    - service: button.press
+      data: {}
+      target:
+        entity_id: button.pet_feeder_feed
+    - wait_template: ""
+      timeout: "00:00:05"
+  mode: single
+
+- alias: "dimmer nachtkastje Madouce: + = meer licht"
+  id: '3ac60e51-7206-4cbc-9f62-5a3f2ba9c519'
+  description: ''
+  trigger:
+  - device_id: 3657c229241277d9a3b5e045468e0377
+    domain: zha
+    platform: device
+    type: remote_button_short_release
+    subtype: dim_up
+  condition: []
+  action:
+  - service: light.turn_on
+    data:
+      brightness_step_pct: 10
+    target:
+      entity_id:
+        - light.master_bedroom_staande_lamp
+        - light.master_bedroom_play_madouce
+        - light.master_bedroom_play_bart
+  mode: single
+
+- alias: "dimmer nachtkastje Madouce: - = minder licht"
+  id: '2702aa32-d53e-45cc-9b44-0c1590b6364b'
+  description: ''
+  trigger:
+  - device_id: 3657c229241277d9a3b5e045468e0377
+    domain: zha
+    platform: device
+    type: remote_button_short_release
+    subtype: dim_down
+  condition: []
+  action:
+  - service: light.turn_on
+    data:
+      brightness_step_pct: -10
+    target:
+      entity_id:
+        - light.master_bedroom_staande_lamp
+        - light.master_bedroom_play_madouce
+        - light.master_bedroom_play_bart
   mode: single

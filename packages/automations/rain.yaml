@@ -9,13 +9,7 @@ automation:
     above: '0'
   condition: []
   action:
-  - service: notify.bart_phone
-    data:
-      title: Regen
-      message: Het regent. Zijn de ramen dicht?
-      data:
-        tag: regen
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       title: Regen
       message: Het regent. Zijn de ramen dicht?
@@ -32,7 +26,7 @@ automation:
     from: '0'
   condition: []
   action:
-  - service: notify.bart_phone
+  - service: notify.bart_madouce_phone
     data:
       message: Het gaat regenen over een kwartier. 
   mode: single
@@ -49,11 +43,7 @@ automation:
     entity_id: binary_sensor.kamer_amilya_raam
     state: 'on'
   action:
-  - service: notify.bart_phone
-    data:
-      message: Het regent en het raam van Amilya staat open.
-      title: Het regent. Doe raam Amilya dicht aub.
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       message: Het regent en het raam van Amilya staat open.
       title: Het regent. Doe raam Amilya dicht aub.

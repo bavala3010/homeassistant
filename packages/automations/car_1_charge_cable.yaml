@@ -72,7 +72,7 @@ automation:
       entity_id: input_boolean.car_charge_mode_stoptimer
       state: "on"
   action:
-    - service: notify.bart_phone
+    - service: notify.bart_madouce_phone
       data:
         title: De laadkabel is zopas ingeplugd.
         message: "{{ message }}"
@@ -80,18 +80,6 @@ automation:
           tag: car_charging
           color: green
           clickAction: "/dashboard-car/car-charging"          
-          # actions:
-          #   - action: URI
-          #     title: meer info
-          #     uri: /dashboard-car/car-charging
-    - service: notify.madouce_phone
-      data:
-        title: De laadkabel is zopas ingeplugd.
-        message: "{{ message }}"
-        data:
-          tag: car_charging
-          color: green
-          clickAction: "/dashboard-car/car-charging"
           # actions:
           #   - action: URI
           #     title: meer info
@@ -129,7 +117,7 @@ automation:
       entity_id: input_boolean.car_charge_mode_sun
       state: "off"
   action:
-    - service: notify.bart_phone
+    - service: notify.bart_madouce_phone
       data:
         title: De laadkabel is zopas ingeplugd.
         message: "{{ message }}"
@@ -137,18 +125,6 @@ automation:
           tag: car_charging
           color: green
           clickAction: "/dashboard-car/car-charging"          
-          # actions:
-          #   - action: URI
-          #     title: meer info
-          #     uri: /dashboard-car/car-charging
-    - service: notify.madouce_phone
-      data:
-        title: De laadkabel is zopas ingeplugd.
-        message: "{{ message }}"
-        data:
-          tag: car_charging
-          color: green
-          clickAction: "/dashboard-car/car-charging"
           # actions:
           #   - action: URI
           #     title: meer info

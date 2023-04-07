@@ -48,16 +48,11 @@ automation:
         datetime: '{{ now() }}'
       target:
         entity_id: input_datetime.dehumidifier_stop_time
-    - service: notify.bart_phone
+    - service: notify.bart_madouce_phone
       data:
         message: "clear_notification"
         data:
-          tag: ontvochtiger
-    - service: notify.madouce_phone
-      data:
-        message: "clear_notification"
-        data:
-          tag: ontvochtiger                  
+          tag: ontvochtiger                
   mode: single
 
 - alias: ontvochtiger staat al 15 min. aan

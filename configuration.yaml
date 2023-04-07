@@ -141,6 +141,22 @@ homeassistant:
   internal_url: http://192.168.86.100:8123
   time_zone: "Europe/Brussels"
 
+  auth_providers:
+    - type: homeassistant
+    - type: trusted_networks # Trusted Networks auth provider defines a range of IP addresses for which no authentication will be required (also known as “allowlisting”).
+      trusted_networks:
+      # /24 betekent geldig voor heel het subnet
+      # /32 betekent enkel geldig voor het vermelde ip-adres
+        - 192.168.86.0/24    # warning: this enables the trust on the whole network !
+        - 192.168.86.41/32   # ip address of the "living speaker"
+        - 192.168.86.34/32
+        - 192.168.86.240/32  
+        - 192.168.86.26/32   # Chromebook
+      trusted_users:
+        192.168.86.41: 87d0c2e6c3d4403396d34b43046072ae # ID of the HA user "Bart"
+        # 192.168.86.41: 12bbc36927b7443c915b9492d89f6c24 # ID of the HA user "Madouce"
+      allow_bypass_login: true
+
   allowlist_external_dirs:
     - "/config"
 
@@ -222,17 +238,15 @@ http:
   # ssl_key: /opt/letsencrypt/live/npm-1/privkey.pem
   use_x_forwarded_for: true
   trusted_proxies:
-    - 192.168.86.0/24   # the IP address of the proxy server
-    - 192.168.155.0/24  # the IP range of the Droidland hotspot  
+  # - 192.168.86.0/24   # the IP address of the proxy server
+  # - 192.168.155.0/24  # the IP range of the Droidland hotspot  
     - 172.18.0.8        # dit is het ip-adres van nginx in docker
     - 172.18.0.0/24
     - 172.18.0.2        # the IP address of the Wireguard server
     - 172.18.0.3        # ???
     - 10.13.13.2        # WireGuard client Bart gsm
     - 10.13.13.3        # WireGuard client Madouce gsm
-    - 10.13.13.4        # WireGuard client Chromebook Bart
-
-    
+    - 10.13.13.4        # WireGuard client Chromebook Bart    
   ip_ban_enabled: false         # use this to enable auto IP ban
   login_attempts_threshold: 3   # set the number of allowed login attempts
 
@@ -499,7 +513,7 @@ sensor:
         window_size: 6   # number of samples taken
         radius: 10000  # ignore readings if difference is bigger than 10000
       - filter: time_simple_moving_average
-        window_size: "00:05"
+        window_size: "00:03"
       # - filter: throttle
       #   window_size: 120
 
@@ -673,5 +687,14 @@ camera:
   - platform: ffmpeg
     input: rtsp://192.168.86.21/ch0_1.h264
     name: LSC indoor camera
+
+# ha-continuous-casting-dashboard:
+#   logging_level: debug #Required: Set the logging level - debug/info/warning (default is 'warning' - try 'debug' for debugging)
+#   cast_delay: 45 #Required: Time (in seconds) for casting checks between devices
+#   start_time: "07:00" #Required: Start time of the casting window (format: "HH:MM")
+#   end_time: "02:00" #Required: End time of the casting window (format: "HH:MM") and must be after "00:00"
+#   devices:
+#     "living speaker": #Required: Display name of your device. Find this under device settings -> Information -> Device Name
+#       dashboard_url: http://192.168.86.100:8123/lovelace-verbruik/zonne-energie" #Required: Dashboard URL to be casted
 
 

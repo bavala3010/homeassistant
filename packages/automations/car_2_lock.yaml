@@ -19,7 +19,7 @@ automation:
     entity_id: binary_sensor.madouce_phone_connected_to_car_2
     state: 'off'
   action:
-  - service: notify.bart_phone
+  - service: notify.bart_madouce_phone
     data:
       title: Toyota niet op slot!
       message: 🚙 Toyota niet op slot!
@@ -28,19 +28,6 @@ automation:
         tag: auto_2_sluiten
         color: red
         notification_icon: mdi:car
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/car-2 
-  - service: notify.madouce_phone
-    data:
-      title: Toyota niet op slot!
-      message: 🚙 Toyota niet op slot!
-      data:
-        channel: Important
-        tag: auto_2_sluiten
-        color: red
-        notification_icon: mdi:car        
         actions:
         - action: URI
           title: meer info
@@ -64,19 +51,7 @@ automation:
     entity_id: binary_sensor.madouce_phone_connected_to_car_2
     state: 'off'
   action:
-  - service: notify.bart_phone
-    data:
-      title: Toyota niet op slot!
-      message: 🚙 Toyota niet op slot!
-      data:
-        channel: Important
-        tag: auto_2_sluiten
-        color: red
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/car-2   
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       title: Toyota niet op slot!
       message: 🚙 Toyota niet op slot!
@@ -99,14 +74,9 @@ automation:
     to: 'off'
   condition: []
   action:
-  - service: notify.bart_phone
+  - service: notify.bart_madouce_phone
     data:
       message: "clear_notification"
       data:
-        tag: auto_2_sluiten
-  - service: notify.madouce_phone
-    data:
-      message: "clear_notification"
-      data:
-        tag: auto_2_sluiten        
+        tag: auto_2_sluiten       
   mode: single

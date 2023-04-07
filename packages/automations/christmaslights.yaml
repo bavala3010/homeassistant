@@ -24,10 +24,7 @@ automation:
   - service: switch.turn_on
     target:
       entity_id: switch.kerstverlichting
-  - service: notify.bart_phone
-    data:
-      message: '{{ ["Joehoe, de kerstverlichting brandt weer!","Jingle bells", "Merry Christmas with lots of love.", "Kerst is leuker met lichtjes.", "Wishing you a Christmas that is merry and bright!"] | random }}'
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       message: '{{ ["Joehoe, de kerstverlichting brandt weer!","Jingle bells", "Merry Christmas with lots of love.", "Kerst is leuker met lichtjes.", "Wishing you a Christmas that is merry and bright!"] | random }}'
   mode: single
@@ -87,10 +84,7 @@ automation:
   - service: switch.turn_off
     target:
       entity_id: switch.kerstverlichting
-  - service: notify.bart_phone
-    data:
-      message: Wat jammer, de kerstverlichting is weer uit!
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       message: Wat jammer, de kerstverlichting is weer uit!
   mode: single

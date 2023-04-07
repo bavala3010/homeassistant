@@ -14,24 +14,13 @@ automation:
       entity_id: sensor.recycleapp_morgen
       state: Geen
   action:
-  - service: notify.bart_phone
+  - service: notify.bart_madouce_phone
     data:
       title: '{{title}}'
       message: '{{message}}'
       data:
         notification_icon: "mdi:recycle"
         color: "#44DE22"              
-        tag: recycle
-        actions:
-        - action: recycle_done
-          title: Ik heb het buiten gezet!
-  - service: notify.madouce_phone
-    data:
-      title: '{{title}}'
-      message: '{{message}}'
-      data:
-        notification_icon: "mdi:recycle"
-        color: "#44DE22"        
         tag: recycle
         actions:
         - action: recycle_done
@@ -58,15 +47,7 @@ automation:
     at: '13:00:00'
   condition: []
   action:
-  - service: notify.bart_phone
-    data:
-      title: '{{title}}'
-      message: '{{message}}'
-      data:
-        notification_icon: "mdi:recycle"      
-        tag: recycle
-        color: "#44DE22"        
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       title: '{{title}}'
       message: '{{message}}'

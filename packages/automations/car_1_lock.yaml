@@ -34,7 +34,7 @@ automation:
     entity_id: binary_sensor.madouce_phone_connected_to_car_1
     state: 'off'
   action:
-  - service: notify.bart_phone
+  - service: notify.bart_madouce_phone
     data:
       title: Auto niet op slot!
       message: 🚙 Er wordt nu geprobeerd om de auto te sluiten.
@@ -43,19 +43,6 @@ automation:
         tag: auto_sluiten
         color: red
         notification_icon: mdi:car
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/car-1
-  - service: notify.madouce_phone
-    data:
-      title: Auto niet op slot!
-      message: 🚙 Er wordt nu geprobeerd om de auto te sluiten.
-      data:
-        channel: Important
-        tag: auto_sluiten
-        color: red
-        notification_icon: mdi:car        
         actions:
         - action: URI
           title: meer info
@@ -87,16 +74,11 @@ automation:
     to: 'locked'
   condition: []
   action:
-  - service: notify.bart_phone
+  - service: notify.bart_madouce_phone
     data:
       message: "clear_notification"
       data:
-        tag: auto_sluiten
-  - service: notify.madouce_phone
-    data:
-      message: "clear_notification"
-      data:
-        tag: auto_sluiten        
+        tag: auto_sluiten       
   mode: single
 
 - alias: 🚗 car 1 // slot // Auto 15 minuten niet op slot
@@ -120,19 +102,7 @@ automation:
     entity_id: binary_sensor.madouce_phone_connected_to_car_1
     state: 'off'
   action:
-  - service: notify.bart_phone
-    data:
-      title: Audi niet op slot!
-      message: 🚙 Er wordt nu geprobeerd om de auto te sluiten.
-      data:
-        channel: Important
-        tag: auto_sluiten
-        color: red
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/car-1
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       title: Audi niet op slot!
       message: 🚙 Er wordt nu geprobeerd om de auto te sluiten.

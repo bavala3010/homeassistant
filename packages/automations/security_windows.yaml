@@ -26,15 +26,7 @@ automation:
           uri: /lovelace/alarm
         vibrationPattern: 10, 10, 10, 10, 10, 10, 10
         media_stream: alarm_stream
-  - service: notify.bart_phone
-    data:
-      title: Niemand thuis en ramen open
-      message: >
-        Het volgende raam staat nog open:
-        {{expand(states.binary_sensor.kamer_alunya_schuifraam, states.binary_sensor.veranda_schuifraam, states.binary_sensor.badkamer_raam_wijd, states.binary_sensor.master_bedroom_raam_wijd) | selectattr('state','eq','on') | map(attribute='name') | list | join(', ') }}
-      data:
-        color: red
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       title: Niemand thuis en ramen open
       message: >
@@ -73,13 +65,7 @@ automation:
           uri: /lovelace/alarm
         vibrationPattern: 10, 10, 10, 10, 10, 10, 10
         media_stream: alarm_stream
-  - service: notify.bart_phone
-    data:
-      title: Niemand thuis en ramen open
-      message: Er staan nog ramen open.
-      data:
-        color: red
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       title: Niemand thuis en ramen open
       message: Er staan nog ramen open.

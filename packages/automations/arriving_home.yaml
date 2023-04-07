@@ -151,6 +151,7 @@ automation:
       title: Madouce is bijna thuis.
       message: Hoera.
       data:
+        tag: madouce_bijna_thuis
         color: red
         ttl: 0
         priority: high
@@ -185,6 +186,7 @@ automation:
       title: Bart is bijna thuis.
       message: Hoera.
       data:
+        tag: bart_bijna_thuis      
         color: red
         ttl: 0
         priority: high

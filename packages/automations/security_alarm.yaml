@@ -233,15 +233,7 @@ automation:
           uri: /lovelace/alarm
         vibrationPattern: 10, 10, 10, 10, 10, 10, 10
         channel: alarm
-  - service: notify.bart_phone
-    data:
-      title: '🚨 alarm // Alarm!'
-      message: 'Alarm in Eikenbos: beweging aan {{ states(''input_text.alarm_trigger_source'')}}'
-      data:
-        notification_icon: mdi:security      
-        color: red
-        channel: alarm
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       title: '🚨 alarm // Alarm!'
       message: 'Alarm in Eikenbos: beweging aan {{ states(''input_text.alarm_trigger_source'')}}'

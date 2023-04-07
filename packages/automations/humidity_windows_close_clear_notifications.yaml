@@ -38,12 +38,7 @@ automation:
     entity_id: input_boolean.living_raam_moet_dicht
     state: 'on'
   action:
-  - service: notify.bart_phone
-    data:
-      message: "clear_notification"
-      data:
-        tag: window_living
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       message: "clear_notification"
       data:
@@ -67,12 +62,7 @@ automation:
     entity_id: input_boolean.kamer_amilya_raam_moet_dicht
     state: 'on'
   action:
-  - service: notify.bart_phone
-    data:
-      message: "clear_notification"
-      data:
-        tag: window_kamer_amilya
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       message: "clear_notification"
       data:
@@ -96,16 +86,11 @@ automation:
     entity_id: input_boolean.veranda_schuifraam_moet_dicht
     state: 'on'
   action:
-  - service: notify.bart_phone
+  - service: notify.bart_madouce_phone
     data:
       message: "clear_notification"
       data:
-        tag: window_veranda
-  - service: notify.madouce_phone
-    data:
-      message: "clear_notification"
-      data:
-        tag: window_veranda        
+        tag: window_veranda       
   mode: single
 
 - alias: 🪟 ramen - sluit raam berging - clear notification (Bart en Madouce)
@@ -125,12 +110,7 @@ automation:
     entity_id: input_boolean.berging_raam_moet_dicht
     state: 'on'
   action:
-  - service: notify.bart_phone
-    data:
-      message: "clear_notification"
-      data:
-        tag: window_berging
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       message: "clear_notification"
       data:
@@ -154,12 +134,7 @@ automation:
     entity_id: input_boolean.badkamer_raam_moet_dicht
     state: 'on'
   action:
-  - service: notify.bart_phone
-    data:
-      message: "clear_notification"
-      data:
-        tag: window_badkamer
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       message: "clear_notification"
       data:
@@ -187,12 +162,7 @@ automation:
     entity_id: input_boolean.kamer_alunya_raam_moet_dicht
     state: 'on'
   action:
-  - service: notify.bart_phone
-    data:
-      message: "clear_notification"
-      data:
-        tag: window_kamer_alunya
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       message: "clear_notification"
       data:
@@ -215,12 +185,7 @@ automation:
     entity_id: input_boolean.master_bedroom_raam_moet_dicht
     state: 'on'
   action:
-  - service: notify.bart_phone
-    data:
-      message: "clear_notification"
-      data:
-        tag: window_master_bedroom
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       message: "clear_notification"
       data:

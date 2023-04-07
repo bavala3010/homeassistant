@@ -115,7 +115,7 @@ automation:
       to: 'on'
   condition: []
   action:
-    - service: notify.bart_phone
+    - service: notify.bart_madouce_phone
       data:
         title: Temperatuur in huis begint snel te stijgen.
         message: >
@@ -130,23 +130,7 @@ automation:
           ') }} {% endif %}
         data:
           color: red
-          notification_icon: "mdi:window-closed-variant" 
-    - service: notify.madouce_phone
-      data:
-        title: Temperatuur in huis begint snel te stijgen.
-        message: >
-          Temperatuur stijgt in: {{expand(states.group.home_temp_rising) |
-          selectattr('state','eq','on') | map(attribute='name') | list | join(',
-          ') }}<br> {% if is_state('group.alle_raam_sensoren', 'off') %} Gelukkig
-          zijn alle ramen dicht! {% else %}
-          {{expand(states.group.alle_raam_sensoren) |selectattr('state','eq','on')
-          | list | length }} open ramen: 
-          {{expand(states.group.alle_raam_sensoren) |
-          selectattr('state','eq','on') | map(attribute='name') | list | join(',
-          ') }} {% endif %}
-        data:
-          color: red
-          notification_icon: "mdi:window-closed-variant"          
+          notification_icon: "mdi:window-closed-variant"       
   mode: single
 
 - alias: buiten kouder geworden dan in living = melding
@@ -170,20 +154,10 @@ automation:
   - service: input_boolean.turn_off
     target:
       entity_id: input_boolean.living_raam_moet_dicht
-  - service: notify.bart_phone
+  - service: notify.bart_madouce_phone
     data:
       title: Ramen in living mogen open
       message: Buiten wordt het nu koeler ({{outdoor}}) dan binnen ({{indoor}}).
-      data:
-        color: green
-        channel: ramen
-        timeout: 3600
-        tag: window_living
-        notification_icon: "mdi:window-closed-variant"
-  - service: notify.madouce_phone
-    data:
-      title: Ramen in living mogen open
-      message: Buiten wordt het nu koeler ({{outdoor}}) dan binnen ({{ indoor }}).
       data:
         color: green
         channel: ramen
@@ -214,7 +188,7 @@ automation:
     - service: input_boolean.turn_off
       target:
         entity_id: input_boolean.veranda_schuifraam_moet_dicht
-    - service: notify.bart_phone
+    - service: notify.bart_madouce_phone
       data:
         title: Raam in veranda mag open
         message: Buiten wordt het nu koeler ({{outdoor}}) dan binnen ({{indoor}}).
@@ -223,18 +197,7 @@ automation:
           channel: ramen
           timeout: 3600
           tag: window_veranda 
-          notification_icon: "mdi:window-closed-variant"
-    - service: notify.madouce_phone
-      data:
-        title: Raam in veranda mag open
-        message: >
-          Buiten wordt het nu koeler ({{outdoor}}) dan binnen ({{indoor}}).
-        data:
-          color: green
-          channel: ramen
-          timeout: 3600
-          tag: window_veranda 
-          notification_icon: "mdi:window-closed-variant"         
+          notification_icon: "mdi:window-closed-variant"      
   variables:
     outdoor: "{{ states('sensor.temp_leuven24_wunderground') |float }}"
     indoor: "{{ states('sensor.veranda_temperature') |float }}"           
@@ -259,7 +222,7 @@ automation:
     - service: input_boolean.turn_off
       target:
         entity_id: input_boolean.kamer_amilya_raam_moet_dicht
-    - service: notify.bart_phone
+    - service: notify.bart_madouce_phone
       data:
         title: Raam Amilya mag open
         message: Buiten wordt het nu koeler ({{outdoor}}) dan binnen ({{indoor}}).
@@ -268,18 +231,7 @@ automation:
           channel: ramen
           timeout: 3600
           tag: window_amilya
-          notification_icon: "mdi:window-closed-variant"                  
-    - service: notify.madouce_phone
-      data:
-        title: Raam Amilya mag open
-        message: >
-          Buiten wordt het nu koeler ({{outdoor}}) dan binnen ({{indoor}}).
-        data:
-          color: green
-          channel: ramen
-          timeout: 3600
-          tag: window_amilya
-          notification_icon: "mdi:window-closed-variant"                  
+          notification_icon: "mdi:window-closed-variant"                 
   variables:
     outdoor: "{{ states('sensor.temp_leuven24_wunderground') |float }}"
     indoor: "{{ states('sensor.kamer_amilya_temperature') |float }}"           
@@ -304,7 +256,7 @@ automation:
     - service: input_boolean.turn_off
       target:
         entity_id: input_boolean.kamer_alunya_raam_moet_dicht
-    - service: notify.bart_phone
+    - service: notify.bart_madouce_phone
       data:
         title: Raam Alunya mag open
         message: Buiten wordt het nu koeler ({{outdoor}}) dan binnen ({{indoor}}).
@@ -313,17 +265,7 @@ automation:
           channel: ramen
           timeout: 3600
           tag: window_alunya
-          notification_icon: "mdi:window-closed-variant"                 
-    - service: notify.madouce_phone
-      data:
-        title: Raam Alunya mag open
-        message: Buiten wordt het nu koeler ({{outdoor}}) dan binnen ({{indoor}}).
-        data:
-          color: green
-          channel: ramen
-          timeout: 3600
-          tag: window_alunya
-          notification_icon: "mdi:window-closed-variant"                
+          notification_icon: "mdi:window-closed-variant"               
   variables:
     outdoor: "{{ states('sensor.temp_leuven24_wunderground') |float }}"
     indoor: "{{ states('sensor.kamer_alunya_temperature') |float }}"          
@@ -348,7 +290,7 @@ automation:
     - service: input_boolean.turn_off
       target:
         entity_id: input_boolean.master_bedroom_raam_moet_dicht
-    - service: notify.bart_phone
+    - service: notify.bart_madouce_phone
       data:
         title: Raam in master bedroom mag open
         message: Buiten wordt het nu koeler ({{outdoor}}) dan binnen ({{indoor}}).
@@ -357,17 +299,7 @@ automation:
           channel: ramen
           timeout: 3600
           tag: window_master_bedroom
-          notification_icon: "mdi:window-closed-variant"          
-    - service: notify.madouce_phone
-      data:
-        title: Raam in master bedroom mag open
-        message: Buiten wordt het nu koeler ({{outdoor}}) dan binnen ({{indoor}}).
-        data:
-          color: green
-          channel: ramen
-          timeout: 3600
-          tag: window_master_bedroom
-          notification_icon: "mdi:window-closed-variant"               
+          notification_icon: "mdi:window-closed-variant"             
   variables:
     outdoor: "{{ states('sensor.temp_leuven24_wunderground') |float }}"
     indoor: "{{ states('sensor.master_bedroom_temperature') |float }}"

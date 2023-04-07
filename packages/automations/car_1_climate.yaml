@@ -26,6 +26,10 @@ automation:
     state: 'on'
   action:
   - service: script.auto_start_climatisatie_nu
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.car_climatisation_timer  
   mode: restart
 
 - alias: 🚗 car 1 // climate // Om 19u in Waarschoot en koud = vraag auto climatiseren

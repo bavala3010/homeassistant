@@ -119,6 +119,7 @@ automation:
     entity_id: media_player.ue55ju7000
     from: 'on'
     to: 'off'
+    for: 00:05:00    
   condition: []
   action:
   - service: light.turn_off
@@ -214,9 +215,9 @@ automation:
   trigger:
   - platform: state
     entity_id: person.amilya
+    from: 'home'
     to: 'not_home'
     for: 00:03:00
-    from: 'home'
   condition: []
   action:
   - service: light.turn_off
@@ -482,8 +483,6 @@ automation:
   mode: single
 
 
-
-
 #################################################  
 # Gang, toilet, garage
 #################################################
@@ -508,7 +507,7 @@ automation:
         entity_id: sensor.garage_bewegingssensor_light_level
         above: '4'
       sequence:
-      - service: notify.bart_phone
+      - service: notify.bart_madouce_phone
         data:
           message: >
             {% set s = ( as_timestamp(now()) - as_timestamp(state_attr('automation.licht_in_garage','last_triggered')) )|int %}
@@ -519,12 +518,7 @@ automation:
             tag: garage_licht
       - delay:
           minutes: 5
-  - service: notify.bart_phone
-    data:
-      message: "clear_notification"
-      data:
-        tag: garage_licht
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       message: "clear_notification"
       data:

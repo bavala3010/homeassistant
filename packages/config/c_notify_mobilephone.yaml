@@ -21,6 +21,12 @@ notify:
     services:
       - service: mobile_app_sm_g986b
 
+  - name: "bart_madouce_phone"
+    platform: group
+    services:
+      - service: mobile_app_sm_g975f
+      - service: mobile_app_sm_g986b       
+
   - name: alunya_phone
     platform: group
     services:
@@ -35,4 +41,3 @@ notify:
     platform: group
     services:
       - service: mobile_app_nokia_8_1
-

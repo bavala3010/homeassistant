@@ -48,7 +48,7 @@ automation:
   - condition: template
     value_template: "{{ states('device_tracker.audi_e_tron_sportback_position') != 'home' }}"
   action:
-  - service: notify.bart_phone
+  - service: notify.bart_madouce_phone
     data:
       title: "🚙 Autolader is verbonden." 
       message: >
@@ -63,22 +63,7 @@ automation:
         actions:
         - action: URI
           title: meer info
-          uri: /dashboard-car/car        
-  - service: notify.madouce_phone
-    data:
-      message: >
-        {% set Hour, Minute = states.sensor.car_1_remaining_charge_time.state.split(':') %}
-        {% set minutes = Hour | int *60 + Minute | int %}
-        Nu {{states('sensor.car_1_soc')}}%. Nog {{states('sensor.car_1_remaining_charge_time')}} laden tot 100%.
-        Geschat einduur: {{ (as_timestamp(now()) + (minutes | float(default=0) * 60)) | timestamp_custom('%a %d %b %-Hu%M') }}.
-      data:
-        color: green
-        tag: auto_laden
-        timeout: 300
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/car        
+          uri: /dashboard-car/car      
   mode: single
 
 - alias: 🚗 car 1 // 🔋 charge // auto laadt (niet thuis) = melding
@@ -93,21 +78,9 @@ automation:
   - condition: template
     value_template: "{{ states('device_tracker.audi_e_tron_sportback_position') != 'home' }}"
   action:
-  - service: notify.bart_phone
+  - service: notify.bart_madouce_phone
     data:
       title: 🚙 Auto is aan het laden.
-      message: Nu {{states('sensor.car_1_soc') | round()}}% = {{states('sensor.car_1_range')}} km.
-        Nog {{states('sensor.car_1_remaining_charge_time')}} laden tot 100%.
-      data:
-        color: green
-        tag: auto_laden
-        timeout: 300
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/car
-  - service: notify.madouce_phone
-    data:
       message: Nu {{states('sensor.car_1_soc') | round()}}% = {{states('sensor.car_1_range')}} km.
         Nog {{states('sensor.car_1_remaining_charge_time')}} laden tot 100%.
       data:
@@ -137,18 +110,7 @@ automation:
       - input_boolean.car_charge_busy
       - input_boolean.car_charge_sun_busy
       - input_boolean.car_charge_net_busy
-  - service: notify.bart_phone
-    data:
-      message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.car_1_soc') | round()}}%. {{states('sensor.car_1_range')}} km."
-      data:
-        color: green
-        tag: auto_laden
-        timeout: 43200
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/car
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.car_1_soc') | round()}}%. {{states('sensor.car_1_range')}} km."
       data:

@@ -46,16 +46,10 @@ automation:
   - service: lock.lock
     target:
       entity_id: lock.voordeur_nuki
-  - service: notify.bart_phone
+  - service: notify.bart_madouce_phone
     data:
       title: Voordeur 
       message: Niemand thuis. Gelukkig heb ik de voordeur voor jou op slot gedaan. 
-      data:
-        color: red
-  - service: notify.madouce_phone
-    data:
-      title: Voordeur
-      message: Niemand thuis. Gelukkig heb ik de voordeur voor jou op slot gedaan.
       data:
         color: red
   mode: single
@@ -79,17 +73,7 @@ automation:
   - service: lock.lock
     target:
       entity_id: lock.voordeur_nuki
-  - service: notify.bart_phone
-    data:
-      title: Ik heb de voordeur voor jou op slot gedaan.
-      message: >-
-          {% if is_state('person.amilya', 'home') and is_state('person.alunya', 'home') %}Amilya en Alunya zijn alleen thuis.
-          {% elif is_state('person.amilya', 'home') %}Amilya is alleen thuis.
-          {% elif is_state('person.alunya', 'home') %}Alunya is alleen thuis.
-          {% endif %}
-      data:
-        color: red
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       title: Ik heb de voordeur voor jou op slot gedaan.
       message: >-

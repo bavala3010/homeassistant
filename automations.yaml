@@ -123,6 +123,8 @@
     data:
       title: Fout bij laden auto
       message: Status van auto is in "error"
+  - service: script.auto_status_verversen
+    data: {}
   mode: single
 - id: '1664611616733'
   alias: Forceer update huisverbruik-meter bij aanpassing zonneproductie-meter
@@ -546,7 +548,7 @@
   description: ''
   trigger:
   - platform: numeric_state
-    entity_id: sensor.huisverbruik
+    entity_id: sensor.net_power
     for:
       hours: 0
       minutes: 1
@@ -556,8 +558,8 @@
   action:
   - service: notify.bart_phone
     data_template:
-      title: 'Extreem hoog verbruik: {{ states(''sensor.huisverbruik'')}} W. Risico
-        dat elektriciteit uitvalt.'
+      title: 'Extreem hoog verbruik: {{ states(''sensor.net_power'')}} W. Risico dat
+        elektriciteit uitvalt.'
       message: Het laden van de auto is automatisch gestopt.
       data:
         notification_icon: mdi:lightning-bolt

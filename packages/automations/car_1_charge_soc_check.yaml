@@ -19,11 +19,7 @@ automation:
       {% set car_use_day = 'input_select.car_use_day_' ~ t.isoweekday() %}  
       {% if states(car_use_day) == "Toyota Evere" %} true {% endif %}
   action:
-  - service: notify.madouce_phone
-    data:
-      title: Morgen naar Toyota Evere
-      message: "Nu {{states('sensor.car_1_soc')}}%. {% if states('sensor.car_1_soc') |round() > 24 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen. Best 20% à 25%.{% endif %}"
-  - service: notify.bart_phone
+  - service: notify.bart_madouce_phone
     data:
       title: Morgen naar Toyota Evere
       message: "Nu {{states('sensor.car_1_soc')}}%. {% if states('sensor.car_1_soc') |round() > 24 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen. Best 20% à 25%.{% endif %}"
@@ -42,11 +38,7 @@ automation:
       {% set car_use_day = 'input_select.car_use_day_' ~ t.isoweekday() %}  
       {% if states(car_use_day) == "Toyota Diest" %} true {% endif %}
   action:
-  - service: notify.madouce_phone
-    data:
-      title: Morgen naar Toyota Diest
-      message: "Nu {{states('sensor.car_1_soc')}}%. {% if states('sensor.car_1_soc') |round() > 38 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen. Best +/- 40%.{% endif %}"
-  - service: notify.bart_phone
+  - service: notify.bart_madouce_phone
     data:
       title: Morgen naar Toyota Diest
       message: "Nu {{states('sensor.car_1_soc')}}%. {% if states('sensor.car_1_soc') |round() > 38 %}Voldoende batterijniveau.{% else %} Onvoldoende geladen. Best +/- 40%.{% endif %}"
@@ -68,18 +60,7 @@ automation:
     entity_id: sensor.car_1_plug_state
     state: disconnected
   action:
-  - service: notify.bart_phone
-    data:
-      title: Verbind de laadkabel!
-      message: "🚙 Auto zou moeten laden tot {{states('input_number.car_charge_target_percentage') | round(0) }}% maar is nu slechts {{states('sensor.car_1_soc') | round(0)}}%."
-      data:
-        color: green
-        tag: auto_laden
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/car-charging      
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       title: Verbind de laadkabel!
       message: "🚙 Auto zou moeten laden tot {{states('input_number.car_charge_target_percentage') | round(0) }}% maar is nu slechts {{states('sensor.car_1_soc') | round(0)}}%."

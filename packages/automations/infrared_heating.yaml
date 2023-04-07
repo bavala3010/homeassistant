@@ -1,0 +1,19 @@
+automation:
+
+- alias: infraroodpaneel uit na 2 uren
+  id: 'db83e337-8ca6-4886-82c5-616d606825e6'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - switch.infrared_panel_switch
+      to: "on"
+      for:
+        hours: 2
+  condition: []
+  action:
+    - service: switch.turn_off
+      data: {}
+      target:
+        entity_id: switch.infrared_panel_switch
+  mode: single

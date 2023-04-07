@@ -58,14 +58,7 @@ automation:
   - service: cover.open_cover
     target:
       entity_id: cover.garagepoort
-  - service: notify.bart_phone
-    data:
-      message: 'Bart scant garagepoorttag buiten.'
-      title: 'Garagepoort'
-      data:
-        color: "#FFA500"
-        channel: home_access
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       message: 'Bart scant garagepoorttag buiten.'
       title: 'Garagepoort'
@@ -115,14 +108,7 @@ automation:
   - service: cover.open_cover
     target:
       entity_id: cover.garagepoort
-  - service: notify.bart_phone
-    data:
-      message: 'Alunya scant garagepoorttag buiten.'
-      title: 'Garagepoort'
-      data:
-        color: "#FFA500"
-        channel: home_access
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       message: 'Alunya scant garagepoorttag buiten.'
       title: 'Garagepoort'
@@ -190,14 +176,7 @@ automation:
   - service: cover.open_cover
     target:
       entity_id: cover.garagepoort
-  - service: notify.bart_phone
-    data:
-      message: 'Alunya scant tag garagepoort binnen.'
-      title: 'Garagepoort'
-      data:
-        color: "#FFA500"
-        channel: home_access
-  - service: notify.madouce_phone
+  - service: notify.bart_madouce_phone
     data:
       message: 'Alunya scant tag garagepoort binnen.'
       title: 'Garagepoort'
