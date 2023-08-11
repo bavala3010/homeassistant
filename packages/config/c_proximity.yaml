@@ -1,7 +1,10 @@
+# Best is to use the device_tracker sensor created by the Companion Android app for the proximity.
+
 proximity:
   bart_home:
     devices:
-      - device_tracker.bart_s10
+      # - device_tracker.bart_s10
+      - device_tracker.bart_s23plus
     tolerance: 50
     unit_of_measurement: km
     

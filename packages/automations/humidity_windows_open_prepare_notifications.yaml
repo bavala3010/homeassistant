@@ -53,8 +53,8 @@ automation:
   variables:
     message: >
       Vocht living: {{states('sensor.gram_water_living') | round(1) }} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
-      Vocht living: {{states('sensor.living_humidity')}}%. Buiten: {{states('sensor.humidity_leuven24_wunderground')}}%.<br>
-      Temp living: {{states('sensor.living_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.
+      Vocht living: {{states('sensor.living_humidity')}}%. Buiten: {{states('sensor.leuven_humidity')}}%.<br>
+      Temp living: {{states('sensor.living_temperature')}} °C. Buiten: {{states('sensor.eikenbos_average_temperature')}} °C.
     title: "Open het raam van de living/keuken!"
     tag: "window_living"
     action_window_pause: "living_window_pause"
@@ -103,8 +103,8 @@ automation:
   variables:
     message: >
       Vocht kamer Amilya: {{states('sensor.gram_water_kamer_amilya') | round(1) }} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
-      Vocht kamer Amilya: {{states('sensor.kamer_amilya_humidity')}}%. Buiten: {{states('sensor.humidity_leuven24_wunderground')}}%.<br>
-      Temp kamer Amilya: {{states('sensor.kamer_amilya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.
+      Vocht kamer Amilya: {{states('sensor.kamer_amilya_humidity')}}%. Buiten: {{states('sensor.leuven_humidity')}}%.<br>
+      Temp kamer Amilya: {{states('sensor.kamer_amilya_temperature')}} °C. Buiten: {{states('sensor.eikenbos_average_temperature')}} °C.
     title: "Open het raam van Amilya!"
     tag: "window_kamer_amilya"
     action_window_pause: "kamer_amilya_window_pause"
@@ -150,8 +150,8 @@ automation:
   variables:
     message: >
       Vocht veranda {{states('sensor.gram_water_veranda') | round(1) }} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
-      Vocht veranda: {{states('sensor.veranda_humidity')}}%. Buiten: {{states('sensor.humidity_leuven24_wunderground')}}%<br>
-      Temp veranda: {{states('sensor.veranda_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.
+      Vocht veranda: {{states('sensor.veranda_humidity')}}%. Buiten: {{states('sensor.leuven_humidity')}}%<br>
+      Temp veranda: {{states('sensor.veranda_temperature')}} °C. Buiten: {{states('sensor.eikenbos_average_temperature')}} °C.
     title: "Open het raam van de veranda!"
     tag: "window_veranda"
     action_window_pause: "veranda_window_pause"
@@ -197,8 +197,8 @@ automation:
   variables:
     message: >
       Vocht berging {{states('sensor.gram_water_berging') | round(1) }} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
-      Vocht berging: {{states('sensor.berging_humidity')}}%. Buiten: {{states('sensor.humidity_leuven24_wunderground')}}%<br>
-      Temp berging: {{states('sensor.berging_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.
+      Vocht berging: {{states('sensor.berging_humidity')}}%. Buiten: {{states('sensor.leuven_humidity')}}%<br>
+      Temp berging: {{states('sensor.berging_temperature')}} °C. Buiten: {{states('sensor.eikenbos_average_temperature')}} °C.
     title: "Open het raam van de berging!"
     tag: "window_berging"
     action_window_pause: "berging_window_pause"
@@ -244,8 +244,8 @@ automation:
   variables:  
     message: >
       Vocht  badkamer: {{states('sensor.gram_water_badkamer') | round(1) }} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
-      Vocht badkamer: {{states('sensor.badkamer_humidity')}}%. Buiten: {{states('sensor.humidity_leuven24_wunderground')}}%.<br>
-      Temp badkamer: {{states('sensor.badkamer_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.
+      Vocht badkamer: {{states('sensor.badkamer_humidity')}}%. Buiten: {{states('sensor.leuven_humidity')}}%.<br>
+      Temp badkamer: {{states('sensor.badkamer_temperature')}} °C. Buiten: {{states('sensor.eikenbos_average_temperature')}} °C.
     title: "Open het raam van de badkamer!"
     tag: "window_badkamer"
     action_window_pause: "badkamer_window_pause"
@@ -294,8 +294,8 @@ automation:
   variables:  
     message: >
       Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya') | round(1) }} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
-      Vocht kamer Alunya: {{states('sensor.kamer_alunya_humidity')}}%. Buiten: {{states('sensor.humidity_leuven24_wunderground')}}%<br>
-      Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.
+      Vocht kamer Alunya: {{states('sensor.kamer_alunya_humidity')}}%. Buiten: {{states('sensor.leuven_humidity')}}%<br>
+      Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.eikenbos_average_temperature')}} °C.
     title: "Open het raam van Alunya!"
     tag: "window_kamer_alunya"
     action_window_pause: "kamer_alunya_window_pause"
@@ -341,8 +341,8 @@ automation:
   variables:
     message: >
       Vocht master bedroom: {{states('sensor.gram_water_master_bedroom') | round(1) }} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
-      Vocht master bedroom: {{states('sensor.master_bedroom_humidity')}}%. Buiten: {{states('sensor.humidity_leuven24_wunderground')}}%.<br>
-      Temp master bedroom: {{states('sensor.master_bedroom_temperature')}} °C. Buiten: {{states('sensor.temp_leuven24_wunderground')}} °C.
+      Vocht master bedroom: {{states('sensor.master_bedroom_humidity')}}%. Buiten: {{states('sensor.leuven_humidity')}}%.<br>
+      Temp master bedroom: {{states('sensor.master_bedroom_temperature')}} °C. Buiten: {{states('sensor.eikenbos_average_temperature')}} °C.
     title: "Open het raam van de master bedroom!"
     tag: "window_master_bedroom"
     action_window_pause: "master_bedroom_window_pause"

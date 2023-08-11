@@ -9,6 +9,10 @@ automation:
     - platform: time
       at: "05:30:00"
     - platform: time
+      at: "06:45:00"
+    - platform: time
+      at: "8:00:00"
+    - platform: time
       at: "11:00:00"
     - platform: time
       at: "13:00:00"      

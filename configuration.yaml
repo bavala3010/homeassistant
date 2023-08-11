@@ -50,13 +50,14 @@ daikin_residential:
   password: Qc#DHeq9!7!WEe*
 
 device_tracker:
+  # - platform: bluetooth_tracker  
+  - platform: bluetooth_le_tracker
   - platform: tomato
     host: 192.168.86.1
     username: root
     password: admin
     http_id: TID3fac41d84c91e1a8
 dhcp:
-discovery:
 energy:
 frontend:
   themes: !include_dir_merge_named themes
@@ -75,9 +76,10 @@ input_text:
   trigger_source:
     name: Trigger Source  #String om bij te houden welke sensor het alarm triggert
 light:
-logbook:
 logger:
   default: error
+  logs:
+    custom_components.multiscrape: debug  
 # map:  # Enables in the left menu a map showing the location of tracked devices
 media_source:
 mobile_app:
@@ -86,6 +88,7 @@ person:
 scene: !include scenes.yaml
 schedule:
 script: !include_dir_merge_named scripts
+ssdp:
 stream:
 sun:
 system_health:
@@ -117,7 +120,7 @@ tts:
     cache: false
     cache_dir: /tmp/tts
     time_memory: 57600    #min 60 max 57600 (16 hours)
-    base_url: http://192.168.86.100:8123
+    # base_url: http://192.168.86.100:8123
     service_name: google_say
     language: 'nl'
   - platform: edge_tts
@@ -140,6 +143,7 @@ homeassistant:
   external_url: https://ha.bartland.duckdns.org
   internal_url: http://192.168.86.100:8123
   time_zone: "Europe/Brussels"
+  language: nl
 
   auth_providers:
     - type: homeassistant
@@ -174,6 +178,18 @@ homeassistant:
       state_class: total_increasing
 
     sensor.wasmachine_energieverbruik:
+      device_class: energy
+      state_class: total_increasing
+
+    sensor.droogkast_energieverbruik:
+      device_class: energy
+      state_class: total_increasing   
+
+    sensor.infraroodpaneel_energieverbruik:
+      device_class: energy
+      state_class: total_increasing
+
+    sensor.badkamer_elektrische_verwarming_energieverbruik:
       device_class: energy
       state_class: total_increasing
 
@@ -233,9 +249,11 @@ homeassistant:
 #####################################################
 # needed when using reverse proxy managers (eg. Nginx)
 http:
-  # TO DO : ik ken het pad niet
-  # ssl_certificate: /opt/letsencrypt/live/npm-1/fullchain.pem
-  # ssl_key: /opt/letsencrypt/live/npm-1/privkey.pem
+  # Opgelet: het pad naar het certificaat moet vanuit de Home Assistant Docker container bereikbaar zijn.
+  # Daarom wordt in het docker-compose.yml bestand het volume gemapt: /opt/letsencrypt:/opt/letsencrypt
+  # De certificaten worden automatisch vernieuwd door NGINX proxy manager die in een aparte docker draait
+  # ssl_certificate: /opt/letsencrypt/live/npm-25/fullchain.pem
+  # ssl_key: /opt/letsencrypt/live/npm-25/privkey.pem
   use_x_forwarded_for: true
   trusted_proxies:
   # - 192.168.86.0/24   # the IP address of the proxy server
@@ -250,13 +268,26 @@ http:
   ip_ban_enabled: false         # use this to enable auto IP ban
   login_attempts_threshold: 3   # set the number of allowed login attempts
 
+
 recorder:
-  purge_keep_days: 7
+  purge_keep_days: 14
   commit_interval: 30
+  include:
+    entities:
+      - device_tracker.bart_s10
+      - device_tracker.bart_s23plus   # nodig voor automatisatie voordeur opendoen bij thuiskomst
+      - device_tracker.madouce_s20    # nodig voor automatisatie voordeur opendoen bij thuiskomst
   exclude:
     entities:
       - sensor.date
       - sensor.time
+      - sensor.today_is
+      - sensor.time_utc
+      - sensor.time_date
+      - sensor.time_online
+      - sensor.moon
+      - sensor.month_is
+      - sensor.low_battery      
       - sensor.last_boot
       - sun.sun
       - sensor.disk_use_percent
@@ -272,16 +303,17 @@ recorder:
     domains:
       - automation
       - camera
+      - device_tracker  # nearly every device has a location tracker
       - group
-      - updater
       - persistent_notification
       - scene
       - script
       - sun
+      - updater
       - weather
+      - weblink
       - zone
       - zwave
-      - device_tracker  # nearly every device has a location tracker
       # do not exclude mediaplayer, otherwise the daily statistics will not work
 
 influxdb:
@@ -330,31 +362,7 @@ alarm_control_panel:
       arming_time: 0
       delay_time: 0
 
-
-
-
-
 sensor:
-  - platform: template
-    sensors:
-      temp_forecast_4_hours:
-        friendly_name: "Forecast 4 hours"
-        value_template: "{{ state_attr('weather.eikenbos_openweather', 'forecast')[:4] | map(attribute='temperature') | average | round(1) }}"
-        unit_of_measurement: °C
-        device_class: temperature
-
-      net_power:
-        friendly_name: "net power"
-        unique_id: 'ffc1bd97-4dbf-483c-8659-48ed4c2790ad'
-        unit_of_measurement: W
-        device_class: power
-        # total of the power measured on the 3 phases via Shelly 3EM
-        value_template: >
-          {% set a = states('sensor.shellyem3_bcff4dfd1dbb_channel_a_power') | float(default=0) %}
-          {% set b = states('sensor.shellyem3_bcff4dfd1dbb_channel_b_power') | float(default=0) %}
-          {% set c = states('sensor.shellyem3_bcff4dfd1dbb_channel_c_power') | float(default=0) %}
-          {{ ( a + b + c ) | round(default=0) }}
-
   - platform: powercalc
     name: unload_battery
     daily_fixed_energy:
@@ -508,12 +516,13 @@ sensor:
   - platform: filter
     name: net power avg
     entity_id: sensor.net_power
+    unique_id: 'c6d3b0f5-dcb7-4016-bb3f-c06ccaa1bc71'
     filters:
       - filter: outlier
         window_size: 6   # number of samples taken
         radius: 10000  # ignore readings if difference is bigger than 10000
       - filter: time_simple_moving_average
-        window_size: "00:03"
+        window_size: "00:02"
       # - filter: throttle
       #   window_size: 120
 
@@ -559,15 +568,6 @@ template:
           is_state('sensor.shellyem3_bcff4dfd1dbb_channel_c_energy_returned', 'unavailable') ) }}  
         attributes:         
           last_reset: '1970-01-01T00:00:00+00:00'
-
-
-      # - name: "car charge stoptimer starttime"
-      #   state: >
-      #     {% set target = states('input_number.car_charge_target_percentage') | float(default=0) %}
-      #     {% set soc = states('sensor.audi_e_tron_sportback_state_of_charge') | float(default=0) %}
-      #     {% set nog_te_laden_procent = [target - soc, 0] | max %}
-      #     {% set nog_te_laden_minuten = nog_te_laden_procent * states('input_number.minuten_voor_1_laden') | round(2) %}
-      #     {{ strptime((as_timestamp(states('input_datetime.car_charge_target_time')) - ((nog_te_laden_minuten | float(default=0) + 10 ) * 60) ) | timestamp_custom('%Y-%m-%d %H:%M',false), '%Y-%m-%d %H:%M') }}
 
       - name: "verwachte zonneproductie morgen"
         unit_of_measurement: kWh
@@ -628,11 +628,11 @@ panel_iframe:
     icon: mdi:docker
     require_admin: true
 
-  automation_list:
-    title: "Automations"
-    url: "http://192.168.86.100:8123/config/automation/dashboard"
-    icon: mdi:list-box-outline
-    require_admin: true
+  # automation_list:
+  #   title: "Automations"
+  #   url: "http://192.168.86.100:8123/config/automation/dashboard"
+  #   icon: mdi:list-box-outline
+  #   require_admin: true
 
   duplicati:
     title: "Duplicati"
@@ -650,9 +650,19 @@ panel_custom:
   - name: automations-tree
     # url_path needs to be unique for each panel_custom config
     url_path: automations-tree
-    sidebar_title: Automations
+    sidebar_title: Automations tree
     sidebar_icon: mdi:robot
     module_url: /local/tree-panel/automations-tree.js  
+
+  - name: automations
+    sidebar_title: Automations
+    sidebar_icon: mdi:arrow-decision
+    js_url: /api/hassio/app/entrypoint.js
+    url_path: "config/automation/dashboard"
+    embed_iframe: true
+    require_admin: true
+    config:
+      ingress: core_configurator
 
 battery_sim:
   auto_batterij:

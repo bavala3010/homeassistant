@@ -16,13 +16,13 @@ automation:
       entity_id: switch.living_plug
   mode: single
   
-- alias: ⚡ stekker living aan om 7u of bij thuiskomst
+- alias: ⚡ stekker living aan om 6u30 of bij thuiskomst
   id: '15579822-c648-4309-8676-da47d24802fb'
   description: ''
   trigger:
   - platform: time
     at:
-    - '07:00:00'
+    - '06:30:00'
   - platform: state
     entity_id: group.gezin
     to: home
@@ -32,11 +32,15 @@ automation:
       entity_id: switch.living_plug 
   mode: single 
   
-- alias: ⚡ check om 20u als laptop van het werk uit staat
+- alias: ⚡ controleer om 20u, 21u, 22u of laptop van het werk uit staat
   id: 'd623e813-117a-485c-b7f1-ea50c8635010'
   trigger:
   - platform: time
     at: "20:00"
+  - platform: time
+    at: "21:00"
+  - platform: time
+    at: "22:00"    
   condition:
   - condition: state
     entity_id: switch.bart_laptop_brum05007458

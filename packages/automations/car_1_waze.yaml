@@ -5,7 +5,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.madouce_phone_connected_to_car
+    entity_id: binary_sensor.madouce_phone_connected_to_car_1
     from: 'off'
     to: 'on'
   condition:
@@ -37,7 +37,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.madouce_phone_connected_to_car
+    entity_id: binary_sensor.madouce_phone_connected_to_car_1
     from: 'off'
     to: 'on'
   condition:

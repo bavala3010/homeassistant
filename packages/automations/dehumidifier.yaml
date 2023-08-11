@@ -1,5 +1,27 @@
 automation:
 
+
+- alias: ontvochtiger aan met licht douche
+  id: 'cef6103e-ddcd-4cf9-abef-41cf20411ded'
+  description: ""
+  trigger:
+  - platform: state
+    entity_id:
+      - light.badkamer_douche
+    to: "on"
+    for:
+      minutes: 0
+      seconds: 45
+  condition:
+    - condition: template
+      value_template: " {{ states('binary_sensor.badkamer_raam_wijd') != 'on' }}"
+  action:
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.dehumidifier_switch
+  mode: single
+
 - alias: ontvochtiger start
   id: '5b2dc339-366f-40d0-af5a-2d56ea56f23c'
   description: ''
@@ -65,34 +87,55 @@ automation:
     for: 00:15:00
   condition: []
   action:
-  - service: notify.bart_phone
-    data:
-      title: Ontvochtiger staat al tijdje aan.
-      message: "Staat aan sinds meer dan 15 minuten aan."
-      data:
-        tag: ontvochtiger
-        notification_icon: "mdi:air-humidifier"
   - repeat:
       while:
       - condition: numeric_state
         entity_id: sensor.dehumidifier_power
         above: 0
       sequence:
-      - delay:
-          minutes: 15
       - service: notify.bart_phone      
         data:
           title: Ontvochtiger staat al tijdje aan.
-          message: "Staat al {{((as_timestamp(now()) - as_timestamp(states.automation.ontvochtiger_staat_al_15_minuten_aan) + 15) / 60 )| int() }} minuten aan."
+          message: >
+            {% set t = ((as_timestamp(now()) - starttijd) / 60) | int(default=0) %}
+            Staat al {{ t }} minuten aan.
           data:
             tag: ontvochtiger
             notification_icon: "mdi:air-humidifier"
+      - delay:
+          minutes: 15            
   - service: notify.bart_phone
     data:
       title: "Ontvochtiger staat nu uit."
-      message: "Stond {{((as_timestamp(now()) - as_timestamp(states.automation.ontvochtiger_staat_al_15_minuten_aan) + 15) / 60 )| int() }} minuten aan."
+      message: >
+        {% set t = (( as_timestamp(now()) - starttijd ) / 60) | round(default=0) %}
+        Stond {{ t }} minuten aan.
       data:
         tag: ontvochtiger
-        notification_icon: "mdi:air-humidifier"        
+        notification_icon: "mdi:air-humidifier"
+  variables:
+    starttijd: "{{ as_timestamp(state_attr('automation.ontvochtiger_staat_al_15_min_aan', 'last_triggered')) }}"      
   mode: single
 
+
+- alias: ontvochtiger staat al 30 min. aan of raam open of <70% vocht = uitschakelen
+  id: 'cf189eff-93b5-4452-b62d-8c14cdbd7bb4'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.dehumidifier_power
+    above: 0
+    for: 00:30:00
+  - platform: state
+    entity_id: binary_sensor.badkamer_raam_kantel
+    to: "on"
+  - platform: numeric_state
+    entity_id: sensor.badkamer_humidity
+    below: 70
+  condition: []
+  action:  
+    - service: switch.turn_off
+      data: {}
+      target:
+        entity_id: switch.dehumidifier_switch
+  mode: single

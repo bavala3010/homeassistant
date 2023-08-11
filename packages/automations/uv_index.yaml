@@ -38,6 +38,7 @@ automation:
         color: yellow
         tag: uv_index
         channel: uv_index
+        timeout: 10800  # 3 hours        
   mode: single
 
 - alias: "😎 UV index is 4 of 5 = waarschuwing Bart"
@@ -65,6 +66,7 @@ automation:
         color: yellow
         tag: uv_index
         channel: uv_index
+        timeout: 10800  # 3 hours
   mode: single
 
 - alias: "😎 UV index is 6 of 7 = waarschuwing Bart"
@@ -92,6 +94,7 @@ automation:
         color: red
         tag: uv_index
         channel: uv_index
+        timeout: 10800  # 3 hours        
   mode: single
 
 - alias: "😎 UV index is 2 of 3 = waarschuwing Madouce"
@@ -119,6 +122,7 @@ automation:
         color: yellow
         tag: uv_index
         channel: uv_index
+        timeout: 10800  # 3 hours        
   mode: single
 
 - alias: "😎 UV index is 4 of 5 = waarschuwing Madouce"
@@ -146,6 +150,7 @@ automation:
         color: yellow
         tag: uv_index
         channel: uv_index
+        timeout: 10800  # 3 hours        
   mode: single
 
 - alias: "😎 UV index is 6 of 7 = waarschuwing Madouce"
@@ -173,4 +178,5 @@ automation:
         color: red
         tag: uv_index
         channel: uv_index
+        timeout: 10800  # 3 hours        
   mode: single  

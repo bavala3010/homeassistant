@@ -40,9 +40,8 @@ automation:
           {% set charger = states('sensor.charger_real_power') | float(default=0) / 1000 %}        
           {% set maxpower = states('input_number.car_charge_minimum_wattage') | float(default=0) %}
           {% set net = states('sensor.net_power_avg') | float(default=0) %}
-          {% set adjustment = [-net, maxpower] | max %}
           {% if net + charger < maxpower %}
-          {{ [(-net + charger) / 1000, maxpower] | max }}
+          {{ (-net + (charger * 1000)) / 1000 }}
           {% elif net + charger > maxpower %}
           {{ maxpower }}
           {% endif %}

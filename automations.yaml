@@ -16,29 +16,6 @@
       message: clear_notification
       data:
         tag: recycle
-- id: '1655128635738'
-  alias: 'Waarschoot: alarm wordt uitgeschakeld (knop beneden) tijdens vakantiemodus'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - switch.waarschoot_living_alarmknop
-    to: 'off'
-  condition:
-  - condition: state
-    entity_id: input_boolean.waarschoot_holiday_modus
-    state: 'on'
-  action:
-  - delay:
-      hours: 1
-      minutes: 0
-      seconds: 0
-      milliseconds: 0
-  - service: switch.turn_on
-    data: {}
-    target:
-      entity_id: switch.waarschoot_living_alarmknop
-  mode: single
 - id: '1657712996549'
   alias: Send a camera snapshot when motion is detected
   description: ''
@@ -50,82 +27,6 @@
       notify_device: b5d28be91fff8c03aece377f73b28dd2
       notification_title: Beweging aan voordeur
       delay: 0:0
-- id: '1660174608523'
-  alias: Dylan gesignaleerd
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - device_tracker.iphonevandylan_iphone
-    to: 'on'
-  condition: []
-  action:
-  - service: notify.bart_phone
-    data:
-      message: Dylan gesignaleerd
-      title: Dylan gesignaleerd
-  mode: single
-- id: '1662192197709'
-  alias: Bij aankomst winkel boodschappenlijstje tonen in Google Keep
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.madouce_phone_connected_to_car
-    to: 'off'
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 5
-  condition:
-  - condition: or
-    conditions:
-    - condition: state
-      entity_id: person.madouce
-      state: Aldi Bierbeek
-    - condition: state
-      entity_id: person.madouce
-      state: Action Bierbeek
-    - condition: state
-      entity_id: person.madouce
-      state: AH Zaventem
-    - condition: state
-      entity_id: person.madouce
-      state: Lidl Sterrebeek
-  action:
-  - service: notify.madouce_phone
-    data:
-      message: TTS
-      data:
-        tts_text: Dag Madouce. Het boodschappenlijstje is geopend.
-        ttl: 0
-        priority: high
-        media_stream: alarm_stream_max
-  - service: notify.madouce_phone
-    data:
-      message: command_activity
-      data:
-        intent_package_name: com.google.android.keep
-        intent_action: android.intent.action.VIEW
-        intent_uri: https://keep.google.com/u/0/#LIST/1tp-ZTk_c08ZlPeLqLHEUm10bx6DtTQbI9_IOigZVGtBjakrxKwJo4DiytWorvbiXyHGD
-  mode: single
-- id: '1662286902683'
-  alias: charging state "error"
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.audi_e_tron_sportback_charging_state
-    to: error
-  condition: []
-  action:
-  - service: notify.bart_phone
-    data:
-      title: Fout bij laden auto
-      message: Status van auto is in "error"
-  - service: script.auto_status_verversen
-    data: {}
-  mode: single
 - id: '1664611616733'
   alias: Forceer update huisverbruik-meter bij aanpassing zonneproductie-meter
   description: ''
@@ -183,304 +84,6 @@
         planning: '{% set t = (now().date() + timedelta(days=0)) %} {% set car_use_day
           = ''input_select.car_use_day_'' ~ t.isoweekday() %}  {{ states(car_use_day)
           }}'
-  mode: single
-- id: '1666249229359'
-  alias: 'log  in Google Sheets: dagelijkse energiewaarden en extra info'
-  description: ''
-  trigger:
-  - platform: time
-    at: '23:59:30'
-  condition: []
-  action:
-  - service: google_sheets.append_sheet
-    data:
-      config_entry: a76dccf14ff43d5199650ea4986f6eb9
-      worksheet: Energy
-      data:
-        Eikenbos_gemiddelde_buitentemperatuur: '{{ states(''sensor.Eikenbos_gemiddelde_buitentemperatuur'')
-          | float(default=0) }}'
-        solar_production: '{{ states(''sensor.sma_today'') | float(default=0) }}'
-        net_injection_daily: '{{ states(''sensor.net_injection_daily'') | float(default=0)
-          }}'
-        net_consumption_daily: '{{ states(''sensor.net_consumption_daily'') | float(default=0)
-          }}'
-        solar_terraszijde_efficiency: '{{ (states(''sensor.solar_terraszijde_energie_daily'')
-          | float / 6150 * 1000 * 100) | round(1) }}%'
-        solar_voorzijde_efficiency: '{{ (states(''sensor.solar_voorzijde_energie_daily'')
-          | float / 8610 * 1000 * 100 ) | round(1) }}%'
-        car_battery_charged_daily: '{{ states(''sensor.car_charger_energy_daily'')
-          | float(default=0) }}'
-        car_charge_solar_energy_daily: '{{ states(''sensor.car_charge_solar_energy_daily'')
-          | float(default=0) }}'
-        car_charge_net_energy_daily: '{{ states(''sensor.car_charge_net_energy_daily'')
-          | float(default=0) }}'
-        net_neutrality_home: '{{ states(''sensor.net_neutrality_home'') | float(default=0)
-          }}'
-        net_neutrality_car: '{{ states(''sensor.net_neutrality_car'') | float(default=0)
-          }}'
-        net_neutrality: '{{ states(''sensor.net_neutrality'') | float(default=0) }}'
-        washing_machine_energy_daily: '{{ states(''sensor.washing_machine_energy_daily'')
-          | float(default=0) }}'
-        dryer_energy_daily: '{{ states(''sensor.dryer_energy_daily'') | float(default=0)
-          }}'
-        dehumidifier_energy_daily: '{{ states(''sensor.dehumidifier_energy_daily'')
-          | float(default=0) }}'
-        infrared_panel_energy_daily: '{{ states(''sensor.infrared_panel_energy_daily'')
-          | float(default=0) }}'
-        living_airco_daily_heat_energy_consumption: '{{ states(''sensor.living_airco_daily_heat_energy_consumption'')
-          | float(default=0) }}'
-        amilya_airco_daily_heat_energy_consumption: '{{ states(''sensor.amilya_airco_daily_heat_energy_consumption'')
-          | float(default=0) }}'
-        alunya_airco_daily_heat_energy_consumption: '{{ states(''sensor.alunya_airco_daily_heat_energy_consumption'')
-          | float(default=0) }}'
-        master_bedroom_airco_daily_heat_energy_consumption: '{{ states(''sensor.master_bedroom_airco_daily_heat_energy_consumption'')
-          | float(default=0) }}'
-        badkamer_elektrische_verwarming_energieverbruik: '{{ states(''sensor.badkamer_electric_heater_energy_daily'')
-          | float(default=0) }}'
-        living_gem_verwarming_laatste_24_uren: '{{ states(''sensor.living_gem_verwarming_laatste_24_uren'')
-          | float(default=0) }}'
-        kamer_amilya_gem_verwarming_laatste_24_uren: '{{ states(''sensor.kamer_amilya_gem_verwarming_laatste_24_uren'')
-          | float(default=0) }}'
-        veranda_gem_verwarming_laatste_24_uren: '{{ states(''sensor.veranda_gem_verwarming_laatste_24_uren'')
-          | float(default=0) }}'
-        berging_gem_verwarming_laatste_24_uren: '{{ states(''sensor.berging_gem_verwarming_laatste_24_uren'')
-          | float(default=0) }}'
-        gang_gem_verwarming_laatste_24_uren: '{{ states(''sensor.gang_gem_verwarming_laatste_24_uren'')
-          | float(default=0) }}'
-        badkamer_gem_verwarming_laatste_24_uren: '{{ states(''sensor.badkamer_gem_verwarming_laatste_24_uren'')
-          | float(default=0) }}'
-        kamer_alunya_gem_verwarming_laatste_24_uren: '{{ states(''sensor.kamer_alunya_gem_verwarming_laatste_24_uren'')
-          | float(default=0) }}'
-        master_bedroom_gem_verwarming_laatste_24_uren: '{{ states(''sensor.master_bedroom_gem_verwarming_laatste_24_uren'')
-          | float(default=0) }}'
-        living_airco_daily_cool_energy_consumption: '{{ states(''sensor.living_airco_daily_cool_energy_consumption'')
-          | float(default=0) }}'
-        amilya_airco_daily_cool_energy_consumption: '{{ states(''sensor.amilya_airco_daily_cool_energy_consumption'')
-          | float(default=0) }}'
-        alunya_airco_daily_cool_energy_consumption: '{{ states(''sensor.alunya_airco_daily_cool_energy_consumption'')
-          | float(default=0) }}'
-        master_bedroom_airco_daily_cool_energy_consumption: '{{ states(''sensor.master_bedroom_airco_daily_cool_energy_consumption'')
-          | float(default=0) }}'
-        bart_thuis_vandaag: '{{ states(''sensor.bart_thuis_vandaag'') | float(default=0)
-          }}
-
-          '
-        madouce_thuis_vandaag: '{{ states(''sensor.madouce_thuis_vandaag'') | float(default=0)
-          }}
-
-          '
-        amilya_thuis_vandaag: '{{ states(''sensor.amilya_thuis_vandaag'') | float(default=0)
-          }}
-
-          '
-        alunya_thuis_vandaag: '{{ states(''sensor.alunya_thuis_vandaag'') | float(default=0)
-          }}
-
-          '
-  mode: single
-- id: '1666509207517'
-  alias: 'log  in Google Sheets: licht douche aan'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - light.badkamer_douche
-    to: 'on'
-  condition: []
-  action:
-  - service: google_sheets.append_sheet
-    data:
-      config_entry: 2d4ff1f67e0a1e75255bae8b80df0d52
-      worksheet: Douche
-      data:
-        light.badkamer_douche_on: '{{ now() }}'
-  mode: single
-- id: '1666898548765'
-  alias: 'airco Amilya: huidige temperatuur is hoger dan gevraagde temperatuur'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_number.amilya_airco_target_temperature
-  condition:
-  - condition: template
-    value_template: '{{ states(''sensor.kamer_amilya_temperature'') | float > states(''input_number.amilya_airco_target_temperature'')
-      | float }}'
-  action:
-  - service: notify.amilya_phone
-    data:
-      title: Gevraagde temperatuur al bereikt.
-      message: Kamertemperatuur is momenteel {{ states('sensor.kamer_amilya_temperature')
-        | float }} graden.
-  - service: climate.turn_off
-    data: {}
-    target:
-      device_id: 61864d1ab32c5af91d5f13faf697c27e
-  - service: climate.set_temperature
-    data:
-      temperature: 14
-    target:
-      device_id: 61864d1ab32c5af91d5f13faf697c27e
-  - service: input_number.set_value
-    data:
-      value: 14
-    target:
-      entity_id: input_number.amilya_airco_target_temperature
-  - service: timer.finish
-    data: {}
-    target:
-      entity_id: timer.amilya_airco_timer
-  mode: single
-- id: '1667374982221'
-  alias: 'Waarschoot: verlaten huis = chauffage uit & alarm aan'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - person.anita
-    from: Waarschoot
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-  condition: []
-  action:
-  - service: climate.set_preset_mode
-    data:
-      preset_mode: away
-    target:
-      entity_id:
-      - climate.waarschoot_keuken
-      - climate.waarschoot_living
-      - climate.waarschoot_zitput
-      - climate.waarschoot_overloop
-      - climate.waarschoot_badkamer
-      - climate.waarschoot_slaapkamer
-  - service: climate.set_hvac_mode
-    data:
-      hvac_mode: 'off'
-    target:
-      entity_id:
-      - climate.waarschoot_keuken
-      - climate.waarschoot_living
-      - climate.waarschoot_zitput
-      - climate.waarschoot_overloop
-      - climate.waarschoot_badkamer
-      - climate.waarschoot_slaapkamer
-  - service: switch.turn_on
-    data: {}
-    target:
-      entity_id:
-      - switch.waarschoot_living_alarmknop
-      - switch.waarschoot_living_camera
-  - service: notify.anita_phone
-    data:
-      title: Verwarming uit en alarm aan
-      message: 'De verwarming wordt uitgeschakeld door het verlaten van het huis.
-        Het is nu nog {{ states(''sensor.waarschoot_living_temperature'') }} graden
-        in de living.
-
-        '
-  - service: notify.bart_phone
-    data:
-      title: Waarschoot:Verwarming uit en alarm aan
-      message: 'De verwarming wordt uitgeschakeld door het verlaten van het huis.
-        Het is nu nog {{ states(''sensor.waarschoot_living_temperature'') }} graden
-        in de living.
-
-        '
-  - service: notify.anita_phone
-    data:
-      message: TTS
-      data:
-        tts_text: Dag Anita. De verwarming wordt uitgeschakeld en het alarm wordt
-          ingeschakeld.
-        ttl: 0
-        priority: high
-        media_stream: alarm_stream_max
-  mode: single
-- id: '1667375930055'
-  alias: 'Waarschoot: aankomst thuis = verwarming op automatisch en alarm uit'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - person.anita
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 20
-    to: Waarschoot
-  condition: []
-  action:
-  - service: climate.set_preset_mode
-    data:
-      preset_mode: home
-    target:
-      entity_id:
-      - climate.waarschoot_keuken
-      - climate.waarschoot_living
-      - climate.waarschoot_zitput
-      - climate.waarschoot_overloop
-      - climate.waarschoot_badkamer
-      - climate.waarschoot_slaapkamer
-  - service: climate.set_hvac_mode
-    data:
-      hvac_mode: auto
-    target:
-      entity_id:
-      - climate.waarschoot_keuken
-      - climate.waarschoot_living
-      - climate.waarschoot_zitput
-      - climate.waarschoot_overloop
-      - climate.waarschoot_badkamer
-      - climate.waarschoot_slaapkamer
-  - service: switch.turn_off
-    data: {}
-    target:
-      entity_id:
-      - switch.waarschoot_living_alarmknop
-      - switch.waarschoot_living_camera
-  - service: notify.anita_phone
-    data:
-      title: Verwarming aan (volgens schema)
-      message: 'De verwarming wordt ingeschakeld bij aankomst thuis. Het is nu nog
-        {{ states(''sensor.waarschoot_living_temperature'') }} graden in de living
-        en {{ states(''sensor.waarschoot_keuken_temperature'') }} graden in de keuken
-
-        '
-  - service: notify.bart_phone
-    data:
-      title: Waarschoot:Verwarming aan (volgens schema)
-      message: 'De verwarming wordt ingeschakeld bij aankomst thuis. Het is nu nog
-        {{ states(''sensor.waarschoot_living_temperature'') }} graden in de living
-        en {{ states(''sensor.waarschoot_keuken_temperature'') }} graden in de keuken
-
-        '
-  - service: notify.anita_phone
-    data:
-      message: TTS
-      data:
-        tts_text: Dag Anita. Welkom thuis. De verwarming wordt ingeschakeld.
-        ttl: 0
-        priority: high
-        media_stream: alarm_stream_max
-  mode: single
-- id: '1667380913240'
-  alias: Log Waarschoot alarm uitzetten met knop boven
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - switch.waarschoot_boven_alarmknop
-    to: 'off'
-  condition: []
-  action:
-  - service: google_sheets.append_sheet
-    data:
-      config_entry: 2d4ff1f67e0a1e75255bae8b80df0d52
-      worksheet: Waarschoot
-      data:
-        switch.waarschoot_boven_alarmknop_uit: '{{ now() }}'
   mode: single
 - id: '1668774395681'
   alias: Zonnestopcontact
@@ -594,12 +197,65 @@
         tag: peak
         color: red
   mode: single
-- id: '1677240491831'
+- id: '1682535463125'
+  alias: Amilya airco aangezet hoewel nog meer dan 20 graden
   description: ''
-  trigger: []
+  trigger:
+  - platform: state
+    entity_id:
+    - climate.amilya_airco
+    to: heat
   condition:
   - condition: numeric_state
-    entity_id: sensor.net_power
-    below: 5
+    entity_id: sensor.kamer_amilya_temperature
+    above: 20
+  action:
+  - service: climate.set_temperature
+    data:
+      temperature: 20
+    target:
+      entity_id: climate.amilya_airco
+  - service: notify.bart_phone
+    data:
+      message: Amilya airco terug aangezet hoewel nog meer dan 20° in kamer
+  mode: single
+- id: '1688289009625'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_text.arriving_home_madouce
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.arriving_home_reminder_madouce
+  mode: single
+- id: '1688289428572'
+  alias: Herinnering thuiskomst Madouce
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - person.madouce
+    to: home
+    from: not_home
+  condition:
+  - condition: state
+    entity_id: input_boolean.arriving_home_reminder_madouce
+    state: 'on'
   action: []
+  mode: single
+- id: '1689967212586'
+  alias: Assist // Hoeveel procent heeft de auto?
+  description: ''
+  trigger:
+  - platform: conversation
+    command: Hoeveel procent heeft de auto
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      message: Auto is {{ states('sensor.car_1_soc') }}% geladen.
   mode: single

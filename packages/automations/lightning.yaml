@@ -1,0 +1,73 @@
+automation:
+
+- alias: Bij bliksem stuur notificatie
+  id: f9e70fdb-402a-4bc2-9d42-deaa1b8497c5
+  trigger:
+  - platform: state
+    entity_id: sensor.blitzortung_lightning_counter
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.blitzortung_lightning_counter
+    above: 0
+  - condition: template
+    value_template: "{{ (states('sensor.blitzortung_lightning_distance') | round(0) ) < states('input_number.lightning_previous_distance') | round() }}"    
+  action:
+    - if:
+        - condition: template
+          value_template: "{{ 8 < now().hour < 23 }}"
+      then:
+        - service: tts.edge_tts_say
+          data:
+            entity_id: media_player.living_speaker
+            message: >
+              Opgelet! Er is bliksem op {{ states('sensor.blitzortung_lightning_distance') | round() }} kilometer van huis in het {{ states('sensor.lightning_direction')}}.
+    - service: notify.bart_madouce_phone
+      data:
+        title: Bliksem
+        message: >
+          Opgelet! Er is bliksem op {{ states('sensor.blitzortung_lightning_distance') | round() }} kilometer van huis in het {{ states('sensor.lightning_direction')}}.
+    # Update the previous distance with the current distance
+    - service: input_number.set_value
+      data_template:
+        entity_id: input_number.lightning_previous_distance
+        value: "{{ states('sensor.blitzortung_lightning_distance') }}"
+    - wait_template: ''
+      timeout: "00:02:00"
+  mode: single
+
+- alias: Tel de bliksems in de nabije zone
+  id: 6235beae-e188-420d-9ac2-5252eac277a3
+  trigger:
+  - platform: state
+    entity_id: sensor.blitzortung_lightning_counter
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.blitzortung_lightning_counter
+    above: 0
+  # binnen max. 5 km van de vorige dichtste bliksem
+  - condition: template
+    value_template: "{{ (states('sensor.blitzortung_lightning_distance') | round(0) ) < ( states('input_number.lightning_previous_distance') | round() + 5 ) }}"    
+  action:
+    - service: counter.increment
+      entity_id: counter.lightning_counter_close_area
+  mode: parallel
+
+
+- alias: reset bliksemafstand en nabij-teller wanneer bliksems voorbij zijn (als counter terug op 0 komt)
+  id: d667c27b-f812-4a8a-a7c6-476c66238791
+  trigger:
+  - platform: template
+    value_template: >  
+      {{ states('sensor.blitzortung_lightning_counter') == '0' }}
+  condition: []
+  action:
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.lightning_previous_distance
+      value: 50
+  - service: counter.reset
+    entity_id: counter.lightning_counter_close_area    
+  mode: single
+
+
+  

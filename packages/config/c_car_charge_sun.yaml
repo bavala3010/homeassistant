@@ -4,4 +4,5 @@ input_number:
     min: -3000
     max: 0
     unit_of_measurement: W
+    mode: box
 

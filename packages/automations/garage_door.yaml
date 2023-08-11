@@ -20,21 +20,25 @@ automation:
       sequence:
       - service: notify.bart_phone      
         data:
-          title: "Garage staat al lang open."
-          message: "Staat al {{((as_timestamp(now()) - as_timestamp(states.cover.garagepoort.last_changed)) / 60 )| int() }} minuten open."
+          title: "Garage staat al tijdje open."
+          message: >
+            {% set t = ( (as_timestamp(now()) - starttijd) / 60) | int(default=0) %}
+            Staat al {{ t }} minuten open.
           data:
             color: red
             tag: garage_staat_open
       - delay:
-          minutes: 2
+          minutes: 2          
   - service: notify.bart_phone
     data:
       title: "Garage is nu terug dicht."
-      # + 5 = automation is triggered when the garage door is already 5 minutes open 
       message: >
-        Stond {{ (((as_timestamp(now()) - as_timestamp(state_attr('automation.garagepoort_staat_lang_open', 'last_triggered') )) / 60 ) + 5) | int() }} minuten open.
+        {% set t = ((as_timestamp(now()) - starttijd) / 60) | int(default=0) %}
+        Stond {{ t }} minuten open.
       data:
         tag: garage_staat_open
+  variables:
+    starttijd: "{{ as_timestamp(state_attr('automation.garagepoort_staat_lang_open', 'last_triggered')) }}"        
   mode: single
 
 

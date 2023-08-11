@@ -380,3 +380,524 @@ Thread 0x0000ffff959c6020 (most recent call first):
   File "/usr/src/homeassistant/homeassistant/__main__.py", line 331 in <module>
   File "/usr/local/lib/python3.9/runpy.py", line 87 in _run_code
   File "/usr/local/lib/python3.9/runpy.py", line 197 in _run_module_as_main
+Fatal Python error: Segmentation fault
+
+Thread 0x0000ffff0373f808 (most recent call first):
+  File "/usr/src/homeassistant/homeassistant/components/stream/worker.py", line 409 in __next__
+  File "/usr/src/homeassistant/homeassistant/components/stream/worker.py", line 616 in stream_worker
+  File "/usr/src/homeassistant/homeassistant/components/stream/__init__.py", line 424 in _run_worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff21a7d8d8 (most recent call first):
+  File "/usr/local/lib/python3.10/site-packages/paho/mqtt/client.py", line 1150 in _loop
+  File "/usr/local/lib/python3.10/site-packages/paho/mqtt/client.py", line 1756 in loop_forever
+  File "/usr/local/lib/python3.10/site-packages/paho/mqtt/client.py", line 3591 in _thread_main
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff381908d8 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff382a38d8 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff383b68d8 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff384c98d8 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff3cbdc8d8 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff555f58d8 (most recent call first):
+  File "/usr/local/lib/python3.10/site-packages/scapy/supersocket.py", line 264 in select
+  File "/usr/local/lib/python3.10/site-packages/scapy/sendrecv.py", line 1219 in _run
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff5829b8d8 (most recent call first):
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/socket_client.py", line 579 in run_once
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/socket_client.py", line 540 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff583ae8d8 (most recent call first):
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/socket_client.py", line 579 in run_once
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/socket_client.py", line 540 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff5a4c18d8 (most recent call first):
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/socket_client.py", line 579 in run_once
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/socket_client.py", line 540 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff5a8d48d8 (most recent call first):
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/socket_client.py", line 579 in run_once
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/socket_client.py", line 540 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff5a9e78d8 (most recent call first):
+  File "/usr/local/lib/python3.10/linecache.py", line 137 in updatecache
+  File "/usr/local/lib/python3.10/linecache.py", line 46 in getlines
+  File "/usr/local/lib/python3.10/linecache.py", line 30 in getline
+  File "/usr/local/lib/python3.10/traceback.py", line 306 in line
+  File "/usr/local/lib/python3.10/traceback.py", line 383 in extract
+  File "/usr/local/lib/python3.10/traceback.py", line 502 in __init__
+  File "/usr/local/lib/python3.10/traceback.py", line 119 in print_exception
+  File "/usr/local/lib/python3.10/logging/__init__.py", line 636 in formatException
+  File "/usr/local/lib/python3.10/logging/__init__.py", line 686 in format
+  File "/usr/local/lib/python3.10/logging/__init__.py", line 943 in format
+  File "/usr/local/lib/python3.10/logging/handlers.py", line 1457 in prepare
+  File "/usr/src/homeassistant/homeassistant/util/logging.py", line 44 in prepare
+  File "/usr/local/lib/python3.10/logging/handlers.py", line 1475 in emit
+  File "/usr/src/homeassistant/homeassistant/util/logging.py", line 62 in handle
+  File "/usr/local/lib/python3.10/logging/__init__.py", line 1696 in callHandlers
+  File "/usr/local/lib/python3.10/logging/__init__.py", line 1634 in handle
+  File "/usr/local/lib/python3.10/logging/__init__.py", line 1624 in _log
+  File "/usr/local/lib/python3.10/logging/__init__.py", line 1506 in error
+  File "/usr/local/lib/python3.10/logging/__init__.py", line 1512 in exception
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/socket_client.py", line 544 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff5aafa8d8 (most recent call first):
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/socket_client.py", line 579 in run_once
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/socket_client.py", line 540 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff5af0d8d8 (most recent call first):
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/socket_client.py", line 579 in run_once
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/socket_client.py", line 540 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff5b0208d8 (most recent call first):
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/socket_client.py", line 579 in run_once
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/socket_client.py", line 540 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff5b1338d8 (most recent call first):
+  File "/usr/local/lib/python3.10/threading.py", line 324 in wait
+  File "/usr/local/lib/python3.10/threading.py", line 607 in wait
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/discovery.py", line 304 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff5b2468d8 (most recent call first):
+  File "/usr/local/lib/python3.10/site-packages/zeroconf/_services/browser.py", line 539 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff636d98d8 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff637ec8d8 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff639ff8d8 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff64b128d8 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff64c258d8 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff67b4b8d8 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/src/homeassistant/homeassistant/components/recorder/executor.py", line 17 in _worker_with_shutdown_hook
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff67ede8d8 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/src/homeassistant/homeassistant/components/recorder/executor.py", line 17 in _worker_with_shutdown_hook
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff67ff18d8 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/src/homeassistant/homeassistant/components/recorder/executor.py", line 17 in _worker_with_shutdown_hook
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff681048d8 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/src/homeassistant/homeassistant/components/recorder/executor.py", line 17 in _worker_with_shutdown_hook
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff68e908d8 (most recent call first):
+  File "/usr/src/homeassistant/homeassistant/util/async_.py", line 160 in protected_loop_func
+  File "/usr/local/lib/python3.10/site-packages/tuya_iot/openmq.py", line 161 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff695a38d8 (most recent call first):
+  File "/usr/local/lib/python3.10/multiprocessing/pool.py", line 579 in _handle_results
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff696b68d8 (most recent call first):
+  File "/usr/local/lib/python3.10/multiprocessing/pool.py", line 531 in _handle_tasks
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff697c98d8 (most recent call first):
+  File "/usr/local/lib/python3.10/selectors.py", line 416 in select
+  File "/usr/local/lib/python3.10/multiprocessing/connection.py", line 931 in wait
+  File "/usr/local/lib/python3.10/multiprocessing/pool.py", line 502 in _wait_for_updates
+  File "/usr/local/lib/python3.10/multiprocessing/pool.py", line 522 in _handle_workers
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff698dc8d8 (most recent call first):
+  File "/usr/local/lib/python3.10/multiprocessing/pool.py", line 114 in worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff699ef8d8 (most recent call first):
+  File "/usr/local/lib/python3.10/multiprocessing/pool.py", line 114 in worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff69fdc8d8 (most recent call first):
+  File "/usr/local/lib/python3.10/multiprocessing/pool.py", line 114 in worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff6a0ef8d8 (most recent call first):
+  File "/usr/local/lib/python3.10/multiprocessing/pool.py", line 114 in worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff6bddc8d8 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff6beef8d8 (most recent call first):
+  File "/usr/local/lib/python3.10/threading.py", line 324 in wait
+  File "/usr/local/lib/python3.10/queue.py", line 180 in get
+  File "/usr/src/homeassistant/homeassistant/components/influxdb/__init__.py", line 547 in get_events_json
+  File "/usr/src/homeassistant/homeassistant/components/influxdb/__init__.py", line 594 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff6caf38d8 (most recent call first):
+  File "/config/custom_components/samsungtv_smart/api/samsungws.py", line 146 in _ping_socket
+  File "/config/custom_components/samsungtv_smart/api/samsungws.py", line 125 in ping
+  File "/config/custom_components/samsungtv_smart/api/samsungws.py", line 869 in _ping_thread_method
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff727349d8 (most recent call first):
+  File "/usr/local/lib/python3.10/threading.py", line 324 in wait
+  File "/usr/local/lib/python3.10/queue.py", line 180 in get
+  File "/usr/local/lib/python3.10/site-packages/aiosqlite/core.py", line 99 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff89081e28 (most recent call first):
+  File "/usr/src/homeassistant/homeassistant/components/recorder/core.py", line 850 in _run_event_loop
+  File "/usr/src/homeassistant/homeassistant/components/recorder/core.py", line 756 in _run
+  File "/usr/src/homeassistant/homeassistant/components/recorder/core.py", line 685 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff8d1fae38 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff8d2fee38 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff9282fe38 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Current thread 0x0000ffff945fee38 (most recent call first):
+  File "/usr/local/lib/python3.10/ssl.py", line 1206 in send
+  File "/usr/local/lib/python3.10/ssl.py", line 1237 in sendall
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/socket_client.py", line 917 in send_message
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/socket_client.py", line 963 in send_app_message
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/controllers/__init__.py", line 133 in send_message_nocheck
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/controllers/__init__.py", line 121 in send_message
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/controllers/media.py", line 606 in _send_command
+  File "/usr/local/lib/python3.10/site-packages/pychromecast/controllers/media.py", line 653 in stop
+  File "/usr/src/homeassistant/homeassistant/components/cast/media_player.py", line 542 in media_stop
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 58 in run
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 83 in _worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff94bfee38 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff951fee38 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff969fee38 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff96ffee38 (most recent call first):
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff975b7e38 (most recent call first):
+  File "/usr/local/lib/python3.10/logging/handlers.py", line 1505 in dequeue
+  File "/usr/local/lib/python3.10/logging/handlers.py", line 1556 in _monitor
+  File "/usr/local/lib/python3.10/threading.py", line 953 in run
+  File "/usr/local/lib/python3.10/threading.py", line 1016 in _bootstrap_inner
+  File "/usr/local/lib/python3.10/threading.py", line 973 in _bootstrap
+
+Thread 0x0000ffff9c997020 (most recent call first):
+  File "/usr/local/lib/python3.10/selectors.py", line 469 in select
+  File "/usr/local/lib/python3.10/asyncio/base_events.py", line 1871 in _run_once
+  File "/usr/local/lib/python3.10/asyncio/base_events.py", line 603 in run_forever
+  File "/usr/local/lib/python3.10/asyncio/base_events.py", line 636 in run_until_complete
+  File "/usr/src/homeassistant/homeassistant/runner.py", line 179 in run
+  File "/usr/src/homeassistant/homeassistant/__main__.py", line 214 in main
+  File "/usr/src/homeassistant/homeassistant/__main__.py", line 226 in <module>
+  File "/usr/local/lib/python3.10/runpy.py", line 86 in _run_code
+  File "/usr/local/lib/python3.10/runpy.py", line 196 in _run_module_as_main
+
+Extension modules: _cffi_backend, multidict._multidict, yarl._quoting_c, ciso8601, aiohttp._helpers, aiohttp._http_writer, _brotli, aiohttp._http_parser, aiohttp._websocket, cchardet._cchardet, frozenlist._frozenlist, ulid_transform._ulid_impl, markupsafe._speedups, yaml._yaml, simplejson._speedups, lxml._elementpath, lxml.etree, PIL._imaging, sqlalchemy.cyextension.collections, sqlalchemy.cyextension.immutabledict, sqlalchemy.cyextension.processors, sqlalchemy.cyextension.resultproxy, sqlalchemy.cyextension.util, greenlet._greenlet, fnv_hash_fast._fnv_impl, dbus_fast.signature, dbus_fast._private.marshaller, dbus_fast.message, dbus_fast.service, dbus_fast.unpack, dbus_fast.message_bus, dbus_fast._private.unmarshaller, dbus_fast.aio.message_reader, home_assistant_bluetooth.models, zeroconf._dns, zeroconf._cache, zeroconf._protocol.incoming, zeroconf._protocol.outgoing, psutil._psutil_linux, psutil._psutil_posix, websockets.speedups, numpy.core._multiarray_umath, numpy.core._multiarray_tests, numpy.linalg._umath_linalg, numpy.fft._pocketfft_internal, numpy.random._common, numpy.random.bit_generator, numpy.random._bounded_integers, numpy.random._mt19937, numpy.random.mtrand, numpy.random._philox, numpy.random._pcg64, numpy.random._sfc64, numpy.random._generator, bluetooth_data_tools.gap, bluetooth_data_tools._utils_impl, av.logging, av._core, av.bytesource, av.buffer, av.audio.format, av.enum, av.error, av.utils, av.option, av.descriptor, av.container.pyio, av.dictionary, av.format, av.stream, av.container.streams, av.sidedata.motionvectors, av.sidedata.sidedata, av.packet, av.container.input, av.bitstream.filter, av.bitstream.context, av.container.output, av.container.core, av.codec.context, av.video.format, av.video.reformatter, av.plane, av.video.plane, av.video.frame, av.video.stream, av.codec.codec, av.frame, av.audio.layout, av.audio.plane, av.audio.frame, av.audio.stream, av.audio.fifo, av.filter.pad, av.filter.link, av.filter.context, av.filter.graph, av.filter.filter, av.audio.resampler, pandas._libs.tslibs.dtypes, pandas._libs.tslibs.base, pandas._libs.tslibs.np_datetime, pandas._libs.tslibs.nattype, pandas._libs.tslibs.timezones, pandas._libs.tslibs.ccalendar, pandas._libs.tslibs.tzconversion, pandas._libs.tslibs.strptime, pandas._libs.tslibs.fields, pandas._libs.tslibs.timedeltas, pandas._libs.tslibs.timestamps, pandas._libs.properties, pandas._libs.tslibs.offsets, pandas._libs.tslibs.parsing, pandas._libs.tslibs.conversion, pandas._libs.tslibs.period, pandas._libs.tslibs.vectorized, pandas._libs.ops_dispatch, pandas._libs.missing, pandas._libs.hashtable, pandas._libs.algos, pandas._libs.interval, pandas._libs.tslib, pandas._libs.lib, pandas._libs.hashing, pandas._libs.ops, pandas._libs.arrays, pandas._libs.index, pandas._libs.join, pandas._libs.sparse, pandas._libs.reduction, pandas._libs.indexing, pandas._libs.internals, pandas._libs.writers, pandas._libs.window.aggregations, pandas._libs.window.indexers, pandas._libs.reshape, pandas._libs.groupby, pandas._libs.testing, pandas._libs.parsers, pandas._libs.json, google._upb._message, grpc._cython.cygrpc, msgpack._cmsgpack, _webrtcvad, chacha20poly1305_reuseable, bitarray._bitarray, psycopg2._psycopg, netifaces, av.video.codeccontext, av.audio.codeccontext (total: 150)
+Fatal Python error: Segmentation fault
+
+Thread 0x0000fffe2ce0b5d8 (most recent call first):
+  File "/usr/local/lib/python3.11/threading.py", line 324 in wait
+  File "/usr/local/lib/python3.11/threading.py", line 622 in wait
+  File "/usr/local/lib/python3.11/site-packages/websocket/_app.py", line 277 in _send_ping
+  File "/usr/local/lib/python3.11/threading.py", line 975 in run
+  File "/usr/local/lib/python3.11/threading.py", line 1038 in _bootstrap_inner
+  File "/usr/local/lib/python3.11/threading.py", line 995 in _bootstrap
+
+Thread 0x0000fffe2cf1e5d8 (most recent call first):
+  File "/usr/local/lib/python3.11/selectors.py", line 468 in select
+  File "/usr/local/lib/python3.11/site-packages/websocket/_app.py", line 78 in read
+  File "/usr/local/lib/python3.11/site-packages/websocket/_app.py", line 428 in setSock
+  File "/usr/local/lib/python3.11/site-packages/websocket/_app.py", line 501 in run_forever
+  File "/config/custom_components/samsungtv_smart/api/samsungws.py", line 482 in _run_forever
+  File "/config/custom_components/samsungtv_smart/api/samsungws.py", line 736 in _client_art_thread
+  File "/usr/local/lib/python3.11/threading.py", line 975 in run
+  File "/usr/local/lib/python3.11/threading.py", line 1038 in _bootstrap_inner
+  File "/usr/local/lib/python3.11/threading.py", line 995 in _bootstrap
+
+Thread 0x0000fffe2d1445d8 (most recent call first):
+  File "/usr/local/lib/python3.11/threading.py", line 324 in wait
+  File "/usr/local/lib/python3.11/threading.py", line 622 in wait
+  File "/usr/local/lib/python3.11/site-packages/websocket/_app.py", line 277 in _send_ping
+  File "/usr/local/lib/python3.11/threading.py", line 975 in run
+  File "/usr/local/lib/python3.11/threading.py", line 1038 in _bootstrap_inner
+  File "/usr/local/lib/python3.11/threading.py", line 995 in _bootstrap
+
+Thread 0x0000fffe2d86a5d8 (most recent call first):
+  File "/usr/local/lib/python3.11/selectors.py", line 468 in select
+  File "/usr/local/lib/python3.11/site-packages/websocket/_app.py", line 78 in read
+  File "/usr/local/lib/python3.11/site-packages/websocket/_app.py", line 428 in setSock
+  File "/usr/local/lib/python3.11/site-packages/websocket/_app.py", line 501 in run_forever
+  File "/config/custom_components/samsungtv_smart/api/samsungws.py", line 482 in _run_forever
+  File "/config/custom_components/samsungtv_smart/api/samsungws.py", line 502 in _client_remote_thread
+  File "/usr/local/lib/python3.11/threading.py", line 975 in run
+  File "/usr/local/lib/python3.11/threading.py", line 1038 in _bootstrap_inner
+  File "/usr/local/lib/python3.11/threading.py", line 995 in _bootstrap
+
+Thread 0x0000fffe2d2575d8 (most recent call first):
+  File "/usr/local/lib/python3.11/site-packages/paho/mqtt/client.py", line 1150 in _loop
+  File "/usr/local/lib/python3.11/site-packages/paho/mqtt/client.py", line 1756 in loop_forever
+  File "/usr/local/lib/python3.11/site-packages/paho/mqtt/client.py", line 3591 in _thread_main
+  File "/usr/local/lib/python3.11/threading.py", line 975 in run
+  File "/usr/local/lib/python3.11/threading.py", line 1038 in _bootstrap_inner
+  File "/usr/local/lib/python3.11/threading.py", line 995 in _bootstrap
+
+Thread 0x0000fffe2d97d5d8 (most recent call first):
+  File "/usr/local/lib/python3.11/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.11/threading.py", line 975 in run
+  File "/usr/local/lib/python3.11/threading.py", line 1038 in _bootstrap_inner
+  File "/usr/local/lib/python3.11/threading.py", line 995 in _bootstrap
+
+Thread 0x0000fffe2da905d8 (most recent call first):
+  File "/usr/local/lib/python3.11/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.11/threading.py", line 975 in run
+  File "/usr/local/lib/python3.11/threading.py", line 1038 in _bootstrap_inner
+  File "/usr/local/lib/python3.11/threading.py", line 995 in _bootstrap
+
+Thread 0x0000fffe2dba35d8 (most recent call first):
+  File "/usr/local/lib/python3.11/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.11/threading.py", line 975 in run
+  File "/usr/local/lib/python3.11/threading.py", line 1038 in _bootstrap_inner
+  File "/usr/local/lib/python3.11/threading.py", line 995 in _bootstrap
+
+Thread 0x0000fffe2dcb65d8 (most recent call first):
+  File "/usr/local/lib/python3.11/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.11/threading.py", line 975 in run
+  File "/usr/local/lib/python3.11/threading.py", line 1038 in _bootstrap_inner
+  File "/usr/local/lib/python3.11/threading.py", line 995 in _bootstrap
+
+Thread 0x0000fffe2ddc95d8 (most recent call first):
+  File "/usr/local/lib/python3.11/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.11/threading.py", line 975 in run
+  File "/usr/local/lib/python3.11/threading.py", line 1038 in _bootstrap_inner
+  File "/usr/local/lib/python3.11/threading.py", line 995 in _bootstrap
+
+Current thread 0x0000fffe42e435d8 (most recent call first):
+  File "/usr/local/lib/python3.11/ssl.py", line 1210 in send
+  File "/usr/local/lib/python3.11/ssl.py", line 1241 in sendall
+  File "/usr/local/lib/python3.11/site-packages/pychromecast/socket_client.py", line 917 in send_message
+  File "/usr/local/lib/python3.11/site-packages/pychromecast/socket_client.py", line 939 in send_platform_message
+  File "/usr/local/lib/python3.11/site-packages/pychromecast/controllers/__init__.py", line 133 in send_message_nocheck
+  File "/usr/local/lib/python3.11/site-packages/pychromecast/controllers/__init__.py", line 121 in send_message
+  File "/usr/local/lib/python3.11/site-packages/pychromecast/controllers/receiver.py", line 162 in _send_launch_message
+  File "/usr/local/lib/python3.11/site-packages/pychromecast/controllers/receiver.py", line 147 in launch_app
+  File "/usr/local/lib/python3.11/site-packages/pychromecast/controllers/__init__.py", line 60 in launch
+  File "/usr/local/lib/python3.11/site-packages/pychromecast/controllers/__init__.py", line 107 in send_message
+  File "/usr/local/lib/python3.11/site-packages/pychromecast/controllers/media.py", line 524 in _send_start_play_media
+  File "/usr/local/lib/python3.11/site-packages/pychromecast/controllers/media.py", line 417 in play_media
+  File "/usr/local/lib/python3.11/site-packages/pychromecast/controllers/media.py", line 536 in quick_play
+  File "/usr/local/lib/python3.11/site-packages/pychromecast/quick_play.py", line 78 in quick_play
+  File "/usr/src/homeassistant/homeassistant/components/cast/media_player.py", line 493 in turn_on
+  File "/usr/local/lib/python3.11/concurrent/futures/thread.py", line 58 in run
+  File "/usr/local/lib/python3.11/concurrent/futures/thread.py", line 83 in _worker
+  File "/usr/local/lib/python3.11/threading.py", line 975 in run
+  File "/usr/local/lib/python3.11/threading.py", line 1038 in _bootstrap_inner
+  File "/usr/local/lib/python3.11/threading.py", line 995 in _bootstrap
+
+Thread 0x0000fffea83db6c8 (most recent call first):
+  File "/usr/local/lib/python3.11/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.11/threading.py", line 975 in run
+  File "/usr/local/lib/python3.11/threading.py", line 1038 in _bootstrap_inner
+  File "/usr/local/lib/python3.11/threading.py", line 995 in _bootstrap
+
+Thread 0x0000fffeb98606c8 (most recent call first):
+  File "/usr/local/lib/python3.11/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.11/threading.py", line 975 in run
+  File "/usr/local/lib/python3.11/threading.py", line 1038 in _bootstrap_inner
+  File "/usr/local/lib/python3.11/threading.py", line 995 in _bootstrap
+
+Thread 0x0000fffeba3bf6c8 (most recent call first):
+  File "/usr/local/lib/python3.11/concurrent/futures/thread.py", line 81 in _worker
+  File "/usr/local/lib/python3.11/threading.py", line 975 in run
+  File "/usr/local/lib/python3.11/threading.py", line 1038 in _bootstrap_inner
+  File "/usr/local/lib/python3.11/threading.py", line 995 in _bootstrap
+
+Thread 0x0000ffff31ad26c8 (most recent call first):
+  File "/usr/local/lib/python3.11/site-packages/miio/miioprotocol.py", line 119 in discover
+  File "/usr/local/lib/python3.11/site-packages/miio/miioprotocol.py", line 65 in send_handshake
+  File "/usr/local/lib/python3.11/site-packages/miio/miioprotocol.py", line 161 in send
+  File "/usr/local/lib/python3.11/site-packages/miio/device.py", line 107 in send
+  File "/usr/local/lib/python3.11/site-packages/miio/device.py", line 240 in get_properties
+  File "/usr/local/lib/python3.11/site-packages/miio/integrations/fan/zhimi/fan.py", line 236 in status
+  File "/usr/local/lib/python3.11/site-packages/miio/click_common.py", line 184 in _wrap
+  File "/usr/local/lib/python3.11/concurrent/futures/thread.py", line 58 in run
+  File "/usr/local/lib/python3.11/concurrent/futures/thread.py", line 83 in _worker
+  File "/usr/local/lib/python3.11/threading.py", line 975 in run
+  File "/usr/local/lib/python3.11/threading.py", line 1038 in _bootstrap_inner
+  File "/usr/local/lib/python3.11/threading.py", line 995 in _bootstrap
+
+Thread 0x0000ffff34d236c8 (most recent call first):
+  File "/usr/local/lib/python3.11/site-packages/scapy/supersocket.py", line 264 in select
+  File "/usr/local/lib/python3.11/site-packages/scapy/sendrecv.py", line 1219 in _run
+  File "/usr/local/lib/python3.11/threading.py", line 975 in run
+  File "/usr/local/lib/python3.11/threading.py", line 1038 in _bootstrap_inner
+  File "/usr/local/lib/python3.11/threading.py", line 995 in _bootstrap
+
+Thread 0x0000ffff3719a6c8 (most recent call first):
+  File "/usr/local/lib/python3.11/site-packages/pychromecast/socket_client.py", line 579 in run_once
+  File "/usr/local/lib/python3.11/site-packages/pychromecast/socket_client.py", line 540 in run
+  File "/usr/local/lib/python3.11/threading.py", line 1038 in _bootstrap_inner
+  File "/usr/local/lib/python3.11/threading.py", line 995 in _bootstrap
+
+Thread 0x0000ffff372ad6c8 (most recent call first):
+  File "/usr/local/lib/python3.11/site-packages/pychromecast/socket_client.py", line 579 in run_once
+  File "/usr/local/lib/python3.11/site-packages/pychromecast/socket_client.py", line 540 in run
+  File "/usr/local/lib/python3.11/threading.py", line 1038 in _bootstrap_inner
+  File "/usr/local/lib/python3.11/threading.py", line 995 in _bootstrap
+
+Thread 0x0000ffff373c06c8 (most recent call first):
+  File "/usr/local/lib/python3.11/site-packages/pychromecast/socket_client.py", line 579 in run_once
+  File "/usr/local/lib/python3.11/site-packages/pychromecast/socket_client.py", line 540 in run
+  File "/usr/local/lib/python3.11/threading.py", line 1038 in _bootstrap_inner
+  File "/usr/local/lib/python3.11/threading.py", line 995 in _bootstrap
+
+Thread 0x0000ffff374d36c8 (most recent call first):
+  File "/usr/local/lib/python3.11/traceback.py", line 416 in _extract_from_extended_frame_gen
+  File "/usr/local/lib/python3.11/traceback.py", line 74 in extract_tb
+  File "/usr/src/homeassistant/homeassistant/components/system_log/__init__.py", line 134 in __init__
+  File "/usr/src/homeassistant/homeassistant/components/system_log/__init__.py", line 211 in emit
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 978 in handle
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 1706 in callHandlers
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 1644 in handle
+  File 

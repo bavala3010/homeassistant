@@ -50,6 +50,7 @@ automation:
             color: yellow
             tag: solar
             channel: solar
+            timeout: 3600
     else:
       - service: notify.bart_phone
         data:
@@ -60,7 +61,8 @@ automation:
           data:
             color: yellow
             tag: solar
-            channel: solar   
+            channel: solar
+            timeout: 3600
 
 - alias: Meer dan 4 kW verbruik van het net = melding
   id: '518c0b8f-2031-49cc-bbac-210b2728df07'
@@ -104,8 +106,10 @@ automation:
     - service: notify.bart_phone
       data:
         title: Zonne-energie
-        message: "Vandaag heeft de zon {{ states('sensor.sma_today') }} kWh opgebracht."
-        data: 
+        message: >
+          Vandaag heeft de zon {{ states('sensor.sma_today') }} kWh opgebracht.<br>
+          Morgen wordt er {{ states('sensor.solar_sim_energy_tomorrow_adj') }} kWh verwacht.
+        data:
           notification_icon: mdi:sun-wireless-outline
   mode: single
 

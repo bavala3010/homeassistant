@@ -10,6 +10,7 @@ notify:
     platform: group
     services:
       - service: mobile_app_sm_g975f
+      - service: mobile_app_sm_s916b
 
   - name: bart_iphone
     platform: group
@@ -25,7 +26,8 @@ notify:
     platform: group
     services:
       - service: mobile_app_sm_g975f
-      - service: mobile_app_sm_g986b       
+      - service: mobile_app_sm_g986b
+      - service: mobile_app_sm_s916b           
 
   - name: alunya_phone
     platform: group

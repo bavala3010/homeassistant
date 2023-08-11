@@ -1,0 +1,4 @@
+binary_sensor:
+  - platform: meteoalarm
+    country: belgium
+    province: "Belgium"

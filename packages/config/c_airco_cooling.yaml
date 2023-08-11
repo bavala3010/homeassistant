@@ -1,0 +1,6 @@
+input_number:
+  master_bedroom_airco_cooling_temperature:
+    name: master bedroom koeltemperatuur
+    min: 18
+    max: 25
+    step: 1

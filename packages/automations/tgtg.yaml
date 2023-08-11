@@ -10,7 +10,10 @@ automation:
       - sensor.tgtg_t_krok_r_antje_kessel_lo
       - sensor.tgtg_bakkerij_het_brood_kessel_lo_diestsesteenweg_brood_co
     to: ~
-  condition: []
+  condition:
+    - condition: state
+      entity_id: input_boolean.tgtg_geen_brood_nodig
+      state: "off"
   action:
     - alias: "Send or dismiss"
       choose:
@@ -24,7 +27,13 @@ automation:
       default:
         - service: notify.bart_madouce_phone
           data:
-            title: "{{ trigger.to_state.name }}"
+            title: >
+              {% set ophalen = trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom('%-d') | int %}
+              {% set vandaag = as_timestamp(now()) | timestamp_custom('%-d') | int %}
+              {% if ophalen == vandaag %}brood vandaag bij
+              {% elif ophalen == vandaag +1 %}brood morgen bij
+              {% endif %}
+              {{ trigger.to_state.name | replace("TGTG ", "") }}
             message: >
               Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['item_price'] }} per pakket.<br>
               Ophalen van {{ trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['pickup_end'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
@@ -142,7 +151,13 @@ automation:
       default:
         - service: notify.bart_madouce_phone
           data:
-            title: "{{ trigger.to_state.name }}"
+            title: >
+              {% set ophalen = trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom('%-d') | int %}
+              {% set vandaag = as_timestamp(now()) | timestamp_custom('%-d') | int %}
+              {% if ophalen == vandaag %}brood en gebak vandaag bij
+              {% elif ophalen == vandaag +1 %}brood en gebak morgen bij
+              {% endif %}
+              {{ trigger.to_state.name | replace("TGTG ", "") }}
             message: >
               Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['item_price'] }} per pakket.<br>
               Ophalen van {{ trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['pickup_end'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
@@ -301,4 +316,18 @@ automation:
       data:
         title: "Too Good To Go werkt niet meer in Home Assistant"
         message: "Laad de tokens opnieuw met de routine tgtg_get_tokens.py"
+  mode: single
+
+- alias: TGTG geen brood nodig uitzetten
+  id: '30c9c8af-6c57-42de-ade5-a7e1a1a70fa3'
+  description: ""
+  trigger:
+    - platform: time
+      at: "00:10:00"
+  condition: []
+  action:
+    - service: input_boolean.turn_off
+      data: {}
+      target:
+        entity_id: input_boolean.tgtg_geen_brood_nodig
   mode: single

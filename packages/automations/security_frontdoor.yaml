@@ -161,7 +161,7 @@ automation:
         data:
           title: Voordeur staat al lang open!
           message: >-
-            Staat al {{ ((as_timestamp(now()) - as_timestamp(state_attr('automation.voordeur_staat_lang_open', 'last_triggered') )) / 60 )| int() }} minuten open.
+            Staat al {{ (((as_timestamp(now()) - as_timestamp(state_attr('automation.voordeur_staat_lang_open', 'last_triggered') )) / 60 )+ 3  ) | int() }} minuten open.
           data:
             color: red
             tag: voordeur_staat_open
@@ -202,8 +202,24 @@ automation:
           title: Meer info
           uri: /lovelace/alarm
         vibrationPattern: 10, 10, 10, 10, 10, 10, 10
-        media_stream: alarm_stream
+        media_stream: alarm_stream_max
   - service: lock.lock
     target:
       entity_id: lock.voordeur_nuki
   mode: single
+
+
+- alias: Voordeur opengedaan met code
+  id: 'c9ccdb95-0f71-4dfa-a91f-2c34de88df75'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.voordeur_nuki_last_unlock_user
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      message: >
+        Iemand heeft voordeur open gedaan met numeriek pad. Laatste gebruiker: {{ states('sensor.voordeur_nuki_last_unlock_user')}}
+  mode: single  

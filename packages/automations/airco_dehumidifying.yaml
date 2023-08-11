@@ -1,0 +1,64 @@
+automation:
+
+- alias: "overschot zonne-energie: kamers ontvochtigen"
+  id: 'bcf92042-45de-463d-946c-3377162ff3ac'
+  description: ""
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.net_power
+      for:
+        hours: 0
+        minutes: 15
+        seconds: 0
+      below: -1500
+  condition:
+    - condition: time
+      after: "13:00:00"
+      before: "17:00:00"
+  action:
+    - if:
+        - condition: numeric_state
+          entity_id: input_number.master_bedroom_airco_dehumid_counter
+          below: 1    
+        - condition: numeric_state
+          entity_id: sensor.master_bedroom_humidity
+          above: 70
+        - condition: state
+          entity_id: binary_sensor.master_bedroom_raam_kantel
+          state: "off"
+      then:
+        - service: input_number.increment
+          data: {}
+          target:
+            entity_id: input_number.master_bedroom_airco_dehumid_counter       
+        - service: notify.bart_phone
+          data:
+            message: "Er is een overschot aan zonne-energie. "
+            title: Master bedroom wordt nu ontvochtigd.
+        - service: script.master_bedroom_airco_ontvochtigen
+          data: {}
+    - if:   
+        - condition: numeric_state
+          entity_id: input_number.kamer_alunya_airco_dehumid_counter
+          below: 1
+        - condition: numeric_state
+          entity_id: sensor.kamer_alunya_humidity
+          above: 70
+        - condition: state
+          entity_id: binary_sensor.kamer_alunya_raam
+          state: "off"
+        - condition: state
+          entity_id: binary_sensor.kamer_alunya_schuifraam
+          state: "off"
+      then:
+        - service: input_number.increment
+          data: {}
+          target:
+            entity_id: input_number.kamer_alunya_airco_dehumid_counter      
+        - service: notify.bart_phone
+          data:
+            message: "Er is een overschot aan zonne-energie. "
+            title: Kamer Alunya wordt nu ontvochtigd    
+        - service: script.kamer_alunya_airco_ontvochtigen
+          data: {}
+  mode: single

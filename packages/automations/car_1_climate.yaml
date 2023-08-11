@@ -4,7 +4,7 @@
 #
 
 # bluetooth address Etron: 98:49:14:C1:37:0B
-# VIN etron: WAUZZZGE6MB019131
+# VIN etron: !secret vin
 
 ############################ Automations ################################## 
 
@@ -18,18 +18,18 @@ automation:
   id: '583aabff-84db-4aac-a7de-023aee0d79f1'
   trigger:
   - platform: template
-    value_template: "{{ states('sensor.time') == (states.input_datetime.car_climatisation_time.attributes.timestamp
-      | int | timestamp_custom('%H:%M', False)) }}"
+    value_template: >
+      {{ states('sensor.time') == (states.input_datetime.car_climatisation_time.attributes.timestamp | timestamp_custom('%H:%M', False)) }}      
   condition:
   - condition: state
     entity_id: input_boolean.car_climatisation_timer
     state: 'on'
   action:
-  - service: script.auto_start_climatisatie_nu
-  - service: switch.turn_off
+  - service: input_boolean.turn_off
     data: {}
     target:
-      entity_id: input_boolean.car_climatisation_timer  
+      entity_id: input_boolean.car_climatisation_timer
+  - service: script.auto_start_climatisatie_nu      
   mode: restart
 
 - alias: 🚗 car 1 // climate // Om 19u in Waarschoot en koud = vraag auto climatiseren
@@ -40,7 +40,7 @@ automation:
     at: '19:00'
   condition:
   - condition: numeric_state
-    entity_id: sensor.temp_leuven24_wunderground
+    entity_id: sensor.leuven_temperature
     below: 15
   - condition: state
     entity_id: person.bart
@@ -79,7 +79,7 @@ automation:
       for: "00:00:05"
   condition:
     - condition: numeric_state
-      entity_id: sensor.temp_leuven24_wunderground
+      entity_id: sensor.leuven_temperature
       below: 15
   action:
   - choose:
@@ -208,7 +208,7 @@ automation:
       for: "00:00:05"
   condition:
     - condition: numeric_state
-      entity_id: sensor.temp_leuven24_wunderground
+      entity_id: sensor.leuven_temperature
       below: 15
   action:
   - choose:
@@ -364,9 +364,17 @@ automation:
   description: ''
   trigger:
   - platform: state
+    entity_id: binary_sensor.madouce_phone_connected_to_car_1
+    from: 'on'
+    to: 'off'
+    for: "00:00:05"
+  - platform: state
     entity_id: device_tracker.audi_e_tron_sportback_position
     to: 'Toyota Evere'
   condition:
+  - condition: state
+    entity_id: person.madouce
+    state: "Toyota Evere"  
   - condition: template
     value_template: >
       {% set car_use_day = 'input_select.car_use_day_' ~ now().isoweekday() %}
@@ -427,7 +435,7 @@ automation:
   description: ''
   trigger:
   - platform: time
-    at: '07:30'
+    at: '07:40'
   condition:
     and:
       - condition: template
@@ -435,7 +443,7 @@ automation:
           {% set car_use_day = 'input_select.car_use_day_' ~ now().isoweekday() %}
           {%if states(car_use_day) == "Toyota Diest"%} true {% endif %}
       - condition: numeric_state
-        entity_id: sensor.temp_leuven24_wunderground
+        entity_id: sensor.leuven_temperature
         below: 15       
   action:
   - service: notify.madouce_phone
@@ -461,7 +469,15 @@ automation:
   - platform: state
     entity_id: device_tracker.audi_e_tron_sportback_position
     to: 'Toyota Diest'
+  - platform: state
+    entity_id: binary_sensor.madouce_phone_connected_to_car_1
+    from: 'on'
+    to: 'off'
+    for: "00:00:05"    
   condition:
+  - condition: state
+    entity_id: person.madouce
+    state: "Toyota Diest"
   - condition: template
     value_template: >
       {% set car_use_day = 'input_select.car_use_day_' ~ now().isoweekday() %}

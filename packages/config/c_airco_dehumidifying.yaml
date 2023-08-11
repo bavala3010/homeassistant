@@ -1,0 +1,12 @@
+input_number:
+  master_bedroom_airco_dehumid_counter:
+    name: master bedroom airco ontvochtiging
+    min: 0
+    max: 5
+    mode: box
+
+  kamer_alunya_airco_dehumid_counter:
+    name: kamer Alunya airco ontvochtiging
+    min: 0
+    max: 5
+    mode: box    

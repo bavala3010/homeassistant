@@ -24,7 +24,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.temp_leuven24_wunderground
+    entity_id: sensor.eikenbos_average_temperature
   - platform: state
     entity_id: sensor.gram_water_living
   condition:
@@ -42,9 +42,9 @@ automation:
       entity_id: sensor.living_heating
       above: '0'
     - condition: template
-      value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) < 16 }}"
+      value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) < 16 }}"
     - condition: template
-      value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) > 23 }}"      
+      value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) > 23 }}"      
     - condition: template
       value_template: "{{ states('sensor.gram_water_living_diff_outside') | float(default=0) < 0.5 }}"
  #    - condition: and      
@@ -69,7 +69,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.temp_leuven24_wunderground    
+    entity_id: sensor.eikenbos_average_temperature    
   - platform: state
     entity_id: sensor.gram_water_kamer_amilya
   condition:
@@ -87,11 +87,11 @@ automation:
       entity_id: sensor.kamer_amilya_heating
       above: '0'
     # - condition: template
-    #   value_template: "{{ states('sensor.temp_leuven24_wunderground') | float(default=0) < 15 }}"
+    #   value_template: "{{ states('sensor.eikenbos_average_temperature') | float(default=0) < 15 }}"
     - condition: template
-      value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) < 16 }}"
+      value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) < 16 }}"
     - condition: template
-      value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) > 23 }}"      
+      value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) > 23 }}"      
     - condition: template
       value_template: "{{ states('sensor.gram_water_kamer_amilya_diff_outside') | float(default=0) < 0.5 }}"             
   action:
@@ -110,7 +110,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.temp_leuven24_wunderground    
+    entity_id: sensor.eikenbos_average_temperature    
   - platform: state
     entity_id: sensor.gram_water_veranda    
   condition:
@@ -128,9 +128,9 @@ automation:
       entity_id: sensor.veranda_heating
       above: '0'
     - condition: template
-      value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) < 16 }}"
+      value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) < 16 }}"
     - condition: template
-      value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) > 23 }}"      
+      value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) > 23 }}"      
     - condition: template
       value_template: "{{ states('sensor.gram_water_veranda_diff_outside') | float(default=0) < 0.5 }}"             
   action:
@@ -149,7 +149,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.temp_leuven24_wunderground    
+    entity_id: sensor.eikenbos_average_temperature    
   - platform: state
     entity_id: sensor.gram_water_berging  
   condition:
@@ -167,9 +167,9 @@ automation:
       entity_id: sensor.berging_heating
       above: '0'
     - condition: template
-      value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) < 16 }}"
+      value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) < 16 }}"
     - condition: template
-      value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) > 23 }}"
+      value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) > 23 }}"
     - condition: template
       value_template: "{{ states('sensor.gram_water_berging_diff_outside') | float(default=0) < 0.5 }}"             
   action:
@@ -188,7 +188,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.temp_leuven24_wunderground
+    entity_id: sensor.eikenbos_average_temperature
   - platform: state
     entity_id: sensor.gram_water_badkamer    
   condition:
@@ -206,9 +206,9 @@ automation:
       entity_id: sensor.badkamer_heating
       above: '0'
     - condition: template
-      value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) < 16 }}"
+      value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) < 16 }}"
     - condition: template
-      value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) > 23 }}"      
+      value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) > 23 }}"      
     - condition: template
       value_template: "{{ states('sensor.gram_water_badkamer') | float(default=0) < 9 }}"  
     - condition: template
@@ -229,7 +229,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.temp_leuven24_wunderground
+    entity_id: sensor.eikenbos_average_temperature
   - platform: state
     entity_id: sensor.gram_water_gang   
   condition:
@@ -247,9 +247,9 @@ automation:
       entity_id: sensor.gang_heating
       above: '0'
     - condition: template
-      value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) < 16 }}"
+      value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) < 16 }}"
     - condition: template
-      value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) > 23 }}"      
+      value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) > 23 }}"      
     - condition: template
       value_template: "{{ states('sensor.gram_water_gang_diff_outside') | float(default=0) < 0.5 }}"  
   action:
@@ -268,7 +268,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.temp_leuven24_wunderground
+    entity_id: sensor.eikenbos_average_temperature
   - platform: state
     entity_id: sensor.gram_water_kamer_alunya    
   condition:
@@ -286,9 +286,9 @@ automation:
       entity_id: sensor.kamer_alunya_heating
       above: '0'
     - condition: template
-      value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) < 16 }}"
+      value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) < 16 }}"
     - condition: template
-      value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) > 23 }}"            
+      value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) > 23 }}"            
     - condition: template
       value_template: "{{ states('sensor.gram_water_kamer_alunya_diff_outside') | float(default=0) < 0.5 }}"
   action:
@@ -307,7 +307,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.temp_leuven24_wunderground
+    entity_id: sensor.eikenbos_average_temperature
   - platform: state
     entity_id: sensor.gram_water_master_bedroom    
   condition:
@@ -325,9 +325,9 @@ automation:
       entity_id: sensor.master_bedroom_heating
       above: '0'
     - condition: template
-      value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) < 16 }}"
+      value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) < 16 }}"
     - condition: template
-      value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) > 23 }}"      
+      value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) > 23 }}"      
     - condition: template
       value_template: "{{ states('sensor.gram_water_master_bedroom_diff_outside') | float(default=0) < 0.5 }}"             
   action:

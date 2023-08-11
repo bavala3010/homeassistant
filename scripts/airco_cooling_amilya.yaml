@@ -1,0 +1,59 @@
+amilya_airco_cooling_start:
+  sequence:
+  - condition: template
+    value_template: >-
+      {{ states('sensor.kamer_amilya_temperature') | float >= 20 }}
+  - condition: template
+    value_template: >-
+      {{ states('binary_sensor.kamer_amilya_raam') == 'off' }}      
+  # - service: timer.start
+  #   data:
+  #     duration: "{{ states('input_number.amilya_airco_cooling_timer_minutes') | float * 60 }}"
+  #   target:
+  #     entity_id: timer.amilya_airco_timer
+  # - service: input_datetime.set_datetime
+  #   data:
+  #     datetime: >
+  #       {% set t =states('input_number.amilya_airco_cooling_timer_minutes') | float %}
+  #       {{ (now().timestamp() + t*60 ) | timestamp_custom("%Y-%m-%d %-H:%M:%S") }}
+  #   target:
+  #     entity_id: input_datetime.amilya_airco_cooling_timer_stop
+  - service: climate.set_temperature
+    data:
+      hvac_mode: cool
+      temperature: 18
+    target:
+      device_id: 61864d1ab32c5af91d5f13faf697c27e
+  - service: climate.set_fan_mode
+    data:
+      fan_mode: auto
+    target:
+      device_id: 61864d1ab32c5af91d5f13faf697c27e
+  mode: restart
+
+
+amilya_airco_cooling_18:
+  sequence:
+  - service: input_number.set_value
+    data:
+      value: 18
+    target:
+      entity_id: input_number.amilya_airco_target_temperature          
+  # - service: input_number.set_value
+  #   data:
+  #     value: 60
+  #   target:
+  #     entity_id: input_number.amilya_airco_cooling_timer_minutes
+  - service: script.amilya_airco_cooling_start
+    data: {} 
+  mode: restart
+
+
+amilya_airco_cooling_boost:
+  sequence:
+  - service: climate.set_preset_mode
+    data:
+      preset_mode: boost
+    target:
+      device_id: 61864d1ab32c5af91d5f13faf697c27e
+  mode: restart

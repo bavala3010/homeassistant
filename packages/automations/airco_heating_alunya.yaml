@@ -30,16 +30,18 @@ automation:
         {{ states('sensor.kamer_alunya_temperature') | float <
         states('input_number.kamer_alunya_normal_temperature') | float }}
   condition:
+    # only between September and April
+    - condition: template
+      value_template: "{{ now().month < 5 and now().month > 8 }}"
     - condition: state
       entity_id: schedule.kamer_alunya_normal_temperature_schema
       state: "on"
     - condition: state
       entity_id: person.alunya
       state: home
-    - condition: template
-      value_template: >
-        {{ states('sensor.kamer_alunya_temperature') | float <
-        states('input_number.kamer_alunya_normal_temperature') | float }}
+    - condition: numeric_state
+      entity_id: sensor.kamer_alunya_temperature
+      below: 17
     - condition: state
       entity_id: binary_sensor.kamer_alunya_raam
       state: "off"

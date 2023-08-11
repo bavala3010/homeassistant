@@ -30,7 +30,7 @@ automation:
     state: 'disconnected'
   # voorwaarde: als start tijd < nu + 10 uren (dus starttijd voor 20u)
   - condition: template
-    value_template: "{% if as_timestamp(states('sensor.car_charge_stoptimer_starttime')) | timestamp_custom('%Y-%m-%d %H:%M', false) < ((as_timestamp(now())  + (10 * 60 * 60)) | timestamp_custom('%Y-%m-%d %H:%M')) %}true{% endif %}"
+    value_template: "{% if as_timestamp(states('sensor.car_charge_stoptimer_starttime')) | timestamp_custom('%Y-%m-%d %H:%M') < ((as_timestamp(now())  + (10 * 60 * 60)) | timestamp_custom('%Y-%m-%d %H:%M')) %}true{% endif %}"
   # voorwaarde: enkel als SOC < gewenst laaddoel
   - condition: template
     value_template: "{{ states('sensor.car_1_soc')| int(2) < (states('input_number.car_charge_target_percentage') | int(2)) }}"
@@ -42,7 +42,7 @@ automation:
         {% set soc = states('sensor.car_1_soc') | round(default=0) %}
         {% set targetsoc = states('input_number.car_charge_target_percentage') | round(default=0) %}
         {% set targetrange = states('input_number.car_charge_target_range') | round(default=0) %}
-        De auto zou moeten laden op {{ as_timestamp(states('sensor.car_charge_stoptimer_starttime')) | timestamp_custom('%a %-Hu%M', false) }} maar de kabel steekt niet in.
+        De auto zou moeten laden op {{ as_timestamp(states('sensor.car_charge_stoptimer_starttime')) | timestamp_custom('%a %-Hu%M') }} maar de kabel steekt niet in.
         Huidige lading is {{ soc }}%. Laaddoel is {{ targetsoc }}% = {{ targetrange }} km.
       data:
         tag: car_charging
@@ -91,7 +91,7 @@ automation:
       round(default=0) %} {% set targetrange =
       states('input_number.car_charge_target_range') | round(default=0) %} Laden
       met timer van {{ as_timestamp(states('sensor.car_charge_stoptimer_starttime')) |
-      timestamp_custom('%a %-Hu%M', false)}} tot {{
+      timestamp_custom('%a %-Hu%M')}} tot {{
       state_attr('input_datetime.car_charge_target_time', 'timestamp') |
       timestamp_custom("%a %-Hu%M") }}.<br> Er wordt geladen van {{ soc }}% naar
       {{ targetsoc }}% = {{ targetrange }} km.
@@ -142,6 +142,8 @@ automation:
   - platform: state
     entity_id: sensor.car_1_plug_state
     to: connected
+    for:
+      minutes: 1
   condition:
   - condition: state
     entity_id: device_tracker.audi_e_tron_sportback_position
@@ -150,7 +152,7 @@ automation:
     entity_id: sensor.charger_status
     state: 'available'
   action:
-  - service: notify.bart_phone
+  - service: notify.bart_madouce_phone
     data:
       message: TTS
       data:
@@ -158,7 +160,7 @@ automation:
         ttl: 0
         priority: high
         media_stream: alarm_stream_max
-  - service: notify.bart_phone
+  - service: notify.bart_madouce_phone
     data:
       title: "De laadkabel steekt in maar de sessie is niet gestart."
       message: >
@@ -166,11 +168,7 @@ automation:
       data:
         tag: car_charging
         color: green
-        clickAction: "/dashboard-car/car-charging"
-        # actions:
-        # - action: URI
-        #   title: meer info
-        #   uri: /dashboard-car/car-charging        
+        clickAction: "/dashboard-car/car-charging"     
   mode: single
 
 - alias: "🚗 car 1 // 🔋 charge // laadkabel losgekoppeld = laden stoppen"

@@ -13,8 +13,8 @@ sensor:
         unit_of_measurement: 'g/m³'
         icon_template: mdi:water
         value_template: >
-          {% set t = states('sensor.temp_leuven24_wunderground') | float(default=0) %}
-          {% set h = states('sensor.humidity_leuven24_wunderground') | float(default=0) %}
+          {% set t = states('sensor.leuven_temperature') | float(default=0) %}
+          {% set h = states('sensor.leuven_humidity') | float(default=0) %}
           {{ ((e ** ((17.67 * (t)) / (243.5 + (t)) ) * 6.112 * (h) * 2.1674 ) / (273.15 + (t))) | round(1) }}
 
       gram_water_living:
@@ -180,28 +180,28 @@ sensor:
       outside_enthalpy:
         friendly_name: 'enthalpy buiten'
         unit_of_measurement: KJ/kg      
-        value_template: "{{ (1.006 * (states('sensor.temp_leuven24_wunderground') | float(default=0) )) + ( (states('sensor.outside_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.temp_leuven24_wunderground') | float(default=0) ))) | round (2) }}" 
+        value_template: "{{ (1.006 * (states('sensor.leuven_temperature') | float(default=0) )) + ( (states('sensor.outside_thermal_absolutehumidity') | float(default=0) / 1000) * (2501 + 1.84 * (states('sensor.leuven_temperature') | float(default=0) ))) | round (2) }}" 
 
       veranda_enthalpy:
         friendly_name: 'enthalpy veranda'
         unit_of_measurement: KJ/kg      
-        value_template: "{{ (1.006 * (states('sensor.veranda_temperature') | float(default=0) )) + ( (states('sensor.veranda_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.veranda_temperature') | float(default=0) ))) | round (2) }}" 
+        value_template: "{{ (1.006 * (states('sensor.veranda_temperature') | float(default=0) )) + ( (states('sensor.veranda_thermal_absolutehumidity') | float(default=0) / 1000) * (2501 + 1.84 * (states('sensor.veranda_temperature') | float(default=0) ))) | round (2) }}" 
 
       master_bedroom_enthalpy:
         friendly_name: 'enthalpy master bedroom'
         unit_of_measurement: KJ/kg      
-        value_template: "{{ (1.006 * (states('sensor.master_bedroom_temperature') | float(default=0)) ) + ( (states('sensor.master_bedroom_thermal_absolutehumidity') | float / 1000) * (2501 + 1.84 * (states('sensor.master_bedroom_temperature') | float(default=0) ))) | round (2) }}" 
+        value_template: "{{ (1.006 * (states('sensor.master_bedroom_temperature') | float(default=0)) ) + ( (states('sensor.master_bedroom_thermal_absolutehumidity') | float(default=0) / 1000) * (2501 + 1.84 * (states('sensor.master_bedroom_temperature') | float(default=0) ))) | round (2) }}" 
 
 
-binary_sensor:
-- platform: generic_hygrostat
-  name: badkamer hygrostat
-  sensor: sensor.badkamer_humidity # Source humidity sensor
-  attribute: humidity               # Optional use sensor attribute instead of state.
-  delta_trigger: 3                  # Optional humidity swing to detect. Default = 3
-  target_offset: 3                  # Optional dehumidification target offset. Default = 3
-  min_on_time: 300                  # Optional min on time in seconds. Default = 0 seconds
-  max_on_time: 7200                 # Optional safety max on time in seconds. Default = 7200 seconds
-  sample_interval: 300              # Optional time between taking humidity samples in seconds, default 300 seconds
-  min_humidity: 30                  # Optional minimum humidity to enable dehumidification. Default = 0
-  unique_id: 0f635172-3da5-4a0e-8490-54465c750be0    # Optional ID that uniquely identifies this sensor. Set this to a unique value to allow customization through the UI.
+# binary_sensor:
+# - platform: generic_hygrostat
+#   name: badkamer hygrostat
+#   sensor: sensor.badkamer_humidity # Source humidity sensor
+#   attribute: humidity               # Optional use sensor attribute instead of state.
+#   delta_trigger: 3                  # Optional humidity swing to detect. Default = 3
+#   target_offset: 3                  # Optional dehumidification target offset. Default = 3
+#   min_on_time: 300                  # Optional min on time in seconds. Default = 0 seconds
+#   max_on_time: 7200                 # Optional safety max on time in seconds. Default = 7200 seconds
+#   sample_interval: 300              # Optional time between taking humidity samples in seconds, default 300 seconds
+#   min_humidity: 30                  # Optional minimum humidity to enable dehumidification. Default = 0
+#   unique_id: 0f635172-3da5-4a0e-8490-54465c750be0    # Optional ID that uniquely identifies this sensor. Set this to a unique value to allow customization through the UI.

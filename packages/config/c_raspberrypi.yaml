@@ -22,9 +22,10 @@ sensor:
     - type: processor_temperature
     - type: last_boot
     
-  # OPTIONAL CPU Raspberry Pi Temp
-  - platform: command_line
-    name: CPU Temp
-    command: "cat /sys/class/thermal/thermal_zone0/temp"
-    unit_of_measurement: "°C"
-    value_template: '{{ value | multiply(0.001) | round(2)  }}'
+# OPTIONAL CPU Raspberry Pi Temp
+command_line:
+  - sensor:
+      name: CPU Temp
+      command: "cat /sys/class/thermal/thermal_zone0/temp"
+      unit_of_measurement: "°C"
+      value_template: '{{ value | multiply(0.001) | round(2)  }}'

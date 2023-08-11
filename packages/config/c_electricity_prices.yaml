@@ -1,3 +1,30 @@
+input_number:
+  elektriciteitsprijs_injectie:
+    name: elektriciteitsprijs injectie
+    min: 0
+    max: 100
+    step: 0.0001
+    mode: box
+    unit_of_measurement: EUR/kWh
+
+  elektriciteitsprijs_afname:
+    name: elektriciteitsprijs afname
+    min: 0
+    max: 100
+    step: 0.0001
+    mode: box
+    unit_of_measurement: EUR/kWh
+
+  cheapest_hours_electricity_period:
+    name: uren goedkoopste elektriciteit
+    min: 1
+    max: 24
+
+  mostexpensive_hours_electricity_period:
+    name: uren duurste elektriciteit
+    min: 1
+    max: 24
+
 input_datetime:
   cheapest_hours_electricity_start_time:
     name: startuur goedkoopste elektriciteit
@@ -8,17 +35,6 @@ input_datetime:
     name: startuur duurste elektriciteit
     has_time: true
     has_date: false
-
-input_number:
-  cheapest_hours_electricity_period:
-    name: uren goedkoopste elektriciteit
-    min: 1
-    max: 24
-
-  mostexpensive_hours_electricity_period:
-    name: uren duurste elektriciteit
-    min: 1
-    max: 24
 
 sensor:
   - platform: nordpool_diff

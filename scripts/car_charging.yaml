@@ -34,7 +34,7 @@ auto_start_laden_nu:
   sequence:
   - service: audiconnect.execute_vehicle_action
     data:
-      vin: WAUZZZGE6MB019131
+      vin: !secret vin
       action: start_charger
 
 auto_start_laden_timer:
@@ -42,7 +42,7 @@ auto_start_laden_timer:
   sequence:
   - service: audiconnect.execute_vehicle_action
     data:
-      vin: WAUZZZGE6MB019131
+      vin: !secret vin
       action: start_timed_charger
 
 auto_stop_laden:
@@ -51,7 +51,7 @@ auto_stop_laden:
   sequence:
   - service: audiconnect.execute_vehicle_action
     data:
-      vin: WAUZZZGE6MB019131
+      vin: !secret vin
       action: stop_charge
 
 
@@ -130,10 +130,11 @@ charger_define_ampere_based_on_watt:
           {% elif 4.6 <= W < 5.3 %} 7
           {% elif 5.3 <= W < 6.0 %} 8
           {% elif 6.0 <= W < 6.6 %} 9
-          {% elif 6.6 <= W < 7.6 %} 10
-          {% elif 7.6 <= W < 8.5 %} 11
-          {% elif 8.5 <= W < 9.2 %} 12
-          {% elif 9.2 <= W %} 13
+          {% elif 6.6 <= W < 7.2 %} 10
+          {% elif 7.2 <= W < 8.0 %} 11
+          {% elif 8.0 <= W < 8.7 %} 12
+          {% elif 8.7 <= W < 9.4 %} 13
+          {% elif 9.4 <= W %} 14
           {% endif %}
 
 charger_define_and_write_register_based_on_ampere:

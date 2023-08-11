@@ -1,6 +1,25 @@
 
-sensor:
+template:
+  - trigger:
+      - platform: time_pattern
+        seconds: '/10'
+    sensor:
+      name: solar_power
+      # converts the sma_power_ac sensor to sensor.solar_power
+      # but cutting of incorrect (too high) values to 10000
+      unique_id: '136e925b-8fa2-446f-b0b5-222cfd4742f1'
+      unit_of_measurement: "W"
+      state_class: measurement
+      device_class: power
+      icon: "mdi:solar-power"
+      state: >
+        {% if states('sensor.sma_power_ac') | float(default=0) >=10000 %}
+        0
+        {% elif states('sensor.sma_power_ac') | float(default=0) <= 10000 %}
+        {{ states('sensor.sma_power_ac') | float(default=0) }}
+        {% endif %}
 
+sensor:
 - platform: average
   name: "7-daags gemiddelde verwachte zonneopbrengst"
   duration:
@@ -18,20 +37,6 @@ sensor:
 
 - platform: template
   sensors:
-    solar_power:
-      # converts the sma_power_ac sensor to sensor.solar_power
-      # but cutting of incorrect (too high) values to 10000
-      unique_id: '136e925b-8fa2-446f-b0b5-222cfd4742f1'
-      unit_of_measurement: "W"
-      friendly_name: "zonne-energie productie"
-      icon_template: "mdi:solar-power"
-      value_template: >
-        {% if states('sensor.sma_power_ac') | float(default=0) >=10000 %}
-        0
-        {% elif states('sensor.sma_power_ac') | float(default=0) <= 10000 %}
-        {{ states('sensor.sma_power_ac') | float(default=0) }}
-        {% endif %}
-
     solar_sim_energy_today:
       # totaal van de gesimuleerde productie  (= solar integratie)
       unique_id: 'd7878be1-3fb7-4f10-a090-92bf0640868c'

@@ -207,7 +207,7 @@ automation:
                       pitch: +0Hz
                       rate: -10%
           - delay:
-              minutes: 30
+              minutes: 40
         until:
           not:
             - condition: state

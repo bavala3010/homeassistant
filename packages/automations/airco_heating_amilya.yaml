@@ -263,3 +263,43 @@ automation:
     target:
       entity_id: timer.amilya_airco_timer      
   mode: single
+
+
+- alias: '♨️ airco heating // Amilya // huidige temperatuur is hoger dan gevraagde temperatuur'
+  id: '4a9c231f-9c19-47f9-a323-50f464622d31'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_number.amilya_airco_target_temperature
+  condition:
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state: 'on'
+  - condition: template
+    value_template: '{{ states(''sensor.kamer_amilya_temperature'') | float > states(''input_number.amilya_airco_target_temperature'')
+      | float }}'
+  action:
+  - service: notify.amilya_phone
+    data:
+      title: Gevraagde temperatuur al bereikt.
+      message: Kamertemperatuur is momenteel {{ states('sensor.kamer_amilya_temperature')
+        | float }} graden.
+  - service: climate.turn_off
+    data: {}
+    target:
+      device_id: 61864d1ab32c5af91d5f13faf697c27e
+  - service: climate.set_temperature
+    data:
+      temperature: 14
+    target:
+      device_id: 61864d1ab32c5af91d5f13faf697c27e
+  - service: input_number.set_value
+    data:
+      value: 14
+    target:
+      entity_id: input_number.amilya_airco_target_temperature
+  - service: timer.finish
+    data: {}
+    target:
+      entity_id: timer.amilya_airco_timer
+  mode: single  

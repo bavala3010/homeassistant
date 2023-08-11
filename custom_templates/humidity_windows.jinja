@@ -1,0 +1,69 @@
+{# r = room #}
+{# r_t = room temperature #}
+{# r_rh = room relative humidity #}
+{# r_ah = room absolute humidity #}
+{# o_t = outside temperature #}
+{# o_rh = outside relative humidity #}
+{# o_ah = outside absolute humidity #}
+
+{% macro openwindow_urgency(r) %}
+{% set r_rh_name = 'sensor.' ~ r ~ '_humidity' %}
+{% set r_rh = states( r_rh_name) | float(default=0) %}
+{% set r_ah_name = 'sensor.' ~ r ~ '_thermal_absolute_humidity' %}
+{% set r_ah = states( r_ah_name) | float(default=0) %}
+{# define priority #}
+{% if r_rh >= 80 %}4
+{% elif r_rh >= 70 %}3
+{% elif r_rh >= 60 %}2
+{% elif r_rh < 60 %}1
+{% endif %}
+{% endmacro %}
+
+{% macro openwindow_humidityimpact(r) %}
+{% set o_rh = states('sensor.leuven_humidity') | float(default=0) %}
+{% set o_ah = states('sensor.outside_thermal_absolute_humidity') | float(default=0) %}
+{% set r_rh_name = 'sensor.' ~ r ~ '_humidity' %}
+{% set r_rh = states( r_rh_name) | float(default=0) %}
+{% set r_ah_name = 'sensor.' ~ r ~ '_thermal_absolute_humidity' %}
+{% set r_ah = states( r_ah_name) | float(default=0) %}
+{# check absolute humidity difference #}
+{# give impact score based on the humidity difference #}
+{% if r_ah - o_ah >= 3.5 %}4
+{% elif r_ah - o_ah >= 2.5 %}3
+{% elif r_ah - o_ah >= 1.5 %}2
+{% elif r_ah - o_ah >= 0.5 %}1
+{% elif r_ah < o_ah %}0
+{% endif %}
+{% endmacro %}
+
+{% macro openwindow_temperatureimpact(r) %}
+{% set o_t = states('sensor.leuven_temperature') | float(default=0) %}
+{% set r_t_name = 'sensor.' ~ r ~ '_temperature' %}
+{% set r_t = states( r_t_name) | float(default=0) %}
+{# check temperature difference #}
+{# give acceptance score based on the temperature difference #}
+{% if r_t <= 14 and o_t <=14 %} 0
+{% elif r_t >= 21 and o_t >=21 %} 0
+{% elif r_t > o_t %}
+    {% if r_t - o_t >= 8 %}1
+    {% elif r_t - o_t >= 6 %}2
+    {% elif r_t - o_t >= 4 %}3
+    {% elif r_t - o_t >= 2 %}4
+    {% endif %}
+{% endif %}
+{% endmacro %}
+
+
+{% macro openwindow_checklimits(r) %}
+{% set o_t = states('sensor.leuven_temperature') | float(default=0) %}
+{% set r_t_name = 'sensor.' ~ r ~ '_temperature' %}
+{% set r_t = states( r_t_name) | float(default=0) %}
+{# check temperature difference #}
+{# give score based on the difference importance #}
+{% if r_t - o_t >= 10 %}4
+{% elif r_t - o_t >= 8 %}3
+{% elif r_t - o_t >= 6 %}2
+{% elif r_t - o_t >= 4 %}1
+{% elif r_t - o_t < 2 %}0
+{% endif %}
+{% endmacro %}

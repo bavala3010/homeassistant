@@ -32,14 +32,13 @@ automation:
     data:
       title: Direct laden gestart.
       message: >
-        {% set soc = states('sensor.car_1_soc') | round(default=0) %}
-        {% set targetsoc = states('input_number.car_charge_target_percentage') | round(default=0) %}
-        {% set targetrange = states('input_number.car_charge_target_range') | round(default=0) %}
-        {% set deltasoc = [targetsoc - soc, 0] | max %}
-        {% set nog_te_laden_minuten = deltasoc * states('input_number.car_1_min_per_1pct') | round(2) %}      
-        Nu: {{ soc }}%.
-        Laden tot {{ targetsoc }}% = {{ targetrange }} km.<br>
-        Einde laden voorzien om {{ (as_timestamp(now()) + (nog_te_laden_minuten | float(default=0) * 60)) | timestamp_custom('%a %d %b %-Hu%M') }}
+        {% from 'easy_time.jinja' import weekday %}
+        {% from 'easy_time.jinja' import month %}
+        {% set nog_te_laden_minuten = states('sensor.car_remaining_charge_minutes_min_power') | round(2) %}
+        {% set laaddoel = (as_timestamp(now()) + (nog_te_laden_minuten | float(default=0) * 60)) %}
+        Directe start aan {{ states('input_number.car_charge_minimum_wattage') | round(1) }} kW + zon.<br>
+        Laadtijd maximum {{ (nog_te_laden_minuten | float(default=0) / 60) | int }} uren en {{((nog_te_laden_minuten | float(default=0)) - ((nog_te_laden_minuten | float(default=0) / 60) | int * 60 )) | int() }} minuten.
+        Laaddoel wordt ten laatste bereikt op {{ weekday(laaddoel) }} {{ laaddoel | timestamp_custom('%d')}} {{ month(laaddoel) }} {{ laaddoel | timestamp_custom('%-Hu%M')}}.
       data:
         tag: car_charging
         color: red
@@ -91,11 +90,12 @@ automation:
     data:
       title: "Laden met starttimer"
       message: >
-        Het laden start om {{ state_attr('input_datetime.car_charge_starttimer_starttime','timestamp') | timestamp_custom('%-Hu%M',false) }}.<br>
+        Het laden start om {{ state_attr('input_datetime.car_charge_starttimer_starttime','timestamp') | timestamp_custom('%-Hu%M') }}.<br>
         Er wordt geladen van {{states('sensor.car_1_soc') | round(default=0) }}% naar {{states('input_number.car_charge_target_percentage') | round(default=0) }}%.
       data:
         tag: car_charging
         color: green
+        notification_icon: "mdi:car-electric"        
         actions:
         - action: URI
           title: meer info
@@ -120,11 +120,12 @@ automation:
     data:
       title: "Laden met doeltimer"
       message: >
-        Laden van {{ as_timestamp(states('sensor.car_charge_stoptimer_starttime'),0) | timestamp_custom('%a %d %b %-Hu%M', false) }} tot {{ state_attr('input_datetime.car_charge_target_time','timestamp') | timestamp_custom('%a %d %b %-Hu%M',) }}.<br>
+        Laden van {{ as_timestamp(states('sensor.car_charge_stoptimer_starttime'),0) | timestamp_custom('%a %d %b %-Hu%M') }} tot {{ state_attr('input_datetime.car_charge_target_time','timestamp') | timestamp_custom('%a %d %b %-Hu%M',) }}.<br>
         Er wordt geladen van {{states('sensor.car_1_soc') | round(default=0) }}% naar {{states('input_number.car_charge_target_percentage') | round(default=0) }}%.
       data:
         tag: car_charging
         color: green
+        notification_icon: "mdi:car-electric"        
         actions:
         - action: URI
           title: meer info
@@ -165,6 +166,7 @@ automation:
       data:
         tag: car_charging
         color: green
+        notification_icon: "mdi:car-electric"        
         actions:
         - action: URI
           title: meer info

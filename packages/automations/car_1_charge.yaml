@@ -1,9 +1,9 @@
 ############################ Table of Contents ############################ 
 # 
 #   Automations
-#   🚗 // charge //  autolader is verbonden (niet thuis) = melding
-#   🚗 // charge //  auto laadt (niet thuis) = melding
-#   🚗 // charge //  auto gedaan met laden = melding
+#   🚗 // charge // autolader is verbonden (niet thuis) = melding
+#   🚗 // charge // auto laadt (niet thuis) = melding
+#   🚗 // charge // auto gedaan met laden = melding
 #
 #   🔋 charge planning is veranderd = bepaal SOC per dag
 #   🔋 charge planning - om 7u00 bepaal target SOC per dag op basis van planning
@@ -53,7 +53,7 @@ automation:
       title: "🚙 Autolader is verbonden." 
       message: >
         {% set Hour, Minute = states.sensor.car_1_remaining_charge_time.state.split(':') %}
-        {% set minutes = Hour | int *60 + Minute | int %}
+        {% set minutes = Hour | int * 60 + Minute | int %}
         Nu {{states('sensor.car_1_soc')}}%. Nog {{states('sensor.car_1_remaining_charge_time')}} laden tot 100%.
         Geschat einduur: {{ (as_timestamp(now()) + (minutes | float(default=0) * 60)) | timestamp_custom('%a %d %b %-Hu%M') }}.
       data:
@@ -169,8 +169,8 @@ automation:
 # Car charger: define ampère and phases
 #######################################
 
-- alias: "🚗 car 1 // 🔋 charge // gewenst Wattage laadpaal is veranderd = bepaal laadminuten voor 1%"
-  id: 'baae9f5a-73dd-45f6-98b4-5130a50a903d'
+- alias: "🚗 car 1 // 🔋 charge // gewenst Wattage laadpaal is veranderd = bepaal laadminuten voor 1%, zet de fasen op 1 of 3 en bepaal Ampère"
+  id: 'f27a3c48-775c-471f-bd6d-33d23c638826'
   description: ''
   trigger:
   - platform: state
@@ -182,37 +182,15 @@ automation:
       entity_id: input_number.car_1_min_per_1pct
     data:
       value: "{{ ( 56.925 / (states('input_number.car_charger_watt') | float ) ) | round(2) }}"
-  mode: restart
-
-- alias: "🚗 car 1 // 🔋 charge // gewenst Wattage laadpaal is veranderd = zet de fasen op 1 of 3"
-  id: 'f27a3c48-775c-471f-bd6d-33d23c638826'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_number.car_charger_watt
-  condition:
   # only when charging is busy, otherwise by changing the W the car will start to charge
-  - condition: state
-    entity_id: input_boolean.car_charge_busy
-    state: 'on'
-  action:
-  - service: script.charger_define_phase_1_or_3_based_on_watt
-  mode: restart
-
-- alias: "🚗 car 1 // 🔋 charge // gewenst Wattage laadpaal is veranderd = bepaal Ampère"
-  id: 'd4197275-7e4b-453d-b3ea-3ea91c2e19d8'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_number.car_charger_watt
-  condition:
-  # only when charging is busy, otherwise by changing the W the car will start to charge
-  - condition: state
-    entity_id: input_boolean.car_charge_busy
-    state: 'on'
-  action:
-  - service: script.charger_define_ampere_based_on_watt
-    data: {}
+  - if:
+      - condition: state
+        entity_id: input_boolean.car_charge_busy
+        state: 'on'
+    then:
+      - service: script.charger_define_phase_1_or_3_based_on_watt
+      - service: script.charger_define_ampere_based_on_watt
+        data: {}  
   mode: restart
 
 - alias: "🚗 car 1 // 🔋 charge // Ampère laadpaal is veranderd = bepaal waarde en stuur naar register"
@@ -230,97 +208,7 @@ automation:
   - service: script.charger_define_and_write_register_based_on_ampere
   mode: restart
 
-
-######################################
-# car charge: red hours
-######################################
-
-- alias: "🚗 car 1 // 🔋 charge // red hours: week 6u-8u -> lader op timer (enkel thuis)"
-  id: '0a0bce79-42d8-4184-9dab-9ed54f30f3bf'  
-  description: ''
-  trigger:
-  - platform: time
-    at: 06:00
-  condition:
-  - condition: time
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-  - condition: state
-    entity_id: device_tracker.audi_e_tron_sportback_position
-    state: home    
-  action:
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: WAUZZZGE6MB019131
-      action: start_timed_charger
-  - delay: 02:00:00
-  - condition: state
-    entity_id: input_boolean.car_charge_busy
-    state: 'on'  
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: WAUZZZGE6MB019131
-      action: start_charger
-  mode: single
   
-- alias: "🚗 car 1 // 🔋 charge // red hours: zaterdag 7u-9u -> lader op timer (enkel thuis)"
-  id: '31e6ff24-3423-4332-b4f9-da785af82b26'
-  description: ''
-  trigger:
-  - platform: time
-    at: 07:00
-  condition:
-  - condition: time
-    weekday:
-    - sat
-  - condition: state
-    entity_id: device_tracker.audi_e_tron_sportback_position
-    state: home    
-  action:
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: WAUZZZGE6MB019131
-      action: start_timed_charger
-  - delay: 02:00:00
-  - condition: state
-    entity_id: input_boolean.car_charge_busy
-    state: 'on'
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: WAUZZZGE6MB019131
-      action: start_charger
-  mode: single
-
-- alias: "🚗 car 1 // 🔋 charge // red hours: zondag 8u-12u -> lader op timer (enkel thuis)"
-  id: '81cb1458-debb-4378-9313-d34f4029f693'
-  description: ''
-  trigger:
-  - platform: time
-    at: 08:00
-  condition:
-  - condition: time
-    weekday:
-    - sun
-  - condition: state
-    entity_id: device_tracker.audi_e_tron_sportback_position
-    state: home    
-  action:
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: WAUZZZGE6MB019131
-      action: start_timed_charger
-  - delay: 04:00:00
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: WAUZZZGE6MB019131
-      action: start_charger
-  mode: single
-  
-
 ######################################
 # car charge: varia
 ######################################
@@ -342,7 +230,7 @@ automation:
       sequence:
       - service: audiconnect.refresh_data
         data:
-          vin: WAUZZZGE6MB019131
+          vin: !secret vin
       - delay:
           hours: 0
           minutes: 10
@@ -383,6 +271,72 @@ automation:
       {% elif A == 10 %}[0x4120, 0x0000]
       {% elif A == 11 %}[0x4130, 0x0000]
       {% elif A == 12 %}[0x4140, 0x0000]
-      {% elif A == 13 %}[0x4160, 0x0000]
+      {% elif A == 13 %}[0x4150, 0x0000]
+      {% elif A == 14 %}[0x4160, 0x0000]
+      {% elif A == 15 %}[0x4170, 0x0000]
       {% endif %}
   mode: single
+
+- alias: charging state "error"
+  id: '11dcacf1-6e6e-4500-8bb1-74b5384fde4a'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - sensor.car_1_charging_state
+      to: error
+  condition: []
+  action:
+    - if:
+        - condition: state
+          entity_id: person.bart
+          state: home
+      then:
+        - service: notify.bart_phone
+          data:
+            message: TTS
+            data:
+              tts_text: >-
+                Het laden van de auto geeft een fout. 
+              ttl: 0
+              priority: high
+              media_stream: alarm_stream    
+    - service: notify.bart_phone
+      data:
+        title: Fout bij laden auto
+        message: Status van auto is in "error"
+        data:
+          color: red
+          tag: auto_error
+    # tip: when the car gets in error status while charging, unlocking the doors solves the error
+    # unlock the doors
+    - service: lock.unlock
+      target:
+        entity_id: lock.audi_e_tron_sportback_door_lock
+    - repeat:
+        while:
+        - condition: state
+          entity_id: lock.audi_e_tron_sportback_door_lock
+          state: locked
+        sequence:
+        - delay:
+            seconds: 15
+      # lock the doors again
+    - service: lock.lock
+      target:
+        entity_id: lock.audi_e_tron_sportback_door_lock
+    - repeat:
+        while:
+        - condition: state
+          entity_id: sensor.car_1_charging_state
+          state: error
+        sequence:
+        - delay:
+            minutes: 1
+    - service: notify.bart_phone
+      data:
+        message: "clear_notification"
+        data:
+          color: red
+          tag: auto_error                  
+  mode: single  

@@ -1,3 +1,6 @@
-input_boolean:
-  pi_hole_disabled:
-    name: pi-hole uitgeschakeld
+command_line:
+  - sensor:
+      name: 'lines of code'
+      command: "find /config -name '*.yaml' | xargs cat | wc -l"
+      scan_interval: 20000
+      unit_of_measurement: 'lines'

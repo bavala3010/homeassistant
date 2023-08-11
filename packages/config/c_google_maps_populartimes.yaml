@@ -1,0 +1,11 @@
+sensor:
+  - platform: populartimes
+    name: 'Elzenhof piekuren'
+    address: 'Elzenhof, Hazelaarsstraat 36, 3391 Tielt-Winge'
+
+  - platform: populartimes
+    name: 'The White Oak piekuren'
+    address: 'The White Oak, Leuvensesteenweg 116/118, 1910 Kampenhout'
+
+# The address should preferably be in the following format:
+# "(location name) , full address, city, province/state/etc, country"

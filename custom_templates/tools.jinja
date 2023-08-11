@@ -1,0 +1,6 @@
+{% macro answer_question(entity_id) %}
+
+Is the {{ state_attr(entity_id, 'friendly_name') }} on?
+{{ (states(entity_id) == 'on') | iif('Yes', 'No') }}!
+
+{% endmacro %}

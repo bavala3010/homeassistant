@@ -120,6 +120,23 @@ automation:
       message: Home Assistant is volledig gestart.
   mode: single
 
+
+- alias: 🚀 HA update beschikbaar
+  id: 'caa45056-75d6-4e17-9620-00e3dda60170'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.home_assistant_website_update_available
+      to: "on"
+  condition: []
+  action:
+    - service: notify.bart_phone
+      data:
+        title: Home Assistant update beschikbaar.
+        message: "Versie {{ states('sensor.home_assistant_website') }} is nu beschikbaar."
+  mode: single
+
 - alias: 🚀 Melding lage batterij voor alle batterijsensoren
   id: '9e972067-200b-4b7c-9a33-4a1d79543085'
   description: ''
@@ -135,6 +152,7 @@ automation:
         message: Batterijen laag van {{sensors}}
       day: 6
       time: '12:00:00'
+  mode: single
 
 - alias: 🚀 Database cleanen
   id: '9bda21a0-65f4-4c33-8c17-e12f4331522b'
@@ -237,29 +255,3 @@ automation:
       message: "Herstart switch op zolder."
   mode: single    
 
-
-- alias: pi-hole uitgeschakeld gedurende 15 minuten
-  id: 'fc008ff7-f760-4061-9b6a-a42391de6d9a'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.pi_hole_disabled
-    from: "off"
-    to: "on"
-  condition: []
-  action:
-  - service: pi_hole.disable
-    data:
-      duration: '00:15:00'
-    target:
-      entity_id: switch.pi_hole
-  - delay:
-      hours: 0
-      minutes: 15
-      seconds: 0
-      milliseconds: 0
-  - service: input_boolean.turn_off
-    data: {}
-    target:
-      entity_id: input_boolean.pi_hole_disabled       
-  mode: single

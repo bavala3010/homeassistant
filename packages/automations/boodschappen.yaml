@@ -1,0 +1,44 @@
+automation:
+
+- alias: Bij aankomst winkel boodschappenlijstje tonen in Google Keep
+  id: 'c640b534-2512-416c-ade7-3fdabb5f3cf4'
+  description: ""
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.madouce_phone_connected_to_car_1
+    from: 'on'
+    to: 'off'
+    for: "00:00:05"  
+  condition:
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: person.madouce
+          state: 'Aldi Bierbeek'
+        - condition: state
+          entity_id: person.madouce
+          state: 'Action Bierbeek'
+        - condition: state
+          entity_id: person.madouce
+          state: 'AH Zaventem'
+        - condition: state
+          entity_id: person.madouce
+          state: 'Lidl Sterrebeek'
+  action:
+    - service: notify.madouce_phone
+      data:
+        message: TTS
+        data:
+          tts_text: Dag Madoes. Het boodschappenlijstje is geopend.
+          ttl: 0
+          priority: high
+          media_stream: alarm_stream_max
+    - service: notify.madouce_phone
+      data:
+        message: command_activity
+        data:
+          intent_package_name: com.google.android.keep
+          intent_action: android.intent.action.VIEW
+          intent_uri: >-
+            https://keep.google.com/u/0/#LIST/1tp-ZTk_c08ZlPeLqLHEUm10bx6DtTQbI9_IOigZVGtBjakrxKwJo4DiytWorvbiXyHGD
+  mode: single

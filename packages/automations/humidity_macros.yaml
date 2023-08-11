@@ -1,0 +1,51 @@
+automation:
+
+# {% from 'humidity_windows.jinja' import openwindow_priority, openwindow_checkhumidity, openwindow_checktemperature  %}
+# {% set prio = openwindow_priority('master_bedroom') %}
+# {% set h = openwindow_checkhumidity('master_bedroom') %}
+# {% set t = openwindow_checktemperature('master_bedroom') %}
+# {{ prio }}
+# {{ h }}
+# {{ t }}
+
+# Steps
+# 1. Is er een vochtprobleem? Zo ja, hoe groot -> prioriteit
+# 2. Is er buiten minder vocht (absolute waarde) dan binnen? Zo ja, verder gaan.
+# 3. Check limieten. 
+#     - Binnen te koud (vb. <14) en buiten nog kouder
+#     
+
+
+- alias: 💨 air // ramen // master bedroom
+  id: '9787c7e7-d5e0-406b-89e6-40ea02618c8e'
+  description: ''
+  trigger:
+  - minutes: /15
+    platform: time_pattern
+  condition:
+  - condition: state
+    entity_id: binary_sensor.master_bedroom_raam_kantel
+    state: 'off'
+  - condition: template
+    value_template: '{{ result > 20 }}'    
+  action:
+  - service: notify.bart_phone
+    data:
+      title: "Open raam master bedroom (NEW)"
+      message: >
+        Resultaat {{ result }}%<br>
+        Urgentie van het vochtprobleem: {{ u }}/4<br>
+        Impact op vocht: {{ h }}/4<br>
+        Acceptatie temperatuursverschil: {{ t }}/4<br>
+        Vocht master bedroom: {{states('sensor.gram_water_master_bedroom') | round(1) }} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
+        Vocht master bedroom: {{states('sensor.master_bedroom_humidity')}}%. Buiten: {{states('sensor.leuven_humidity')}}%.<br>
+        Temp master bedroom: {{states('sensor.master_bedroom_temperature')}} °C. Buiten: {{states('sensor.eikenbos_average_temperature')}} °C.
+  variables:
+    result: >
+        {% from 'humidity_windows.jinja' import openwindow_urgency, openwindow_humidityimpact, openwindow_temperatureimpact  %}
+        {% set room = 'master_bedroom' %}
+        {% set u = openwindow_urgency(room) | int(default=0) %}
+        {% set h = openwindow_humidityimpact(room) | int(default=0) %}
+        {% set t = openwindow_temperatureimpact(room) | int(default=0) %}
+        {{ [( ( ( u * 0.7 + h * 0.2 + t * 0.1 ) * ( u* h * t ) ) / 1.25 ) | round(0), 100] | min }}
+  mode: single

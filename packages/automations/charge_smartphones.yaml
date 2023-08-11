@@ -1,9 +1,9 @@
 ############################ Table of Contents ############################ 
 # 
 #   Automations
+#     S23+ Bart 90% geladen = stekker uit
 #     S20+ Madouce 90% geladen = stekker uit
-#     S10+ Bart 90% geladen = stekker uit
-#     's morgens Bart S10+ nog bijladen
+#     's morgens Bart S23+ nog bijladen
 #     's morgens Madouce S20+ nog bijladen
 #     Lader terug aanzetten als batterij gsm Madouce laag is (tussen 22:00 en 24:00)
 
@@ -11,6 +11,27 @@
 ############################ Automations ################################## 
 
 automation:
+
+- alias: 🔌 Bart gsm < 90% om 22:00 = gsm-lader inschakelen
+  id: 'f143efee-5738-467c-9287-912c24eac954'
+  description: ''
+  trigger:
+  - platform: time
+    at: '22:00'
+  condition:
+  - condition: and
+    conditions:
+    - condition: numeric_state
+      entity_id: sensor.sm_g916b_battery_level
+      below: '90'
+    - condition: state
+      entity_id: person.bart
+      state: 'home'
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.bart_gsm
+  mode: single
 
 - alias: 🔌 Madouce gsm < 90% om 22:00 = gsm-lader inschakelen
   id: 'b0286695-67f8-44fb-8115-4eb1b5b06a13'
@@ -33,27 +54,6 @@ automation:
       entity_id: switch.smart_power_strip_3
   mode: single
 
-- alias: 🔌 Bart gsm < 90% om 22:00 = gsm-lader inschakelen
-  id: 'f143efee-5738-467c-9287-912c24eac954'
-  description: ''
-  trigger:
-  - platform: time
-    at: '22:00'
-  condition:
-  - condition: and
-    conditions:
-    - condition: numeric_state
-      entity_id: sensor.sm_g975f_battery_level
-      below: '90'
-    - condition: state
-      entity_id: person.bart
-      state: 'home'
-  action:
-  - service: switch.turn_on
-    target:
-      entity_id: switch.bart_gsm
-  mode: single
-  
 - alias: 🔌 Bij thuiskomst Madouce na 22u00 = gsm-lader inschakelen
   id: 54b0e916-ef62-450a-9bb1-aca2bd332b93
   description: ''
@@ -112,7 +112,7 @@ automation:
   description: ''
   trigger:
   - platform: numeric_state
-    entity_id: sensor.sm_g975f_battery_level
+    entity_id: sensor.sm_g916b_battery_level
     above: 90
   condition:    
   - condition: time

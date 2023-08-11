@@ -9,7 +9,7 @@ template:
         unit_of_measurement: procent
 
       - name: "car 1 range"
-        state: "{{ states('sensor.audi_e_tron_sportback_range') }}"
+        state: "{{ states('sensor.audi_e_tron_sportback_primary_engine_range') }}"
         unit_of_measurement: km
 
       - name: "car 1 plug state"
@@ -45,8 +45,33 @@ sensor:
           {% set targetsoc = states('input_number.car_charge_target_percentage') | float(default=0) %}
           {% set soc = states('sensor.car_1_soc') | float(default=0) %}
           {% set socdif = [targetsoc - soc, 0] | max %}
-          {{ socdif * states('input_number.car_1_min_per_1pct') | round(2) }}        
+          {{ socdif * states('input_number.car_1_min_per_1pct') | round(2) }}
 
+      car_remaining_charge_minutes_min_power:
+        friendly_name: 'resterende laadminuten (met minimum vermogen)'
+        value_template: >
+          {% set targetsoc = states('input_number.car_charge_target_percentage') | float(default=0) %}
+          {% set soc = states('sensor.car_1_soc') | float(default=0) %}
+          {% set socdif = [targetsoc - soc, 0] | max %}
+          {% set min_per_percent = ( 56.925 / (states('input_number.car_charge_minimum_wattage') | float ) ) | round(2) %}
+          {{ (socdif * min_per_percent ) | round(2) }} 
+
+      car_remaining_charge_minutes_fix_power:
+        friendly_name: 'resterende laadminuten (met vast vermogen)'
+        value_template: >
+          {% set targetsoc = states('input_number.car_charge_target_percentage') | float(default=0) %}
+          {% set soc = states('sensor.car_1_soc') | float(default=0) %}
+          {% set socdif = [targetsoc - soc, 0] | max %}
+          {% set min_per_percent = ( 56.925 / (states('input_number.car_charge_fixed_wattage') | float ) ) | round(2) %}
+          {{ (socdif * min_per_percent ) | round(2) }}
+
+      car_charge_stoptimer_starttime:
+        friendly_name: 'startuur laden met doeluur'
+        value_template: >
+          {% set nog_te_laden_minuten = states('sensor.car_remaining_charge_minutes_fix_power') | round(2) %}
+          {% set laaddoel = state_attr('input_datetime.car_charge_target_time', 'timestamp') %}
+          {% set laadstart = (laaddoel - nog_te_laden_minuten * 60) | timestamp_custom('%Y-%m-%d %H:%M') %}
+          {{ laadstart }}       
 
 utility_meter:
   car_today_km:

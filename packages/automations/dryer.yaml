@@ -31,7 +31,7 @@ automation:
         entity_id: input_select.dryer_state        
   mode: single
 
-- alias: droogkast is klaar
+- alias: "droogkast is klaar: eerste melding"
   id: 'a29517d8-2bc9-4a72-8dd8-b417fc29e7ab'
   description: ''
   trigger:
@@ -153,7 +153,7 @@ automation:
                       pitch: +0Hz
                       rate: -10%
           - delay:
-              minutes: 30
+              minutes: 60
         until:
           - condition: state
             entity_id: input_select.dryer_state

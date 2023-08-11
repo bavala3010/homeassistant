@@ -5,7 +5,7 @@
 
 
 # bluetooth address Etron: 98:49:14:C1:37:0B
-# VIN etron: WAUZZZGE6MB019131
+# VIN etron: !secret vin
 
 ############################ Automations ################################## 
 automation:
@@ -27,7 +27,7 @@ automation:
   action:
   - service: audiconnect.refresh_data
     data:
-      vin: WAUZZZGE6MB019131
+      vin: !secret vin
   mode: single
   
 - alias: 🚗 car 1 // Madouce 3 km van thuis = verversen status auto
@@ -43,7 +43,7 @@ automation:
   action:
   - service: audiconnect.refresh_data
     data:
-      vin: WAUZZZGE6MB019131
+      vin: !secret vin
   mode: single  
   
 - alias: 🚗 car 1 // 🔋 charge // Car sim km veranderd

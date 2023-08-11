@@ -1,0 +1,42 @@
+automation:
+
+# device_id airco Amilya = 61864d1ab32c5af91d5f13faf697c27e
+
+- alias: temperatuur kamer Amilya boven 22 graden en meer
+  id: '40315ffe-dd48-4cc5-80dd-ff93d3798ed3'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.kamer_amilya_temperature
+    above: 22
+  - platform: numeric_state
+    entity_id: sensor.kamer_amilya_temperature
+    above: 23
+  - platform: numeric_state
+    entity_id: sensor.kamer_amilya_temperature
+    above: 24
+  - platform: numeric_state
+    entity_id: sensor.kamer_amilya_temperature
+    above: 25
+  - platform: numeric_state
+    entity_id: sensor.kamer_amilya_temperature
+    above: 26
+  - platform: numeric_state
+    entity_id: sensor.kamer_amilya_temperature
+    above: 27
+  - platform: numeric_state
+    entity_id: sensor.kamer_amilya_temperature
+    above: 28
+  - platform: numeric_state
+    entity_id: sensor.kamer_amilya_temperature
+    above: 29
+  - platform: numeric_state
+    entity_id: sensor.kamer_amilya_temperature
+    above: 30                              
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Temperatuur kamer Amilya
+      message: Temperatuur in kamer Amilya is nu {{ states('sensor.kamer_amilya_temperature') }} graden.
+  mode: single

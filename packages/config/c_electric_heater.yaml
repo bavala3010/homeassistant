@@ -1,3 +1,14 @@
+input_datetime:
+  badkamer_electric_heater_start_time:
+    name: "elektrische verwarming starttijd"
+    has_date: true
+    has_time: true
+
+  badkamer_electric_heater_stop_time:
+    name: "elektrische verwarming eindtijd"
+    has_date: true
+    has_time: true
+
 sensor:
   - platform: integration
     source: sensor.badkamer_electric_heater_power

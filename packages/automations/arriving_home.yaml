@@ -14,13 +14,12 @@ automation:
 - alias: 🏡 Bart komt thuis met auto 1 = melding auto % + open garage/voordeur
   id: '99d307b5-f692-4996-8d0e-7eb92a735b57'
   description: ''
+  # HACS integration sun2 is required to get the sensor.sun_phase sensor 
   trigger:
-  - platform: device
-    device_id: b5d28be91fff8c03aece377f73b28dd2
-    domain: device_tracker
-    entity_id: device_tracker.bart_s10
-    type: enters
+  - platform: zone
+    entity_id: device_tracker.bart_s23plus
     zone: zone.home
+    event: enter
   condition:
   - condition: state
     entity_id: binary_sensor.bart_phone_connected_to_car_1
@@ -31,11 +30,25 @@ automation:
       message: TTS
       data:
         tts_text: >-
-          {% set t = (now().date() + timedelta(days=1)) %}
-          {% set car_target_soc_day = 'input_number.car_target_soc_day_' ~ t.isoweekday() %}
+          {% if now().hour < 3 %}{% set t = now().date() %}{% set d = 'vandaag' %}
+          {% else %}{% set t = now().date() + timedelta(days=1) %}{% set d = 'morgen' %}
+          {% endif %}
+          {% set target_soc = 'input_number.car_target_soc_day_' ~ t.isoweekday() %}
+          {% set use = 'input_select.car_use_day_' ~ t.isoweekday() %}
+          {% set v = states('sensor.solar_sim_energy_today_adj') | int %}
+          {% set m = states('sensor.solar_sim_energy_tomorrow_adj') | int %}
+          {% set nu = states('sensor.sma_today') | float %}
+          {% set restzon = (v - nu )| int %}
+          {% set resturen = (((states('sensor.sun_next_setting') | as_timestamp) - (now() | as_timestamp)) / 3600 ) %}
+          {% set restperuur = (restzon / resturen) | round(1) %}
           Welkom thuis Bart!
-          {% if states('sensor.audi_e_tron_sportback_state_of_charge') | float(default=0) <  states(car_target_soc_day) | float(default=0) %}Vergeet de laadkabel niet in te steken. Er moet geladen worden van {{states('sensor.audi_e_tron_sportback_state_of_charge') | round(default=0)}}% naar {{ states('input_number.car_charge_target_percentage') | round(default=0) }}%.
-          {% else %} De auto heeft {{states('sensor.audi_e_tron_sportback_state_of_charge') | round(default=0) }}% batterij en dit is voldoende voor morgen. Er is morgen maar {{ states(car_target_soc_day) | round(default=0) }}% nodig.
+          {% if states('sensor.car_1_soc') | float(default=0) <  states(target_soc) | float(default=0) %}Vergeet de laadkabel niet in te steken. Er moet geladen worden van {{states('sensor.car_1_soc') | round(default=0)}}% naar {{ states(target_soc) | round(default=0) }}%.
+            {% if restperuur > 1 and states('sensor.sun_phase') =="Day" %}Je kan met zon laden. Er wordt vandaag nog {{ restzon }} kilowatuur zon verwacht.
+            {% endif %}
+          {% else %}De auto heeft {{states('sensor.car_1_soc') | round(default=0) }}% batterij en dit is voldoende voor {{ d }}. Er is {{d}} maar {{ states(target_soc) | round(default=0) }}% nodig.
+            {% if restperuur > 1 %}Je mag de kabel insteken om met zon te laden. Er wordt vandaag nog {{ restzon }} kilowatuur zon verwacht.
+            {% elif restperuur <= 1 and m > 5 and ( states(use) == 'thuis' or t.isoweekday() > 5 ) %}Aangezien de auto {{ d }} waarschijnlijk thuis is, mag je wel de kabel insteken om met zon te laden. Er wordt {{ d }} {{ m }} kilowatuur zon verwacht.
+            {% endif %}
           {% endif %}
         ttl: 0
         priority: high
@@ -44,7 +57,8 @@ automation:
     data:
       message: Welkom thuis! (veeg omlaag voor acties)
       data:
-        channel: Important
+        car_ui: true
+        channel: androidauto
         persistent: true
         tag: persistent
         color: red
@@ -52,14 +66,17 @@ automation:
         notification_icon: "mdi:account-heart"
         actions:
         - action: open_garage
-          title: OPEN GARAGE
+          title: Garage
         - action: open_voordeur
-          title: OPEN VOORDEUR        
+          title: Voordeur
+        - action: open_voordeur_garage
+          title: Voordeur & garage          
   mode: single
 
 - alias: 🏡 Madouce komt thuis met auto 1 = melding auto % + open garage/voordeur
   id: '4a938979-1120-4d05-a5f3-6f572bdeac88'
   description: ''
+  # HACS integration sun2 is required to get the sensor.sun_phase sensor
   trigger:
   - platform: device
     device_id: d434bc1199aafa4c5d9e448b1fd55e30
@@ -77,11 +94,25 @@ automation:
       message: TTS
       data:
         tts_text: >
-          {% set t = (now().date() + timedelta(days=1)) %}
-          {% set car_target_soc_day = 'input_number.car_target_soc_day_' ~ t.isoweekday() %}
-          Welkom thuis Madouce!
-          {% if states('sensor.audi_e_tron_sportback_state_of_charge') | float(default=0) <  states(car_target_soc_day) | float(default=0) %}Vergeet de laadkabel niet in te steken. Er moet geladen worden van {{states('sensor.audi_e_tron_sportback_state_of_charge') | round(default=0)}}% naar {{ states('input_number.car_charge_target_percentage') | round(default=0) }}%.
-          {% else %} De auto heeft {{states('sensor.audi_e_tron_sportback_state_of_charge') | round(default=0) }}% batterij en dit is voldoende voor morgen. Er is morgen maar {{ states(car_target_soc_day) | round(default=0) }}% nodig.
+          {% if now().hour < 3 %}{% set t = now().date() %}{% set d = 'vandaag' %}
+          {% else %}{% set t = now().date() + timedelta(days=1) %}{% set d = 'morgen' %}
+          {% endif %}
+          {% set target_soc = 'input_number.car_target_soc_day_' ~ t.isoweekday() %}
+          {% set use = 'input_select.car_use_day_' ~ t.isoweekday() %}
+          {% set v = states('sensor.solar_sim_energy_today_adj') | int %}
+          {% set m = states('sensor.solar_sim_energy_tomorrow_adj') | int %}
+          {% set nu = states('sensor.sma_today') | float %}
+          {% set restzon = (v - nu )| int %}
+          {% set resturen = (((states('sensor.sun_next_setting') | as_timestamp) - (now() | as_timestamp)) / 3600 ) %}
+          {% set restperuur = (restzon / resturen) | round(1) %}
+          Welkom thuis Madoes!
+          {% if states('sensor.car_1_soc') | float(default=0) <  states(target_soc) | float(default=0) %}Vergeet de laadkabel niet in te steken. Er moet geladen worden van {{states('sensor.car_1_soc') | round(default=0)}}% naar {{ states(target_soc) | round(default=0) }}%.
+            {% if restperuur > 1 and states('sensor.sun_phase') =="Day" %}Je kan met zon laden. Er wordt vandaag nog {{ restzon }} kilowatuur zon verwacht.
+            {% endif %}
+          {% else %}De auto heeft {{states('sensor.car_1_soc') | round(default=0) }}% batterij en dit is voldoende voor {{ d }}. Er is {{d}} maar {{ states(target_soc) | round(default=0) }}% nodig.
+            {% if restperuur > 1 %}Je mag de kabel insteken om met zon te laden. Er wordt vandaag nog {{ restzon }} kilowatuur zon verwacht.
+            {% elif restperuur <= 1 and m > 5 and ( states(use) == 'thuis' or t.isoweekday() > 5 ) %}Aangezien de auto {{ d }} waarschijnlijk thuis is, mag je wel de kabel insteken om met zon te laden. Er wordt {{ d }} {{ m }} kilowatuur zon verwacht.
+            {% endif %}
           {% endif %}
         ttl: 0
         priority: high
@@ -90,17 +121,20 @@ automation:
     data:
       message: Welkom thuis! (veeg omlaag voor acties)
       data:
-        channel: Important
+        car_ui: true
+        channel: androidauto
         persistent: true
         tag: persistent
         color: red
         timeout: 420
-        notification_icon: "mdi:account-heart" 
+        notification_icon: "mdi:account-heart"
         actions:
         - action: open_garage
-          title: OPEN GARAGE
+          title: Garage
         - action: open_voordeur
-          title: OPEN VOORDEUR
+          title: Voordeur
+        - action: open_voordeur_garage
+          title: Voordeur & garage    
   mode: single
 
 - alias: Open garage
@@ -129,6 +163,22 @@ automation:
       entity_id: lock.voordeur_nuki
   mode: single
 
+- alias: Open voordeur & garage
+  id: 'e69cac91-e56e-42ed-9745-a5c14f41ba52'
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: open_voordeur_garage
+  action:
+  - service: lock.unlock
+    target:
+      entity_id: lock.voordeur_nuki
+  - service: cover.open_cover
+    target:
+      entity_id: cover.garagepoort      
+  mode: single
+
 - alias: 🏡 Madouce is bijna thuis 
   id: '9d978857-e649-455d-8144-1e5dad99eb23'
   description: '9d978857-e649-455d-8144-1e5dad99eb23'
@@ -144,7 +194,9 @@ automation:
     for:
       hours: 0
       minutes: 5
-      seconds: 0    
+      seconds: 0
+  - condition: template
+    value_template: "{{ states('person.madouce') != 'blocked_zone' }}"
   action:
   - service: notify.bart_phone
     data:
@@ -154,14 +206,22 @@ automation:
         tag: madouce_bijna_thuis
         color: red
         ttl: 0
+        timeout: 600
         priority: high
-        notification_icon: "mdi:account-heart" 
-  - service: notify.bart_phone
-    data:
-      message: TTS
-      data:
-        channel: "alarm_stream"
-        tts_text: "Madouce is bijna thuis."
+        notification_icon: "mdi:account-heart"
+  - if:
+      - condition: template
+        value_template: "{{ 7 < now().hour < 23 }}"
+    then:
+      - service: notify.bart_phone
+        data:
+          message: TTS
+          data:
+            channel: "alarm_stream"
+            tts_text: "Madouce is bijna thuis."
+            ttl: 0
+            priority: high
+            media_stream: alarm_stream
   mode: single
 
 - alias: 🏡 Bart is bijna thuis 
@@ -189,13 +249,158 @@ automation:
         tag: bart_bijna_thuis      
         color: red
         ttl: 0
+        timeout: 600
         priority: high
-        notification_icon: "mdi:account-heart"   
-  - service: notify.madouce_phone
-    data:
-      message: TTS
-      data:
-        channel: "alarm_stream"
-        tts_text: "Bart is bijna thuis."        
+        notification_icon: "mdi:account-heart"
+  - if:
+      - condition: template
+        value_template: "{{ 7 < now().hour < 23 }}"
+    then:
+      - service: notify.madouce_phone
+        data:
+          message: TTS
+          data:
+            channel: "alarm_stream"
+            tts_text: "Bart is bijna thuis."
+            ttl: 0
+            priority: high
+            media_stream: alarm_stream
   mode: single
   
+
+- alias: Bart komt thuis en binnen wifi bereik = doe voordeur open
+  id: 'a60b8335-0ad4-4f0a-9471-599468141952'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - sensor.sm_s916b_wifi_connection
+      to: BMWifi
+  condition:
+    - condition: state
+      entity_id: person.bart
+      state: home
+    - condition: template
+      value_template: >-
+        {% set dif = as_timestamp(now()) - as_timestamp(states.person.bart.last_changed) %}
+        {{ 30 < dif < 600 }}
+  action:
+    - if:
+        - condition: state
+          entity_id: lock.voordeur_nuki
+          state: unlocked      
+      then:
+        - service: notify.bart_phone
+          data:
+            message: TTS
+            data:
+              channel: "alarm_stream"
+              tts_text: "Welkom thuis Bart. De voordeur is open."
+              ttl: 0
+              priority: high
+              media_stream: alarm_stream_max
+    - if:
+        - condition: state
+          entity_id: lock.voordeur_nuki
+          state: locked      
+      then:
+        - service: lock.unlock
+          data: {}
+          target:
+            entity_id: lock.voordeur_nuki
+        - if:
+            - condition: template
+              value_template: "{{ 7 < now().hour < 23 }}"
+          then:
+          - service: notify.bart_phone
+            data:
+              message: TTS
+              data:
+                channel: "alarm_stream"
+                tts_text: "Welkom thuis Bart. Ik heb de voordeur opengedaan en doe ze over 7 minuten weer dicht."
+                ttl: 0
+                priority: high
+                media_stream: alarm_stream_max
+        - wait_template: ''
+          timeout: "00:07:00"
+        - service: lock.lock
+          data: {}
+          target:
+            entity_id: lock.voordeur_nuki            
+  mode: single
+
+- alias: Madouce komt thuis en binnen wifi bereik = doe voordeur open
+  id: '80beb2a6-8bfc-4905-b32e-5784e97748cd'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - sensor.sm_g986b_wifi_connection
+      to: BMWifi
+  condition:
+    - condition: state
+      entity_id: person.madouce
+      state: home
+    - condition: template
+      value_template: >-
+        {% set dif = as_timestamp(now()) - as_timestamp(states.person.madouce.last_changed) %}
+        {{ 30 < dif < 600 }}
+  action:
+    - if:
+        - condition: state
+          entity_id: lock.voordeur_nuki
+          state: unlocked      
+      then:
+        - service: notify.madouce_phone
+          data:
+            message: TTS
+            data:
+              channel: "alarm_stream"
+              tts_text: "Welkom thuis Madoes. De voordeur is open."
+              ttl: 0
+              priority: high
+              media_stream: alarm_stream_max  
+    - if:
+        - condition: state
+          entity_id: lock.voordeur_nuki
+          state: locked      
+      then:
+        - service: lock.unlock
+          data: {}
+          target:
+            entity_id: lock.voordeur_nuki
+        - if:
+            - condition: template
+              value_template: "{{ 7 < now().hour < 23 }}"
+          then:            
+            - service: notify.madouce_phone
+              data:
+                message: TTS
+                data:
+                  channel: "alarm_stream"
+                  tts_text: "Welkom thuis Madoes. Ik heb de voordeur opengedaan en doe ze over 7 minuten weer dicht."
+                  ttl: 0
+                  priority: high
+                  media_stream: alarm_stream_max
+        - wait_template: ''
+          timeout: "00:07:00"
+        - service: lock.lock
+          data: {}
+          target:
+            entity_id: lock.voordeur_nuki            
+  mode: single
+
+
+- alias: "Tekst voor herinnering bij thuiskomst wordt aangepast"
+  id: 82a22db8-f370-42e5-8b56-c7db3c69a8ce
+  trigger:
+    - platform: state
+      entity_id:
+        - input_text.arriving_home_madouce
+  condition: []
+  action:
+    - service: input_boolean.turn_on
+      data: {}
+      target:
+        entity_id: input_boolean.arriving_home_reminder_madouce
+  mode: single

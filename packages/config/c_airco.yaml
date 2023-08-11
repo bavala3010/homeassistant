@@ -5,6 +5,9 @@ timer:
   amilya_airco_timer:
     name: Amilya airco timer
 
+  amilya_airco_cooling_timer:
+    name: Amilya airco koeltimer
+
   alunya_airco_timer:
     name: Alunya airco timer
 
@@ -25,6 +28,11 @@ input_datetime:
     has_date: false
     has_time: true
 
+  amilya_airco_cooling_timer:
+    name: Amilya airco koeltimer
+    has_date: false
+    has_time: true
+
   alunya_airco_timer:
     name: Alunya airco timer
     has_date: false
@@ -38,7 +46,6 @@ input_datetime:
 input_number:
   airco_dehumidifier_timer_minutes:
     name: ontvochtigen met airco minuten
-    initial: 15
     min: 0
-    max: 90
+    max: 240
     step: 5

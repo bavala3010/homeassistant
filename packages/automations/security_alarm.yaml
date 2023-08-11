@@ -223,16 +223,12 @@ automation:
   - service: notify.bart_phone
     data:
       message: TTS
-      tts_text: Alarm in Eikenboslaan!
       data:
-        notification_icon: mdi:security        
-        color: red
-        actions:
-        - action: URI
-          title: Meer info
-          uri: /lovelace/alarm
-        vibrationPattern: 10, 10, 10, 10, 10, 10, 10
-        channel: alarm
+        channel: "alarm_stream"
+        tts_text: "Alarm in Eikenboslaan!"
+        ttl: 0
+        priority: high
+        media_stream: alarm_stream
   - service: notify.bart_madouce_phone
     data:
       title: '🚨 alarm // Alarm!'
@@ -241,6 +237,11 @@ automation:
         notification_icon: mdi:security      
         color: red
         channel: alarm
+        actions:
+        - action: URI
+          title: Meer info
+          uri: /lovelace/alarm
+        vibrationPattern: 10, 10, 10, 10, 10, 10, 10        
   #  - service: media_player.volume_set
   #    data:
   #      entity_id: media_player.nestaudio3875

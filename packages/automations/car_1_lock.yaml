@@ -10,7 +10,7 @@
 
 
 # bluetooth address Etron: 98:49:14:C1:37:0B
-# VIN etron: WAUZZZGE6MB019131
+# VIN etron: !secret vin
 
 ############################ Automations ################################## 
 automation:
@@ -27,12 +27,10 @@ automation:
     entity_id: binary_sensor.audi_e_tron_sportback_doors_lock
     state: 'on'
   # no phone is connected to the car with bluetooth (= meaning: we are still driving the car)
-  - condition: state
-    entity_id: binary_sensor.bart_phone_connected_to_car_1
-    state: 'off'
-  - condition: state
-    entity_id: binary_sensor.madouce_phone_connected_to_car_1
-    state: 'off'
+  - condition: template
+    value_template: "{{ states('binary_sensor.bart_phone_connected_to_car_1') != 'on' }}"  
+  - condition: template
+    value_template: "{{ states('binary_sensor.madouce_phone_connected_to_car_1') != 'on' }}"
   action:
   - service: notify.bart_madouce_phone
     data:
@@ -88,19 +86,23 @@ automation:
   - platform: state
     entity_id: binary_sensor.audi_e_tron_sportback_doors_lock
     to: 'on'
-    for: '00:15:00'
+    for: '00:10:00'
   condition:
   # doors are open
   - condition: state
     entity_id: binary_sensor.audi_e_tron_sportback_doors_lock
     state: 'on'
-  # no phone is connected to the car with bluetooth (= meaning: we are still driving the car)
+  # phone is disconnected from car bluetooth = you left the car
   - condition: state
     entity_id: binary_sensor.bart_phone_connected_to_car_1
     state: 'off'
+    for:
+      minutes: 15
   - condition: state
     entity_id: binary_sensor.madouce_phone_connected_to_car_1
     state: 'off'
+    for:
+      minutes: 15
   action:
   - service: notify.bart_madouce_phone
     data:

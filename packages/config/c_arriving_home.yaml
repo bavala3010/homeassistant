@@ -1,0 +1,13 @@
+input_text:
+  arriving_home_reminder_madouce:
+    max: 255
+
+  arrving_home_reminder_bart:
+    max: 255
+
+input_boolean:
+  arriving_home_reminder_madouce:
+    name: "herinnering bij thuiskomst Madouce"
+
+  arriving_home_reminder_bart:
+    name: "herinnering bij thuiskomst Bart"

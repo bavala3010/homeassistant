@@ -12,7 +12,7 @@ sensor:
     end: '{{ now() }}'
 
   - platform: history_stats
-    name: "Amilya raam open vandaag"
+    name: "kamer Amilya raam open vandaag"
     entity_id: binary_sensor.kamer_amilya_raam 
     state: 'on'
     type: time
@@ -36,7 +36,7 @@ sensor:
     end: '{{ now() }}'
 
   - platform: history_stats
-    name: "Alunya raam open vandaag"
+    name: "kamer Alunya raam open vandaag"
     entity_id: binary_sensor.kamer_alunya_raam 
     state: 'on'
     type: time
@@ -44,7 +44,7 @@ sensor:
     end: '{{ now() }}'
 
   - platform: history_stats
-    name: "Alunya schuifraam open vandaag"
+    name: "kamer Alunya schuifraam open vandaag"
     entity_id: binary_sensor.kamer_alunya_schuifraam 
     state: 'on'
     type: time

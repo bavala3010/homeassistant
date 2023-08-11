@@ -19,7 +19,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.temp_leuven24_wunderground  
+    entity_id: sensor.eikenbos_average_temperature  
   - platform: state
     entity_id: sensor.gram_water_living    
   condition:
@@ -35,7 +35,7 @@ automation:
     entity_id: sensor.living_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) >= 16 }}"
+    value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) >= 16 }}"
   - condition: or
     conditions:    
       - condition: and
@@ -68,7 +68,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.temp_leuven24_wunderground    
+    entity_id: sensor.eikenbos_average_temperature    
   - platform: state
     entity_id: sensor.gram_water_kamer_amilya    
   condition:
@@ -84,7 +84,7 @@ automation:
     entity_id: sensor.kamer_amilya_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) >= 16 }}"    
+    value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) >= 16 }}"    
   - condition: or
     conditions:    
       - condition: and
@@ -117,7 +117,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.temp_leuven24_wunderground    
+    entity_id: sensor.eikenbos_average_temperature    
   - platform: state
     entity_id: sensor.gram_water_veranda    
   condition:
@@ -134,7 +134,7 @@ automation:
     entity_id: sensor.veranda_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) >= 16 }}"
+    value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) >= 16 }}"
   - condition: or
     conditions:
       # first possible case
@@ -168,7 +168,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.temp_leuven24_wunderground    
+    entity_id: sensor.eikenbos_average_temperature    
   - platform: state
     entity_id: sensor.gram_water_berging
   condition:
@@ -184,7 +184,7 @@ automation:
     entity_id: sensor.berging_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) >= 16 }}"
+    value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) >= 16 }}"
   - condition: or
     conditions:    
       # first possible case
@@ -225,7 +225,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.temp_leuven24_wunderground
+    entity_id: sensor.eikenbos_average_temperature
   - platform: state
     entity_id: sensor.gram_water_badkamer
   condition:
@@ -241,7 +241,7 @@ automation:
     entity_id: sensor.badkamer_heating
     below: '0.1' 
   - condition: template
-    value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) >= 16 }}"   
+    value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) >= 16 }}"   
   - condition: or
     conditions:    
       - condition: and
@@ -274,7 +274,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.temp_leuven24_wunderground    
+    entity_id: sensor.eikenbos_average_temperature    
   - platform: state
     entity_id: sensor.gram_water_gang    
   condition:
@@ -290,7 +290,7 @@ automation:
     entity_id: sensor.gang_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) >= 16 }}"
+    value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) >= 16 }}"
   - condition: or
     conditions:    
       # first possible case
@@ -331,7 +331,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.temp_leuven24_wunderground    
+    entity_id: sensor.eikenbos_average_temperature    
   - platform: state
     entity_id: sensor.gram_water_kamer_alunya    
   condition:
@@ -347,7 +347,7 @@ automation:
     entity_id: sensor.kamer_alunya_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) >= 16 }}"     
+    value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) >= 16 }}"     
   - condition: or
     conditions:    
       - condition: and
@@ -380,7 +380,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.temp_leuven24_wunderground    
+    entity_id: sensor.eikenbos_average_temperature    
   - platform: state
     entity_id: sensor.gram_water_master_bedroom    
   condition:
@@ -396,7 +396,7 @@ automation:
     entity_id: sensor.master_bedroom_heating
     below: '0.1'
   - condition: template
-    value_template: "{{ states('sensor.temp_forecast_4_hours') | float(default=0) >= 16 }}"
+    value_template: "{{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) >= 16 }}"
   - condition: or
     conditions:
       # first possible case: vocht buiten stijgt niet + binnen minstens 0.4 gram vocht meer dan buiten + temp binnen hoger dan 16.5 + temperatuurverschil binnen/buiten minder dan 10°

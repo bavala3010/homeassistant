@@ -2,12 +2,17 @@
 # Too good to go
 ###############################################################################
 
-  sensor:
-    - platform: tgtg
-      email: 'bartland@gmail.com'
-      access_token: 'e30.eyJzdWIiOiI0OTkyMTA1IiwiZXhwIjoxNjc2ODkzOTcxLCJ0IjoiNklhN3NpMkZULXExTWJhZ3BjVGxZUTowOjEifQ.ydawNA4iffrf1VIJNj6JaMzy6h_gpINuqhOF8E0hG1k'
-      refresh_token: 'e30.eyJzdWIiOiI0OTkyMTA1IiwiZXhwIjoxNzA4MjU3MTcxLCJ0IjoiRFZKU2xQZTFUdy1UNkllNEVIZU5rdzowOjAifQ.MGnFAXbfTnxc4Y5c4iZm3-JpSmAZtEHFTQwiHcs69DU'
-      user_id: '4992105'
-      cookie: 'datadome=5BCEXlMT1hg3ij47ktNAVCalnEQZGsf5sTM4W9ZmAYlEdbJbGcl6EIb~a8cbjqU8Qs_J8Qsm6mJWtAIE~PlzF8WLaTfWQZE4Rf_D5A_Kh5grHnhVF2_IdW7SCKtC14Cl; Max-Age=31536000; Domain=.apptoogoodtogo.com; Path=/; Secure; SameSite=Lax'
-      scan_interval: 300
+sensor:
+  - platform: tgtg
+    email: 'bartland@gmail.com'
+    access_token: 'e30.eyJzdWIiOiI0OTkyMTA1IiwiZXhwIjoxNjg1NDM5MTUwLCJ0IjoieE1FZFRXbVJUYm1jNG5CWDYyWll4UTowOjEifQ.wTsZF0gw0FNA9JOcdb1K14YVwmCocyq5pGwf4AKtgag'
+    refresh_token: 'e30.eyJzdWIiOiI0OTkyMTA1IiwiZXhwIjoxNzE2ODg4NzUwLCJ0IjoiNGlISzUtVU9SdVNzUzg2Y1cwQnNPUTowOjAifQ.DWbDGXvPTfAa01slWVhOm6qEUBIw3TIyhX38LWzxXBQ'
+    user_id: '4992105'
+    cookie: 'datadome=6RPh-tudDwpI3RTua0qvLe8WPh20gL1Sdn3Qz1JkEY9GzseUzP35JLjSu3M7fD_ghSs0YIz-OK_BSbhbKpvQ58nvEybORMSKoij12KB-Wl2bQqrrAvRD3FEfDzbeC3Jf; Max-Age=5184000; Domain=.apptoogoodtogo.com; Path=/; Secure; SameSite=Lax'
+    scan_interval: 300
     
+
+input_boolean:
+  tgtg_geen_brood_nodig:
+    name: "Too Good To Go - geen brood nodig"
+    icon: mdi:baguette

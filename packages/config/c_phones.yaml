@@ -99,7 +99,7 @@ device_tracker:
     new_device_defaults:
       track_new_devices: true
     hosts:
-      amilya_iphone: 192.168.86.112
+      amilya_iphone: 192.168.86.214     # old address: 192.168.86.112
       #alunya_iphone: 192.168.86.250
       alunya_iphone: 192.168.86.113
       amilya_appletv: 192.168.86.48
@@ -121,7 +121,7 @@ binary_sensor:
           {% else %}
             mdi:car
           {% endif %}
-        value_template: "{{ '98:49:14:C1:37:0B (Audi_MMI_9131)' in state_attr('sensor.sm_g975f_bluetooth_connection', 'connected_paired_devices') }}"    
+        value_template: "{{ '98:49:14:C1:37:0B (Audi_MMI_9131)' in state_attr('sensor.sm_s916b_bluetooth_connection', 'connected_paired_devices') }}"    
         # do not forget to activate the bluetooth sensor in the Home Assistant companion app on smartphone
 
       madouce_phone_connected_to_car_1:
@@ -145,7 +145,7 @@ binary_sensor:
           {% else %}
             mdi:car
           {% endif %}
-        value_template: "{{ '1C:E1:92:AB:76:E9 (Toyota Smart Connect)' in state_attr('sensor.sm_g975f_bluetooth_connection', 'connected_paired_devices') }}"
+        value_template: "{{ '1C:E1:92:AB:76:E9 (Toyota Smart Connect)' in state_attr('sensor.sm_g916b_bluetooth_connection', 'connected_paired_devices') }}"
         # do not forget to activate the bluetooth sensor in the Home Assistant companion app on smartphone
 
       madouce_phone_connected_to_car_2:

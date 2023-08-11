@@ -1,0 +1,28 @@
+sensor:
+  - platform: template
+    sensors:
+
+      net_power:
+        friendly_name: "net power"
+        unique_id: 'ffc1bd97-4dbf-483c-8659-48ed4c2790ad'
+        unit_of_measurement: W
+        device_class: power
+        value_template: >
+          {% set a = states('sensor.p1_meter_active_power_l1') | float(default=0) %}
+          {% set b = states('sensor.p1_meter_active_power_l2') | float(default=0) %}
+          {% set c = states('sensor.p1_meter_active_power_l3') | float(default=0) %}
+          {{ ( a + b + c ) | round(default=0) }}
+
+      # net_power:
+        # friendly_name: "net power"
+        # unique_id: 'ffc1bd97-4dbf-483c-8659-48ed4c2790ad'
+        # unit_of_measurement: W
+        # device_class: power
+        # # total of the power measured on the 3 phases via Shelly 3EM
+        # value_template: >
+        #   {% set a = states('sensor.shellyem3_bcff4dfd1dbb_channel_a_power') | float(default=0) %}
+        #   {% set b = states('sensor.shellyem3_bcff4dfd1dbb_channel_b_power') | float(default=0) %}
+        #   {% set c = states('sensor.shellyem3_bcff4dfd1dbb_channel_c_power') | float(default=0) %}
+        #   {{ ( a + b + c ) | round(default=0) }}
+
+

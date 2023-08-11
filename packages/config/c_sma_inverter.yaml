@@ -20,7 +20,7 @@ modbus:
         scan_interval: 10
         device_class: power        #werkt OK
         state_class: measurement   #werkt OK
-      - name: SMA_energy_today
+      - name: SMA_energy_today  # also called Daily Yield
         unit_of_measurement: kWh
         slave: 3
         address: 30517

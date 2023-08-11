@@ -49,3 +49,102 @@ automation:
           {{ states('sensor.madouce_thuis_vandaag') | float() }},
           {{ states('sensor.amilya_thuis_vandaag') | float() }},
           {{ states('sensor.alunya_thuis_vandaag') | float() }}
+
+
+- alias: "log in Google Sheets: dagelijkse energiewaarden en extra info"
+  id: '2a5a4507-593b-4044-9cb4-a84522bb9a99'
+  description: ""
+  trigger:
+    - platform: time
+      at: "23:59:30"
+  condition: []
+  action:
+    - service: google_sheets.append_sheet
+      data:
+        config_entry: a76dccf14ff43d5199650ea4986f6eb9
+        worksheet: Energy
+        data:
+          Eikenbos_gemiddelde_buitentemperatuur: >-
+            {{ states('sensor.Eikenbos_gemiddelde_buitentemperatuur') |
+            float(default=0) }}
+          solar_production: "{{ states('sensor.sma_today') | float(default=0) }}"
+          net_injection_daily: "{{ states('sensor.net_injection_daily') | float(default=0) }}"
+          net_consumption_daily: "{{ states('sensor.net_consumption_daily') | float(default=0) }}"
+          solar_terraszijde_efficiency: >-
+            {{ (states('sensor.solar_terraszijde_energie_daily') | float / 6150 *
+            1000 * 100) | round(1) | replace('.', ',') }}%
+          solar_voorzijde_efficiency: >-
+            {{ (states('sensor.solar_voorzijde_energie_daily') | float / 8610 *
+            1000 * 100 ) | round(1) | replace('.', ',') }}%
+          car_battery_charged_daily: "{{ states('sensor.car_charger_energy_daily') | float(default=0) }}"
+          car_charge_solar_energy_daily: >-
+            {{ states('sensor.car_charge_solar_energy_daily') | float(default=0)
+            }}
+          car_charge_net_energy_daily: "{{ states('sensor.car_charge_net_energy_daily') | float(default=0) }}"
+          net_neutrality_home: "{{ states('sensor.net_neutrality_home') | float(default=0) }}"
+          net_neutrality_car: "{{ states('sensor.net_neutrality_car') | float(default=0) }}"
+          net_neutrality: "{{ states('sensor.net_neutrality') | float(default=0) }}"
+          washing_machine_energy_daily: "{{ states('sensor.washing_machine_energy_daily') | float(default=0) }}"
+          dryer_energy_daily: "{{ states('sensor.dryer_energy_daily') | float(default=0) }}"
+          dehumidifier_energy_daily: "{{ states('sensor.dehumidifier_energy_daily') | float(default=0) }}"
+          infrared_panel_energy_daily: "{{ states('sensor.infrared_panel_energy_daily') | float(default=0) }}"
+          living_airco_daily_heat_energy_consumption: >-
+            {{ states('sensor.living_airco_daily_heat_energy_consumption') |
+            float(default=0) }}
+          amilya_airco_daily_heat_energy_consumption: >-
+            {{ states('sensor.amilya_airco_daily_heat_energy_consumption') |
+            float(default=0) }}
+          alunya_airco_daily_heat_energy_consumption: >-
+            {{ states('sensor.alunya_airco_daily_heat_energy_consumption') |
+            float(default=0) }}
+          master_bedroom_airco_daily_heat_energy_consumption: >-
+            {{ states('sensor.master_bedroom_airco_daily_heat_energy_consumption')
+            | float(default=0) }}
+          badkamer_elektrische_verwarming_energieverbruik: >-
+            {{ states('sensor.badkamer_electric_heater_energy_daily') |
+            float(default=0) }}
+          living_gem_verwarming_laatste_24_uren: >-
+            {{ states('sensor.living_gem_verwarming_laatste_24_uren') |
+            float(default=0) }}
+          kamer_amilya_gem_verwarming_laatste_24_uren: >-
+            {{ states('sensor.kamer_amilya_gem_verwarming_laatste_24_uren') |
+            float(default=0) }}
+          veranda_gem_verwarming_laatste_24_uren: >-
+            {{ states('sensor.veranda_gem_verwarming_laatste_24_uren') |
+            float(default=0) }}
+          berging_gem_verwarming_laatste_24_uren: >-
+            {{ states('sensor.berging_gem_verwarming_laatste_24_uren') |
+            float(default=0) }}
+          gang_gem_verwarming_laatste_24_uren: >-
+            {{ states('sensor.gang_gem_verwarming_laatste_24_uren') |
+            float(default=0) }}
+          badkamer_gem_verwarming_laatste_24_uren: >-
+            {{ states('sensor.badkamer_gem_verwarming_laatste_24_uren') |
+            float(default=0) }}
+          kamer_alunya_gem_verwarming_laatste_24_uren: >-
+            {{ states('sensor.kamer_alunya_gem_verwarming_laatste_24_uren') |
+            float(default=0) }}
+          master_bedroom_gem_verwarming_laatste_24_uren: >-
+            {{ states('sensor.master_bedroom_gem_verwarming_laatste_24_uren') |
+            float(default=0) }}
+          living_airco_daily_cool_energy_consumption: >-
+            {{ states('sensor.living_airco_daily_cool_energy_consumption') |
+            float(default=0) }}
+          amilya_airco_daily_cool_energy_consumption: >-
+            {{ states('sensor.amilya_airco_daily_cool_energy_consumption') |
+            float(default=0) }}
+          alunya_airco_daily_cool_energy_consumption: >-
+            {{ states('sensor.alunya_airco_daily_cool_energy_consumption') |
+            float(default=0) }}
+          master_bedroom_airco_daily_cool_energy_consumption: >-
+            {{ states('sensor.master_bedroom_airco_daily_cool_energy_consumption')
+            | float(default=0) }}
+          bart_thuis_vandaag: |
+            {{ states('sensor.bart_thuis_vandaag') | float(default=0) }}
+          madouce_thuis_vandaag: |
+            {{ states('sensor.madouce_thuis_vandaag') | float(default=0) }}
+          amilya_thuis_vandaag: |
+            {{ states('sensor.amilya_thuis_vandaag') | float(default=0) }}
+          alunya_thuis_vandaag: |
+            {{ states('sensor.alunya_thuis_vandaag') | float(default=0) }}
+  mode: single

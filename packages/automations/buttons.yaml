@@ -43,31 +43,31 @@ automation:
       entity_id: cover.garagepoort
   - service: media_player.volume_set
     data:
-      entity_id: media_player.veranda_speaker
+      entity_id: media_player.master_bedroom_speaker
       volume_level: 0.6
   - service: media_player.volume_set
     data:
-      entity_id: media_player.living_speaker
+      entity_id: media_player.master_bedroom_speaker
       volume_level: 0.6
-  - service: tts.edge_tts_say
+  - service: tts.speak
     data:
-      entity_id: media_player.veranda_speaker
+      entity_id: media_player.master_bedroom_speaker
       message: Garagepoort gaat open!
-  - service: tts.edge_tts_say
+  - service: tts.speak
     data:
-      entity_id: media_player.living_speaker
+      entity_id: media_player.master_bedroom_speaker
       message: Garagepoort gaat open!
   - service: media_player.volume_set
     data:
-      entity_id: media_player.veranda_speaker
+      entity_id: media_player.master_bedroom_speaker
       volume_level: 0.4
   - service: media_player.volume_set
     data:
-      entity_id: media_player.living_speaker
+      entity_id: media_player.master_bedroom_speaker
       volume_level: 0.4
   mode: single       
   
-- alias: button nachtkastje Bart
+- alias: button nachtkastje Bart avondinfo
   id: 'e5b8829b-92b1-400d-aacb-4cd71f93052f'
   description: ''
   trigger:
@@ -77,57 +77,72 @@ automation:
     platform: device
     type: remote_button_short_press
     subtype: remote_button_short_press
-  condition: []
+  condition:
+  - condition: template
+    value_template: "{{ now().hour < 2 or now().hour > 20 }}"
   action:
-    - service: tts.edge_tts_say
+    - service: tts.speak 
+      target:
+        entity_id: tts.piper    
       data:
         entity_id: media_player.master_bedroom_speaker
-        cache: false
+        cache: true
         message: >-
           Het is nu {{ as_timestamp(now()) |timestamp_custom('%-H') }} uur {{
-          as_timestamp(now()) |timestamp_custom('%-M') }}. Buiten is het {{states('sensor.temp_leuven24_wunderground') | float()}} graden.
+          as_timestamp(now()) |timestamp_custom('%-M') }}. Buiten is het {{ states('sensor.leuven_temperature') |string|replace('.', ',') }} graden.
     - delay: '00:00:02'
-    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.edge_tts_say
+    - wait_template: "{{ is_state('media_player.veranda_speaker', 'idle')}}"
+    - service: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
         message: >-
-          Al {{ 365 - ( states('sensor.anniversary_huwelijk_madouce_bart') | float(default=0)) | int}} dagen sinds jullie huwelijk. {{("Dat begint al te tellen!", "Lukt het nog altijd als man en vrouw?", "Ik vind jullie ringen nog altijd schitterend!", "Het kleur van de jurk was de verrassing van de dag. Weet je nog?", "En lukt het nog met de geloften?" )|random }}
+          {% from 'relative_time_plus.jinja' import relative_time_plus %}
+          Jullie zijn al {{ relative_time_plus('2022-04-30', 4, language='nl') }} getrouwd. {{("Dat begint al te tellen!", "Lukt het nog altijd als man en vrouw?", "Ik vind jullie ringen nog altijd schitterend!", "Het kleur van de jurk was de verrassing van de dag. Weet je nog?", "En lukt het nog met de geloften?" )|random }}
     - delay: '00:00:02'
-    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.edge_tts_say
+    - wait_template: "{{ is_state('media_player.veranda_speaker', 'idle')}}"
+    # - service: tts.speak
+    #   data:
+    #     entity_id: media_player.master_bedroom_speaker
+    #     message: >-
+    #       {% if is_state('lock.audi_e_tron_sportback_door_lock', 'unlocked') %} De auto is niet op slot.
+    #       {% else %} De auto is op slot.
+    #       {% endif %}
+    # - delay: '00:00:02'
+    - wait_template: "{{ is_state('media_player.veranda_speaker', 'idle')}}"
+    - service: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
         message: >-
-          {% if is_state('lock.audi_e_tron_sportback_door_lock', 'unlocked') %} De auto is niet op slot.
-          {% else %} De auto is op slot.
+          {% set soc = states('sensor.car_1_soc') | int %}
+          {% set target = states('input_number.car_charge_target_percentage') | int %}
+          {% set watt = states('input_number.car_charge_fixed_wattage') %}          
+          De auto is {{ soc }}% geladen.
+          {% if soc < target %}
+          Er moet worden geladen tot {{ target }}%.
+            {% if is_state('sensor.car_1_plug_state','connected') %}De laadkabel is verbonden.
+            {% else %}Opgelet! De laadkabel is niet verbonden!
+            {% endif %}
+            {% if states('input_boolean.car_charge_mode_stoptimer') == 'on' %}Om het laaddoel te bereiken om {{ state_attr('input_datetime.car_charge_target_time', 'timestamp') | timestamp_custom('%-H uur %M',) }} zal het laden starten om {{ as_timestamp(states('sensor.car_charge_stoptimer_starttime'),0) | timestamp_custom('%-H uur %M') }}
+            Het laden gebeurt aan {{ watt }} kilowatt.
+            {% endif %}
+          {% else %}
+          Het laaddoel van {{ target }}% is al bereikt.
           {% endif %}
     - delay: '00:00:02'
-    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.edge_tts_say
+    - wait_template: "{{ is_state('media_player.veranda_speaker', 'idle')}}"
+    - service: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
-        message: >-
-          De auto is {{states('sensor.audi_e_tron_sportback_state_of_charge') | int }}% geladen
-          {% if is_state('sensor.audi_e_tron_sportback_plug_state','connected') %} en de laadkabel is verbonden.
-          {% else %} en de laadkabel is niet verbonden.
-          {% endif %}
-          Er zal worden geladen tot {{states('input_number.car_charge_target_percentage') | int }}%.
-    - delay: '00:00:02'
-    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.edge_tts_say
-      data:
-        entity_id: media_player.master_bedroom_speaker
-        cache: false
+        cache: true
         message: >-
           {% if is_state('lock.voordeur_nuki', 'unlocked') %} De voordeur is niet op
           slot. {% else %} De voordeur is op slot. {% endif %}
     - delay: '00:00:02'
-    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.edge_tts_say
+    - wait_template: "{{ is_state('media_player.veranda_speaker', 'idle')}}"
+    - service: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
-        cache: false
+        cache: true
         message: >-
           {% if is_state('group.alle_raam_sensoren', 'off') %} Alle ramen zijn
           dicht!
@@ -147,18 +162,82 @@ automation:
           |selectattr('state','eq','on') | map(attribute='name')| list }}
           {% endif %}
     - delay: '00:00:02'
-    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.edge_tts_say
+    - wait_template: "{{ is_state('media_player.veranda_speaker', 'idle')}}"
+    - service: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
-        cache: false
+        cache: true
         message: >-
           {% if now().strftime("%H")|int > 20 %} Slaap lekker straks.
           {% elif now().strftime("%H")|int > 22 %} Het is bijna tijd om te slapen.
           {% elif now().strftime("%H")|int < 12 %} Nog een prettige dag.
           {% endif %}
   mode: single
-  
+
+- alias: button nachtkastje Bart ochtendinfo
+  id: 'b9aefb3b-17fa-4bc0-bdbc-365930f68317'
+  description: ''
+  trigger:
+  # Bart nachtkastje
+  - device_id: eff0e9bdff49d94c3646cefe55f8d941
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: remote_button_short_press
+  condition:
+  - condition: template
+    value_template: "{{ 6 < now().hour < 13 }}"
+  action:
+    - service: tts.edge_tts_say 
+      data:
+        entity_id: media_player.master_bedroom_speaker
+        cache: true
+        message: >-
+          Goedemorgen. Het is nu {{ as_timestamp(now()) |timestamp_custom('%-H') }} uur {{
+          as_timestamp(now()) |timestamp_custom('%-M') }}. Buiten is het {{ states('sensor.leuven_temperature') |string|replace('.', ',') }} graden.
+          Het wordt vandaag maximum {{ states('input_number.weather_eikenbos_max_temp_today') | replace(".", ",") }} graden.
+          De volgende 4 uren wordt het {{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | round() }} graden.
+    - delay: '00:00:02'
+    - wait_template: "{{ is_state('media_player.veranda_speaker', 'idle')}}"
+    - service: tts.edge_tts_say 
+      data:
+        entity_id: media_player.master_bedroom_speaker
+        cache: true
+        message: >-
+          Er wordt vandaag {{ states('sensor.solar_sim_energy_today_adj') | round() }} kilowatuur zon verwacht.
+    - delay: '00:00:02'
+    - wait_template: "{{ is_state('media_player.veranda_speaker', 'idle')}}"
+    - service: tts.edge_tts_say 
+      data:
+        entity_id: media_player.master_bedroom_speaker
+        message: >-
+          {% set soc = states('sensor.car_1_soc') | int %}
+          {% set target = states('input_number.car_charge_target_percentage') | int %}
+          {% set watt = states('input_number.car_charge_fixed_wattage') %}          
+          De auto is {{ soc }}% geladen.
+          {% if soc < target %}
+          Er moet worden geladen tot {{ target }}%.
+            {% if is_state('sensor.car_1_plug_state','connected') %}De laadkabel is verbonden.
+            {% else %}Opgelet! De laadkabel is niet verbonden!
+            {% endif %}
+            {% if states('input_boolean.car_charge_mode_stoptimer') == 'on' %}Om het laaddoel te bereiken om {{ state_attr('input_datetime.car_charge_target_time', 'timestamp') | timestamp_custom('%-H uur %M',) }} zal het laden starten om {{ as_timestamp(states('sensor.car_charge_stoptimer_starttime'),0) | timestamp_custom('%-H uur %M') }}
+            Het laden gebeurt aan {{ watt }} kilowatt.
+            {% endif %}
+          {% else %}
+          Het laaddoel van {{ target }}% is al bereikt.
+          {% endif %}
+    - delay: '00:00:02'
+    - wait_template: "{{ is_state('media_player.veranda_speaker', 'idle')}}"
+    - service: tts.edge_tts_say 
+      data:
+        entity_id: media_player.master_bedroom_speaker
+        cache: true
+        message: >-
+          Nog een prettige dag.
+  mode: single
+
+
+
 - alias: button nachtkastje Madouce (short press) = matrasverwarmer uit 
   id: 'c2d4f8a2-3f38-40f2-8d8a-816813c65c59'
   description: ''
@@ -177,10 +256,10 @@ automation:
   - condition: time
     after: '09:00:00'
     before: '23:00:00'
-  - service: tts.edge_tts_say
+  - service: tts.speak
     data:
       entity_id: media_player.master_bedroom_speaker
-      cache: false
+      cache: true
       message: >-
         {% if is_state('switch.madouce_matrasverwarmer', 'off') %} De matras was al uit. 
         {% else %} De matras wordt uitgeschakeld.
@@ -205,10 +284,10 @@ automation:
   - condition: time
     after: '09:00:00'
     before: '23:00:00'
-  - service: tts.edge_tts_say
+  - service: tts.speak
     data:
       entity_id: media_player.master_bedroom_speaker
-      cache: false
+      cache: true
       message: >-
         {% if is_state('switch.madouce_matrasverwarmer', 'on') %} De matras was al aan. Was het nog niet warm genoeg?
         {% else %} De matras wordt ingeschakeld. Geniet van de warmte.

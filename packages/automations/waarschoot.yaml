@@ -1,6 +1,6 @@
 automation:
 
-- alias: 'Waarschoot: alarm wordt ingeschakeld (knop beneden)'
+- alias: 'Waarschoot: alarm wordt ingeschakeld via knop living'
   id: 'f6c83f1d-0413-4e19-bfd7-651f74737fc7'
   description: ''
   trigger:
@@ -15,11 +15,11 @@ automation:
   action:
   - service: notify.bart_phone
     data:
-      title: Alarm in Waarschoot wordt ingeschakeld.
+      title: "Waarschoot: alarm wordt ingeschakeld."
       message: Via de knop in de living
   mode: single
 
-- alias: 'Waarschoot: alarm wordt ingeschakeld (knop beneden)'
+- alias: 'Waarschoot: alarm wordt ingeschakeld via knop badkamer'
   id: '1851d4c4-690a-4c76-adb3-7bf46201dcb8'
   description: ''
   trigger:
@@ -34,7 +34,7 @@ automation:
   action:
   - service: notify.bart_phone
     data:
-      title: Alarm in Waarschoot wordt ingeschakeld.
+      title: "Waarschoot: alarm wordt ingeschakeld."
       message: Via de knop in de badkamer
   mode: single
 
@@ -54,7 +54,7 @@ automation:
   action:
   - service: notify.bart_phone
     data:
-      title: Alarm in Waarschoot wordt voor 1 uur uitgeschakeld.
+      title: "Waarschoot: Alarm wordt voor 1 uur uitgeschakeld."
       message: Huis is in "vakantiemodus".
   - delay:
       hours: 1
@@ -67,6 +67,141 @@ automation:
       entity_id: switch.waarschoot_living_alarmknop
   - service: notify.bart_phone
     data:
-      title: Alarm in Waarschoot wordt opnieuw ingeschakeld.
+      title: "Waarschoot: Alarm wordt opnieuw ingeschakeld."
       message: Huis is in "vakantiemodus".
   mode: single
+
+
+- alias: "Waarschoot: verlaten huis = chauffage uit & alarm aan"
+  id: '2482386b-5259-4fca-8065-224e32fbf5f0'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - person.anita
+      from: Waarschoot
+      for:
+        hours: 0
+        minutes: 1
+        seconds: 0
+  condition: []
+  action:
+    - service: climate.set_preset_mode
+      data:
+        preset_mode: away
+      target:
+        entity_id:
+          - climate.waarschoot_keuken
+          - climate.waarschoot_living
+          - climate.waarschoot_zitput
+          - climate.waarschoot_overloop
+          - climate.waarschoot_badkamer
+          - climate.waarschoot_slaapkamer
+    - service: climate.set_hvac_mode
+      data:
+        hvac_mode: "off"
+      target:
+        entity_id:
+          - climate.waarschoot_keuken
+          - climate.waarschoot_living
+          - climate.waarschoot_zitput
+          - climate.waarschoot_overloop
+          - climate.waarschoot_badkamer
+          - climate.waarschoot_slaapkamer
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id:
+          - switch.waarschoot_living_alarmknop
+          - switch.waarschoot_living_camera
+    - service: notify.anita_phone
+      data:
+        title: Verwarming uit en alarm aan
+        message: >
+          De verwarming wordt uitgeschakeld door het verlaten van het huis. Het is
+          nu nog {{ states('sensor.waarschoot_living_temperature') }} graden in de
+          living.
+    - service: notify.bart_phone
+      data:
+        title: "Waarschoot verlaten: Verwarming uit en alarm aan"
+        message: >
+          De verwarming wordt uitgeschakeld door het verlaten van het huis. Het is
+          nu nog {{ states('sensor.waarschoot_living_temperature') }} graden in de
+          living.
+    - service: notify.anita_phone
+      data:
+        message: TTS
+        data:
+          tts_text: >-
+            Dag Anita. De verwarming wordt uitgeschakeld en het alarm wordt
+            ingeschakeld.
+          ttl: 0
+          priority: high
+          media_stream: alarm_stream_max
+  mode: single
+
+- alias: "Waarschoot: aankomst thuis = verwarming op automatisch en alarm uit"
+  id: '4ded95e3-6118-4890-8827-ca8800e43d3d'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - person.anita
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 20
+      to: Waarschoot
+  condition: []
+  action:
+    - service: climate.set_preset_mode
+      data:
+        preset_mode: home
+      target:
+        entity_id:
+          - climate.waarschoot_keuken
+          - climate.waarschoot_living
+          - climate.waarschoot_zitput
+          - climate.waarschoot_overloop
+          - climate.waarschoot_badkamer
+          - climate.waarschoot_slaapkamer
+    - service: climate.set_hvac_mode
+      data:
+        hvac_mode: auto
+      target:
+        entity_id:
+          - climate.waarschoot_keuken
+          - climate.waarschoot_living
+          - climate.waarschoot_zitput
+          - climate.waarschoot_overloop
+          - climate.waarschoot_badkamer
+          - climate.waarschoot_slaapkamer
+    - service: switch.turn_off
+      data: {}
+      target:
+        entity_id:
+          - switch.waarschoot_living_alarmknop
+          - switch.waarschoot_living_camera
+    - service: notify.anita_phone
+      data:
+        title: Verwarming aan (volgens schema)
+        message: >
+          De verwarming wordt ingeschakeld bij aankomst thuis. Het is nu nog {{
+          states('sensor.waarschoot_living_temperature') }}°C in de living en {{
+          states('sensor.waarschoot_keuken_temperature') }}°C in de keuken.
+    - service: notify.bart_phone
+      data:
+        title: "Waarschoot thuiskomst: Verwarming aan (volgens schema)"
+        message: >
+          De verwarming wordt ingeschakeld bij aankomst thuis. Het is nu nog {{
+          states('sensor.waarschoot_living_temperature') }}°C in de living en {{
+          states('sensor.waarschoot_keuken_temperature') }}°C in de keuken.
+    - service: notify.anita_phone
+      data:
+        message: TTS
+        data:
+          tts_text: Dag Anita. Welkom thuis. De verwarming wordt ingeschakeld.
+          ttl: 0
+          priority: high
+          media_stream: alarm_stream_max
+  mode: single  

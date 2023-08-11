@@ -84,3 +84,25 @@ living_airco_21:
   - service: script.living_airco_start
     data: {} 
   mode: restart
+
+living_airco_stop:
+  sequence:
+  - service: climate.turn_off
+    data: {}
+    target:
+      device_id: 1c560bbc7917f45d737e87d3e2bd0d89  
+  - service: climate.set_temperature
+    data:
+      temperature: 14
+    target:
+      device_id: 1c560bbc7917f45d737e87d3e2bd0d89 
+  - service: input_number.set_value
+    data:
+      value: 14
+    target:
+      entity_id: input_number.living_airco_target_temperature
+  - service: timer.finish
+    data: {}
+    target:
+      entity_id: timer.living_airco_timer
+  mode: restart

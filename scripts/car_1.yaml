@@ -10,7 +10,7 @@ auto_status_verversen:
   sequence:
   - service: audiconnect.refresh_data
     data:
-      vin: WAUZZZGE6MB019131
+      vin: !secret vin
   icon: hass:car
   mode: single
   
@@ -19,7 +19,7 @@ check_auto_op_slot:
   sequence:
   - service: audiconnect.refresh_data
     data:
-      vin: WAUZZZGE6MB019131
+      vin: !secret vin
   - delay: 00:05:00
   - condition: state
     entity_id: lock.audi_e_tron_sportback_door_lock

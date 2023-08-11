@@ -57,7 +57,7 @@ automation:
     entity_id: sensor.master_bedroom_humidity
     above: '75'
   - condition: numeric_state
-    entity_id: sensor.humidity_leuven24_wunderground
+    entity_id: sensor.leuven_humidity
     above: '75'
   action:
   - service: notify.bart_phone
@@ -100,7 +100,7 @@ automation:
           data:
             notification_icon: "mdi:water-percent-alert"          
             color: "#0E86D4"
-            tag: window_badkamer
+            tag: badkamer_vocht
             channel: vocht
             actions:
             - action: URI
@@ -138,7 +138,7 @@ automation:
           data:
             notification_icon: "mdi:water-percent-alert"          
             color: "#0E86D4"
-            tag: window_master_bedroom
+            tag: master_bedroom_vocht
             channel: vocht
             actions:
             - action: URI

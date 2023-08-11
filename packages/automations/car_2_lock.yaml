@@ -12,12 +12,10 @@ automation:
     entity_id: group.car_2_locks
     state: 'on'
   # no phone is connected to the car with bluetooth (= meaning: we are still driving the car)
-  - condition: state
-    entity_id: binary_sensor.bart_phone_connected_to_car_2
-    state: 'off'
-  - condition: state
-    entity_id: binary_sensor.madouce_phone_connected_to_car_2
-    state: 'off'
+  - condition: template
+    value_template: "{{ states('binary_sensor.bart_phone_connected_to_car_2') != 'on' }}"  
+  - condition: template
+    value_template: "{{ states('binary_sensor.madouce_phone_connected_to_car_2') != 'on' }}"
   action:
   - service: notify.bart_madouce_phone
     data:
@@ -44,12 +42,10 @@ automation:
     for: '00:15:00'
   condition:
   # no phone is connected to the car with bluetooth (= meaning: we are still driving the car)
-  - condition: state
-    entity_id: binary_sensor.bart_phone_connected_to_car_2
-    state: 'off'
-  - condition: state
-    entity_id: binary_sensor.madouce_phone_connected_to_car_2
-    state: 'off'
+  - condition: template
+    value_template: "{{ states('binary_sensor.bart_phone_connected_to_car_2') != 'on' }}"  
+  - condition: template
+    value_template: "{{ states('binary_sensor.madouce_phone_connected_to_car_2') != 'on' }}"  
   action:
   - service: notify.bart_madouce_phone
     data:

@@ -8,7 +8,7 @@ multiscrape:
   #       #value_template: '{{ (value.split(":")[1]) }}'
   #       unit_of_measurement: EUR
 
-  - name: FT
+  - name: Horizon - KBC Highly Dynamic Tolerant Responsible Investing Classic Shares
     resource: https://markets.ft.com/data/funds/tearsheet/holdings?s=BE6307337095:EUR
     scan_interval: 60
     sensor:
@@ -16,7 +16,7 @@ multiscrape:
         select: "body > div.o-grid-container.mod-container > div:nth-child(2) > section:nth-child(1) > div > div > div.mod-tearsheet-overview__overview.clearfix > div.mod-tearsheet-overview__quote > ul > li:nth-child(1) > span.mod-ui-data-list__value"
         unit_of_measurement: EUR
 
-  - name: FT
+  - name: Horizon - KBC Dynamic Tolerant Responsible Investing Classic Shares
     resource: https://markets.ft.com/data/funds/tearsheet/holdings?s=BE6307334068:EUR
     scan_interval: 60
     sensor:
@@ -33,13 +33,6 @@ multiscrape:
         unit_of_measurement: EUR
       - name: BE0175280016_changetoday
         select: "body > div.o-grid-container.mod-container > div:nth-child(2) > section:nth-child(1) > div > div > div.mod-tearsheet-overview__overview.clearfix > div.mod-tearsheet-overview__quote > ul > li:nth-child(2) > span.mod-ui-data-list__value > span"
-
-
-yahoofinance:
-  symbols:
-    - symbol: 0P0001I7E7.F
-    - symbol: 0P0001I7E1.F
-    - symbol: 0P00000NB4.F
 
 template:
   - sensor:
