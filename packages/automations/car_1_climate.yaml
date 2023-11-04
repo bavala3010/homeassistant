@@ -40,7 +40,7 @@ automation:
     at: '19:00'
   condition:
   - condition: numeric_state
-    entity_id: sensor.leuven_temperature
+    entity_id: sensor.eikenbos_temperature
     below: 15
   - condition: state
     entity_id: person.bart
@@ -79,7 +79,7 @@ automation:
       for: "00:00:05"
   condition:
     - condition: numeric_state
-      entity_id: sensor.leuven_temperature
+      entity_id: sensor.eikenbos_temperature
       below: 15
   action:
   - choose:
@@ -208,7 +208,7 @@ automation:
       for: "00:00:05"
   condition:
     - condition: numeric_state
-      entity_id: sensor.leuven_temperature
+      entity_id: sensor.eikenbos_temperature
       below: 15
   action:
   - choose:
@@ -443,7 +443,7 @@ automation:
           {% set car_use_day = 'input_select.car_use_day_' ~ now().isoweekday() %}
           {%if states(car_use_day) == "Toyota Diest"%} true {% endif %}
       - condition: numeric_state
-        entity_id: sensor.leuven_temperature
+        entity_id: sensor.eikenbos_temperature
         below: 15       
   action:
   - service: notify.madouce_phone

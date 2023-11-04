@@ -1,5 +1,5 @@
 - id: '1623950983222'
-  name: 🚨 lichten op rood
+  name: "\U0001F6A8 lichten op rood"
   entities:
     light.living_links_1:
       min_mireds: 153
@@ -51,9 +51,8 @@
       friendly_name: living rechts 5
       supported_features: 63
       state: 'on'
-
 - id: '1623951222139'
-  name: 🚨 lichten uit (om te knipperen)
+  name: "\U0001F6A8 lichten uit (om te knipperen)"
   entities:
     light.living_links_1:
       min_mireds: 153
@@ -79,7 +78,6 @@
       friendly_name: living rechts 5
       supported_features: 63
       state: 'off'
-
 - id: '1633813705916'
   name: TV kijken in master bedroom
   entities:
@@ -139,3 +137,82 @@
       friendly_name: Play Madouce
       supported_features: 63
       state: 'on'
+- id: '1691782061755'
+  name: verlichting als tv aanstaat
+  entities:
+    light.living_bol:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - None
+      - candle
+      - fire
+      - unknown
+      supported_color_modes:
+      - color_temp
+      - xy
+      mode: normal
+      dynamics: none
+      icon: hue:go
+      friendly_name: living bol
+      supported_features: 44
+      state: 'off'
+    light.living_rechts_2:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - xy
+      icon: hue:wall-spot
+      friendly_name: living rechts 2
+      supported_features: 40
+      mode: normal
+      dynamics: none
+      color_mode: xy
+      brightness: 127
+      hs_color:
+      - 30.252
+      - 93.333
+      rgb_color:
+      - 255
+      - 137
+      - 17
+      xy_color:
+      - 0.599
+      - 0.382
+      state: 'on'
+  metadata: {}
+- id: '1691784911927'
+  name: verlichting als tv uit gaat
+  entities:
+    light.living_rechts_1:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - xy
+      icon: hue:wall-spot
+      friendly_name: living rechts 1
+      supported_features: 40
+      mode: normal
+      dynamics: none
+      color_mode: xy
+      brightness: 160
+      hs_color:
+      - 28.673
+      - 88.627
+      rgb_color:
+      - 255
+      - 137
+      - 29
+      xy_color:
+      - 0.5971
+      - 0.3794
+      state: 'on'
+  metadata: {}

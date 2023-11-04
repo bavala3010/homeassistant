@@ -108,6 +108,29 @@ automation:
         color: red
   mode: single
 
+- alias: security // Bart en Madouce op terras = voordeur op slot
+  id: 'b77f3de1-256a-41cb-8c90-44ae5667dc6e'
+  description: ''
+  trigger:
+  - platform: template
+    value_template: >
+      {{ states('sensor.bart_phone_room') == "terras" and states('sensor.madouce_phone_room') == "terras" }}
+  condition:
+  - condition: state
+    entity_id: lock.voordeur_nuki
+    state: 'unlocked'
+  action:
+  - service: lock.lock
+    target:
+      entity_id: lock.voordeur_nuki
+  - service: notify.bart_phone
+    data:
+      title: Ik heb de voordeur voor jou op slot gedaan.
+      message: Bart, jij en Madouce zitten op het terras.
+      data:
+        color: red
+  mode: single
+
 - alias: security // Madouce alleen thuis = doe voordeur op slot
   id: 'eb26f9a9-6603-4ab5-a224-e845e45790fd'
   description: ''
@@ -218,8 +241,16 @@ automation:
     - sensor.voordeur_nuki_last_unlock_user
   condition: []
   action:
-  - service: notify.bart_phone
-    data:
-      message: >
-        Iemand heeft voordeur open gedaan met numeriek pad. Laatste gebruiker: {{ states('sensor.voordeur_nuki_last_unlock_user')}}
+    - if: 
+        - condition: template
+          value_template: >
+            {% set s = states('sensor.voordeur_nuki_last_unlock_user') %}
+            {{ s !='Nuki Web ()' or s !='' or s !='Unknown'}}
+      then:     
+        - service: notify.bart_phone
+          data:
+            title: "Voordeur zopas open gedaan met numeriek pad."
+            message: >
+              {% set s = states('sensor.voordeur_nuki_last_unlock_user') | replace(' (Keypad)', '') %}
+              Door {{ s }}.
   mode: single  

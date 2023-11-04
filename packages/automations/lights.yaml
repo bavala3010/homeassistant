@@ -48,7 +48,7 @@ automation:
     entity_id: person.madouce
     state: home
   - condition: numeric_state
-    entity_id: sensor.leuven_temperature
+    entity_id: sensor.eikenbos_temperature
     below: '20'
   action:
   - service: light.turn_on
@@ -59,7 +59,7 @@ automation:
       device_id: a0297c6061546a2108b2d33e01ed449d 
   mode: single
 
-- alias: 💡 lights // TV aan + zon onder = TV strip aan
+- alias: 💡 lights // TV aan + zon onder = scene activeren tv verlichting
   id: 'decc48cf-f977-42e0-8d54-52cc3fad75d1'
   description: ''
   trigger:
@@ -87,11 +87,16 @@ automation:
       brightness: 100
     target:
       entity_id: light.tv_strip
-  - service: light.turn_off
-    target:
-      entity_id: light.living_bol
+  - service: scene.turn_on
     data:
-      transition: 10      
+      transition: 5
+    target:
+      entity_id: scene.verlichting_als_tv_aanstaat
+  # - service: light.turn_off
+  #   target:
+  #     entity_id: light.living_bol
+  #   data:
+  #     transition: 10
   mode: single
 
 - alias: 💡 lights // living // Google TV living playing + zon onder = Hue sync aan
@@ -132,6 +137,25 @@ automation:
       entity_id:
       -  light.tv_strip
   mode: single
+
+- alias: 💡 lights // living // TV uit en donker = living rechts 1 aan
+  id: '545ec01a-fbf5-4153-aa45-d65b1e946c91'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: media_player.ue55ju7000
+    from: 'on'
+    to: 'off' 
+  condition:
+  - condition: state
+    entity_id: sun.sun
+    state: below_horizon  
+  action:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.verlichting_als_tv_uit_gaat
+  mode: single
+
 
 - alias: 💡 lights // living // Het wordt donker = living bol inschakelen
   id: 'd754582e-1ba3-44f2-93ef-32a7f9bbc2af'

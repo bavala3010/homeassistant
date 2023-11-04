@@ -1,4 +1,4 @@
-living_airco_start:
+living_airco_start_heating:
   sequence:
   - service: timer.start
     data:
@@ -49,7 +49,7 @@ living_airco_19:
       value: 30
     target:
       entity_id: input_number.living_airco_timer_minutes
-  - service: script.living_airco_start
+  - service: script.living_airco_start_heating
     data: {}
   mode: restart
 
@@ -65,7 +65,7 @@ living_airco_20:
       value: 30
     target:
       entity_id: input_number.living_airco_timer_minutes
-  - service: script.living_airco_start
+  - service: script.living_airco_start_heating
     data: {} 
   mode: restart
 
@@ -81,7 +81,7 @@ living_airco_21:
       value: 30
     target:
       entity_id: input_number.living_airco_timer_minutes
-  - service: script.living_airco_start
+  - service: script.living_airco_start_heating
     data: {} 
   mode: restart
 

@@ -172,7 +172,7 @@ automation:
       value: 30
     target:
       entity_id: input_number.living_airco_timer_minutes
-  - service: script.living_airco_start
+  - service: script.living_airco_start_heating
     data: {}  
   mode: restart
 

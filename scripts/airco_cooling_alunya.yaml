@@ -26,8 +26,8 @@ alunya_airco_cooling_18:
     data:
       value: 18
     target:
-      entity_id: input_number.amilya_airco_target_temperature
-  - service: script.amilya_airco_cooling_start
+      entity_id: input_number.alunya_airco_target_temperature
+  - service: script.alunya_airco_cooling_start
     data: {} 
   mode: restart
 

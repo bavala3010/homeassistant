@@ -12,7 +12,7 @@ binary_sensor:
     sensors:
 
       eikenbos_temp_rising:
-        entity_id: sensor.leuven_temperature
+        entity_id: sensor.eikenbos_temperature
         friendly_name: Eikenbos
         sample_duration: 1800
         min_gradient: 0.00027777777

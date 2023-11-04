@@ -9,25 +9,25 @@ binary_sensor:
     sensors:
       warm_outside_living:
         friendly_name: "buiten warmer dan in living"
-        value_template: "{{ states('sensor.eikenbos_average_temperature') > states('sensor.living_temperature') }}"
+        value_template: "{{ states('sensor.eikenbos_temperature') > states('sensor.living_temperature') }}"
       warm_inside_living:
         friendly_name: "in living warmer dan buiten"
-        value_template: "{{ states('sensor.living_temperature') > states('sensor.eikenbos_average_temperature') }}"
+        value_template: "{{ states('sensor.living_temperature') > states('sensor.eikenbos_temperature') }}"
       warm_outside_amilya:
         friendly_name: "buiten warmer dan in kamer Amilya"
-        value_template: "{{ states('sensor.eikenbos_average_temperature') > states('sensor.kamer_amilya_temperature') }}"
+        value_template: "{{ states('sensor.eikenbos_temperature') > states('sensor.kamer_amilya_temperature') }}"
       warm_inside_amilya:
         friendly_name: "in kamer Amilya warmer dan buiten"
-        value_template: "{{ states('sensor.kamer_amilya_temperature') > states('sensor.eikenbos_average_temperature') }}"
+        value_template: "{{ states('sensor.kamer_amilya_temperature') > states('sensor.eikenbos_temperature') }}"
       warm_outside_veranda:
         friendly_name: "buiten warmer dan in veranda"
-        value_template: "{{ states('sensor.eikenbos_average_temperature') > states('sensor.veranda_temperature') }}"
+        value_template: "{{ states('sensor.eikenbos_temperature') > states('sensor.veranda_temperature') }}"
       warm_inside_veranda:
         friendly_name: "in veranda warmer dan buiten"
-        value_template: "{{ states('sensor.veranda_temperature') > states('sensor.eikenbos_average_temperature') }}"
+        value_template: "{{ states('sensor.veranda_temperature') > states('sensor.eikenbos_temperature') }}"
       warm_outside_bedroom:
         friendly_name: "buiten warmer dan in master bedroom"
-        value_template: "{{ states('sensor.eikenbos_average_temperature') > states('sensor.master_bedroom_temperature') }}"
+        value_template: "{{ states('sensor.eikenbos_temperature') > states('sensor.master_bedroom_temperature') }}"
       warm_inside_bedroom:
         friendly_name: "in master bedroom warmer dan buiten"
-        value_template: "{{ states('sensor.master_bedroom_temperature') > states('sensor.eikenbos_average_temperature') }}"
+        value_template: "{{ states('sensor.master_bedroom_temperature') > states('sensor.eikenbos_temperature') }}"

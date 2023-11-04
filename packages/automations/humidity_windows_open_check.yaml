@@ -19,7 +19,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.eikenbos_average_temperature  
+    entity_id: sensor.eikenbos_temperature  
   - platform: state
     entity_id: sensor.gram_water_living    
   condition:
@@ -68,7 +68,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.eikenbos_average_temperature    
+    entity_id: sensor.eikenbos_temperature    
   - platform: state
     entity_id: sensor.gram_water_kamer_amilya    
   condition:
@@ -117,7 +117,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.eikenbos_average_temperature    
+    entity_id: sensor.eikenbos_temperature    
   - platform: state
     entity_id: sensor.gram_water_veranda    
   condition:
@@ -168,7 +168,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.eikenbos_average_temperature    
+    entity_id: sensor.eikenbos_temperature    
   - platform: state
     entity_id: sensor.gram_water_berging
   condition:
@@ -225,7 +225,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.eikenbos_average_temperature
+    entity_id: sensor.eikenbos_temperature
   - platform: state
     entity_id: sensor.gram_water_badkamer
   condition:
@@ -274,7 +274,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.eikenbos_average_temperature    
+    entity_id: sensor.eikenbos_temperature    
   - platform: state
     entity_id: sensor.gram_water_gang    
   condition:
@@ -331,7 +331,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.eikenbos_average_temperature    
+    entity_id: sensor.eikenbos_temperature    
   - platform: state
     entity_id: sensor.gram_water_kamer_alunya    
   condition:
@@ -380,7 +380,7 @@ automation:
   - platform: state
     entity_id: sensor.gram_water_outside
   - platform: state
-    entity_id: sensor.eikenbos_average_temperature    
+    entity_id: sensor.eikenbos_temperature    
   - platform: state
     entity_id: sensor.gram_water_master_bedroom    
   condition:

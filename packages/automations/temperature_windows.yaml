@@ -46,7 +46,7 @@ automation:
   - condition: template
     value_template: "{{ states('sensor.kamer_amilya_temperature') | float > 23 }}"
   - condition: template
-    value_template: "{{ states('sensor.kamer_amilya_temperature') > states('sensor.leuven_temperature') }}"
+    value_template: "{{ states('sensor.kamer_amilya_temperature') > states('sensor.eikenbos_temperature') }}"
   - condition: zone
     entity_id: person.bart
     zone: zone.home
@@ -56,7 +56,7 @@ automation:
   action:
   - service: notify.bart_phone
     data:
-      message: "Temperatuur in kamer Amilya is {{states('sensor.kamer_amilya_temperature')}}°C. Buiten {{states('sensor.leuven_temperature')}}°C."
+      message: "Temperatuur in kamer Amilya is {{states('sensor.kamer_amilya_temperature')}}°C. Buiten {{states('sensor.eikenbos_temperature')}}°C."
       title: Open het raam van Amilya!
       data:
         color: blue
@@ -82,7 +82,7 @@ automation:
   - condition: template
     value_template: "{{ states('sensor.kamer_amilya_temperature') | float > 23 }}"
   - condition: template
-    value_template: "{{ states('sensor.kamer_amilya_temperature') > states('sensor.leuven_temperature') }}"
+    value_template: "{{ states('sensor.kamer_amilya_temperature') > states('sensor.eikenbos_temperature') }}"
   - condition: zone
     entity_id: person.madouce
     zone: zone.home
@@ -92,7 +92,7 @@ automation:
   action:
   - service: notify.madouce_phone
     data:
-      message: "Temperatuur in kamer Amilya is {{states('sensor.kamer_amilya_temperature')}}°C. Buiten {{states('sensor.leuven_temperature')}}°C."
+      message: "Temperatuur in kamer Amilya is {{states('sensor.kamer_amilya_temperature')}}°C. Buiten {{states('sensor.eikenbos_temperature')}}°C."
       title: Open het raam van Amilya!
       data:
         color: blue
@@ -139,7 +139,7 @@ automation:
   trigger:
   - platform: template
     value_template: >
-      {% set outdoor = states('sensor.leuven_temperature') |float %}
+      {% set outdoor = states('sensor.eikenbos_temperature') |float %}
       {% set indoor =  states('sensor.living_temperature') |float %}
       {% if outdoor < indoor %} true
       {% endif %}
@@ -165,7 +165,7 @@ automation:
         tag: window_living
         notification_icon: "mdi:window-closed-variant"
   variables:
-    outdoor: "{{ states('sensor.leuven_temperature') |float }}"
+    outdoor: "{{ states('sensor.eikenbos_temperature') |float }}"
     indoor: "{{ states('sensor.living_temperature')| float }}"         
 
 - alias: buiten kouder geworden dan in veranda = melding
@@ -174,7 +174,7 @@ automation:
   trigger:
   - platform: template
     value_template: >
-      {% set outdoor = states('sensor.leuven_temperature') |float %}
+      {% set outdoor = states('sensor.eikenbos_temperature') |float %}
       {% set indoor =  states('sensor.veranda_temperature') |float %}
       {{ outdoor < indoor }}
   condition:
@@ -199,7 +199,7 @@ automation:
           tag: window_veranda 
           notification_icon: "mdi:window-closed-variant"      
   variables:
-    outdoor: "{{ states('sensor.leuven_temperature') |float }}"
+    outdoor: "{{ states('sensor.eikenbos_temperature') |float }}"
     indoor: "{{ states('sensor.veranda_temperature') |float }}"           
 
 - alias: buiten kouder geworden dan in kamer Amilya = melding
@@ -208,7 +208,7 @@ automation:
   trigger:
   - platform: template
     value_template: >
-      {% set outdoor = states('sensor.leuven_temperature') |float %}
+      {% set outdoor = states('sensor.eikenbos_temperature') |float %}
       {% set indoor =  states('sensor.kamer_amilya_temperature') |float %}
       {{ outdoor < indoor }}
   condition:
@@ -233,7 +233,7 @@ automation:
           tag: window_amilya
           notification_icon: "mdi:window-closed-variant"                 
   variables:
-    outdoor: "{{ states('sensor.leuven_temperature') |float }}"
+    outdoor: "{{ states('sensor.eikenbos_temperature') |float }}"
     indoor: "{{ states('sensor.kamer_amilya_temperature') |float }}"           
 
 - alias: buiten kouder geworden dan in kamer Alunya = melding
@@ -242,7 +242,7 @@ automation:
   trigger:
   - platform: template
     value_template: >
-      {% set outdoor = states('sensor.leuven_temperature') |float %}
+      {% set outdoor = states('sensor.eikenbos_temperature') |float %}
       {% set indoor =  states('sensor.kamer_alunya_temperature') |float %}
       {{ outdoor < indoor }}
   condition:
@@ -267,7 +267,7 @@ automation:
           tag: window_alunya
           notification_icon: "mdi:window-closed-variant"               
   variables:
-    outdoor: "{{ states('sensor.leuven_temperature') |float }}"
+    outdoor: "{{ states('sensor.eikenbos_temperature') |float }}"
     indoor: "{{ states('sensor.kamer_alunya_temperature') |float }}"          
 
 - alias: buiten kouder geworden dan in master bedroom = melding
@@ -276,7 +276,7 @@ automation:
   trigger:
   - platform: template
     value_template: >
-      {% set outdoor = states('sensor.leuven_temperature') |float %}
+      {% set outdoor = states('sensor.eikenbos_temperature') |float %}
       {% set indoor =  states('sensor.master_bedroom_temperature') |float %}
       {{ outdoor < indoor }}
   condition:
@@ -301,5 +301,5 @@ automation:
           tag: window_master_bedroom
           notification_icon: "mdi:window-closed-variant"             
   variables:
-    outdoor: "{{ states('sensor.leuven_temperature') |float }}"
+    outdoor: "{{ states('sensor.eikenbos_temperature') |float }}"
     indoor: "{{ states('sensor.master_bedroom_temperature') |float }}"

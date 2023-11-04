@@ -57,7 +57,7 @@ automation:
     entity_id: sensor.master_bedroom_humidity
     above: '75'
   - condition: numeric_state
-    entity_id: sensor.leuven_humidity
+    entity_id: sensor.eikenbos_humidity
     above: '75'
   action:
   - service: notify.bart_phone

@@ -104,7 +104,7 @@ automation:
 # Aircoverwarming gaat UIT bij de trigger:
 # - het schema gaat op "uit" 
 # - Alunya verlaat het huis
-# - pp einduur van de timer
+# - op einduur van de timer
 # - wanneer het raam opengaat
 
 - alias: "♨️ airco heating // Alunya // uit volgens volgens schema/verlaten huis/timer stop"

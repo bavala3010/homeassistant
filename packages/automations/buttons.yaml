@@ -89,7 +89,7 @@ automation:
         cache: true
         message: >-
           Het is nu {{ as_timestamp(now()) |timestamp_custom('%-H') }} uur {{
-          as_timestamp(now()) |timestamp_custom('%-M') }}. Buiten is het {{ states('sensor.leuven_temperature') |string|replace('.', ',') }} graden.
+          as_timestamp(now()) |timestamp_custom('%-M') }}. Buiten is het {{ states('sensor.eikenbos_temperature') |string|replace('.', ',') }} graden.
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.veranda_speaker', 'idle')}}"
     - service: tts.edge_tts_say 
@@ -194,7 +194,7 @@ automation:
         cache: true
         message: >-
           Goedemorgen. Het is nu {{ as_timestamp(now()) |timestamp_custom('%-H') }} uur {{
-          as_timestamp(now()) |timestamp_custom('%-M') }}. Buiten is het {{ states('sensor.leuven_temperature') |string|replace('.', ',') }} graden.
+          as_timestamp(now()) |timestamp_custom('%-M') }}. Buiten is het {{ states('sensor.eikenbos_temperature') |string|replace('.', ',') }} graden.
           Het wordt vandaag maximum {{ states('input_number.weather_eikenbos_max_temp_today') | replace(".", ",") }} graden.
           De volgende 4 uren wordt het {{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | round() }} graden.
     - delay: '00:00:02'

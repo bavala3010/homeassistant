@@ -20,7 +20,7 @@
 {% endmacro %}
 
 {% macro openwindow_humidityimpact(r) %}
-{% set o_rh = states('sensor.leuven_humidity') | float(default=0) %}
+{% set o_rh = states('sensor.eikenbos_humidity') | float(default=0) %}
 {% set o_ah = states('sensor.outside_thermal_absolute_humidity') | float(default=0) %}
 {% set r_rh_name = 'sensor.' ~ r ~ '_humidity' %}
 {% set r_rh = states( r_rh_name) | float(default=0) %}
@@ -37,7 +37,7 @@
 {% endmacro %}
 
 {% macro openwindow_temperatureimpact(r) %}
-{% set o_t = states('sensor.leuven_temperature') | float(default=0) %}
+{% set o_t = states('sensor.eikenbos_temperature') | float(default=0) %}
 {% set r_t_name = 'sensor.' ~ r ~ '_temperature' %}
 {% set r_t = states( r_t_name) | float(default=0) %}
 {# check temperature difference #}
@@ -55,7 +55,7 @@
 
 
 {% macro openwindow_checklimits(r) %}
-{% set o_t = states('sensor.leuven_temperature') | float(default=0) %}
+{% set o_t = states('sensor.eikenbos_temperature') | float(default=0) %}
 {% set r_t_name = 'sensor.' ~ r ~ '_temperature' %}
 {% set r_t = states( r_t_name) | float(default=0) %}
 {# check temperature difference #}

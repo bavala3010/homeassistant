@@ -6,14 +6,24 @@
 # https://www.wunderground.com/dashboard/pws/ILEUVE24
 
 scrape:
-- resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
+# - resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
+#   scan_interval: 240
+#   sensor:
+#   - name: leuven_temperature_wunderground
+#     select: "#main-page-content > div > div > div > div:nth-child(2) > div > lib-tile-current-conditions > div > div.module__body > div > div.small-4.columns.text-left.conditions-temp > div.main-temp > lib-display-unit > span > span.wu-value.wu-value-to"
+#     # convert Farenheit to Celcius
+#     value_template: '{{ ((value | float(default=0) -32) * (5/9)) |round(1) }}'
+#     unit_of_measurement: "°C"
+
+- resource: "https://www.wunderground.com/weather/be/leuven"
   scan_interval: 240
   sensor:
-  - name: leuven_temperature_wunderground
-    select: "#main-page-content > div > div > div > div:nth-child(2) > div > lib-tile-current-conditions > div > div.module__body > div > div.small-4.columns.text-left.conditions-temp > div.main-temp > lib-display-unit > span > span.wu-value.wu-value-to"
+  - name: leuven_temperature
+    select: "#inner-content > div.region-content-main > div:nth-child(1) > div > div:nth-child(1) > div:nth-child(1) > lib-city-current-conditions > div > div.conditions-circle-wrap.small-12.medium-7.columns.text-center > div > div > div.current-temp > lib-display-unit > span > span.wu-value.wu-value-to"
     # convert Farenheit to Celcius
     value_template: '{{ ((value | float(default=0) -32) * (5/9)) |round(1) }}'
     unit_of_measurement: "°C"
+
 
 - resource: "https://www.wunderground.com/dashboard/pws/ILEUVE24"
   scan_interval: 240
@@ -63,19 +73,19 @@ scrape:
     select: "#precip-graph > div > lib-precipitation-graph-alert > div > h2 > span"
 
 
-sensor:
-  - platform: filter
-    name: "leuven temperature"
-    entity_id: sensor.leuven_temperature_wunderground
-    filters:
-      - filter: outlier
-        window_size: 4
-        radius: 2.0
+# sensor:
+#   - platform: filter
+#     name: "leuven temperature"
+#     entity_id: sensor.leuven_temperature_wunderground
+#     filters:
+#       - filter: outlier
+#         window_size: 4
+#         radius: 2.0
 
-  - platform: filter
-    name: "leuven humidity"
-    entity_id: sensor.leuven_humidity_wunderground
-    filters:
-      - filter: outlier
-        window_size: 4
-        radius: 2.0
+#   - platform: filter
+#     name: "leuven humidity"
+#     entity_id: sensor.leuven_humidity_wunderground
+#     filters:
+#       - filter: outlier
+#         window_size: 4
+#         radius: 2.0

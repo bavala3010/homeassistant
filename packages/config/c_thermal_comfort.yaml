@@ -2,8 +2,8 @@ sensor:
   - platform: thermal_comfort
     sensors:
       outside_thermal:
-        temperature_sensor: sensor.leuven_temperature
-        humidity_sensor: sensor.leuven_humidity
+        temperature_sensor: sensor.eikenbos_temperature
+        humidity_sensor: sensor.eikenbos_humidity
         unique_id: 6fe97956-c6ec-4bd7-90e5-c4779f621575
       living_thermal:
         temperature_sensor: sensor.living_temperature

@@ -13,8 +13,8 @@ sensor:
         unit_of_measurement: 'g/m³'
         icon_template: mdi:water
         value_template: >
-          {% set t = states('sensor.leuven_temperature') | float(default=0) %}
-          {% set h = states('sensor.leuven_humidity') | float(default=0) %}
+          {% set t = states('sensor.eikenbos_temperature') | float(default=0) %}
+          {% set h = states('sensor.eikenbos_humidity') | float(default=0) %}
           {{ ((e ** ((17.67 * (t)) / (243.5 + (t)) ) * 6.112 * (h) * 2.1674 ) / (273.15 + (t))) | round(1) }}
 
       gram_water_living:
@@ -180,7 +180,7 @@ sensor:
       outside_enthalpy:
         friendly_name: 'enthalpy buiten'
         unit_of_measurement: KJ/kg      
-        value_template: "{{ (1.006 * (states('sensor.leuven_temperature') | float(default=0) )) + ( (states('sensor.outside_thermal_absolutehumidity') | float(default=0) / 1000) * (2501 + 1.84 * (states('sensor.leuven_temperature') | float(default=0) ))) | round (2) }}" 
+        value_template: "{{ (1.006 * (states('sensor.eikenbos_temperature') | float(default=0) )) + ( (states('sensor.outside_thermal_absolutehumidity') | float(default=0) / 1000) * (2501 + 1.84 * (states('sensor.eikenbos_temperature') | float(default=0) ))) | round (2) }}" 
 
       veranda_enthalpy:
         friendly_name: 'enthalpy veranda'

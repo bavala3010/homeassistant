@@ -11,8 +11,8 @@ sensor:
 
     bart_phone_room:
       value_template: >
-        {% set wifi_bssid = states('sensor.sm_g975f_wifi_bssid') %}
-        {% set wifi_signal = states('sensor.sm_g975f_wifi_signal_strength') | float %}
+        {% set wifi_bssid = states('sensor.sm_s916b_wifi_bssid') %}
+        {% set wifi_signal = states('sensor.sm_s916b_wifi_signal_strength') | float %}
         {% if  wifi_bssid == "cc:f4:11:77:bf:82" %}
           living
         {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-80 < wifi_signal <= -67) %}
@@ -21,8 +21,12 @@ sensor:
           badkamer
         {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-55 < wifi_signal < -30) %}
           gang
-        {% elif wifi_bssid == "cc:f4:11:4c:c1:73" %}
+        {% elif wifi_bssid == "cc:f4:11:4c:c1:73" and (-55 < wifi_signal < -1) %}
           veranda
+        {% elif wifi_bssid == "cc:f4:11:4c:c1:73" and (-70 < wifi_signal < -56) %}
+          terras
+        {% elif wifi_bssid == "cc:f4:11:4c:c1:73" and ( wifi_signal < -70) %}
+          badkamer
         {% elif wifi_bssid != "cc:f4:11:77:bf:82" and wifi_bssid != "cc:f4:11:43:8f:b5" and wifi_bssid != "cc:f4:11:4c:c1:73" %}
           niet thuis
         {% else %}
@@ -42,8 +46,12 @@ sensor:
           badkamer
         {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-55 < wifi_signal < -30) %}
           gang
-        {% elif wifi_bssid == "cc:f4:11:43:8f:b9" %}
+        {% elif wifi_bssid == "cc:f4:11:4c:c1:73" and (-55 < wifi_signal < -1) %}
           veranda
+        {% elif wifi_bssid == "cc:f4:11:4c:c1:73" and (-70 < wifi_signal < -56) %}
+          terras
+        {% elif wifi_bssid == "cc:f4:11:4c:c1:73" and ( wifi_signal < -70) %}
+          badkamer          
         {% elif wifi_bssid != "cc:f4:11:77:bf:82" and wifi_bssid != "cc:f4:11:43:8f:b5" and wifi_bssid != "cc:f4:11:4c:c1:73" %}
           niet thuis
         {% else %}

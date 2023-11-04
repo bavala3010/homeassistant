@@ -259,3 +259,111 @@
     data:
       message: Auto is {{ states('sensor.car_1_soc') }}% geladen.
   mode: single
+- id: '1691840935541'
+  alias: Bart komt thuis na fietsen = doe garagepoort open
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.sm_s916b_wifi_connection
+    to: BMWifi
+  - platform: state
+    entity_id:
+    - sensor.sm_s916b_wifi_connection
+    to: BMWifiBackup
+  condition:
+  - condition: template
+    value_template: '{% set act = states(''sensor.sm_s916b_detected_activity'') %}
+      {{ act == "on_bicycle" }} # {{ act == "on_bicycle" or act == "walking" }}'
+  - condition: template
+    value_template: '{% set dif = as_timestamp(now()) - as_timestamp(states.cover.garagepoort.last_changed)
+      %} {{ dif > 120 }}    '
+  action:
+  - service: notify.bart_phone
+    data:
+      message: TTS
+      data:
+        tts_text: Welkom thuis Bart. De garagepoort gaat nu open.
+        ttl: 0
+        priority: high
+        media_stream: alarm_stream_max
+  - service: cover.open_cover
+    target:
+      entity_id: cover.garagepoort
+    data: {}
+  mode: single
+- id: '1691846149230'
+  alias: Madouce komt thuis na fietsen = doe garagepoort open
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.sm_g986b_wifi_connection
+    to: BMWifi
+  - platform: state
+    entity_id:
+    - sensor.sm_g986b_wifi_connection
+    to: BMWifiBackup
+  condition:
+  - condition: template
+    value_template: '{% set act = states(''sensor.sm_g986b_detected_activity'') %}
+      {{ act == "on_bicycle" }} # {{ act == "on_bicycle" or act == "walking" }}'
+  - condition: template
+    value_template: '{% set dif = as_timestamp(now()) - as_timestamp(states.cover.garagepoort.last_changed)
+      %} {{ dif > 120 }}    '
+  action:
+  - service: notify.bart_phone
+    data:
+      message: TTS
+      data:
+        tts_text: Welkom thuis Madoes. De garagepoort gaat nu open.
+        ttl: 0
+        priority: high
+        media_stream: alarm_stream_max
+  - service: cover.open_cover
+    target:
+      entity_id: cover.garagepoort
+    data: {}
+  mode: single
+- id: '1691846545004'
+  alias: Bart komt thuis na fietsen (iPhone) = doe garagepoort open
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.iphone_ssid
+    to: BMWifi
+  condition:
+  - condition: template
+    value_template: '{% set act = states(''sensor.iphone_activity'') %} {{ act ==
+      "cycling" }}'
+  - condition: template
+    value_template: '{% set dif = as_timestamp(now()) - as_timestamp(states.cover.garagepoort.last_changed)
+      %} {{ dif > 120 }}    '
+  action:
+  - service: cover.open_cover
+    target:
+      entity_id: cover.garagepoort
+    data: {}
+  mode: single
+- id: '1694120074755'
+  alias: Amilya airco uit om 0u, 1u en 2u
+  description: ''
+  trigger:
+  - platform: time
+    at: 01:00:00
+  - platform: time
+    at: 02:00:00
+  - platform: time
+    at: 00:00:00
+  - platform: time
+    at: 06:00:00
+  - platform: time
+    at: 05:00:00
+  condition: []
+  action:
+  - service: climate.turn_off
+    data: {}
+    target:
+      entity_id: climate.amilya_airco
+  mode: single

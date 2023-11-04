@@ -339,4 +339,28 @@ automation:
         data:
           color: red
           tag: auto_error                  
-  mode: single  
+  mode: single
+
+- alias: car charger conflict
+  id: '1dec6032-66a2-4437-817e-d93bf1eb2ba3'
+  description: ""
+  trigger:
+  - platform: template
+    # when real power of charger is 0 for more than 2 minutes  
+    value_template: >
+      {% set t = ((as_timestamp(now()) - as_timestamp(states.sensor.charger_real_power.last_changed)) / 60 )| int() %}
+      {{ states('sensor.charger_actual_applied_maxcurrent') > '5' and states('sensor.charger_real_power') =="0" and t >= 2}}
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: 🚙 Conflict met lader
+      message: De laadpaal wil laden aan {{ states('sensor.charger_actual_applied_maxcurrent') }}, maar de auto reageert niet.
+      data:
+        color: red
+        tag: auto_laden
+        actions:
+        - action: URI
+          title: meer info
+          uri: /dashboard-car/car
+  mode: single          

@@ -38,8 +38,8 @@ automation:
         Impact op vocht: {{ h }}/4<br>
         Acceptatie temperatuursverschil: {{ t }}/4<br>
         Vocht master bedroom: {{states('sensor.gram_water_master_bedroom') | round(1) }} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
-        Vocht master bedroom: {{states('sensor.master_bedroom_humidity')}}%. Buiten: {{states('sensor.leuven_humidity')}}%.<br>
-        Temp master bedroom: {{states('sensor.master_bedroom_temperature')}} °C. Buiten: {{states('sensor.eikenbos_average_temperature')}} °C.
+        Vocht master bedroom: {{states('sensor.master_bedroom_humidity')}}%. Buiten: {{states('sensor.eikenbos_humidity')}}%.<br>
+        Temp master bedroom: {{states('sensor.master_bedroom_temperature')}} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.
   variables:
     result: >
         {% from 'humidity_windows.jinja' import openwindow_urgency, openwindow_humidityimpact, openwindow_temperatureimpact  %}
