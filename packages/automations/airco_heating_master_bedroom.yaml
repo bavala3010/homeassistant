@@ -76,6 +76,6 @@ automation:
             entity_id: input_number.master_bedroom_airco_timer_minutes
         - delay:
             seconds: 2
-        - service: script.master_bedroom_airco_start
+        - service: script.master_bedroom_airco_start_heating
           data: {}
 

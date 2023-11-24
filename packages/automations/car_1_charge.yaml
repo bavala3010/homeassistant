@@ -124,6 +124,9 @@ automation:
   mode: single
 
 
+# input_number.car_1_target_range
+# input_number.car_1_target_range
+
 #######################################
 # Target range / SOC
 ######################################
@@ -133,14 +136,14 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: input_number.car_charge_target_percentage
+    entity_id: input_number.car_1_optimal_target_soc
   condition: []
   action:
   - service: input_number.set_value
     target:
-      entity_id: input_number.car_charge_target_range
+      entity_id: input_number.car_1_target_range
     data:
-      value: "{{ ((states('input_number.car_charge_target_percentage') | float(default=0) ) * (states('sensor.car_range_per_10percent')| float(default=0)) / 10) | int }}"
+      value: "{{ ((states('input_number.car_1_optimal_target_soc') | float(default=0) ) * (states('sensor.car_range_per_10percent')| float(default=0)) / 10) | int }}"
   - wait_template: ''
     timeout: '00:00:02'      
   mode: single
@@ -151,18 +154,19 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: input_number.car_charge_target_range
+    entity_id: input_number.car_1_target_range
   condition: []
   action:
   - service: input_number.set_value
     target:
-      entity_id: input_number.car_charge_target_percentage
+      entity_id: input_number.car_1_optimal_target_soc
     data:
-      value: "{{ ((states('input_number.car_charge_target_range') | float(default=0) ) / (states('sensor.car_range_per_10percent')| float(default=0)) * 10) | int }}"
+      value: "{{ ((states('input_number.car_1_target_range') | float(default=0) ) / (states('sensor.car_range_per_10percent')| float(default=0)) * 10) | int }}"
   - wait_template: ''
     timeout: '00:00:02'  
   mode: single
   max_exceeded: silent
+
 
 
 #######################################
@@ -291,6 +295,8 @@ automation:
         - condition: state
           entity_id: person.bart
           state: home
+        - condition: template
+          value_template: "{{ 7 < now().hour < 23 }}"          
       then:
         - service: notify.bart_phone
           data:
@@ -346,10 +352,10 @@ automation:
   description: ""
   trigger:
   - platform: template
-    # when real power of charger is 0 for more than 2 minutes  
+    # when real power of charger is 0 for more than 3 minutes  
     value_template: >
-      {% set t = ((as_timestamp(now()) - as_timestamp(states.sensor.charger_real_power.last_changed)) / 60 )| int() %}
-      {{ states('sensor.charger_actual_applied_maxcurrent') > '5' and states('sensor.charger_real_power') =="0" and t >= 2}}
+      {% set t = ((as_timestamp(now()) - as_timestamp(states.sensor.charger_current_power.last_changed)) / 60 )| int() %}
+      {{ states('sensor.charger_actual_applied_maxcurrent') > '5' and states('sensor.charger_current_power') =="0" and t >= 3}}
   condition: []
   action:
   - service: notify.bart_phone
@@ -363,4 +369,38 @@ automation:
         - action: URI
           title: meer info
           uri: /dashboard-car/car
-  mode: single          
+  mode: single
+
+- alias: "🚗 car 1 // 🔋 charge // einde van de zonne-energie productie = check doel om te laden van net"
+  id: '0f427537-d4dd-45b9-9323-46eba24bac39'
+  description: ''
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.solar_power
+      for:
+        hours: 0
+        minutes: 10
+        seconds: 0
+      below: "1"
+  condition:
+  - condition: template
+    value_template: >
+      {% set target = states('input_number.car_1_optimal_target_soc') | round(default=0) %}
+      {% set soc = states('sensor.car_1_soc') | round(default=0) %}
+      {{ soc < target }}
+  action:
+    - service: notify.bart_phone
+      data:
+        title: "🚗 Laaddoel nog niet bereikt."
+        message: >
+          {% set target = states('input_number.car_1_optimal_target_soc') | round(default=0) %}
+          {% set soc = states('sensor.car_1_soc') | round(default=0) %}
+          Het laaddoel van {{ target }} % is nog niet bereikt.<br>
+          De auto heeft nu {{ soc }} %.
+          Wenst u over te schakelen op laden van het net?
+        data:
+          tag: car_charging
+          color: green
+          clickAction: "/dashboard-car/car-charging"           
+          notification_icon: mdi:car-electric
+  mode: single

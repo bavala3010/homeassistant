@@ -55,7 +55,7 @@ automation:
       value: 30
     target:
       entity_id: input_number.amilya_airco_timer_minutes
-  - service: script.amilya_airco_start
+  - service: script.amilya_airco_start_heating
     data: {} 
   mode: restart
 
@@ -87,7 +87,7 @@ automation:
             entity_id: input_number.amilya_airco_timer_minutes
         - delay:
             seconds: 2
-        - service: script.amilya_airco_start
+        - service: script.amilya_airco_start_heating
           data: {} 
 
 
@@ -148,7 +148,7 @@ automation:
   condition:
   - condition: time
     after: '23:00:00'
-    before: 06:15:00
+    before: 06:30:00
   - condition: template
     value_template: "{{trigger.to_state.context.user_id == '7678e64f5e984bc2aac5d1d92cc318eb'}}"
   action:
@@ -194,7 +194,7 @@ automation:
       value: 30
     target:
       entity_id: input_number.amilya_airco_timer_minutes
-  - service: script.amilya_airco_start
+  - service: script.amilya_airco_start_heating
     data: {}            
   mode: restart
 
@@ -205,7 +205,7 @@ automation:
   trigger:
   - platform: template
     value_template: >
-      {{ states('sensor.kamer_amilya_temperature') | float > states('input_number.amilya_airco_target_temperature') | float }}    
+      {{ states('sensor.kamer_amilya_temperature') | float > states('input_number.amilya_airco_target_temperature') | float }}
   condition: []
   action:  
   - service: climate.turn_off

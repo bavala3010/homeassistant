@@ -6,7 +6,7 @@ sensor:
         unique_id: '6d159574-486d-4e8f-85dc-f5965cfa4647' 
         unit_of_measurement: W
         value_template: >
-          {% set charger = states('sensor.charger_real_power') | float(default=0) %}
+          {% set charger = states('sensor.charger_current_power') | float(default=0) %}
           {% set solar = states('sensor.solar_power') | float(default=0) %}
           {% if charger > 0 and solar >= charger %}
             {{ charger }}
@@ -21,7 +21,7 @@ sensor:
         unique_id: 'b4a3fda6-2a3e-44f0-aa8b-ae833b86acf0' 
         unit_of_measurement: W
         value_template: >
-          {% set charger = states('sensor.charger_real_power') | float(default=0) %}
+          {% set charger = states('sensor.charger_current_power') | float(default=0) %}
           {% set solar = states('sensor.solar_power') | float(default=0) %}
           {% set net = states('sensor.net_power') | float(default=0) %}
           {% if solar <= charger %}
@@ -45,13 +45,13 @@ sensor:
     unit_time: h
 
   - platform: integration
-    source: sensor.charger_real_power
+    source: sensor.charger_current_power
     name: charger total power
     unit_prefix: k
     unit_time: h
 
   - platform: integration
-    source: sensor.charger_real_power
+    source: sensor.charger_current_power
     name: charger energieverbruik
     method: left
     unit_prefix: k

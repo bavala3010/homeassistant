@@ -7,9 +7,7 @@
 #   entity_id: climate.amilya_airco
 
 
-
-
-amilya_airco_start:
+amilya_airco_start_heating:
   sequence:
   - condition: template
     value_template: >-
@@ -30,9 +28,9 @@ amilya_airco_start:
   - service: climate.set_temperature
     data:
       hvac_mode: heat
-      temperature: >
-        {% set adj = states('input_number.amilya_airco_target_temperature') | float - states('sensor.kamer_amilya_temperature') | float %}
-        {{ (state_attr('climate.amilya_airco', 'current_temperature') + adj) | round(1, 'half', 0)}}       
+      temperature: 23
+        # {% set adj = states('input_number.amilya_airco_target_temperature') | float - states('sensor.kamer_amilya_temperature') | float %}
+        # {{ (state_attr('climate.amilya_airco', 'current_temperature') + adj) | round(1, 'half', 0)}}
     target:
       device_id: 61864d1ab32c5af91d5f13faf697c27e
   - service: climate.set_preset_mode
@@ -45,20 +43,23 @@ amilya_airco_start:
       fan_mode: auto
     target:
       device_id: 61864d1ab32c5af91d5f13faf697c27e
-  - delay:
-      minutes: 5
-  - service: climate.set_temperature
-    data:
-      hvac_mode: heat
-      temperature: >
-        {% set adj = states('input_number.amilya_airco_target_temperature') | float - states('sensor.kamer_amilya_temperature') | float %}
-        {{ (state_attr('climate.amilya_airco', 'current_temperature') + adj) | round(1, 'half', 0)}}
-    target:
-      device_id: 61864d1ab32c5af91d5f13faf697c27e                  
+  # - delay:
+  #     minutes: 5
+  # - service: climate.set_temperature
+  #   data:
+  #     hvac_mode: heat
+  #     temperature: >
+  #       {% set adj = states('input_number.amilya_airco_target_temperature') | float - states('sensor.kamer_amilya_temperature') | float %}
+  #       {{ (state_attr('climate.amilya_airco', 'current_temperature') + adj) | round(1, 'half', 0)}}
+  #   target:
+  #     device_id: 61864d1ab32c5af91d5f13faf697c27e                  
   mode: restart
 
 amilya_airco_19:
   sequence:
+  - condition: time
+    after: '06:30:00'
+    before: '23:00:00'  
   - service: input_number.set_value
     data:
       value: 19
@@ -69,12 +70,15 @@ amilya_airco_19:
       value: 30
     target:
       entity_id: input_number.amilya_airco_timer_minutes
-  - service: script.amilya_airco_start
+  - service: script.amilya_airco_start_heating
     data: {} 
   mode: restart
 
 amilya_airco_20:
   sequence:
+  - condition: time
+    after: '06:30:00'
+    before: '23:00:00'  
   - service: input_number.set_value
     data:
       value: 20
@@ -85,12 +89,15 @@ amilya_airco_20:
       value: 30
     target:
       entity_id: input_number.amilya_airco_timer_minutes
-  - service: script.amilya_airco_start
+  - service: script.amilya_airco_start_heating
     data: {} 
   mode: restart
 
 amilya_airco_21:
   sequence:
+  - condition: time
+    after: '06:30:00'
+    before: '23:00:00'
   - service: input_number.set_value
     data:
       value: 21
@@ -101,12 +108,12 @@ amilya_airco_21:
       value: 30
     target:
       entity_id: input_number.amilya_airco_timer_minutes
-  - service: script.amilya_airco_start
+  - service: script.amilya_airco_start_heating
     data: {} 
   mode: restart
 
 amilya_airco_stop:
-  sequence:
+  sequence:  
   - service: climate.turn_off
     data: {}
     target:
@@ -126,3 +133,27 @@ amilya_airco_stop:
     target:
       entity_id: timer.amilya_airco_timer
   mode: restart
+
+amilya_airco_increment_temperature:
+  sequence:
+    - variables:
+        target_temperature: "{{ states('input_number.amilya_airco_target_temperature') | float }}"
+        current_temperature: "{{ state_attr('climate.amilya_airco', 'current_temperature') | float }}"
+        intermediate_temperature: "{{ states('input_number.amilya_airco_intermediate_temperature') | float }}"
+        step: 1 # Stel de stapgrootte in
+    - repeat:
+        while:
+        - condition: template
+          value_template: "{{ current_temperature < target_temperature }}"
+        sequence:
+          - service: climate.set_temperature
+            data:
+              temperature: "{{ current_temperature + step }}"
+            target:
+              device_id: 61864d1ab32c5af91d5f13faf697c27e
+          - service: input_number.set_value
+            data:
+              value: "{{ current_temperature + step }}"
+            target:
+              entity_id: input_number.amilya_airco_intermediate_temperature
+          - wait_template: "{{ current_temperature >= intermediate_temperature }}"  

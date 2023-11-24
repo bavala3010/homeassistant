@@ -34,7 +34,7 @@ automation:
     - condition: template
       # check in calendar if car is supposed to be at home
       value_template: >
-        {% set t = 'input_select.car_use_day_' ~ now().date().isoweekday() %}
+        {% set t = 'input_select.car_1_use_day_' ~ now().date().isoweekday() %}
         {% set loc = states(t) %}
         {% if loc =="thuis" %}true
         {% endif %}
@@ -45,7 +45,7 @@ automation:
           message: >
             Nu {{ states('sensor.net_power') | float | round(0) | abs }} W injectie in het net.<br>
             Eventueel auto laden? Auto nu {{states('sensor.car_1_soc') | round()}}%.<br>
-            Vandaag moet er geladen worden tot {{states('input_number.car_charge_target_percentage') | round() }}%.
+            Vandaag moet er geladen worden tot {{states('input_number.car_1_optimal_target_soc') | round() }}%.
           data:
             color: yellow
             tag: solar

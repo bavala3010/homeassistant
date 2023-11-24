@@ -81,9 +81,7 @@ automation:
   - condition: template
     value_template: "{{ now().hour < 2 or now().hour > 20 }}"
   action:
-    - service: tts.speak 
-      target:
-        entity_id: tts.piper    
+    - service: tts.edge_tts_say
       data:
         entity_id: media_player.master_bedroom_speaker
         cache: true
@@ -114,7 +112,7 @@ automation:
         entity_id: media_player.master_bedroom_speaker
         message: >-
           {% set soc = states('sensor.car_1_soc') | int %}
-          {% set target = states('input_number.car_charge_target_percentage') | int %}
+          {% set target = states('input_number.car_1_optimal_target_soc') | int %}
           {% set watt = states('input_number.car_charge_fixed_wattage') %}          
           De auto is {{ soc }}% geladen.
           {% if soc < target %}
@@ -212,7 +210,7 @@ automation:
         entity_id: media_player.master_bedroom_speaker
         message: >-
           {% set soc = states('sensor.car_1_soc') | int %}
-          {% set target = states('input_number.car_charge_target_percentage') | int %}
+          {% set target = states('input_number.car_1_optimal_target_soc') | int %}
           {% set watt = states('input_number.car_charge_fixed_wattage') %}          
           De auto is {{ soc }}% geladen.
           {% if soc < target %}

@@ -4,3 +4,12 @@ lovelace:
       type: module
     - url: /hacsfiles/battery-state-card/battery-state-card.js
       type: module      
+
+    # https://github.com/r-renato/ha-card-weather-conditions
+    # if you have installed the card through the HACS integration
+    - url: /hacsfiles/ha-card-weather-conditions/ha-card-weather-conditions.js
+      type: module
+    # Optional:
+    # adding the card-mod plugin enable an advanced card look configuration
+    - url: /hacsfiles/lovelace-card-mod/card-mod.js
+      type: module

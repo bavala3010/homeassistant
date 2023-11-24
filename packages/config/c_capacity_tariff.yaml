@@ -2,35 +2,35 @@
 sensor:
 - platform: template
   sensors:
-    max_peak:
-      friendly_name: Maximum piek
-      unique_id: '467b58be-1ac0-4f2d-9386-20acc93f836d'
+    power_peak:
+      friendly_name: piekvermogen
+      unique_id: 'f793ef1d-792b-4fc4-aa85-2ad8f0d75d1e'
       unit_of_measurement: kW
       device_class: power
       value_template: >
         {% set peak = ((states.sensor.quarter_hourly_net_power.state | float(default=0)) * 4) %}
-        {% set max_peak = (states.input_number.max_peak.state | float(default=0)) %}
+        {% set max_peak = (states.input_number.power_peak.state | float(default=0)) %}
         {% macro max(X, Y) -%} {{X|float if X|float > Y|float else Y|float }} {%- endmacro %}
         {{ max(max_peak, peak) }}
 
-    year_peak:
+    power_peak_year:
       friendly_name: Gemiddelde jaarpiek
-      unique_id: d4092d00-fc23-41cc-a673-34b7971b3d2d
+      unique_id: 113c7524-3a86-4930-86b7-ee941461742c
       unit_of_measurement: kW
       device_class: power
       value_template: >
-        {{ (( states('input_number.january_peak') | float(default=0) +
-              states('input_number.february_peak') | float(default=0) +
-              states('input_number.march_peak') | float(default=0) +
-              states('input_number.april_peak') | float(default=0) +
-              states('input_number.may_peak') | float(default=0) +
-              states('input_number.june_peak') | float(default=0) +
-              states('input_number.july_peak') | float(default=0) +
-              states('input_number.august_peak') | float(default=0) +
-              states('input_number.september_peak') | float(default=0) +
-              states('input_number.october_peak') | float(default=0) +
-              states('input_number.november_peak') | float(default=0) +
-              states('input_number.december_peak') | float(default=0) ) / 12) | round(2)
+        {{ (( states('input_number.power_peak_month_1') | float(default=0) +
+              states('input_number.power_peak_month_2') | float(default=0) +
+              states('input_number.power_peak_month_3') | float(default=0) +
+              states('input_number.power_peak_month_4') | float(default=0) +
+              states('input_number.power_peak_month_5') | float(default=0) +
+              states('input_number.power_peak_month_6') | float(default=0) +
+              states('input_number.power_peak_month_7') | float(default=0) +
+              states('input_number.power_peak_month_8') | float(default=0) +
+              states('input_number.power_peak_month_9') | float(default=0) +
+              states('input_number.power_peak_month_10') | float(default=0) +
+              states('input_number.power_peak_month_11') | float(default=0) +
+              states('input_number.power_peak_month_12') | float(default=0) ) / 12) | round(2)
         }}
 
 
@@ -43,107 +43,114 @@ utility_meter:
     source: sensor.net_power_in_kwh
     cycle: quarter-hourly
 
+input_datetime:
+  power_peak_date_time:
+    has_date: true
+    has_time: true
+
 input_number:
-  max_peak:
-      name: Maximum piek
-      min: 0.1
+  power_peak:
+      name: Piek deze maand
+      min: 0
       max: 20000
       step: 0.001
       mode: box
       unit_of_measurement: kW
-    
-  january_peak:
+
+  power_peak_month_1:
     name: Piek januari
-    min: 2.500
+    min: 0
     max: 20
     step: 0.001
     mode: box
     unit_of_measurement: kW
-  
-  february_peak:
+
+  power_peak_month_2:
     name: Piek februari
-    min: 2.500
+    min: 0
     max: 20
     step: 0.001
     mode: box
     unit_of_measurement: kW
-  
-  march_peak:
+
+  power_peak_month_3:
     name: Piek maart
-    min: 2.500
+    min: 0
     max: 20
     step: 0.001
     mode: box
     unit_of_measurement: kW
 
-  april_peak:
+  power_peak_month_4:
     name: Piek april
-    min: 2.500
+    min: 0
     max: 20
     step: 0.001
     mode: box
     unit_of_measurement: kW
 
-  may_peak:
+  power_peak_month_5:
     name: Piek mei
-    min: 2.500
+    min: 0
     max: 20
     step: 0.001
     mode: box
     unit_of_measurement: kW
 
-  june_peak:
+  power_peak_month_6:
     name: Piek juni
-    min: 2.500
+    min: 0
     max: 20
     step: 0.001
     mode: box
     unit_of_measurement: kW
 
-  july_peak:
+  power_peak_month_7:
     name: Piek juli
-    min: 2.500
+    min: 0
     max: 20
     step: 0.001
     mode: box
     unit_of_measurement: kW
 
-  august_peak:
+  power_peak_month_8:
     name: Piek augustus
-    min: 2.500
+    min: 0
     max: 20
     step: 0.001
     mode: box
-    unit_of_measurement: kW
+    unit_of_measurement: kW    
 
-  september_peak:
+  power_peak_month_9:
     name: Piek september
-    min: 2.500
+    min: 0
     max: 20
     step: 0.001
     mode: box
     unit_of_measurement: kW
 
-  october_peak:
+  power_peak_month_10:
     name: Piek oktober
-    min: 2.5
+    min: 0
     max: 20
     step: 0.001
     mode: box
     unit_of_measurement: kW
 
-  november_peak:
+  power_peak_month_11:
     name: Piek november
-    min: 2.5
+    min: 0
     max: 20
     step: 0.001
     mode: box
     unit_of_measurement: kW
 
-  december_peak:
+  power_peak_month_12:
     name: Piek december
-    min: 2.500
+    min: 0
     max: 20
     step: 0.001
     mode: box
     unit_of_measurement: kW
+
+  

@@ -1,28 +1,40 @@
 timer:
   living_airco_timer:
     name: living airco timer
+    restore: true
+    icon: mdi:clock    
 
   amilya_airco_timer:
     name: Amilya airco timer
+    restore: true
+    icon: mdi:clock    
 
   amilya_airco_cooling_timer:
     name: Amilya airco koeltimer
+    restore: true
+    icon: mdi:clock    
 
   alunya_airco_timer:
     name: Alunya airco timer
+    restore: true
+    icon: mdi:clock    
 
   master_bedroom_airco_timer:
     name: Master bedroom airco timer
+    restore: true
+    icon: mdi:clock    
 
   airco_dehumidify_timer:
     name: ontvochtigen met airco timer
+    restore: true
+    icon: mdi:clock    
 
 input_datetime:
   living_airco_timer:
     name: living airco timer
     has_date: false
     has_time: true
-    
+
   amilya_airco_timer:
     name: Amilya airco timer
     has_date: false
@@ -49,3 +61,104 @@ input_number:
     min: 0
     max: 240
     step: 5
+    mode: box
+
+  living_airco_target_temperature:
+    name: living airco doeltemperatuur
+    min: 14
+    max: 25
+    step: 0.5
+    mode: slider
+    icon: mdi:heat-wave
+
+  living_airco_intermediate_temperature:
+    name: living airco tussentemperatuur
+    min: 14
+    max: 25
+    step: 0.5
+    mode: slider
+    icon: mdi:heat-wave
+
+  amilya_airco_target_temperature:
+    name: Amilya airco doeltemperatuur
+    min: 14
+    max: 25
+    step: 0.5
+    mode: slider
+    icon: mdi:heat-wave
+
+  amilya_airco_intermediate_temperature:
+    name: Amilya airco tussentemperatuur
+    min: 14
+    max: 25
+    step: 0.5
+    mode: slider
+    icon: mdi:heat-wave
+
+  alunya_airco_target_temperature:
+    name: Alunya airco doeltemperatuur
+    min: 14
+    max: 25
+    step: 0.5
+    mode: slider
+    icon: mdi:heat-wave
+
+  alunya_airco_intermediate_temperature:
+    name: Alunya airco tussentemperatuur
+    min: 14
+    max: 25
+    step: 0.5
+    mode: slider
+    icon: mdi:heat-wave
+
+  master_bedroom_airco_target_temperature:
+    name: master bedroom airco doeltemperatuur
+    min: 14
+    max: 25
+    step: 0.5
+    mode: slider
+    icon: mdi:heat-wave
+
+  master_bedroom_airco_intermediate_temperature:
+    name: master bedroom airco tussentemperatuur
+    min: 14
+    max: 25
+    step: 0.5
+    mode: slider
+    icon: mdi:heat-wave
+
+
+
+input_boolean:
+  living_airco_timer_switch:
+    name: living airco timerschakelaar
+    icon: mdi:switch
+
+input_select:
+  living_airco_timer_mode:
+    name: living airco timer modus
+    options:
+      - volgens schema
+      - timer
+    initial: timer
+
+  amilya_airco_timer_mode:
+    name: Amilya airco timer modus
+    options:
+      - volgens schema
+      - timer
+    initial: timer 
+
+  alunya_airco_timer_mode:
+    name: Alunya airco timer modus
+    options:
+      - volgens schema
+      - timer
+    initial: timer    
+
+  master_bedroom_airco_timer_mode:
+    name: master bedroom airco timer modus
+    options:
+      - volgens schema
+      - timer
+    initial: timer  

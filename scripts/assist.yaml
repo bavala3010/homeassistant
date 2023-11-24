@@ -1,0 +1,21 @@
+
+from_atom_to_speaker:
+  sequence:
+    - if:
+        - condition: state
+          entity_id: binary_sensor.atom_bureau_assistent_bezig_met_verwerken
+          state: "on"
+      then:
+        - service: tts.edge_tts_say
+          data:
+            entity_id: media_player.veranda_speaker
+            message: '{{message}}'
+    - if:
+        - condition: state
+          entity_id: binary_sensor.atom_living_assistent_bezig_met_verwerken
+          state: "on"
+      then:
+        - service: tts.edge_tts_say
+          data:
+            entity_id: media_player.living_speaker
+            message: '{{message}}' 

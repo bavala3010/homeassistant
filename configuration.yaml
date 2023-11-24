@@ -40,9 +40,11 @@
 #       - name: "energy_return"
 
 
-
+assist_pipeline:
 backup:
 bluetooth:
+cloud:                  # for Nabu Case cloud
+config:
 conversation:           # to speak to Home Assistant
 counter:
 daikin_residential:
@@ -52,12 +54,15 @@ daikin_residential:
 device_tracker:
   # - platform: bluetooth_tracker  
   - platform: bluetooth_le_tracker
+    track_new_devices: true
+    interval_seconds: 30
   - platform: tomato
-    host: 192.168.86.1
+    host: 192.168.68.1
     username: root
     password: admin
     http_id: TID3fac41d84c91e1a8
 dhcp:
+# discover:
 energy:
 frontend:
   themes: !include_dir_merge_named themes
@@ -67,7 +72,7 @@ frontend:
 hardware:
 history:
 homeassistant_alerts:
-#image:
+image_upload:
 input_boolean:
 input_button:
 input_datetime:
@@ -76,6 +81,7 @@ input_text:
   trigger_source:
     name: Trigger Source  #String om bij te houden welke sensor het alarm triggert
 light:
+logbook:
 logger:
   default: error
   logs:
@@ -84,6 +90,7 @@ logger:
 media_source:
 mobile_app:
 my:
+network:
 person:
 scene: !include scenes.yaml
 schedule:
@@ -97,6 +104,7 @@ timer:
   car_climatisation:
     icon: mdi:radiator
 usb:
+webhook:
 zeroconf:
 zone:
 
@@ -141,7 +149,7 @@ homeassistant:
   country: BE
   currency: EUR
   external_url: https://ha.bartland.duckdns.org
-  internal_url: http://192.168.86.100:8123
+  internal_url: http://192.168.68.100:8123
   time_zone: "Europe/Brussels"
   language: nl
 
@@ -151,14 +159,14 @@ homeassistant:
       trusted_networks:
       # /24 betekent geldig voor heel het subnet
       # /32 betekent enkel geldig voor het vermelde ip-adres
-        - 192.168.86.0/24    # warning: this enables the trust on the whole network !
-        - 192.168.86.41/32   # ip address of the "living speaker"
-        - 192.168.86.34/32
-        - 192.168.86.240/32  
-        - 192.168.86.26/32   # Chromebook
+        - 192.168.68.0/24    # warning: this enables the trust on the whole network !
+        - 192.168.68.41/32   # ip address of the "living speaker"
+        - 192.168.68.34/32
+        - 192.168.68.240/32  
+        - 192.168.68.26/32   # Chromebook
       trusted_users:
-        192.168.86.41: 87d0c2e6c3d4403396d34b43046072ae # ID of the HA user "Bart"
-        # 192.168.86.41: 12bbc36927b7443c915b9492d89f6c24 # ID of the HA user "Madouce"
+        192.168.68.41: 87d0c2e6c3d4403396d34b43046072ae # ID of the HA user "Bart"
+        # 192.168.68.41: 12bbc36927b7443c915b9492d89f6c24 # ID of the HA user "Madouce"
       allow_bypass_login: true
 
   allowlist_external_dirs:
@@ -256,7 +264,7 @@ http:
   # ssl_key: /opt/letsencrypt/live/npm-25/privkey.pem
   use_x_forwarded_for: true
   trusted_proxies:
-  # - 192.168.86.0/24   # the IP address of the proxy server
+  # - 192.168.68.0/24   # the IP address of the proxy server
   # - 192.168.155.0/24  # the IP range of the Droidland hotspot  
     - 172.18.0.8        # dit is het ip-adres van nginx in docker
     - 172.18.0.0/24
@@ -333,7 +341,7 @@ influxdb:
 #fan:    
 #  - platform: xiaomi_miio_airpurifier
 #    name: Xiaomi Air Purifier 3H
-#    host: 192.168.86.247
+#    host: 192.168.68.247
 #    token: !secret purifier_3H_token
 #    model: zhimi.airpurifier.mb3
 
@@ -519,12 +527,34 @@ sensor:
     unique_id: 'c6d3b0f5-dcb7-4016-bb3f-c06ccaa1bc71'
     filters:
       - filter: outlier
-        window_size: 6   # number of samples taken
+        window_size: 20   # number of samples taken (was vroeger 6, nu aangepast naar 20 als test)
         radius: 10000  # ignore readings if difference is bigger than 10000
       - filter: time_simple_moving_average
         window_size: "00:02"
       # - filter: throttle
       #   window_size: 120
+
+  - platform: filter
+    name: net power avg 1min
+    entity_id: sensor.net_power
+    unique_id: 'da279b6e-3451-4ba2-bf08-cf4cdf2997ba'
+    filters:
+      - filter: outlier
+        window_size: 6   # number of samples taken (was vroeger 6, nu aangepast naar 20 als test)
+        radius: 10000  # ignore readings if difference is bigger than 10000
+      - filter: time_simple_moving_average
+        window_size: "00:01"
+
+  - platform: filter
+    name: charger current power avg 2min
+    entity_id: sensor.charger_current_power
+    unique_id: '0c2d0f18-dbdf-4fad-912e-4ee6c83a496c'
+    filters:
+      - filter: outlier
+        window_size: 6   # number of samples taken (was vroeger 6, nu aangepast naar 20 als test)
+        radius: 10000  # ignore readings if difference is bigger than 10000
+      - filter: time_simple_moving_average
+        window_size: "00:02"
 
 ###############################################################################
 # template / sensor
@@ -624,7 +654,7 @@ rest_command:
 panel_iframe:
   portainer:
     title: "Portainer"
-    url: "http://192.168.86.101:9000/"
+    url: "http://192.168.68.100:9000/"
     icon: mdi:docker
     require_admin: true
 
@@ -636,13 +666,13 @@ panel_iframe:
 
   duplicati:
     title: "Duplicati"
-    url: "http://192.168.86.101:8200/"
+    url: "http://192.168.68.100:8200/"
     icon: mdi:backup-restore
     require_admin: true
 
   influxdb:
     title: "InfluxDB"
-    url: "http://192.168.86.101:8086/orgs/6fe6192d84027fb4/dashboards/096bf9184c088000?lower=now%28%29%20-%202d"
+    url: "http://192.168.68.100:8086/orgs/6fe6192d84027fb4/dashboards/096bf9184c088000?lower=now%28%29%20-%202d"
     icon: mdi:backup-restore
     require_admin: true
   
@@ -667,7 +697,7 @@ panel_custom:
 battery_sim:
   auto_batterij:
     name: auto batterij
-    import_sensor: sensor.charger_real_power
+    import_sensor: sensor.charger_current_power
     export_sensor: sensor.unload_battery
     max_discharge_rate_kw: 11.0
     size_kwh: 90.0
@@ -683,19 +713,19 @@ battery_sim:
 
 # media_player:
 #   - platform: samsungtv_custom
-#     host: 192.168.86.204
+#     host: 192.168.68.204
 #     port: 8001
 #     sourcelist: '{"PlayStation": "KEY_HDMI1", "RaspberryPi": "KEY_HDMI2", "Chromecast": "KEY_HDMI3"}'
 
 # camera:
 #   - platform: generic
 #     name: "LSC indoor camera (1920 x 1080)"
-#     still_image_url: http://192.168.86.101:8123/local/images/lsc_indoor_camera.jpg
-#     stream_source: rtsp://admin:admin@192.168.86.21:8554/Streaming/Channels/101
+#     still_image_url: http://192.168.68.100:8123/local/images/lsc_indoor_camera.jpg
+#     stream_source: rtsp://admin:admin@192.168.68.21:8554/Streaming/Channels/101
 
 camera:
   - platform: ffmpeg
-    input: rtsp://192.168.86.21/ch0_1.h264
+    input: rtsp://192.168.68.21/ch0_1.h264
     name: LSC indoor camera
 
 # ha-continuous-casting-dashboard:
@@ -705,6 +735,6 @@ camera:
 #   end_time: "02:00" #Required: End time of the casting window (format: "HH:MM") and must be after "00:00"
 #   devices:
 #     "living speaker": #Required: Display name of your device. Find this under device settings -> Information -> Device Name
-#       dashboard_url: http://192.168.86.100:8123/lovelace-verbruik/zonne-energie" #Required: Dashboard URL to be casted
+#       dashboard_url: http://192.168.68.100:8123/lovelace-verbruik/zonne-energie" #Required: Dashboard URL to be casted
 
 

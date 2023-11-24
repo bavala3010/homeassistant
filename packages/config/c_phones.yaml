@@ -1,3 +1,7 @@
+# router keuken:  2a:52:a1:83:e3:bd
+# router gang:    2e:52:a1:83:cf:36 
+# router bureau:  32:52:a1:83:e1:97
+
 sensor:
 - platform: template
   sensors:
@@ -13,21 +17,21 @@ sensor:
       value_template: >
         {% set wifi_bssid = states('sensor.sm_s916b_wifi_bssid') %}
         {% set wifi_signal = states('sensor.sm_s916b_wifi_signal_strength') | float %}
-        {% if  wifi_bssid == "cc:f4:11:77:bf:82" %}
+        {% if  wifi_bssid == "2a:52:a1:83:e3:bd" %}
           living
-        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-80 < wifi_signal <= -67) %}
+        {% elif wifi_bssid == "2e:52:a1:83:cf:36" and (-80 < wifi_signal <= -67) %}
           master bedroom
-        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-67 < wifi_signal <= -55) %}
+        {% elif wifi_bssid == "2e:52:a1:83:cf:36" and (-67 < wifi_signal <= -55) %}
           badkamer
-        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-55 < wifi_signal < -30) %}
+        {% elif wifi_bssid == "2e:52:a1:83:cf:36" and (-55 < wifi_signal < -30) %}
           gang
-        {% elif wifi_bssid == "cc:f4:11:4c:c1:73" and (-55 < wifi_signal < -1) %}
+        {% elif wifi_bssid == "32:52:a1:83:e1:97" and (-55 < wifi_signal < -1) %}
           veranda
-        {% elif wifi_bssid == "cc:f4:11:4c:c1:73" and (-70 < wifi_signal < -56) %}
+        {% elif wifi_bssid == "32:52:a1:83:e1:97" and (-70 < wifi_signal < -56) %}
           terras
-        {% elif wifi_bssid == "cc:f4:11:4c:c1:73" and ( wifi_signal < -70) %}
+        {% elif wifi_bssid == "32:52:a1:83:e1:97" and ( wifi_signal < -70) %}
           badkamer
-        {% elif wifi_bssid != "cc:f4:11:77:bf:82" and wifi_bssid != "cc:f4:11:43:8f:b5" and wifi_bssid != "cc:f4:11:4c:c1:73" %}
+        {% elif wifi_bssid != "2a:52:a1:83:e3:bd" and wifi_bssid != "2e:52:a1:83:cf:36" and wifi_bssid != "32:52:a1:83:e1:97" %}
           niet thuis
         {% else %}
           onbekend
@@ -38,21 +42,21 @@ sensor:
       value_template: >
         {% set wifi_bssid = states('sensor.sm_g986b_wifi_bssid') %}
         {% set wifi_signal = states('sensor.sm_g986b_wifi_signal_strength') | float %}
-        {% if  wifi_bssid == "cc:f4:11:77:bf:82" %}
+        {% if  wifi_bssid == "2a:52:a1:83:e3:bd" %}
           living
-        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-80 < wifi_signal <= -67) %}
+        {% elif wifi_bssid == "2e:52:a1:83:cf:36" and (-80 < wifi_signal <= -67) %}
           master bedroom
-        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-67 < wifi_signal <= -55) %}
+        {% elif wifi_bssid == "2e:52:a1:83:cf:36" and (-67 < wifi_signal <= -55) %}
           badkamer
-        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-55 < wifi_signal < -30) %}
+        {% elif wifi_bssid == "2e:52:a1:83:cf:36" and (-55 < wifi_signal < -30) %}
           gang
-        {% elif wifi_bssid == "cc:f4:11:4c:c1:73" and (-55 < wifi_signal < -1) %}
+        {% elif wifi_bssid == "32:52:a1:83:e1:97" and (-55 < wifi_signal < -1) %}
           veranda
-        {% elif wifi_bssid == "cc:f4:11:4c:c1:73" and (-70 < wifi_signal < -56) %}
+        {% elif wifi_bssid == "32:52:a1:83:e1:97" and (-70 < wifi_signal < -56) %}
           terras
-        {% elif wifi_bssid == "cc:f4:11:4c:c1:73" and ( wifi_signal < -70) %}
+        {% elif wifi_bssid == "32:52:a1:83:e1:97" and ( wifi_signal < -70) %}
           badkamer          
-        {% elif wifi_bssid != "cc:f4:11:77:bf:82" and wifi_bssid != "cc:f4:11:43:8f:b5" and wifi_bssid != "cc:f4:11:4c:c1:73" %}
+        {% elif wifi_bssid != "2a:52:a1:83:e3:bd" and wifi_bssid != "2e:52:a1:83:cf:36" and wifi_bssid != "32:52:a1:83:e1:97" %}
           niet thuis
         {% else %}
           onbekend
@@ -62,13 +66,13 @@ sensor:
     amilya_phone_room:
       value_template: >
         {% set wifi_bssid = states('sensor.amilya_phone_bssid') %}
-        {% if  wifi_bssid == "cc:f4:11:77:bf:82" %}
+        {% if  wifi_bssid == "2a:52:a1:83:e3:bd" %}
           living
-        {% elif wifi_bssid == "cc:f4:11:4c:c1:73" %}
+        {% elif wifi_bssid == "32:52:a1:83:e1:97" %}
           Amilya kamer
-        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" %}
+        {% elif wifi_bssid == "2e:52:a1:83:cf:36" %}
           badkamer
-        {% elif wifi_bssid != "cc:f4:11:77:bf:82" and wifi_bssid != "cc:f4:11:43:8f:b5" and wifi_bssid != "cc:f4:11:4c:c1:73" %}
+        {% elif wifi_bssid != "2a:52:a1:83:e3:bd" and wifi_bssid != "2e:52:a1:83:cf:36" and wifi_bssid != "32:52:a1:83:e1:97" %}
           niet thuis
         {% else %}
           onbekend
@@ -80,19 +84,19 @@ sensor:
       value_template: >
         {% set wifi_bssid = states('sensor.sm_a715f_wifi_bssid') %}
         {% set wifi_signal = states('sensor.sm_a715f_wifi_signal_strength') | float %}
-        {% if  wifi_bssid == "cc:f4:11:77:bf:82" %}
+        {% if  wifi_bssid == "2a:52:a1:83:e3:bd" %}
           living
-        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and wifi_signal <= -68 %}
+        {% elif wifi_bssid == "2e:52:a1:83:cf:36" and wifi_signal <= -68 %}
           badkamer
-        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-75 < wifi_signal <= -67) %}
+        {% elif wifi_bssid == "2e:52:a1:83:cf:36" and (-75 < wifi_signal <= -67) %}
           Alunya kamer
-        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-67 < wifi_signal <= -55) %}
+        {% elif wifi_bssid == "2e:52:a1:83:cf:36" and (-67 < wifi_signal <= -55) %}
           badkamer
-        {% elif wifi_bssid == "cc:f4:11:43:8f:b5" and (-55 < wifi_signal < -30) %}
+        {% elif wifi_bssid == "2e:52:a1:83:cf:36" and (-55 < wifi_signal < -30) %}
           gang
-        {% elif wifi_bssid == "cc:f4:11:4c:c1:73" %}
+        {% elif wifi_bssid == "32:52:a1:83:e1:97" %}
           veranda
-        {% elif wifi_bssid != "cc:f4:11:77:bf:82" and wifi_bssid != "cc:f4:11:43:8f:b5" and wifi_bssid != "cc:f4:11:4c:c1:73" %}
+        {% elif wifi_bssid != "2a:52:a1:83:e3:bd" and wifi_bssid != "2e:52:a1:83:cf:36" and wifi_bssid != "32:52:a1:83:e1:97" %}
           niet thuis
         {% else %}
           onbekend
@@ -107,15 +111,14 @@ device_tracker:
     new_device_defaults:
       track_new_devices: true
     hosts:
-      amilya_iphone: 192.168.86.214     # old address: 192.168.86.112
-      #alunya_iphone: 192.168.86.250
-      alunya_iphone: 192.168.86.113
-      amilya_appletv: 192.168.86.48
-      bart_iphone: 192.168.86.51
+      amilya_iphone: 192.168.68.214
+      alunya_iphone: 192.168.68.113
+      amilya_appletv: 192.168.68.48
+      bart_iphone: 192.168.68.51
 
   - platform: ping
     hosts:
-      alunya_phone: 192.168.86.114
+      alunya_phone: 192.168.68.113
 
 binary_sensor:
   - platform: template

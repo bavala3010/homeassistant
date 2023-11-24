@@ -16,6 +16,22 @@ input_select:
       - aan
       - uit
 
+input_number:
+  dehumidifier_timer_minutes:
+    name: ontvochtigen met ontvochtiger
+    min: 0
+    max: 240
+    step: 5
+    mode: box
+
+
+timer:
+  dehumidifier_timer:
+    name: "onvochtiger timer"
+    duration: "00:30:00"
+    restore: true
+    icon: mdi:clock
+
 sensor:
   - platform: integration
     source: sensor.dehumidifier_power

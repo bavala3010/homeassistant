@@ -1,0 +1,15 @@
+conversation:
+  intents:
+    energy_injection:
+      - "hoeveel zon is er"
+      - "hoeveel zond is er"
+    testing:
+      - "testing"
+
+intent_script:
+  energy_injection:
+    speech:
+      text: "Prima, begrepen!"
+  testing:
+    speech:
+      text: "Prima, testen is zeer goed."      

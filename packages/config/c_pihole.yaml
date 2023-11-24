@@ -7,14 +7,14 @@
 #   - platform: command_line
 #     switches:
 #       pihole_switch:
-#         command_on: "curl -X GET 'http://192.168.86.101:8081/admin/api.php?enable&auth='"
-#         command_off: "curl -X GET 'http://192.168.86.101:8081/admin/api.php?disable=3600&auth='"
-#         command_state: "curl -X GET 'http://192.168.86.101:8081/admin/api.php?status'"
+#         command_on: "curl -X GET 'http://192.168.68.100:8081/admin/api.php?enable&auth='"
+#         command_off: "curl -X GET 'http://192.168.68.100:8081/admin/api.php?disable=3600&auth='"
+#         command_state: "curl -X GET 'http://192.168.68.100:8081/admin/api.php?status'"
 #         value_template: "{{ value_json.status == 'enabled' }}"
 #         friendly_name: Pi-Hole in-/uitschakelen
 
 # sensor:
 #   - platform: command_line
 #     name: Pi-Hole status
-#     command: "curl -X GET 'http://192.168.86.101:8081/admin/api.php?status'"
+#     command: "curl -X GET 'http://192.168.68.100:8081/admin/api.php?status'"
 #     value_template: "{{ value_json.status == 'enabled' }}"        

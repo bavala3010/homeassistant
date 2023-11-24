@@ -47,26 +47,6 @@
       - sensor.huisverbruik
     data: {}
   mode: restart
-- id: '1665867606604'
-  alias: 'Test: beweging oprit/pad = spot aan'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.voordeur_bewegingssensor_motion
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: sun.sun
-    state: below_horizon
-  action:
-  - service: netatmo.set_camera_light
-    data:
-      camera_light_mode: 'on'
-    target:
-      entity_id:
-      - light.eikenbos_oprit
-  mode: single
 - id: '1665942731812'
   alias: 'log  in Google Sheets: km auto '
   description: ''
@@ -81,8 +61,8 @@
       worksheet: AudiEtron
       data:
         odometer: '{{ states(''sensor.audi_e_tron_sportback_mileage'') | float }}'
-        planning: '{% set t = (now().date() + timedelta(days=0)) %} {% set car_use_day
-          = ''input_select.car_use_day_'' ~ t.isoweekday() %}  {{ states(car_use_day)
+        planning: '{% set t = (now().date() + timedelta(days=0)) %} {% set car_1_use_day
+          = ''input_select.car_1_use_day_'' ~ t.isoweekday() %}  {{ states(car_1_use_day)
           }}'
   mode: single
 - id: '1668774395681'
@@ -170,33 +150,6 @@
   - service: script.charge_button_stop
     data: {}
   mode: single
-- id: '1672855767572'
-  alias: kwartierpiek is gewijzigd
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.max_peak
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.max_peak
-    above: 2.5
-  action:
-  - service: input_datetime.set_datetime
-    data_template:
-      datetime: '{{ now().timestamp() | timestamp_local }}'
-    target:
-      entity_id: input_datetime.peak_date_time
-  - service: notify.bart_phone
-    data:
-      title: Nieuwe kwartierpiek
-      message: 'Nieuwe maandelijkse piek is nu {{ states(''sensor.max_peak'') }} kW.
-
-        '
-      data:
-        tag: peak
-        color: red
-  mode: single
 - id: '1682535463125'
   alias: Amilya airco aangezet hoewel nog meer dan 20 graden
   description: ''
@@ -246,18 +199,6 @@
     entity_id: input_boolean.arriving_home_reminder_madouce
     state: 'on'
   action: []
-  mode: single
-- id: '1689967212586'
-  alias: Assist // Hoeveel procent heeft de auto?
-  description: ''
-  trigger:
-  - platform: conversation
-    command: Hoeveel procent heeft de auto
-  condition: []
-  action:
-  - service: notify.bart_phone
-    data:
-      message: Auto is {{ states('sensor.car_1_soc') }}% geladen.
   mode: single
 - id: '1691840935541'
   alias: Bart komt thuis na fietsen = doe garagepoort open
@@ -367,3 +308,80 @@
     target:
       entity_id: climate.amilya_airco
   mode: single
+- id: '1697358918402'
+  alias: Assist // Geef de katten eten
+  description: ''
+  trigger:
+  - platform: conversation
+    command: Geef de katten eten
+  condition: []
+  action:
+  - service: script.pet_feeder_feed_1_portion
+    data: {}
+  mode: single
+- id: '1697611169598'
+  alias: Injectie, vocht in badkamer en niemand thuis = ontvochtigen
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.net_power_avg
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
+    above: 700
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.badkamer_humidity
+    above: 65
+  - condition: state
+    entity_id: group.gezin
+    state: not_home
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.dehumidifier_switch
+  mode: single
+- id: '1699039629764'
+  alias: Living // aanwezigheidsensor
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.keuken_presence
+    to: 'on'
+    id: keuken aanwezigheid
+  - platform: state
+    entity_id:
+    - binary_sensor.keuken_presence
+    to: 'off'
+    id: keuken afwezigheid
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.living_keuken_presence_light_level
+    below: 15
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - keuken aanwezigheid
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness_pct: 50
+        target:
+          entity_id: light.living_rechts_4
+    - conditions:
+      - condition: trigger
+        id:
+        - keuken afwezigheid
+      sequence:
+      - wait_template: ''
+        timeout: 00:00:02
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id: light.living_rechts_4
+  mode: parallel

@@ -6,7 +6,7 @@ template:
     sensor:
       name: solar_power
       # converts the sma_power_ac sensor to sensor.solar_power
-      # but cutting of incorrect (too high) values to 10000
+      # but cutting off incorrect (too high) values to 10000
       unique_id: '136e925b-8fa2-446f-b0b5-222cfd4742f1'
       unit_of_measurement: "W"
       state_class: measurement
@@ -37,6 +37,28 @@ sensor:
 
 - platform: template
   sensors:
+    solar_sim_energy_current_hour:
+      # totaal van de gesimuleerde productie  (= solar integratie)
+      unique_id: 'd68dd862-330b-4165-9273-2d12a268d29f'
+      unit_of_measurement: "kWh"
+      friendly_name: "zonne-energie productie simulatie dit uur"
+      icon_template: "mdi:solar-power"
+      value_template: >-
+        {% set s1 = states('sensor.energy_current_hour')  | float(default=0) %}
+        {% set s2 = states('sensor.energy_current_hour_2')| float(default=0) %}
+        {{ s1 + s2 }}
+
+    solar_sim_energy_next_hour:
+      # totaal van de gesimuleerde productie  (= solar integratie)
+      unique_id: 'f38a8749-3262-4933-a32e-5b2dbc68135e'
+      unit_of_measurement: "kWh"
+      friendly_name: "zonne-energie productie simulatie volgend uur"
+      icon_template: "mdi:solar-power"
+      value_template: >-
+        {% set s1 = states('sensor.energy_next_hour')  | float(default=0) %}
+        {% set s2 = states('sensor.energy_next_hour_2')| float(default=0) %}
+        {{ s1 + s2 }}
+
     solar_sim_energy_today:
       # totaal van de gesimuleerde productie  (= solar integratie)
       unique_id: 'd7878be1-3fb7-4f10-a090-92bf0640868c'

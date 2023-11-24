@@ -59,7 +59,7 @@ automation:
       entity_id: input_number.alunya_airco_timer_minutes
   - wait_template: ''
     timeout: "00:00:02"
-  - service: script.alunya_airco_start
+  - service: script.alunya_airco_start_heating
   mode: restart
 
 - alias: "♨️ airco heating // Alunya // verwarm van 21u45 tot 22u15" 
@@ -93,7 +93,7 @@ automation:
             entity_id: input_number.alunya_airco_timer_minutes
         - delay:
             seconds: 2
-        - service: script.alunya_airco_start
+        - service: script.alunya_airco_start_heating_heating
           data: {}   
 
 
@@ -155,7 +155,7 @@ automation:
   condition:
   - condition: time
     after: '23:00:00'
-    before: 06:15:00
+    before: 06:30:00
   - condition: template
     value_template: "{{trigger.to_state.context.user_id == '7e508a5d2a5c42029f3d9238f0cc4648'}}"
   action:
@@ -198,7 +198,7 @@ automation:
       value: 30
     target:
       entity_id: input_number.alunya_airco_timer_minutes
-  - service: script.alunya_airco_start
+  - service: script.alunya_airco_start_heating
     data: {}            
   mode: restart
 
@@ -238,7 +238,7 @@ automation:
   trigger:
   - platform: template
     value_template: >
-      {{ states('climate.amilya_airco') == "verwamen" }}
+      {{ states('climate.alunya_airco') == "verwamen" }}
     for:
       hours: 0
       minutes: 10

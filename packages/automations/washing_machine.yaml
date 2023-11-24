@@ -10,7 +10,7 @@ automation:
       hours: 0
       minutes: 1
       seconds: 0
-    above: 5
+    above: 500
   condition: []
   action:
     - service: input_datetime.set_datetime
@@ -97,7 +97,7 @@ automation:
         hours: 0
         minutes: 3
         seconds: 0
-      below: 1
+      below: 3
   condition:
     - condition: state
       entity_id: input_select.washing_machine_state
@@ -161,7 +161,7 @@ automation:
       state: "off"
       for:
         hours: 0
-        minutes: 14
+        minutes: 15
         seconds: 0  
   action:
     - service: notify.bart_madouce_phone

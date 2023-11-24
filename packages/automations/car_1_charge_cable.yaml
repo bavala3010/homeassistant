@@ -33,15 +33,15 @@ automation:
     value_template: "{% if as_timestamp(states('sensor.car_charge_stoptimer_starttime')) | timestamp_custom('%Y-%m-%d %H:%M') < ((as_timestamp(now())  + (10 * 60 * 60)) | timestamp_custom('%Y-%m-%d %H:%M')) %}true{% endif %}"
   # voorwaarde: enkel als SOC < gewenst laaddoel
   - condition: template
-    value_template: "{{ states('sensor.car_1_soc')| int(2) < (states('input_number.car_charge_target_percentage') | int(2)) }}"
+    value_template: "{{ states('sensor.car_1_soc')| int(2) < (states('input_number.car_1_optimal_target_soc') | int(2)) }}"
   action:
   - service: notify.bart_phone
     data:
       title: "Plug de laadkabel in."
       message: >
         {% set soc = states('sensor.car_1_soc') | round(default=0) %}
-        {% set targetsoc = states('input_number.car_charge_target_percentage') | round(default=0) %}
-        {% set targetrange = states('input_number.car_charge_target_range') | round(default=0) %}
+        {% set targetsoc = states('input_number.car_1_optimal_target_soc') | round(default=0) %}
+        {% set targetrange = states('input_number.car_1_target_range') | round(default=0) %}
         De auto zou moeten laden op {{ as_timestamp(states('sensor.car_charge_stoptimer_starttime')) | timestamp_custom('%a %-Hu%M') }} maar de kabel steekt niet in.
         Huidige lading is {{ soc }}%. Laaddoel is {{ targetsoc }}% = {{ targetrange }} km.
       data:
@@ -87,9 +87,9 @@ automation:
   variables:
     message: >
       {% set soc = states('sensor.car_1_soc') | round(default=0) %} {% set
-      targetsoc = states('input_number.car_charge_target_percentage') |
+      targetsoc = states('input_number.car_1_optimal_target_soc') |
       round(default=0) %} {% set targetrange =
-      states('input_number.car_charge_target_range') | round(default=0) %} Laden
+      states('input_number.car_1_target_range') | round(default=0) %} Laden
       met timer van {{ as_timestamp(states('sensor.car_charge_stoptimer_starttime')) |
       timestamp_custom('%a %-Hu%M')}} tot {{
       state_attr('input_datetime.car_charge_target_time', 'timestamp') |

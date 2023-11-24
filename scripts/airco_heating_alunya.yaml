@@ -1,11 +1,9 @@
-
-
-alunya_airco_start:
+alunya_airco_start_heating:
   sequence:
   - condition: template
     value_template: >-
       {{ states('sensor.kamer_alunya_temperature') | float <
-      states('input_number.alunya_airco_target_temperature') | float }}  
+      states('input_number.alunya_airco_target_temperature') | float }}
   - service: timer.start
     data:
       duration: "{{ states('input_number.alunya_airco_timer_minutes') | float * 60 }}"
@@ -21,9 +19,9 @@ alunya_airco_start:
   - service: climate.set_temperature
     data:
       hvac_mode: heat
-      temperature: >
-        {% set adj = states('input_number.alunya_airco_target_temperature') | float - states('sensor.kamer_alunya_temperature') | float %}
-        {{ (state_attr('climate.alunya_airco', 'current_temperature') + adj) | round(1, 'half', 0) }}
+      temperature: 23
+        # {% set adj = states('input_number.alunya_airco_target_temperature') | float - states('sensor.kamer_alunya_temperature') | float %}
+        # {{ (state_attr('climate.alunya_airco', 'current_temperature') + adj) | round(1, 'half', 0) }}
     target:
       device_id: 3c12e341dfd1d1fe2327ec66f3613321
   - service: climate.set_preset_mode
@@ -41,20 +39,23 @@ alunya_airco_start:
       fan_mode: auto
     target:
       device_id: 3c12e341dfd1d1fe2327ec66f3613321
-  - delay:
-      minutes: 5
-  - service: climate.set_temperature
-    data:
-      hvac_mode: heat
-      temperature: >
-        {% set adj = states('input_number.alunya_airco_target_temperature') | float - states('sensor.kamer_alunya_temperature') | float %}
-        {{ (state_attr('climate.alunya_airco', 'current_temperature') + adj) | round(1, 'half', 0) }}
-    target:
-      device_id: 3c12e341dfd1d1fe2327ec66f3613321           
+  # - delay:
+  #     minutes: 5
+  # - service: climate.set_temperature
+  #   data:
+  #     hvac_mode: heat
+  #     temperature: >
+  #       {% set adj = states('input_number.alunya_airco_target_temperature') | float - states('sensor.kamer_alunya_temperature') | float %}
+  #       {{ (state_attr('climate.alunya_airco', 'current_temperature') + adj) | round(1, 'half', 0) }}
+  #   target:
+  #     device_id: 3c12e341dfd1d1fe2327ec66f3613321           
   mode: restart
 
 alunya_airco_19:
   sequence:
+  - condition: time
+    after: '06:30:00'
+    before: '23:00:00'    
   - service: input_number.set_value
     data:
       value: 19
@@ -65,12 +66,15 @@ alunya_airco_19:
       value: 30
     target:
       entity_id: input_number.alunya_airco_timer_minutes
-  - service: script.alunya_airco_start
+  - service: script.alunya_airco_start_heating
     data: {} 
   mode: restart
 
 alunya_airco_20:
   sequence:
+  - condition: time
+    after: '06:30:00'
+    before: '23:00:00'    
   - service: input_number.set_value
     data:
       value: 20
@@ -81,12 +85,15 @@ alunya_airco_20:
       value: 30
     target:
       entity_id: input_number.alunya_airco_timer_minutes
-  - service: script.alunya_airco_start
+  - service: script.alunya_airco_start_heating
     data: {} 
   mode: restart
 
 alunya_airco_21:
   sequence:
+  - condition: time
+    after: '06:30:00'
+    before: '23:00:00'  
   - service: input_number.set_value
     data:
       value: 21
@@ -97,7 +104,7 @@ alunya_airco_21:
       value: 30
     target:
       entity_id: input_number.alunya_airco_timer_minutes
-  - service: script.alunya_airco_start
+  - service: script.alunya_airco_start_heating
     data: {} 
   mode: restart
 
@@ -121,4 +128,28 @@ alunya_airco_stop:
     data: {}
     target:
       entity_id: timer.alunya_airco_timer
-  mode: restart  
+  mode: restart
+
+alunya_airco_increment_temperature:
+  sequence:
+    - variables:
+        target_temperature: "{{ states('input_number.alunya_airco_target_temperature') | float }}"
+        current_temperature: "{{ state_attr('climate.alunya_airco', 'current_temperature') | float }}"
+        intermediate_temperature: "{{ states('input_number.alunya_airco_intermediate_temperature') | float }}"
+        step: 1 # Stel de stapgrootte in
+    - repeat:
+        while:
+        - condition: template
+          value_template: "{{ current_temperature < target_temperature }}"
+        sequence:
+          - service: climate.set_temperature
+            data:
+              temperature: "{{ current_temperature + step }}"
+            target:
+              device_id: 3c12e341dfd1d1fe2327ec66f3613321
+          - service: input_number.set_value
+            data:
+              value: "{{ current_temperature + step }}"
+            target:
+              entity_id: input_number.alunya_airco_intermediate_temperature
+          - wait_template: "{{ current_temperature >= intermediate_temperature }}"

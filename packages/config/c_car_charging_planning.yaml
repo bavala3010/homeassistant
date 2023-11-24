@@ -1,197 +1,225 @@
 input_number:
-  car_target_soc_day_1:
-      name: maandag
-      min: 1
-      max: 100
-      step: 1
-      mode: slider
-      unit_of_measurement: "%"
-      icon: mdi:battery-charging-medium
-
-  car_target_soc_day_2:
-      name: dinsdag
-      min: 1
-      max: 100
-      step: 1
-      mode: slider
-      unit_of_measurement: "%"
-      icon: mdi:battery-charging-medium
-
-  car_target_soc_day_3:
-      name: woensdag
-      min: 1
-      max: 100
-      step: 1
-      mode: slider
-      unit_of_measurement: "%"
-      icon: mdi:battery-charging-medium
-
-  car_target_soc_day_4:
-      name: donderdag
-      min: 1
-      max: 100
-      step: 1
-      mode: slider
-      unit_of_measurement: "%"
-      icon: mdi:battery-charging-medium
-
-  car_target_soc_day_5:
-      name: vrijdag
-      min: 1
-      max: 100
-      step: 1
-      mode: slider
-      unit_of_measurement: "%"
-      icon: mdi:battery-charging-medium
-
-  car_target_soc_day_6:
-      name: zaterdag
-      min: 1
-      max: 100
-      step: 1
-      mode: slider
-      unit_of_measurement: "%"
-      icon: mdi:battery-charging-medium
-
-  car_target_soc_day_7:
-      name: zondag
-      min: 1
-      max: 100
-      step: 1
-      mode: slider
-      unit_of_measurement: "%"
-      icon: mdi:battery-charging-medium
-
-
-
-
-  car_charge_ideal_percentage:
-    name: ideaal laadpercentage auto
+  car_1_min_target_soc:
+    name: minimum laadpercentage auto
     min: 0
     max: 100
     step: 1
     unit_of_measurement: "%"
+    mode: box
 
-  car_ideal_target_soc_day_1:
-    name: ideale SOC maandag
+  car_1_min_target_soc_day_1:
+    name: maandag
+    min: 1
+    max: 100
+    step: 1
+    mode: box
+    unit_of_measurement: "%"
+    icon: mdi:battery-charging-40
+
+  car_1_min_target_soc_day_2:
+    name: dinsdag
+    min: 1
+    max: 100
+    step: 1
+    mode: box
+    unit_of_measurement: "%"
+    icon: mdi:battery-charging-40
+
+  car_1_min_target_soc_day_3:
+    name: woensdag
+    min: 1
+    max: 100
+    step: 1
+    mode: box
+    unit_of_measurement: "%"
+    icon: mdi:battery-charging-40
+
+  car_1_min_target_soc_day_4:
+    name: donderdag
+    min: 1
+    max: 100
+    step: 1
+    mode: box
+    unit_of_measurement: "%"
+    icon: mdi:battery-charging-40
+
+  car_1_min_target_soc_day_5:
+    name: vrijdag
+    min: 1
+    max: 100
+    step: 1
+    mode: box
+    unit_of_measurement: "%"
+    icon: mdi:battery-charging-40
+
+  car_1_min_target_soc_day_6:
+    name: zaterdag
+    min: 1
+    max: 100
+    step: 1
+    mode: box
+    unit_of_measurement: "%"
+    icon: mdi:battery-charging-40
+
+  car_1_min_target_soc_day_7:
+    name: zondag
+    min: 1
+    max: 100
+    step: 1
+    mode: box
+    unit_of_measurement: "%"
+    icon: mdi:battery-charging-40
+
+
+  car_1_optimal_target_soc:
+    name: optimaal laadpercentage auto
+    min: 0
+    max: 100
+    step: 1
+    mode: box    
+    unit_of_measurement: "%"
+    icon: mdi:battery-charging-80
+
+  car_1_optimal_target_soc_day_1:
+    name: maandag
+    min: 0
+    max: 100
+    step: 1
+    mode: box    
+    unit_of_measurement: "%"
+    icon: mdi:battery-charging-80    
+
+  car_1_optimal_target_soc_day_2:
+    name: dinsdag
+    min: 0
+    max: 100
+    step: 1
+    mode: box    
+    unit_of_measurement: "%"
+    icon: mdi:battery-charging-80    
+
+  car_1_optimal_target_soc_day_3:
+    name: woensdag
+    min: 0
+    max: 100
+    step: 1
+    mode: box    
+    unit_of_measurement: "%"
+    icon: mdi:battery-charging-80
+
+  car_1_optimal_target_soc_day_4:
+    name: donderdag
+    min: 0
+    max: 100
+    step: 1
+    mode: box    
+    unit_of_measurement: "%"
+    icon: mdi:battery-charging-80
+
+  car_1_optimal_target_soc_day_5:
+    name: vrijdag
     min: 0
     max: 100
     step: 1
     unit_of_measurement: "%"
+    icon: mdi:battery-charging-80
 
-  car_ideal_target_soc_day_2:
-    name: ideale SOC dinsdag
+  car_1_optimal_target_soc_day_6:
+    name: zaterdag
     min: 0
     max: 100
     step: 1
+    mode: box    
     unit_of_measurement: "%"
+    icon: mdi:battery-charging-80    
 
-  car_ideal_target_soc_day_3:
-    name: ideale SOC woensdag
+  car_1_optimal_target_soc_day_7:
+    name: zondag
     min: 0
     max: 100
     step: 1
+    mode: box    
     unit_of_measurement: "%"
-
-  car_ideal_target_soc_day_4:
-    name: ideale SOC donderdag
-    min: 0
-    max: 100
-    step: 1
-    unit_of_measurement: "%"
-
-  car_ideal_target_soc_day_5:
-    name: ideale SOC vrijdag
-    min: 0
-    max: 100
-    step: 1
-    unit_of_measurement: "%"
-
-  car_ideal_target_soc_day_6:
-    name: ideale SOC zaterdag
-    min: 0
-    max: 100
-    step: 1
-    unit_of_measurement: "%"
-
-  car_ideal_target_soc_day_7:
-    name: ideale SOC zondag
-    min: 0
-    max: 100
-    step: 1
-    unit_of_measurement: "%"
-
+    icon: mdi:battery-charging-80    
 
 
 input_select:
-  car_use_day_1:
+  car_1_use_day_1:
     name: maandag
     options:
       - thuis
       - Toyota Evere
       - Toyota Diest
-      - 250 km
+      - 275 km
       - maximum km
     icon: mdi:calendar-range-outline
 
-  car_use_day_2:
+  car_1_use_day_2:
     name: dinsdag
     options:
       - thuis
       - Toyota Evere
       - Toyota Diest
-      - 250 km
+      - 275 km
       - maximum km
     icon: mdi:calendar-range-outline
 
-  car_use_day_3:
+  car_1_use_day_3:
     name: woensdag
     options:
       - thuis
       - Toyota Evere
       - Toyota Diest
-      - 250 km
+      - 275 km
       - maximum km
     icon: mdi:calendar-range-outline
 
-  car_use_day_4:
+  car_1_use_day_4:
     name: donderdag
     options:
       - thuis
       - Toyota Evere
       - Toyota Diest
-      - 250 km
+      - 275 km
       - maximum km
     icon: mdi:calendar-range-outline
 
-  car_use_day_5:
+  car_1_use_day_5:
     name: vrijdag
     options:
       - thuis
       - Toyota Evere
       - Toyota Diest
-      - 250 km
+      - 275 km
       - maximum km
     icon: mdi:calendar-range-outline
 
-  car_use_day_6:
+  car_1_use_day_6:
     name: zaterdag
     options:
       - thuis
       - Toyota Evere
       - Toyota Diest
-      - 250 km
+      - 275 km
       - maximum km
     icon: mdi:calendar-range-outline
 
-  car_use_day_7:
+  car_1_use_day_7:
     name: zondag
     options:
       - thuis
       - Toyota Evere
       - Toyota Diest
-      - 250 km
+      - 275 km
       - maximum km
     icon: mdi:calendar-range-outline 
+  
+  car_1_charge_limit:
+    name: laden stoppen bij
+    options:
+      - minimaal doel
+      - optimaal doel
 
-
+input_boolean:
+  car_charge_plan:
+    name: laadplanning

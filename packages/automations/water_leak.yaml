@@ -1,0 +1,35 @@
+automation:
+
+- alias: Alarm // waterlek in kelder
+  id: d5a9717b-4c5b-49bd-b71c-921515acee93
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.kelder_waterdetector_vocht
+      to: "on"
+  condition: []
+  action:
+    - service: notify.bart_phone
+      data:
+        message: TTS
+        data:
+          channel: "alarm_stream"
+          tts_text: "Waterlek in Eikenboslaan!"
+          ttl: 0
+          priority: high
+          media_stream: alarm_stream
+    - service: notify.bart_phone
+      data:
+        title: '🚨 Alarm!'
+        message: 'Alarm in Eikenbos: waterlek in kelder'
+        data:
+          notification_icon: mdi:security      
+          color: red
+          channel: alarm
+          actions:
+          - action: URI
+            title: Meer info
+            uri: /lovelace/alarm
+          vibrationPattern: 10, 10, 10, 10, 10, 10, 10
+  mode: single

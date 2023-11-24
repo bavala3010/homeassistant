@@ -37,7 +37,7 @@ automation:
         entity_id: input_number.car_charger_watt
       data:
         value: >-
-          {% set charger = states('sensor.charger_real_power') | float(default=0) / 1000 %}        
+          {% set charger = states('sensor.charger_current_power') | float(default=0) / 1000 %}        
           {% set maxpower = states('input_number.car_charge_minimum_wattage') | float(default=0) %}
           {% set net = states('sensor.net_power_avg') | float(default=0) %}
           {% if net + charger < maxpower %}
@@ -64,7 +64,7 @@ automation:
     state: 'on'
     # check dat huidige SOC groter is dan laaddoel
   - condition: template
-    value_template: "{{ states('sensor.car_1_soc')| int(2) >= (states('input_number.car_charge_target_percentage') | int(2)) }}"
+    value_template: "{{ states('sensor.car_1_soc')| int(2) >= (states('input_number.car_1_optimal_target_soc') | int(2)) }}"
   - condition: template
     value_template: "{{ states('sensor.charger_status') == 'charging' or states('sensor.charger_status') == 'error'}}"
   action:
@@ -73,7 +73,7 @@ automation:
       title: Laaddoel bereikt!
       message: >
         {% set soc = states('sensor.car_1_soc') | round(default=0) %}
-        {% set targetsoc = states('input_number.car_charge_target_percentage') | round(default=0) %}
+        {% set targetsoc = states('input_number.car_1_optimal_target_soc') | round(default=0) %}
         {% set range = ( soc * (states('sensor.car_range_per_10percent') | float(default=0)) / 10 ) | int(0) %}
         Laaddoel {{ targetsoc }}% is bereikt. Huidige lading: {{ soc }}% = {{ range }} km
       data:

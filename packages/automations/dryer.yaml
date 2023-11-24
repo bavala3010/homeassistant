@@ -113,7 +113,7 @@ automation:
           - service: tts.edge_tts_say
             data:
               entity_id: media_player.living_speaker
-              message: De was zit nog altijd in de droogkast.
+              message: De was zit nog in de droogkast.
               options:
                 pitch: +0Hz
                 rate: -10%

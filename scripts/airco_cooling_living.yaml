@@ -8,7 +8,7 @@ living_airco_cooling_start:
       {{ states('sensor.living_temperature') | float >= 20 }}
   - condition: template
     value_template: >-
-      {{ states('group.living_ramen') == 'off' }}      
+      {{ states('group.living_ramen') == 'off' }}
   - service: climate.set_temperature
     data:
       hvac_mode: cool

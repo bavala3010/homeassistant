@@ -1,0 +1,70 @@
+automation:
+
+######################################
+# car charge: peak mode = keep net usage below the peak
+######################################
+
+- alias: "🚗 car 1 // 🔋 charge // modus peak // start en bezig: pas elke minuut het vermogen van de lader aan"
+  id: '396413b7-8e60-4e01-93d9-9dbed58278f2'
+  trigger:
+  - platform: time_pattern
+    minutes: /1
+  condition:
+    # only if charging in peak mode 
+  - condition: state
+    entity_id: input_boolean.car_charge_mode_peak
+    state: 'on'
+    # only if charger cable is connected to home charger or already charging
+  - condition: or
+    conditions:    
+    - condition: state
+      entity_id: sensor.charger_status
+      state: 'connected'            
+    - condition: state
+      entity_id: sensor.charger_status
+      state: 'charging'
+  variables:
+      wattage: >
+        {% set charger = states('sensor.charger_current_power') | float(default=0) %}        
+        {% set maxpower = states('input_number.car_charge_peak_netwattage') | float(default=0) %}
+        {% set net = (states('sensor.net_power_avg') | float(default=0) + states('sensor.net_power') | float(default=0) ) / 2 %}
+        {{ (- (net - maxpower - charger) / 1000) | float }}
+  action:
+    - if:
+        - condition: template
+          value_template: "{{ wattage > 1.3 }}"
+      then:
+        - service: input_number.set_value
+          target:
+            entity_id: input_number.car_charger_watt
+          data:
+            value: "{{ wattage }}"
+        - wait_template: ''
+          timeout: '00:00:05'
+        - service: script.charger_define_phase_1_or_3_based_on_watt
+        - service: script.charger_define_ampere_based_on_watt
+        - service: script.charger_define_and_write_register_based_on_ampere
+        # - if:
+        #     - condition: template
+        #       value_template: "{{ wattage > 1.3 }}"
+        #   then:
+        #     - service: notify.bart_phone
+        #       data:
+        #         title: Auto is gestart met laden volgens piekvermogen
+        #         message: >
+        #           Zon nu {{ states('sensor.solar_power') | int }} W | Net: {{ states('sensor.net_power')}} W | Auto laadt nu aan {{states('input_number.car_charger_watt') | round(1)}} kW<br>
+        #           Laden met netverbruik onder piek: {{states('input_number.car_charge_peak_netwattage')}}<br>
+        #           Auto: {{states('sensor.car_1_soc') | round()}}%. Doel: {{ states('input_number.car_1_optimal_target_soc') | round(0)}}%<br>
+        #           Vandaag al {{ states('sensor.car_charge_solar_energy_daily') | round(1) }} kWh geladen met zon en {{ states('sensor.car_charge_net_energy_daily') | round(1) }} kWh van het net.
+        #         data:
+        #           tag: car_charging_peak
+        #           color: green
+        #           notification_icon: "mdi:car-electric"
+        #           actions:
+        #           - action: URI
+        #             title: meer info
+        #             uri: /dashboard-car/car-charging        
+      else:
+        - service: script.stop_charger
+          data: {}
+  mode: single  

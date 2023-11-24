@@ -20,7 +20,7 @@ modbus:
         address: 1100
         data_type: float32
         unit_of_measurement: A
-      - name: charger_real_power
+      - name: charger_current_power
         unique_id: '5d2cee9c-2485-4af4-a9a2-a901321924c0'
         slave: 1
         address: 344
@@ -50,7 +50,7 @@ modbus:
       - name: charger_energy_delivered
         slave: 1
         address: 374
-        count: 4
+        # count: 4
         data_type: float64
         unit_of_measurement: Wh
         device_class: energy

@@ -1,0 +1,34 @@
+###############################################################################
+# map car sensor names to fixed sensor names
+###############################################################################
+
+template:
+  - sensor:
+      - name: "car 1 soc"
+        state: "{{ states('sensor.audi_e_tron_sportback_state_of_charge') }}"
+        unit_of_measurement: procent
+
+      - name: "car 1 range"
+        state: "{{ states('sensor.audi_e_tron_sportback_primary_engine_range') }}"
+        unit_of_measurement: km
+
+      - name: "car 1 plug state"
+        state: "{{ states('sensor.audi_e_tron_sportback_plug_state') }}"
+
+      - name: "car 1 remaining charge time"
+        state: "{{ states('sensor.audi_e_tron_sportback_remaining_charge_time') }}"
+
+      - name: "car 1 charging state"
+        state: "{{ states('sensor.audi_e_tron_sportback_charging_state') }}"
+
+
+utility_meter:
+  car_1_today_km:
+    source: sensor.audi_e_tron_sportback_mileage
+    cycle: daily
+
+  car_1_monthly_km:
+    source: sensor.audi_e_tron_sportback_mileage
+    cycle: monthly
+
+

@@ -21,7 +21,7 @@ automation:
   condition:
   # check if SOC < target SOC, otherwise routine should not run
   - condition: template
-    value_template: "{{ states('sensor.car_1_soc')| int(2) < (states('input_number.car_charge_target_percentage') | int(2)) }}"
+    value_template: "{{ states('sensor.car_1_soc')| int(2) < (states('input_number.car_1_optimal_target_soc') | int(2)) }}"
   # only when 'charge mode net' is ON
   - condition: state
     entity_id: input_boolean.car_charge_mode_stoptimer
@@ -42,17 +42,15 @@ automation:
       entity_id: input_number.car_charger_watt
     data:
       value: >-
-        {{ states('input_number.car_charge_fixed_wattage') | float(default=0) }}      
-  - service: script.charger_define_phase_1_or_3_based_on_watt
-  - service: script.charger_define_ampere_based_on_watt
-  - service: script.charger_define_and_write_register_based_on_ampere
+        {{ states('input_number.car_charge_fixed_wattage') | float(default=0) }}
+  - service: script.start_charger
   - service: notify.bart_phone
     data:
       title: laden gestart met netstroom
       message: >
         {% set soc = states('sensor.car_1_soc') | round(default=0) %}
-        {% set targetsoc = states('input_number.car_charge_target_percentage') | round(default=0) %}
-        {% set targetrange = states('input_number.car_charge_target_range') | round(default=0) %}
+        {% set targetsoc = states('input_number.car_1_optimal_target_soc') | round(default=0) %}
+        {% set targetrange = states('input_number.car_1_target_range') | round(default=0) %}
         Doeluur: {{as_timestamp(states('input_datetime.car_charge_target_time')) | timestamp_custom('%a %-d/%-m %-Hu%M') }}<br>
         Er wordt geladen van {{ soc }}% naar {{ targetsoc }}% = {{ targetrange }} km.
       data:
@@ -73,7 +71,7 @@ automation:
   condition:
   # check dat huidige SOC groter is dan gevraagd laaddoel
   - condition: template
-    value_template: "{{ states('sensor.car_1_soc')| int(2) >= (states('input_number.car_charge_target_percentage') | int(2)) }}"
+    value_template: "{{ states('sensor.car_1_soc')| int(2) >= (states('input_number.car_1_optimal_target_soc') | int(2)) }}"
   # enkel als de lader bezig is    
   - condition: state
     entity_id: sensor.charger_status
@@ -88,7 +86,7 @@ automation:
       title: Laaddoel bereikt!
       message: >
         {% set soc = states('sensor.car_1_soc') | round(default=0) %}
-        {% set targetsoc = states('input_number.car_charge_target_percentage') | round(default=0) %}
+        {% set targetsoc = states('input_number.car_1_optimal_target_soc') | round(default=0) %}
         {% set range = ( soc * (states('sensor.car_range_per_10percent') | float(default=0)) / 10 ) | int(0) %}
         Laaddoel van {{ targetsoc }}% is bereikt. Huidige lading: {{ soc }}% = {{ range }} km
       data:
@@ -110,7 +108,10 @@ automation:
   trigger:
   - platform: template
     value_template: "{{ as_timestamp(now()) | timestamp_custom('%Y-%m-%d %H:%M:%S') == states('input_datetime.car_charge_target_time') }}"
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.car_charge_mode_stoptimer
+    state: 'on'  
   action:
   - service: script.stop_charger
     data: {}

@@ -49,50 +49,48 @@ schedule:
 
   kamer_alunya_normal_temperature_schema:
     name: "Kamer Alunya normale temperatuur schema"
-    monday:
-      - from: "6:30:00"
-        to: "7:00:00"
-    tuesday:
-      - from: "06:30:00"
-        to: "07:00:00"
-    wednesday:
-      - from: "06:30:00"
-        to: "07:00:00"
-    thursday:
-      - from: "06:30:00"
-        to: "07:00:00"
-    friday:
-      - from: "06:30:00"
-        to: "07:00:00"
+    # monday:
+    #   - from: "7:00:00"
+    #     to: "7:00:00"
+    # tuesday:
+    #   - from: "07:00:00"
+    #     to: "07:00:00"
+    # wednesday:
+    #   - from: "07:00:00"
+    #     to: "07:00:00"
+    # thursday:
+    #   - from: "07:00:00"
+    #     to: "07:00:00"
+    # friday:
+    #   - from: "07:00:00"
+    #     to: "07:00:00"
     saturday:
-      - from: "09:00:00"
-        to: "10:00:00"
-      - from: "13:00:00"
+      - from: "10:00:00"
         to: "22:00:00"
     sunday:
-      - from: "09:30:00"
-        to: "22:00:00"
+      - from: "10:00:00"
+        to: "22:00:00"  
 
   kamer_amilya_normal_temperature_schema:
     name: "Kamer Amilya normale temperatuur schema"
-    monday:
-      - from: "6:15:00"
-        to: "7:00:00"
-    tuesday:
-      - from: "06:15:00"
-        to: "07:00:00"
-    wednesday:
-      - from: "06:15:00"
-        to: "07:00:00"
-    thursday:
-      - from: "06:15:00"
-        to: "07:00:00"
-    friday:
-      - from: "06:15:00"
-        to: "07:00:00"
+    # monday:
+    #   - from: "7:00:00"
+    #     to: "7:00:00"
+    # tuesday:
+    #   - from: "07:00:00"
+    #     to: "07:00:00"
+    # wednesday:
+    #   - from: "07:00:00"
+    #     to: "07:00:00"
+    # thursday:
+    #   - from: "07:00:00"
+    #     to: "07:00:00"
+    # friday:
+    #   - from: "07:00:00"
+    #     to: "07:00:00"
     saturday:
-      - from: "09:00:00"
+      - from: "10:00:00"
         to: "22:00:00"
     sunday:
-      - from: "09:30:00"
+      - from: "10:00:00"
         to: "22:00:00"        

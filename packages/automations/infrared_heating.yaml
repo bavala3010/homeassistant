@@ -1,5 +1,29 @@
 automation:
 
+- alias: infraroodpaneel aan = timer starten
+  id: 'a806b952-4812-48ba-a680-fc74346f19cf'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - switch.infrared_panel_switch
+      to: "on"
+    # - platform: numeric_state
+    #   entity_id: sensor.infrared_panel_power
+    #   for:
+    #     hours: 0
+    #     minutes: 0
+    #     seconds: 3
+    #   above: 20      
+  condition: []
+  action:
+    - service: timer.start
+      data:
+        duration: "{{ states('input_number.infrared_panel_timer_minutes') | float * 60 }}"   
+      target:
+        entity_id: timer.infrared_panel_timer  
+  mode: single
+
 - alias: infraroodpaneel uit na 2 uren
   id: 'db83e337-8ca6-4886-82c5-616d606825e6'
   description: ""
@@ -16,4 +40,34 @@ automation:
       data: {}
       target:
         entity_id: switch.infrared_panel_switch
+  mode: single
+
+
+- alias: infraroodpaneel timer komt op 0 = uitschakelen
+  id: 'e3040b39-5ffd-4641-8dbc-ed69503ec537'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+      - timer.infrared_panel_timer
+    from: active
+    to: idle
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  - platform: state
+    entity_id:
+      - switch.infrared_panel_switch
+    to: "off"        
+  condition: []
+  action:  
+    - service: switch.turn_off
+      data: {}
+      target:
+        entity_id: switch.infrared_panel_switch
+    - service: timer.cancel
+      data: {}
+      target:
+        entity_id: timer.infrared_panel_timer           
   mode: single

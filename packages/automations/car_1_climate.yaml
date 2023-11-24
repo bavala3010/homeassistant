@@ -19,7 +19,7 @@ automation:
   trigger:
   - platform: template
     value_template: >
-      {{ states('sensor.time') == (states.input_datetime.car_climatisation_time.attributes.timestamp | timestamp_custom('%H:%M', False)) }}      
+      {{ states('sensor.time') == (states.input_datetime.car_climatisation_time.attributes.timestamp | timestamp_custom('%H:%M', False)) }}
   condition:
   - condition: state
     entity_id: input_boolean.car_climatisation_timer
@@ -340,8 +340,8 @@ automation:
   condition:
   - condition: template
     value_template: >
-      {% set car_use_day = 'input_select.car_use_day_' ~ now().isoweekday() %}
-      {%if states(car_use_day) == "Toyota Evere"%} true {% endif %}
+      {% set car_1_use_day = 'input_select.car_1_use_day_' ~ now().isoweekday() %}
+      {%if states(car_1_use_day) == "Toyota Evere"%} true {% endif %}
   action:
   - service: notify.madouce_phone
     data:
@@ -377,8 +377,8 @@ automation:
     state: "Toyota Evere"  
   - condition: template
     value_template: >
-      {% set car_use_day = 'input_select.car_use_day_' ~ now().isoweekday() %}
-      {% if states(car_use_day) == "Toyota Evere"%} true {% endif %}
+      {% set car_1_use_day = 'input_select.car_1_use_day_' ~ now().isoweekday() %}
+      {% if states(car_1_use_day) == "Toyota Evere"%} true {% endif %}
   action:
   - service: input_datetime.set_datetime
     data:
@@ -440,8 +440,8 @@ automation:
     and:
       - condition: template
         value_template: >
-          {% set car_use_day = 'input_select.car_use_day_' ~ now().isoweekday() %}
-          {%if states(car_use_day) == "Toyota Diest"%} true {% endif %}
+          {% set car_1_use_day = 'input_select.car_1_use_day_' ~ now().isoweekday() %}
+          {%if states(car_1_use_day) == "Toyota Diest"%} true {% endif %}
       - condition: numeric_state
         entity_id: sensor.eikenbos_temperature
         below: 15       
@@ -480,8 +480,8 @@ automation:
     state: "Toyota Diest"
   - condition: template
     value_template: >
-      {% set car_use_day = 'input_select.car_use_day_' ~ now().isoweekday() %}
-      {%if states(car_use_day) == "Toyota Diest"%} true {% endif %}
+      {% set car_1_use_day = 'input_select.car_1_use_day_' ~ now().isoweekday() %}
+      {%if states(car_1_use_day) == "Toyota Diest"%} true {% endif %}
   action:
   - service: input_datetime.set_datetime
     data:

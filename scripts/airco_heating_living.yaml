@@ -1,21 +1,25 @@
 living_airco_start_heating:
   sequence:
-  - service: timer.start
-    data:
-      duration: "{{ states('input_number.living_airco_timer_minutes') | float * 60 }}"
-    target:
-      entity_id: timer.living_airco_timer
-  - service: input_datetime.set_datetime
-    data:
-      datetime: >
-        {% set t =states('input_number.living_airco_timer_minutes') | float %}
-        {{ (now().timestamp() + t*60 ) | timestamp_custom("%Y-%m-%d %-H:%M:%S") }}
-    target:
-      entity_id: input_datetime.living_airco_timer_stop
+  - if:
+    - condition: template
+      value_template: "{{ states('input_select.living_airco_timer_mode') == 'timer' }}"
+    then:
+    - service: timer.start
+      data:
+        duration: "{{ states('input_number.living_airco_timer_minutes') | float * 60 }}"
+      target:
+        entity_id: timer.living_airco_timer
+    - service: input_datetime.set_datetime
+      data:
+        datetime: >
+          {% set t =states('input_number.living_airco_timer_minutes') | float %}
+          {{ (now().timestamp() + t*60 ) | timestamp_custom("%Y-%m-%d %-H:%M:%S") }}
+      target:
+        entity_id: input_datetime.living_airco_timer_stop
   - service: climate.set_temperature
     data:
       hvac_mode: heat
-      temperature: 26
+      temperature: 23
         # {% set adj = states('input_number.living_airco_target_temperature') | float - states('sensor.living_temperature') | float %}
         # {{ (state_attr('climate.living_airco', 'current_temperature') + adj) | round(1, 'half', 0) }}
     target:
@@ -106,3 +110,27 @@ living_airco_stop:
     target:
       entity_id: timer.living_airco_timer
   mode: restart
+
+living_airco_increment_temperature:
+  sequence:
+    - variables:
+        target_temperature: "{{ states('input_number.living_airco_target_temperature') | float }}"
+        current_temperature: "{{ state_attr('climate.living_airco', 'current_temperature') | float }}"
+        intermediate_temperature: "{{ states('input_number.living_airco_intermediate_temperature') | float }}"
+        step: 2 # Stel de stapgrootte in
+    - repeat:
+        while:
+        - condition: template
+          value_template: "{{ current_temperature + step < target_temperature }}"
+        sequence:
+          - service: climate.set_temperature
+            data:
+              temperature: "{{ current_temperature + step }}"
+            target:
+              device_id: 1c560bbc7917f45d737e87d3e2bd0d89
+          - service: input_number.set_value
+            data:
+              value: "{{ current_temperature + step }}"
+            target:
+              entity_id: input_number.living_airco_intermediate_temperature
+          - wait_template: "{{ current_temperature >= intermediate_temperature }}"  

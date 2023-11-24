@@ -1,0 +1,91 @@
+automation:
+
+- alias: Assist // Hoeveel procent heeft de auto?
+  id: 'aeee848f-ee33-4dca-b665-563974be597b'
+  description: ''
+  trigger:
+  - platform: conversation
+    command: Hoeveel procent heeft de auto
+  condition: []
+  variables:
+    message: >
+      {% set c = states('sensor.car_1_soc') %}
+      {% if c == 'unknown' %}De gegevens zijn niet beschikbaar
+      {% else %}De auto is {{ states('sensor.car_1_soc') }}% geladen.
+      {% endif %}    
+  action:
+    - service: script.from_atom_to_speaker
+      data:
+        message: '{{message}}'
+  mode: single
+
+
+- alias: Assist // Hoeveel zon is er?
+  id: '41cc7553-b924-4072-90ef-64ab0711a08a'
+  description: ''
+  trigger:
+  - platform: conversation
+    command: hoeveel zon is er
+  - platform: state
+    entity_id:
+    - binary_sensor.m5stack_atom_echo_0d036c_button
+    to: 'on'
+  condition: []
+  variables:
+    message: >
+      {% set p = states('sensor.net_power_avg') | round(-2) | int %}
+      {% set c = states('sensor.charger_current_power') | round(-2) | int %}
+      {% if c == 0 %}
+        {% if p < 0 %}Er is {{ p | abs }} Watt overschot.
+        {% elif p > 0 %}Er is geen zonne-overschot. Er wordt {{ p | abs }} Watt verbruikt.
+        {% endif %}
+      {% elif c > 0 %}De auto laadt aan {{ c | abs }} Watt. Als de auto stopt met laden kan er {{ (c + p) | round(-2) | int | abs }} Watt worden gebruikt.
+      {% endif %}   
+  action:  
+    - service: script.from_atom_to_speaker
+      data:
+        message: '{{message}}'         
+  mode: single
+
+- alias: Assist // Hoeveel regent het?
+  id: '0a2b3226-88d5-4caa-9ce9-76b44d1992d6'
+  description: ""
+  trigger:
+    - platform: conversation
+      command: hoe hard regent het
+    - platform: conversation
+      command: hoeveel regent het
+  condition: []
+  variables:
+    message: >
+      {% set r =  states('sensor.eikenbos_rain_rate_piezo') %}
+      {% if r == '0.0' %}Het regent momenteel niet.
+      {% else %}Het regent {{ r }} liter per uur.
+      {% endif %}
+  action:
+    - service: script.from_atom_to_speaker
+      data:
+        message: '{{message}}'
+  mode: single
+
+- alias: Assist // Speel het nieuws
+  id: '998632a2-bcd7-496f-a6a3-503a106fa982'
+  description: ''
+  trigger:
+  - platform: conversation
+    command: Speel het nieuws
+  condition: []
+  action:
+  - service: script.living_google_tv_vtm_nieuws
+  mode: single
+
+- alias: Assist // Zet TV aan
+  id: '013dd9a7-9c44-4124-9dac-a3276e9aace9'
+  description: ''
+  trigger:
+  - platform: conversation
+    command: zet tv aan
+  condition: []
+  action:
+  - service: script.living_google_tv_kodi_launch
+  mode: single

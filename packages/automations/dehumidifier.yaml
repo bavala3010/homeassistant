@@ -1,6 +1,8 @@
 automation:
 
 
+
+
 - alias: ontvochtiger aan met licht douche
   id: 'cef6103e-ddcd-4cf9-abef-41cf20411ded'
   description: ""
@@ -44,8 +46,14 @@ automation:
       data:
         datetime: '{{ now() }}'
       target:
-        entity_id: input_datetime.dehumidifier_start_time        
+        entity_id: input_datetime.dehumidifier_start_time
+    - service: timer.start
+      data:
+        duration: "{{ states('input_number.dehumidifier_timer_minutes') | float * 60 }}"   
+      target:
+        entity_id: timer.dehumidifier_timer              
   mode: single
+
 
 - alias: ontvochtiger uit
   id: '35121fab-a415-454e-af0a-fb863aa20b37'
@@ -70,6 +78,14 @@ automation:
         datetime: '{{ now() }}'
       target:
         entity_id: input_datetime.dehumidifier_stop_time
+    - service: timer.finish
+      data: {}
+      target:
+        entity_id: timer.airco_dehumidify_timer
+    - service: switch.turn_off
+      data: {}
+      target:
+        entity_id: switch.dehumidifier_switch         
     - service: notify.bart_madouce_phone
       data:
         message: "clear_notification"
@@ -118,14 +134,15 @@ automation:
   mode: single
 
 
-- alias: ontvochtiger staat al 30 min. aan of raam open of <70% vocht = uitschakelen
+- alias: ontvochtiger timer komt op 0 of raam open of <70% vocht = uitschakelen
   id: 'cf189eff-93b5-4452-b62d-8c14cdbd7bb4'
   description: ''
   trigger:
-  - platform: numeric_state
-    entity_id: sensor.dehumidifier_power
-    above: 0
-    for: 00:30:00
+  - platform: state
+    entity_id:
+      - timer.dehumidifier_timer
+    from: active
+    to: idle
   - platform: state
     entity_id: binary_sensor.badkamer_raam_kantel
     to: "on"
@@ -138,4 +155,8 @@ automation:
       data: {}
       target:
         entity_id: switch.dehumidifier_switch
+    - service: timer.cancel
+      data: {}
+      target:
+        entity_id: timer.airco_dehumidify_timer           
   mode: single

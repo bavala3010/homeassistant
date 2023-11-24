@@ -16,7 +16,7 @@ automation:
 - alias: "🚗 car 1 // 🔋 charge // mode sun // start - als er voldoende injectie is"
   id: 'fff013ea-12e1-427f-8283-617a0f2e94ad'
   description: ''
-  # start when the injection sensor (average last 3 minutes) is below the number defined in input_number.car_charge_sun_start_wattage
+  # start when the injection sensor (average last 3 minutes) is below the number defined by input_number.car_charge_sun_start_wattage
   trigger:
   - platform: time_pattern
     minutes: /1
@@ -59,13 +59,13 @@ automation:
       entity_id:
         - input_boolean.car_charge_sun_busy
         - input_boolean.car_charge_busy
-  # define charger Watt based on injection
+  # set charger Watt based on injection
   - service: input_number.set_value
     target:
       entity_id: input_number.car_charger_watt
     data:
       value: >-
-        {% set charger = states('sensor.charger_real_power') | float(default=0) %}        
+        {% set charger = states('sensor.charger_current_power') | float(default=0) %}        
         {% set maxpower = states('input_number.car_charge_sun_max_netwattage') | float(default=0) %}
         {# set net = states('sensor.net_power_avg') | float(default=0) #}
         {% set net = (states('sensor.net_power_avg') | float(default=0) + states('sensor.net_power') | float(default=0) ) / 2 %}
@@ -80,7 +80,7 @@ automation:
       title: Auto is gestart met laden op zonne-energie
       message: >
         Zon nu {{ states('sensor.solar_power') | int }} W | Net: {{ states('sensor.net_power')}} W | Auto laadt nu aan {{states('input_number.car_charger_watt') | round(1)}} kW<br>
-        Auto: {{states('sensor.car_1_soc') | round()}}%. Doel: {{ states('input_number.car_charge_target_percentage') | round(0)}}%<br>
+        Auto: {{states('sensor.car_1_soc') | round()}}%. Doel: {{ states('input_number.car_1_optimal_target_soc') | round(0)}}%<br>
         Vandaag al {{ states('sensor.car_charge_solar_energy_daily') | round(1) }} kWh geladen met zon en {{ states('sensor.car_charge_net_energy_daily') | round(1) }} kWh van het net.
       data:
         tag: car_charging_sun
@@ -119,6 +119,13 @@ automation:
   # - condition: template
   #   value_template: "{{ states('sensor.car_1_soc')| int < 100  }}"
   ######################################################
+  variables:
+      wattage: >
+        {% set charger = states('sensor.charger_current_power') | float(default=0) %}        
+        {% set maxpower = states('input_number.car_charge_sun_max_netwattage') | float(default=0) %}
+        {# set net = states('sensor.net_power_avg') | float(default=0) #}
+        {% set net = (states('sensor.net_power_avg') | float(default=0) + states('sensor.net_power') | float(default=0) ) / 2 %}
+        {{ (- (net - maxpower - charger) / 1000) | float }}  
   action:
     - if:
         - condition: template
@@ -128,8 +135,7 @@ automation:
           target:
             entity_id: input_number.car_charger_watt
           data:
-            value: >-
-              {{ wattage }}
+            value: "{{ wattage }}"
         - wait_template: ''
           timeout: '00:00:05'
         - service: script.charger_define_phase_1_or_3_based_on_watt
@@ -144,21 +150,14 @@ automation:
             title: Zonneladen gestopt
             message: >
               Zon: {{ states('sensor.solar_power') | int }} W | Net: {{ states('sensor.net_power')}} W | Auto: {{states('input_number.car_charger_watt') | round(1)}} kW<br>
-              Auto nu: {{states('sensor.car_1_soc') | round()}}%. Doel: {{ states('input_number.car_charge_target_percentage') | round(0)}}%<br>
+              Auto nu: {{states('sensor.car_1_soc') | round()}}%. Doel: {{ states('input_number.car_1_optimal_target_soc') | round(0)}}%<br>
               Vandaag al {{ states('sensor.car_charge_solar_energy_daily') | round(1,default=0) }} kWh geladen met zon en {{ states('sensor.car_charge_net_energy_daily') | round(1) }} kWh van het net.
             data:
               tag: car_charging_sun
               color: green
               notification_icon: "mdi:car-electric"                    
         - wait_template: ''
-          timeout: '00:03:00'          
-  variables:
-      wattage: >
-        {% set charger = states('sensor.charger_real_power') | float(default=0) %}        
-        {% set maxpower = states('input_number.car_charge_sun_max_netwattage') | float(default=0) %}
-        {# set net = states('sensor.net_power_avg') | float(default=0) #}
-        {% set net = (states('sensor.net_power_avg') | float(default=0) + states('sensor.net_power') | float(default=0) ) / 2 %}
-        {{ (- (net - maxpower - charger) / 1000) | float }}       
+          timeout: '00:03:00'    
   mode: single    
 
 
@@ -190,7 +189,7 @@ automation:
       value: 5.5
   mode: single
 
-- alias: "🚗 car 1 // 🔋 charge // mode sun // check SOC tov ideaal laaddoel"
+- alias: "🚗 car 1 // 🔋 charge // mode sun // check SOC tov maximum laaddoel"
   id: '2c93c0ae-c0b7-43bf-9014-ddf5f6a12944'
   trigger:
   - platform: state
@@ -202,7 +201,7 @@ automation:
     state: 'on'
     # check dat huidige SOC groter is dan ideaal laaddoel
   - condition: template
-    value_template: "{{ states('sensor.car_1_soc')| int(2) >= (states('input_number.car_ideal_target_soc') | int(2)) }}"
+    value_template: "{{ states('sensor.car_1_soc')| int(2) >= (states('input_number.car_1_optimal_target_soc') | int(2)) }}"
   - condition: state
     entity_id: sensor.charger_status
     state: 'charging'
@@ -212,7 +211,7 @@ automation:
       title: Laaddoel bereikt!
       message: >
         {% set soc = states('sensor.car_1_soc') | round(default=0) %}
-        {% set targetsoc = states('input_number.car_ideal_target_soc') | round(default=0) %}
+        {% set targetsoc = states('input_number.car_1_optimal_target_soc') | round(default=0) %}
         {% set range = ( soc * (states('sensor.car_range_per_10percent') | float(default=0)) / 10 ) | int(0) %}
         Laaddoel van {{ targetsoc }}% is bereikt. Huidige lading: {{ soc }}% = {{ range }} km
       data:
@@ -226,3 +225,45 @@ automation:
   - service: script.stop_charger
     data: {}
   mode: single
+
+
+- alias: "🚗 car 1 // 🔋 charge // mode sun // voldoende injectie = overschakelen naar zonneladen"
+  id: '361321a1-f59d-4b34-b655-6e7f51393e80'
+  description: ''
+  # when the injection sensor (average last 3 minutes) is below the number defined by input_number.car_charge_sun_start_wattage
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.net_power_avg
+    below: input_number.car_charge_sun_start_wattage
+    for: "00:03:00"
+  condition:
+  - condition: state
+    entity_id: input_boolean.car_charge_mode_sun
+    state: 'off'
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Laadmodus veranderd naar zon.
+      message: >
+        {% set soc = states('sensor.car_1_soc') | round(default=0) %}
+        {% set targetsoc = states('input_number.car_1_optimal_target_soc') | round(default=0) %}
+        Er kan geladen worden met zon.
+        Huidige lading: {{ soc }}% = {{ range }} km. Laaddoel: {{ targetsoc }}% 
+      data:
+        tag: car_charging
+        color: green
+        actions:
+        - action: URI
+          title: meer info
+          uri: /dashboard-car/car-charging
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.car_charge_mode_sun
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.car_charge_mode_peak     
+  mode: single           

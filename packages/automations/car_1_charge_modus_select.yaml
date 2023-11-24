@@ -26,7 +26,7 @@ automation:
     to: 'on'
   condition:
   - condition: template
-    value_template: "{{ states('sensor.car_1_soc')| int(2) <= (states('input_number.car_charge_target_percentage') | int(2)) }}"
+    value_template: "{{ states('sensor.car_1_soc')| int(2) <= (states('input_number.car_1_optimal_target_soc') | int(2)) }}"
   action:
   - service: notify.bart_phone
     data:
@@ -91,7 +91,7 @@ automation:
       title: "Laden met starttimer"
       message: >
         Het laden start om {{ state_attr('input_datetime.car_charge_starttimer_starttime','timestamp') | timestamp_custom('%-Hu%M') }}.<br>
-        Er wordt geladen van {{states('sensor.car_1_soc') | round(default=0) }}% naar {{states('input_number.car_charge_target_percentage') | round(default=0) }}%.
+        Er wordt geladen van {{states('sensor.car_1_soc') | round(default=0) }}% naar {{states('input_number.car_1_optimal_target_soc') | round(default=0) }}%.
       data:
         tag: car_charging
         color: green
@@ -121,7 +121,7 @@ automation:
       title: "Laden met doeltimer"
       message: >
         Laden van {{ as_timestamp(states('sensor.car_charge_stoptimer_starttime'),0) | timestamp_custom('%a %d %b %-Hu%M') }} tot {{ state_attr('input_datetime.car_charge_target_time','timestamp') | timestamp_custom('%a %d %b %-Hu%M',) }}.<br>
-        Er wordt geladen van {{states('sensor.car_1_soc') | round(default=0) }}% naar {{states('input_number.car_charge_target_percentage') | round(default=0) }}%.
+        Er wordt geladen van {{states('sensor.car_1_soc') | round(default=0) }}% naar {{states('input_number.car_1_optimal_target_soc') | round(default=0) }}%.
       data:
         tag: car_charging
         color: green

@@ -33,8 +33,8 @@ automation:
           {% if now().hour < 3 %}{% set t = now().date() %}{% set d = 'vandaag' %}
           {% else %}{% set t = now().date() + timedelta(days=1) %}{% set d = 'morgen' %}
           {% endif %}
-          {% set target_soc = 'input_number.car_target_soc_day_' ~ t.isoweekday() %}
-          {% set use = 'input_select.car_use_day_' ~ t.isoweekday() %}
+          {% set target_soc = 'input_number.car_1_min_target_soc_day_' ~ t.isoweekday() %}
+          {% set use = 'input_select.car_1_use_day_' ~ t.isoweekday() %}
           {% set v = states('sensor.solar_sim_energy_today_adj') | int %}
           {% set m = states('sensor.solar_sim_energy_tomorrow_adj') | int %}
           {% set nu = states('sensor.sma_today') | float %}
@@ -97,8 +97,8 @@ automation:
           {% if now().hour < 3 %}{% set t = now().date() %}{% set d = 'vandaag' %}
           {% else %}{% set t = now().date() + timedelta(days=1) %}{% set d = 'morgen' %}
           {% endif %}
-          {% set target_soc = 'input_number.car_target_soc_day_' ~ t.isoweekday() %}
-          {% set use = 'input_select.car_use_day_' ~ t.isoweekday() %}
+          {% set target_soc = 'input_number.car_1_min_target_soc_day_' ~ t.isoweekday() %}
+          {% set use = 'input_select.car_1_use_day_' ~ t.isoweekday() %}
           {% set v = states('sensor.solar_sim_energy_today_adj') | int %}
           {% set m = states('sensor.solar_sim_energy_tomorrow_adj') | int %}
           {% set nu = states('sensor.sma_today') | float %}
@@ -218,6 +218,7 @@ automation:
           message: TTS
           data:
             channel: "alarm_stream"
+            volume: 0.5            
             tts_text: "Madouce is bijna thuis."
             ttl: 0
             priority: high
@@ -390,6 +391,82 @@ automation:
             entity_id: lock.voordeur_nuki            
   mode: single
 
+
+- alias: Bart komt thuis en binnen wifi bereik en donker = zet buitenverlichting aan
+  id: '414f37c0-6ee6-4056-8ec2-956495096cb4'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - sensor.sm_g986b_wifi_connection
+      to: BMWifi
+  condition:
+    - condition: state
+      entity_id: person.madouce
+      state: home
+    - condition: template
+      value_template: >-
+        {% set dif = as_timestamp(now()) - as_timestamp(states.person.madouce.last_changed) %}
+        {{ 30 < dif < 600 }}
+  action:
+    - if:
+        - condition: template
+          value_template: "{{ states('sensor.oprit_bewegingssensor_light_level') | int < 10 }}"
+      then:
+        - service: light.turn_on
+          data:
+            brightness: 150
+          target:
+            entity_id:
+              - light.buiten_oprit
+              - light.buiten_voordeur
+        - wait_template: ''
+          timeout: "00:05:00"
+        - service: light.turn_off
+          data: {}
+          target:
+            entity_id:
+              - light.buiten_oprit
+              - light.buiten_voordeur         
+  mode: single
+
+- alias: Madouce komt thuis en binnen wifi bereik en donker = zet buitenverlichting aan
+  id: '68b8a483-f1f1-4a26-93b2-17df92b17736'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - sensor.sm_s916b_wifi_connection
+      to: BMWifi
+  condition:
+    - condition: state
+      entity_id: person.bart
+      state: home
+    - condition: template
+      value_template: >-
+        {% set dif = as_timestamp(now()) - as_timestamp(states.person.bart.last_changed) %}
+        {{ 30 < dif < 600 }}
+  action:
+    - if:
+        - condition: template
+          value_template: "{{ states('sensor.oprit_bewegingssensor_light_level') | int < 10 }}"
+      then:
+        - service: light.turn_on
+          data:
+            brightness: 150
+          target:
+            entity_id:
+              - light.buiten_oprit
+              - light.buiten_voordeur
+        - wait_template: ''
+          timeout: "00:05:00"
+        - service: light.turn_off
+          data: {}
+          target:
+            entity_id:
+              - light.buiten_oprit
+              - light.buiten_voordeur        
+  mode: single
 
 - alias: "Tekst voor herinnering bij thuiskomst wordt aangepast"
   id: 82a22db8-f370-42e5-8b56-c7db3c69a8ce

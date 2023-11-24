@@ -4,3 +4,4 @@ sensor:
       - sunrise
       - sunset
       - sun_phase
+      - daylight

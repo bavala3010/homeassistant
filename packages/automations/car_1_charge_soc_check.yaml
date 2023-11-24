@@ -16,8 +16,8 @@ automation:
   - condition: template
     value_template: >
       {% set t = (now().date() + timedelta(days=1)) %}
-      {% set car_use_day = 'input_select.car_use_day_' ~ t.isoweekday() %}  
-      {% if states(car_use_day) == "Toyota Evere" %} true {% endif %}
+      {% set car_1_use_day = 'input_select.car_1_use_day_' ~ t.isoweekday() %}  
+      {% if states(car_1_use_day) == "Toyota Evere" %} true {% endif %}
   action:
   - service: audiconnect.refresh_data
     data:
@@ -29,7 +29,7 @@ automation:
       title: Morgen naar Toyota Evere
       message: >
         Auto heeft nu {{states('sensor.car_1_soc')}}%.
-        {% if states('sensor.car_1_soc') | round() > 25 %}Voldoende batterijniveau.
+        {% if states('sensor.car_1_soc') | round() > 50 %}Voldoende batterijniveau.
         {% else %} Onvoldoende geladen. Best 20% à 25%.
           {% if states('sensor.car_1_plug_state') == 'connected' %}Laadkabel is verbonden.
           {% else %}Opgelet: laadkabel is niet verbonden.
@@ -50,8 +50,8 @@ automation:
   - condition: template
     value_template: >
       {% set t = (now().date() + timedelta(days=1)) %}
-      {% set car_use_day = 'input_select.car_use_day_' ~ t.isoweekday() %}  
-      {% if states(car_use_day) == "Toyota Diest" %} true {% endif %}
+      {% set car_1_use_day = 'input_select.car_1_use_day_' ~ t.isoweekday() %}  
+      {% if states(car_1_use_day) == "Toyota Diest" %} true {% endif %}
   action:
   - service: audiconnect.refresh_data
     data:
@@ -79,7 +79,7 @@ automation:
     at: '21:25'
   condition:
   - condition: template
-    value_template: "{% if ( states('sensor.car_1_soc') | float ) < ( states('input_number.car_charge_target_percentage') | float ) %} true {% endif %}"
+    value_template: "{% if ( states('sensor.car_1_soc') | float ) < ( states('input_number.car_1_min_target_soc') | float ) %} true {% endif %}"
   - condition: state
     entity_id: device_tracker.audi_e_tron_sportback_position
     state: home
@@ -96,7 +96,7 @@ automation:
     data:
       title: Verbind de laadkabel!
       message: >
-        🚙 Auto zou moeten laden tot {{states('input_number.car_charge_target_percentage') | round(0) }}% maar is nu slechts {{states('sensor.car_1_soc') | round(0)}}%.
+        🚙 Auto zou moeten laden tot {{states('input_number.car_1_min_target_soc') | round(0) }}% maar is nu slechts {{states('sensor.car_1_soc') | round(0)}}%.
       data:
         color: green
         tag: auto_laden

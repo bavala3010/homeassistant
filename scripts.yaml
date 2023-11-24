@@ -170,3 +170,59 @@ mobile_vikings_verversen:
   - service: shell_command.shell_mobile_vikings
     data: {}
   mode: single
+'1696354329003':
+  alias: Launch Kodi
+  sequence:
+  - service: remote.turn_on
+    data:
+      activity: https://play.google.com/store/apps/details?id=org.xbmc.kodi
+    target:
+      entity_id: remote.living_google_tv
+  - wait_for_trigger:
+    - platform: state
+      entity_id:
+      - remote.living_google_tv
+      attribute: current_activity
+      to: com.android.vending
+    timeout:
+      hours: 0
+      minutes: 0
+      seconds: 3
+      milliseconds: 0
+  - service: remote.send_command
+    data:
+      command: DPAD_CENTER
+      hold_secs: 0.5
+    target:
+      entity_id: remote.living_google_tv
+  mode: single
+  icon: mdi:kodi
+'1696354538156':
+  alias: Launch Kodi
+  sequence:
+  - service: remote.turn_on
+    data:
+      activity: https://play.google.com/store/apps/details?id=org.xbmc.kodi
+    target:
+      entity_id:
+      - remote.living_google_tv
+  - wait_for_trigger:
+    - platform: state
+      entity_id:
+      - remote.living_google_tv
+      attribute: current_activity
+      to: com.android.vending
+    timeout:
+      hours: 0
+      minutes: 0
+      seconds: 3
+      milliseconds: 0
+  - service: remote.send_command
+    data:
+      command: DPAD_CENTER
+      hold_secs: 0.5
+    target:
+      entity_id:
+      - remote.living_google_tv
+  mode: single
+  icon: mdi:kodi

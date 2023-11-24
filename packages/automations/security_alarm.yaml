@@ -249,12 +249,12 @@ automation:
   #  - service: media_player.play_media
   #    data:
   #      entity_id: media_player.living_speaker
-  #      media_content_id: http://192.168.86.101:8123/local/siren.mp3
+  #      media_content_id: http://192.168.68.100:8123/local/siren.mp3
   #      media_content_type: music
   #  - service: media_player.play_media
   #    data:
   #      entity_id: media_player.nestaudio3875
-  #      media_content_id: http://192.168.86.101:8123/local/siren.mp3
+  #      media_content_id: http://192.168.68.100:8123/local/siren.mp3
   #      media_content_type: music
   #  - service: media_player.volume_set
   #    data:

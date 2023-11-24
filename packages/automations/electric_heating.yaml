@@ -4,7 +4,7 @@ automation:
 # BADKAMER AAN
 ###########################################################################
 
-- alias: badkamer elektrische verwarming aan volgens schema
+- alias: badkamer elektrische verwarming aan volgens schema op werkdagen als auto niet thuis is
   id: 'f6eadb96-1403-472e-a5bf-09650d26032d'
   description: ""
   trigger:
@@ -23,6 +23,10 @@ automation:
       - condition: state
         entity_id: sensor.badkamer_raam
         state: "gesloten"
+      - condition: template
+        value_template: >
+          {% set car_1_use_day = 'input_select.car_1_use_day_' ~ now().isoweekday() %}
+          {% if states(car_1_use_day) != "thuis" %} true {% endif %}
   action:
     - service: switch.turn_on
       data: {}
@@ -91,6 +95,26 @@ automation:
         entity_id: switch.badkamer_electric_heater
   mode: single
 
+- alias: elektrische verwarming start
+  id: 'f9111ba9-c29d-4c73-8d36-b7849c3f3a63'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.badkamer_electric_heater_power
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+    above: 300
+  condition: []
+  action:
+    - service: input_datetime.set_datetime
+      data:
+        datetime: '{{ now() }}'
+      target:
+        entity_id: input_datetime.badkamer_electric_heater_start_time       
+  mode: single
+
 
 ###########################################################################
 # BADKAMER UIT
@@ -112,6 +136,11 @@ automation:
       data: {}
       target:
         entity_id: switch.badkamer_electric_heater
+    - service: input_datetime.set_datetime
+      data:
+        datetime: '{{ now() }}'
+      target:
+        entity_id: input_datetime.badkamer_electric_heater_stop_time        
   mode: single
 
 - alias: badkamer elektrische verwarming uit als wasbaklicht uit gaat na douche
@@ -120,36 +149,26 @@ automation:
   trigger:
   - platform: state
     entity_id: light.badkamer_douche
-    to: 'off'
-    for: '00:00:30'
-  condition:
-  - condition: and
-    conditions:
-      - condition: numeric_state
-        entity_id: sensor.badkamer_temperature
-        below: 18
-      - condition: state
-        entity_id: sensor.badkamer_raam
-        state: "gesloten"   
+    to: unavailable
+  condition: []
   action:
   - repeat:
       while:
       - condition: state
         entity_id: light.badkamer_wasbak_rechts
-        state: 'on'
-      sequence:
-      - service: switch.turn_on
-        target:
-          entity_id: switch.badkamer_electric_heater
-  - delay:
-      minutes: 1
-      seconds: 0
+        state: 'on'      
+      sequence: []
   - service: switch.turn_off
     target:
       entity_id: switch.badkamer_electric_heater
+  - service: input_datetime.set_datetime
+    data:
+      datetime: '{{ now() }}'
+    target:
+      entity_id: input_datetime.badkamer_electric_heater_stop_time      
   mode: single
 
-- alias: badkamer elektrische verwarming sowieso uit na 20 minuten
+- alias: badkamer elektrische verwarming altijd uit na 20 minuten
   id: '0b4d20ec-4aa4-4e02-a043-fdd54312f14e'
   description: ""
   trigger:  
@@ -164,4 +183,9 @@ automation:
       data: {}
       target:
         entity_id: switch.badkamer_electric_heater
+    - service: input_datetime.set_datetime
+      data:
+        datetime: '{{ now() }}'
+      target:
+        entity_id: input_datetime.badkamer_electric_heater_stop_time        
   mode: single
