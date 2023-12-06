@@ -6,9 +6,11 @@ input_select:
       - Joe Lage Landen
       - Joe Easy
       - Joe 80's & 90's
+      - Joe Christmas
       - Radio Relax
       - Sky Radio
       - Sky Radio non-stop hits
+      - Sky Radio Christmas      
       - VRT nieuws
       - 100% NL Nederpop
       - 100% NL non-stop
@@ -92,10 +94,12 @@ script:
           {% elif is_state("input_select.chromecast_speaker", "Master bedroom") %} media_player.master_bedroom_speaker
           {% endif %}
         media_content_id: >
-          {% if is_state("input_select.radio_station", "Joe") %} https://22673.live.streamtheworld.com/JOE.mp3?pname=tunein&dist=tunein&DIST=TuneIn&TGT=TuneIn&maxServers=2
+          {% if is_state("input_select.radio_station", "Joe") %} https://25593.live.streamtheworld.com/JOE.mp3
           {% elif is_state("input_select.radio_station", "Joe Lage Landen") %} https://22603.live.streamtheworld.com/JOE_LAGE_LANDEN.mp3?DIST=TuneIn&TGT=TuneIn&maxServers=2
           {% elif is_state("input_select.radio_station", "Joe Easy") %} https://20723.live.streamtheworld.com/JOE_EASY.mp3?pname=tunein&dist=tunein&DIST=TuneIn&TGT=TuneIn&maxServers=2
-          {% elif is_state("input_select.radio_station", "Joe 80's & 90's") %} https://23603.live.streamtheworld.com/JOE_80S.mp3?pname=tunein&dist=tunein&DIST=TuneIn&TGT=TuneIn&maxServers=2
+          {% elif is_state("input_select.radio_station", "Joe 80's & 90's") %} https://icecast-qmusicbe-cdp.triple-it.nl/joe_80s_90s.mp3
+          {% elif is_state("input_select.radio_station", "Joe Christmas") %} https://dpgmedia.streamtheuniverse.com/joe-christmas.aac
+          {% elif is_state("input_select.radio_station", "Sky Radio Christmas") %} http://playerservices.streamtheworld.com/api/livestream-redirect/SRGSTR08.mp3
           {% elif is_state("input_select.radio_station", "Radio Relax") %} http://live.humorfm.by:8000/radiorelax
           {% elif is_state("input_select.radio_station", "Sky Radio") %} https://22613.live.streamtheworld.com/SKYRADIO.mp3?dist=tunein&DIST=TuneIn&TGT=TuneIn&maxServers=2
           {% elif is_state("input_select.radio_station", "Sky Radio non-stop hits") %} https://22713.live.streamtheworld.com/SRGSTR01.mp3?dist=tunein&DIST=TuneIn&TGT=TuneIn&maxServers=2
@@ -104,3 +108,5 @@ script:
           {% elif is_state("input_select.radio_station", "VRT nieuws") %} https://progressive-audio.lwc.vrtcdn.be/content/fixed/11_11niws-snip_hi.mp3
           {% endif %}
         media_content_type: 'audio/mp4'
+
+

@@ -1,0 +1,42 @@
+automation:
+
+- alias: Mobile Vikings Anita onbeschikbaar = integratie herstarten
+  # By reloading one of the entities, the whole integration is restarted
+  id: 'fb821b76-e4be-424d-a6d6-dadabfd01de1'
+  description: ""
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: sensor.mobile_vikings_0456109679_product
+      to: unavailable
+    - platform: time_pattern
+      minutes: /30      
+  condition:
+    - condition: state
+      entity_id: sensor.mobile_vikings_0456109679_product
+      state: unavailable
+  action:
+    - service: homeassistant.reload_config_entry
+      target:
+        entity_id: sensor.mobile_vikings_0456109679_product
+
+
+- alias: Mobile Vikings Madouce onbeschikbaar = integratie herstarten
+  # By reloading one of the entities, the whole integration is restarted
+  id: 'e15cba56-35a8-45e3-97a4-2aeb25ef4572'
+  description: ""
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: sensor.mobile_vikings_332839874_loyalty_points_available
+      to: unavailable
+    - platform: time_pattern
+      minutes: /30      
+  condition:
+    - condition: state
+      entity_id: sensor.mobile_vikings_332839874_loyalty_points_available
+      state: unavailable
+  action:
+    - service: homeassistant.reload_config_entry
+      target:
+        entity_id: sensor.mobile_vikings_332839874_loyalty_points_available

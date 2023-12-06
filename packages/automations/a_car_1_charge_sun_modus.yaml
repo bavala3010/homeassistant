@@ -34,14 +34,8 @@ automation:
   #   value_template: "{{ states('sensor.car_1_soc')| int < 100  }}"
   ######################################################  
   # only if charger cable is connected to home charger (status "connected") or in status "charging"
-  - condition: or
-    conditions:
-    - condition: state
-      entity_id: sensor.charger_status
-      state: 'connected'            
-    - condition: state
-      entity_id: sensor.charger_status
-      state: 'charging'
+  - condition: template
+    value_template: "{{ states('sensor.charger_status') in ['connected', 'charging'] }}"
   #####################################################  
   # only if charge mode "sun" has been chosen   
   - condition: state
@@ -102,14 +96,8 @@ automation:
     entity_id: input_boolean.car_charge_mode_sun
     state: 'on'
   # only if charger cable is connected to home charger or already charging
-  - condition: or
-    conditions:    
-    - condition: state
-      entity_id: sensor.charger_status
-      state: 'connected'            
-    - condition: state
-      entity_id: sensor.charger_status
-      state: 'charging'
+  - condition: template
+    value_template: "{{ states('sensor.charger_status') in ['connected', 'charging'] }}"
   # only if charging is busy in sun mode
   - condition: state
     entity_id: input_boolean.car_charge_sun_busy

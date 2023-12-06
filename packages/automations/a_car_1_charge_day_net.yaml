@@ -4,7 +4,7 @@ automation:
   id: '614041f4-1aa3-4f45-ab3f-9a5c03112d1a'
   trigger:
   - platform: time_pattern
-    minutes: /2
+    minutes: /1
   condition:
   - condition: template
     value_template: "{{ as_timestamp(states('sensor.sunrise')) < as_timestamp(now()) < as_timestamp(states('sensor.sunset')) }}"
@@ -13,10 +13,10 @@ automation:
     value_template: "{{ states('sensor.charger_status') in ['charging', 'connected'] }}"
   variables:
       wattage: >
-        {% set charger = states('sensor.charger_current_power_avg_2min') | float(default=0) %}        
+        {% set net = states('sensor.net_power_excl_charger_avg2min') | float %}
+        {% set charger = states('sensor.charger_current_power') | float(default=0) %}        
         {% set maxpower = states('input_number.car_charge_peak_netwattage') | float(default=0) %}
-        {% set net = (states('sensor.net_power_avg') | float(default=0) %}
-        {{ (- (net - maxpower - charger) / 1000) | float }}
+        {{ (( maxpower - net ) / 1000) | float }}
   action:
     - if:
         - condition: state

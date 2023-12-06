@@ -10,20 +10,8 @@ automation:
     to: 'off'
     for: "00:00:05"  
   condition:
-    - condition: or
-      conditions:
-        - condition: state
-          entity_id: person.madouce
-          state: 'Aldi Bierbeek'
-        - condition: state
-          entity_id: person.madouce
-          state: 'Action Bierbeek'
-        - condition: state
-          entity_id: person.madouce
-          state: 'AH Zaventem'
-        - condition: state
-          entity_id: person.madouce
-          state: 'Lidl Sterrebeek'
+    - condition: template
+      value_template: "{{ states('person.madouce') in ['Aldi Bierbeek', 'Action Bierbeek', 'AH Zaventem', 'Lidl Sterrebeek'] }}"
   action:
     - service: notify.madouce_phone
       data:

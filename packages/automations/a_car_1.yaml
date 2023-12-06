@@ -5,10 +5,32 @@
 
 
 # bluetooth address Etron: 98:49:14:C1:37:0B
-# VIN etron: !secret vin
+# VIN Etron: !secret vin
 
 ############################ Automations ################################## 
 automation:
+
+- alias: 🚗 car 1 // Audi integratie herstarten als entiteiten onbeschikbaar zijn
+  # By reloading one of the entities, the whole integration is restarted
+  id: '942be3f6-ee53-4901-af4e-23423cf7063e'
+  description: ""
+  mode: single
+  trigger:
+    - platform: state
+      entity_id:
+        - sensor.audi_e_tron_sportback_range
+      to: unavailable
+    - platform: time_pattern
+      minutes: /30      
+  condition:
+    - condition: state
+      entity_id: sensor.audi_e_tron_sportback_range
+      state: unavailable
+  action:
+    - service: homeassistant.reload_config_entry
+      target:
+        entity_id: sensor.audi_e_tron_sportback_range
+
 
 #########################
 # Status auto verversen

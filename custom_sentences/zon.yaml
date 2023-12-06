@@ -1,0 +1,8 @@
+language: "nl"
+intents:
+  solar_injection:
+    data:
+      - sentences:
+          - "hoeveel zon is er"
+          - "hoeveel zonneoverschot is er"
+          - "hoeveel zonnen overschot is er"

@@ -4,13 +4,17 @@
 #     🎄 Kerstverlichting buiten aan bij donker
 #     🎄 Kerstverlichting buiten aan tijdens week vanaf 7u15
 #     🎄 Kerstverlichting buiten uit bij zonsopgang
-#     🎄 Kerstverlichting buiten uit om 22u30 zo-do en 23u vrij-za
-#     🎄 Kerstboom binnen aan om 7u15 (weekdagen)
-#     🎄 Kerstboom binnen aan om 9u00 (weekend)
+#     🎄 Kerstverlichting buiten uit om 22u30 zo-do en 23u vrij-za (10 min. random)
+#     🎄 Kerstboom binnen aan om 7u00 (weekdagen) (10 min. random)
+#     🎄 Kerstboom binnen aan om 9u00 (weekend) (10 min. random)
 #     🎄 Kerstboom binnen aan bij thuiskomst
-#     🎄 Kerstboom binnen uit om 23u00
+#     🎄 Kerstboom binnen uit om 23u00 of bij niemand thuis (10 min. random)
 
 automation:
+
+##########################
+# Kerstverlichting AAN
+##########################
 
 - alias: 🎄 Kerstverlichting buiten aan bij donker
   id: f37cac92-e0d6-4804-9554-ec59399e2d97
@@ -29,12 +33,12 @@ automation:
       message: '{{ ["Joehoe, de kerstverlichting brandt weer!","Jingle bells", "Merry Christmas with lots of love.", "Kerst is leuker met lichtjes.", "Wishing you a Christmas that is merry and bright!"] | random }}'
   mode: single
   
-- alias: 🎄 Kerstverlichting buiten aan tijdens week vanaf 7u15
+- alias: 🎄 Kerstverlichting buiten aan tijdens week vanaf 7u00
   id: 006a516d-4cd0-4201-944c-0cf1b6ae3991
   description: ''
   trigger:
   - platform: time
-    at: '07:15:00'
+    at: '07:00:00'
   condition:
   - condition: and
     conditions:
@@ -49,10 +53,44 @@ automation:
       entity_id: input_boolean.vakantieperiode
       state: 'off'
   action:
+  - delay:
+      minutes: '{{ range(0,10) | random }}'  
   - service: switch.turn_on
     target:
       entity_id: switch.kerstverlichting
   mode: single
+
+- alias: 🎄 Kerstverlichting buiten aan bij beweging voordeur of oprit
+  id: '03c6e49e-fca7-4bb5-b444-b149ef19e9bd'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.voordeur_bewegingssensor_motion
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.oprit_bewegingssensor_motion
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: switch.kerstverlichting
+    state: 'off' 
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.kerstverlichting
+  - wait_template: ''
+    timeout: 00:03:00 
+  - service: switch.turn_off
+    target:
+      entity_id: switch.kerstverlichting
+  mode: restart
+
+
+##########################
+# Kerstverlichting UIT
+##########################
 
 - alias: 🎄 Kerstverlichting buiten uit bij zonsopgang
   id: cea38af6-e8f7-4789-8ed4-86bb846f4aad
@@ -68,7 +106,7 @@ automation:
       entity_id: switch.kerstverlichting
   mode: single
 
-- alias: 🎄 Kerstverlichting buiten uit om 22u30 zo-do en 23u vrij-za
+- alias: 🎄 Kerstverlichting buiten uit om 22u30 zo-do en 23u vrij-za (10 min. random)
   id: d771521b-4ba3-4c29-9032-52ec7162acf3
   description: ''
   trigger:
@@ -78,9 +116,13 @@ automation:
     - '23:00'
   condition:
   - condition: template
-    value_template: "{% set h = now().hour %} {% set wd = now().isoweekday() %} {{\
-      \ (h == 22 and wd in [1, 2, 3, 4, 7]) or\n   (h == 23 and wd in [5,6]) }}\n"
+    value_template: >
+      {% set h = now().hour %}
+      {% set wd = now().isoweekday() %}
+      {{ (h == 22 and wd in [1, 2, 3, 4, 7]) or (h == 23 and wd in [5,6]) }}
   action:
+  - delay:
+      minutes: '{{ range(0,10) | random }}'   
   - service: switch.turn_off
     target:
       entity_id: switch.kerstverlichting
@@ -89,12 +131,17 @@ automation:
       message: Wat jammer, de kerstverlichting is weer uit!
   mode: single
 
-- alias: 🎄 Kerstboom binnen aan om 7u15 (weekdagen)
+
+##########################
+# Kerstboom AAN
+##########################
+
+- alias: 🎄 Kerstboom binnen aan om 7u00 (weekdagen) (10 min. random)
   id: 287636ff-a630-4b04-97b7-7e3f17cf7966
   description: ''
   trigger:
   - platform: time
-    at: '07:15:00'
+    at: '07:00:00'
   condition:
   - condition: and
     conditions:
@@ -109,12 +156,26 @@ automation:
       entity_id: group.gezin
       state: "home"
   action:
+  - delay:
+      minutes: '{{ range(0,10) | random }}'  
   - service: switch.turn_on
     target:
       entity_id: switch.kerstboom
+  - service: light.turn_on
+    target:
+      entity_id:
+        - light.living_links_4
+      device_id: []
+      area_id: []
+    data:
+      brightness: 31
+      rgb_color:
+        - 255
+        - 67
+        - 106      
   mode: single
 
-- alias: 🎄 Kerstboom binnen aan om 9u00 (weekend)
+- alias: 🎄 Kerstboom binnen aan om 9u00 (weekend) (10 min. random)
   id: 005242bc-2f69-45b3-9170-49c08a58c3c5
   description: ''
   trigger:
@@ -131,6 +192,8 @@ automation:
       entity_id: group.gezin
       state: home
   action:
+  - delay:
+      minutes: '{{ range(0,10) | random }}'   
   - service: switch.turn_on
     target:
       entity_id: switch.kerstboom
@@ -147,9 +210,26 @@ automation:
   - service: switch.turn_on
     target:
       entity_id: switch.kerstboom
+  - service: light.turn_on
+    target:
+      entity_id:
+        - light.living_links_4
+      device_id: []
+      area_id: []
+    data:
+      brightness: 31
+      rgb_color:
+        - 255
+        - 67
+        - 106        
   mode: single  
 
-- alias: 🎄 Kerstboom binnen uit om 23u00 of bij niemand thuis
+
+##########################
+# Kerstboom UIT
+##########################
+
+- alias: 🎄 Kerstboom binnen uit om 23u00 of bij niemand thuis (10 min. random)
   id: aa945472-94cf-4dde-9cad-40eb1bc81245
   description: ''
   trigger:
@@ -171,6 +251,8 @@ automation:
       - sat
       - sun
   action:
+  - delay:
+      minutes: '{{ range(0,10) | random }}'  
   - service: switch.turn_off
     target:
       entity_id: switch.kerstboom

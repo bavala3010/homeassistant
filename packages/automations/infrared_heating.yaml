@@ -6,7 +6,7 @@ automation:
   trigger:
     - platform: state
       entity_id:
-        - switch.infrared_panel_switch
+        - switch.infrared_panel
       to: "on"
     # - platform: numeric_state
     #   entity_id: sensor.infrared_panel_power
@@ -30,7 +30,7 @@ automation:
   trigger:
     - platform: state
       entity_id:
-        - switch.infrared_panel_switch
+        - switch.infrared_panel
       to: "on"
       for:
         hours: 2
@@ -39,7 +39,7 @@ automation:
     - service: switch.turn_off
       data: {}
       target:
-        entity_id: switch.infrared_panel_switch
+        entity_id: switch.infrared_panel
   mode: single
 
 
@@ -58,14 +58,14 @@ automation:
       seconds: 5
   - platform: state
     entity_id:
-      - switch.infrared_panel_switch
+      - switch.infrared_panel
     to: "off"        
   condition: []
   action:  
     - service: switch.turn_off
       data: {}
       target:
-        entity_id: switch.infrared_panel_switch
+        entity_id: switch.infrared_panel
     - service: timer.cancel
       data: {}
       target:

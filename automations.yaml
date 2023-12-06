@@ -319,30 +319,6 @@
   - service: script.pet_feeder_feed_1_portion
     data: {}
   mode: single
-- id: '1697611169598'
-  alias: Injectie, vocht in badkamer en niemand thuis = ontvochtigen
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.net_power_avg
-    for:
-      hours: 0
-      minutes: 15
-      seconds: 0
-    above: 700
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.badkamer_humidity
-    above: 65
-  - condition: state
-    entity_id: group.gezin
-    state: not_home
-  action:
-  - service: switch.turn_on
-    data: {}
-    target:
-      entity_id: switch.dehumidifier_switch
-  mode: single
 - id: '1699039629764'
   alias: Living // aanwezigheidsensor
   description: ''

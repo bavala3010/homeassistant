@@ -46,7 +46,7 @@ automation:
     entity_id: person.bart
     state: Waarschoot
   - condition: state
-    entity_id: device_tracker.bart_s10
+    entity_id: device_tracker.bart_s23plus
     state: 0
     attribute: speed
     for:
@@ -91,17 +91,8 @@ automation:
       sequence:
     # indien aankomst bij sauna, onmiddellijk vragen
     - conditions:
-        - condition: or
-          conditions:
-            - condition: state
-              entity_id: person.bart
-              state: "Sauna Elzenhof"
-            - condition: state
-              entity_id: person.bart
-              state: "Sauna Hezemeer"
-            - condition: state
-              entity_id: person.bart
-              state: "Sauna Boetfort"
+      - condition: template
+        value_template: "{{ states('person.bart') in ['Sauna Elzenhof', 'Sauna Hezemeer', 'Sauna Boetfort', 'The White Oak'] }}"
       sequence:
       - service: notify.bart_phone
         data:
@@ -115,34 +106,18 @@ automation:
             - action: URI
               title: zo ja, klik hier
               uri: /dashboard-car/car-heater          
-    # indien aankomst bij winkel, niets vragen en climatisatie blijven houden
+    # indien aankomst bij winkel, niets vragen en climatisatie starten na 10 minuten
     - conditions:
-        - condition: or
-          conditions:
-            - condition: state
-              entity_id: person.bart
-              state: "Aldi Bierbeek"
-            - condition: state
-              entity_id: person.bart
-              state: "Action Bierbeek"
-            - condition: state
-              entity_id: person.bart
-              state: "AH Zaventem"
-            - condition: state
-              entity_id: person.bart
-              state: "Lidl Sterrebeek"
+      - condition: template
+        value_template: "{{ states('person.bart') in ['Aldi Bierbeek', 'Action Bierbeek', 'AH Zaventem', 'Lidl Sterrebeek'] }}"
       sequence:
+      - wait_template: ''
+        timeout: 00:10:00       
       - service: script.auto_start_climatisatie_nu
     # indien aankomst bij plaats met lang verblijf, vragen 
     - conditions:
-        - condition: or
-          conditions:
-            - condition: state
-              entity_id: person.bart
-              state: "Waarschoot"
-            - condition: state
-              entity_id: person.bart
-              state: "Koen & Katiana"
+      - condition: template
+        value_template: "{{ states('person.madouce') in ['Waarschoot', 'Koen & Katiana'] }}"
       sequence:
       - service: notify.bart_phone
         data:
@@ -219,18 +194,9 @@ automation:
         state: "home"
       sequence:
       # indien aankomst bij sauna, onmiddellijk vragen
-    - conditions:
-        - condition: or
-          conditions:
-            - condition: state
-              entity_id: person.madouce
-              state: "Sauna Elzenhof"
-            - condition: state
-              entity_id: person.madouce
-              state: "Sauna Hezemeer"
-            - condition: state
-              entity_id: person.madouce
-              state: "Sauna Boetfort"
+    - conditions:  
+      - condition: template
+        value_template: "{{ states('person.madouce') in ['Sauna Elzenhof', 'Sauna Hezemeer', 'Sauna Boetfort', 'The White Oak'] }}"
       sequence:
       - service: notify.madouce_phone
         data:
@@ -244,34 +210,18 @@ automation:
             - action: URI
               title: zo ja, klik hier
               uri: /dashboard-car/car-heater          
-    # indien aankomst bij winkel, niets vragen en climatisatie laten aanstaan
+    # indien aankomst bij winkel, niets vragen en climatisatie na 10 minuten starten
     - conditions:
-        - condition: or
-          conditions:
-            - condition: state
-              entity_id: person.madouce
-              state: "Aldi Bierbeek"
-            - condition: state
-              entity_id: person.madouce
-              state: "Action bierbeek"
-            - condition: state
-              entity_id: person.madouce
-              state: "AH Zaventem"
-            - condition: state
-              entity_id: person.madouce
-              state: "Lidl Sterrebeek"
+      - condition: template
+        value_template: "{{ states('person.madouce') in ['Aldi Bierbeek', 'Action Bierbeek', 'AH Zaventem', 'Lidl Sterrebeek'] }}"
       sequence:
+      - wait_template: ''
+        timeout: 00:10:00      
       - service: script.auto_start_climatisatie_nu
     # indien aankomst bij plaats met lang verblijf, vragen 
     - conditions:
-        - condition: or
-          conditions:
-            - condition: state
-              entity_id: person.madouce
-              state: "waarschoot"
-            - condition: state
-              entity_id: person.madouce
-              state: "Koen & Katiana"
+      - condition: template
+        value_template: "{{ states('person.madouce') in ['Waarschoot', 'Koen & Katiana'] }}"
       sequence:
       - service: notify.madouce_phone
         data:

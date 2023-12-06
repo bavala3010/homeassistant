@@ -64,67 +64,74 @@ input_boolean:
 # sensors to calculate charging times 
 ###############################################################################
 
-sensor:
-  - platform: template
-    sensors:
-      car_range_per_10percent:
-        friendly_name: 'range per 10%'
+template:  
+  - sensor:
+      - name: car_range_per_10percent
+        attributes:      
+          friendly_name: 'range per 10%'
         unit_of_measurement: km
-        value_template: "{{ (10 * states('sensor.car_1_range') | float(default=0) / states('sensor.car_1_soc') | float(default=0) ) | round (1) }}"
+        state: "{{ (10 * states('sensor.car_1_range') | float(default=0) / states('sensor.car_1_soc') | float(default=0) ) | round (1) }}"
 
-      car_range_at_target_percentage:
-        friendly_name: 'rijbereik bij doelpercentage'
+      - name: car_range_at_target_percentage
+        attributes:      
+          friendly_name: 'rijbereik bij doelpercentage'
         unit_of_measurement: km
-        value_template: "{{ ( states('input_number.car_1_optimal_target_soc') | float(default=0) * ( states('sensor.car_range_per_10percent') | float(default=0)) / 10 ) | int }}"
+        state: "{{ ( states('input_number.car_1_optimal_target_soc') | float(default=0) * ( states('sensor.car_range_per_10percent') | float(default=0)) / 10 ) | int }}"
 
-      car_remaining_charge_minutes:
-        friendly_name: 'resterende laadminuten'
-        value_template: >
+      - name: car_remaining_charge_minutes
+        attributes:      
+          friendly_name: 'resterende laadminuten'
+        state: >
           {% set targetsoc = states('input_number.car_1_optimal_target_soc') | float(default=0) %}
           {% set soc = states('sensor.car_1_soc') | float(default=0) %}
           {% set socdif = [targetsoc - soc, 0] | max %}
           {{ socdif * states('input_number.car_1_min_per_1pct') | round(2) }}
 
-      car_remaining_charge_minutes_min_power:
-        friendly_name: 'resterende laadminuten (met minimum vermogen)'
-        value_template: >
+      - name: car_remaining_charge_minutes_min_power
+        attributes:      
+          friendly_name: 'resterende laadminuten (met minimum vermogen)'
+        state: >
           {% set targetsoc = states('input_number.car_1_optimal_target_soc') | float(default=0) %}
           {% set soc = states('sensor.car_1_soc') | float(default=0) %}
           {% set socdif = [targetsoc - soc, 0] | max %}
           {% set min_per_percent = ( 56.925 / (states('input_number.car_charge_minimum_wattage') | float ) ) | round(2) %}
           {{ (socdif * min_per_percent ) | round(2) }} 
 
-      car_remaining_charge_minutes_fix_power:
-        friendly_name: 'resterende laadminuten (met vast vermogen)'
-        value_template: >
+      - name: car_remaining_charge_minutes_fix_power
+        attributes:      
+          friendly_name: 'resterende laadminuten (met vast vermogen)'
+        state: >
           {% set targetsoc = states('input_number.car_1_optimal_target_soc') | float(default=0) %}
           {% set soc = states('sensor.car_1_soc') | float(default=0) %}
           {% set socdif = [targetsoc - soc, 0] | max %}
           {% set min_per_percent = ( 56.925 / (states('input_number.car_charge_fixed_wattage') | float ) ) | round(2) %}
           {{ (socdif * min_per_percent ) | round(2) }}
 
-      car_charge_stoptimer_starttime:
-        friendly_name: 'startuur laden met doeluur'
-        value_template: >
+      - name: car_charge_stoptimer_starttime
+        attributes:      
+          friendly_name: 'startuur laden met doeluur'
+        state: >
           {% set nog_te_laden_minuten = states('sensor.car_remaining_charge_minutes_fix_power') | round(2) %}
           {% set laaddoel = state_attr('input_datetime.car_charge_target_time', 'timestamp') %}
           {% set laadstart = (laaddoel - nog_te_laden_minuten * 60) | timestamp_custom('%Y-%m-%d %H:%M') %}
           {{ laadstart }}
 
-      car_charge_estimate_day:
-        friendly_name: "mogelijke lading overdag"
+      - name: car_charge_estimate_day
+        attributes:      
+          friendly_name: "mogelijke lading overdag"
         unit_of_measurement: kWh
-        value_template: >
+        state: >
           {% set solar = states('sensor.solar_sim_energy_today_adj') | float() %}
           {% set hours = states('sensor.daylight') | round(2) - 1 %}
           {% set result = ( solar / hours ) | round(2) %}
           {% set p = ( ([result - 0.8, 0 ] | max ) * hours ) | round(2) %}
           {{ p }}
 
-      car_charge_estimate_evening:
-        friendly_name: "mogelijke lading 's avonds na zonsondergang tot 23u"
+      - name: car_charge_estimate_evening
+        attributes:      
+          friendly_name: "mogelijke lading 's avonds na zonsondergang tot 23u"
         unit_of_measurement: kWh
-        value_template: >
+        state: >
           {% set sunset_time = as_timestamp(states('sensor.sunset')) | timestamp_custom('%H:%M')  %}
           {% set sunset_hours = sunset_time.split(':')[0] | int %}
           {% set sunset_minutes = sunset_time.split(':')[1] | int %}
@@ -135,10 +142,53 @@ sensor:
           {% else %} 0
           {% endif %}
 
-      car_charge_estimate_night:
-        friendly_name: "mogelijke lading 's nachts van 23u tot 6u30"
+      - name: car_charge_estimate_night
+        attributes:      
+          friendly_name: "mogelijke lading 's nachts van 23u tot 6u30"
         unit_of_measurement: kWh
-        value_template: >
+        state: >
           {% set hours = 7.5 %}
           {% set wattage = states('input_number.car_charge_peak_netwattage') | float() / 1000 %}          
           {{ hours * wattage }}
+
+      - name: net_power_excl_charger
+        attributes:
+          friendly_name: "net power zonder autolader"
+        unique_id: 'ddc1bd97-90df-483c-8659-48ed4c2790bd'
+        unit_of_measurement: W
+        device_class: power
+        state: >
+          {% set net = states('sensor.net_power') | float(default=0) %}
+          {% set charger = states('sensor.charger_current_power') | float(default=0) %}
+          {{ ( net - charger ) | round(default=0) }}
+
+sensor:
+  # - platform: statistics
+  #   name: "charger current power avg2min"
+  #   entity_id: sensor.charger_current_power
+  #   unique_id: '07a2fb39-1bb8-4e1f-a0ff-28127276bbc9'
+  #   state_characteristic: average_linear
+  #   max_age:
+  #     minutes: 2
+
+  # - platform: filter
+  #   name: "charger current power avg 2min"
+  #   entity_id: sensor.charger_current_power
+  #   filters:
+  #     - filter: outlier
+  #       window_size: 6   # number of samples taken (was vroeger 6, nu aangepast naar 20 als test)
+  #       radius: 10000  # ignore readings if difference is bigger than 10000
+  #     - filter: time_simple_moving_average
+  #       window_size: "00:02"  
+
+  - platform: average
+    name: "net power excl charger avg2min"
+    duration: 00:02:00
+    entities:
+      - sensor.net_power_excl_charger
+
+  - platform: average
+    name: "charger current power avg2min"
+    duration: 00:02:00
+    entities:
+      - sensor.charger_current_power

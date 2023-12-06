@@ -8,8 +8,6 @@
 #   🔋 charge planning is veranderd = bepaal SOC per dag
 #   🔋 charge planning - om 7u00 bepaal target SOC per dag op basis van planning
 #   🔋 charge planning - om 6u30 zet doel % voor 's anderendaags
-#   🔋 morgen naar Toyota Evere = check 21u30 voldoende geladen?
-#   🔋 morgen naar Toyota Diest = check 21u30 voldoende geladen?
 #   🔋 check om 21u30 batterij tov laaddoel
 #   🔋 charge target percentage is veranderd
 #   🔋 charge target range is veranderd
@@ -352,10 +350,10 @@ automation:
   description: ""
   trigger:
   - platform: template
-    # when real power of charger is 0 for more than 3 minutes  
+    # when real power of charger is 0 for more than 4 minutes  
     value_template: >
       {% set t = ((as_timestamp(now()) - as_timestamp(states.sensor.charger_current_power.last_changed)) / 60 )| int() %}
-      {{ states('sensor.charger_actual_applied_maxcurrent') > '5' and states('sensor.charger_current_power') =="0" and t >= 3}}
+      {{ states('sensor.charger_actual_applied_maxcurrent') > '5' and states('sensor.charger_current_power') =="0" and t >= 4}}
   condition: []
   action:
   - service: notify.bart_phone

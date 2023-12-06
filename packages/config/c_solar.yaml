@@ -19,6 +19,174 @@ template:
         {{ states('sensor.sma_power_ac') | float(default=0) }}
         {% endif %}
 
+  - sensor:
+      - name: net_neutrality
+        unit_of_measurement: "%"
+        attributes:
+          friendly_name: "netonafhankelijkheid totaal"
+        state_class: measurement
+        icon: "mdi:solar-power"
+        state: >-
+          {% set sp = states('sensor.sma_energy_total') | float %}
+          {% set nc = states('sensor.net_consumption_energy_total') | float %}
+          {% set ni = states('sensor.net_injection_energy_total') | float %}
+          {{ ((sp - ni ) / ( sp - ni + nc) * 100 ) | round(1) }}
+
+      - name: net_neutrality_home
+        unit_of_measurement: "%"
+        attributes:
+          friendly_name: "netonafhankelijkheid huis"
+        state_class: measurement
+        icon: "mdi:solar-power"
+        state: >-
+          {% set sp = states('sensor.sma_energy_total') | float %}
+          {% set nc = states('sensor.net_consumption_energy_total') | float %}
+          {% set ni = states('sensor.net_injection_energy_total') | float %}
+          {% set car_net = states('sensor.car_charge_net_energy') | round() %}
+          {% set car_sun = states('sensor.car_charge_solar_energy') | round() %}
+          {{ (((sp - ni - car_sun) / (sp - ni + nc - car_net - car_sun) ) * 100 ) | round(1) }}
+
+      - name: net_neutrality_car
+        unit_of_measurement: "%"
+        attributes:
+          friendly_name: "netonafhankelijkheid auto"
+        state_class: measurement
+        icon: "mdi:solar-power"
+        state: >-
+          {% set car_net = states('sensor.car_charge_net_energy') | round() %}
+          {% set car_sun = states('sensor.car_charge_solar_energy') | round() %}
+          {{ (car_sun / (car_net + car_sun) * 100 ) | round(1)}}
+
+      - name: solar_self_consumption
+        unit_of_measurement: "kWh"
+        attributes:        
+          friendly_name: "zelfverbruik zonne-energie"
+        icon: "mdi:solar-power"
+        state: >-
+          {% set sp = states('sensor.sma_energy_total') | float %}
+          {% set ni = states('sensor.net_injection_energy_total') | float %}
+          {{ sp - ni }}
+
+      - name: net_neutrality_now
+        unit_of_measurement: "%"
+        attributes: 
+          friendly_name: "netonafhankelijkheid nu"
+        icon: "mdi:solar-power"
+        state: >-
+          {% set sp = states('sensor.solar_power') | float %}
+          {% set hc = states('sensor.huisverbruik') | float %}
+          {% set result = [((sp  / hc ) * 100 ) | round(1), 100] | min %}
+          {{ result }}
+        availability: >
+          {% if result < 0 %}
+            false
+          {% endif %}
+
+      - name: solar_terraszijde_efficiency
+        unit_of_measurement: "%"
+        attributes:        
+          friendly_name: zonnepanelen terraszijde efficiëntie
+        state: >-
+          {{ (states('sensor.solar_terraszijde_energie_daily') | float / 6150 * 1000 * 100) | round(1) }}
+
+      - name: solar_voorzijde_efficiency
+        unit_of_measurement: "%"
+        attributes:        
+          friendly_name: zonnepanelen voorzijde efficiëntie
+        state: >-
+          {{ (states('sensor.solar_voorzijde_energie_daily') | float / 8610 * 1000 * 100) | round(1) }}
+
+      - name: net_injection_savings 
+        unit_of_measurement: "EUR"
+        attributes:        
+          friendly_name: "winst teruggave"
+        state: >-
+          {% set np = states('sensor.net_injection_daily') | float(default=0) %}
+          {% set i = states('input_number.elektriciteitsprijs_injectie') | float() %}
+          {{ (np * i) | round(1) }}
+
+      - name: solar_selfconsumption_savings
+        unit_of_measurement: "EUR"
+        attributes:        
+          friendly_name: "winst zelfverbruik"
+        state: >-
+          {% set sp = states('sensor.zonne_energie_totaal') | float(default=0) %}
+          {% set i = states('sensor.net_injection_daily') | float(default=0) %}
+          {% set c = states('input_number.elektriciteitsprijs_afname') | float() %}
+          {{ ((sp - i ) * c ) | round(1) }}
+
+      - name: solar_sim_energy_current_hour
+        # totaal van de gesimuleerde productie  (= solar integratie)
+        unique_id: 'd68dd862-330b-4165-9273-2d12a268d29f'
+        unit_of_measurement: "kWh"
+        attributes:        
+          friendly_name: "zonne-energie productie simulatie dit uur"
+        icon: "mdi:solar-power"
+        state: >-
+          {% set s1 = states('sensor.energy_current_hour')  | float(default=0) %}
+          {% set s2 = states('sensor.energy_current_hour_2')| float(default=0) %}
+          {{ s1 + s2 }}
+
+      - name: solar_sim_energy_next_hour
+        # totaal van de gesimuleerde productie  (= solar integratie)
+        unique_id: 'f38a8749-3262-4933-a32e-5b2dbc68135e'
+        unit_of_measurement: "kWh"
+        attributes:        
+          friendly_name: "zonne-energie productie simulatie volgend uur"
+        icon: "mdi:solar-power"
+        state: >-
+          {% set s1 = states('sensor.energy_next_hour')  | float(default=0) %}
+          {% set s2 = states('sensor.energy_next_hour_2')| float(default=0) %}
+          {{ s1 + s2 }}
+
+      - name: solar_sim_energy_today
+        # totaal van de gesimuleerde productie  (= solar integratie)
+        unique_id: 'd7878be1-3fb7-4f10-a090-92bf0640868c'
+        unit_of_measurement: "kWh"
+        attributes:   
+          friendly_name: "zonne-energie productie simulatie vandaag"
+        icon: "mdi:solar-power"
+        state: >-
+          {% set s1 = states('sensor.energy_production_today')  | float(default=0) %}
+          {% set s2 = states('sensor.energy_production_today_2')| float(default=0) %}
+          {{ s1 + s2 }}
+
+      - name: solar_sim_energy_tomorrow
+        # totaal van de gesimuleerde energie (= solar integratie)
+        unit_of_measurement: "kWh"
+        attributes:          
+          friendly_name: "zonne-energie productie simulatie morgen"
+        icon: "mdi:solar-power"
+        state: >-
+          {% set s1 = states('sensor.energy_production_tomorrow')  | float(default=0) %}
+          {% set s2 = states('sensor.energy_production_tomorrow_2')| float(default=0) %}
+          {{ s1 + s2 }}
+
+      - name: solar_sim_energy_today_adj
+        # zonneproductie vandaag met aangepaste waarden
+        unit_of_measurement: "kWh"
+        attributes:         
+          friendly_name: "zonne-energie productie simulatie vandaag (gecorrigeerd)"
+        icon: "mdi:solar-power"
+        state: >-
+          {% set avgfuture = states('sensor.7_daags_gemiddelde_verwachte_zonneopbrengst') | round(1) %}
+          {% set avgpast = states('sensor.7_daags_gemiddelde_zonneopbrengst') | round(1) %}
+          {% set today = states('sensor.solar_sim_energy_today') | round(1) %}
+          {{ today * ( avgpast / avgfuture ) | round(1) }}
+
+      - name: solar_sim_energy_tomorrow_adj
+        # zonneproductie morgen met aangepaste waarden
+        unit_of_measurement: "kWh"
+        attributes:         
+          friendly_name: "zonne-energie productie simulatie morgen (gecorrigeerd)"
+        icon: "mdi:solar-power"
+        state: >-
+          {% set avgfuture = states('sensor.7_daags_gemiddelde_verwachte_zonneopbrengst') | round(1) %}
+          {% set avgpast = states('sensor.7_daags_gemiddelde_zonneopbrengst') | round(1) %}
+          {% set tomorrow = states('sensor.solar_sim_energy_tomorrow') | round(1) %}
+          {{ tomorrow * ( avgpast / avgfuture ) | round(1) }}
+
+
 sensor:
 - platform: average
   name: "7-daags gemiddelde verwachte zonneopbrengst"
@@ -33,74 +201,6 @@ sensor:
     days: 7
   entities:
     - input_number.solar_production_endofday
-
-
-- platform: template
-  sensors:
-    solar_sim_energy_current_hour:
-      # totaal van de gesimuleerde productie  (= solar integratie)
-      unique_id: 'd68dd862-330b-4165-9273-2d12a268d29f'
-      unit_of_measurement: "kWh"
-      friendly_name: "zonne-energie productie simulatie dit uur"
-      icon_template: "mdi:solar-power"
-      value_template: >-
-        {% set s1 = states('sensor.energy_current_hour')  | float(default=0) %}
-        {% set s2 = states('sensor.energy_current_hour_2')| float(default=0) %}
-        {{ s1 + s2 }}
-
-    solar_sim_energy_next_hour:
-      # totaal van de gesimuleerde productie  (= solar integratie)
-      unique_id: 'f38a8749-3262-4933-a32e-5b2dbc68135e'
-      unit_of_measurement: "kWh"
-      friendly_name: "zonne-energie productie simulatie volgend uur"
-      icon_template: "mdi:solar-power"
-      value_template: >-
-        {% set s1 = states('sensor.energy_next_hour')  | float(default=0) %}
-        {% set s2 = states('sensor.energy_next_hour_2')| float(default=0) %}
-        {{ s1 + s2 }}
-
-    solar_sim_energy_today:
-      # totaal van de gesimuleerde productie  (= solar integratie)
-      unique_id: 'd7878be1-3fb7-4f10-a090-92bf0640868c'
-      unit_of_measurement: "kWh"
-      friendly_name: "zonne-energie productie simulatie vandaag"
-      icon_template: "mdi:solar-power"
-      value_template: >-
-        {% set s1 = states('sensor.energy_production_today')  | float(default=0) %}
-        {% set s2 = states('sensor.energy_production_today_2')| float(default=0) %}
-        {{ s1 + s2 }}
-
-    solar_sim_energy_tomorrow:
-      # totaal van de gesimuleerde energie (= solar integratie)
-      unit_of_measurement: "kWh"
-      friendly_name: "zonne-energie productie simulatie morgen"
-      icon_template: "mdi:solar-power"
-      value_template: >-
-        {% set s1 = states('sensor.energy_production_tomorrow')  | float(default=0) %}
-        {% set s2 = states('sensor.energy_production_tomorrow_2')| float(default=0) %}
-        {{ s1 + s2 }}
-
-    solar_sim_energy_today_adj:
-      # zonneproductie vandaag met aangepaste waarden
-      unit_of_measurement: "kWh"
-      friendly_name: "zonne-energie productie simulatie vandaag (gecorrigeerd)"
-      icon_template: "mdi:solar-power"
-      value_template: >-
-        {% set avgfuture = states('sensor.7_daags_gemiddelde_verwachte_zonneopbrengst') | round(1) %}
-        {% set avgpast = states('sensor.7_daags_gemiddelde_zonneopbrengst') | round(1) %}
-        {% set today = states('sensor.solar_sim_energy_today') | round(1) %}
-        {{ today * ( avgpast / avgfuture ) | round(1) }}
-
-    solar_sim_energy_tomorrow_adj:
-      # zonneproductie morgen met aangepaste waarden
-      unit_of_measurement: "kWh"
-      friendly_name: "zonne-energie productie simulatie morgen (gecorrigeerd)"
-      icon_template: "mdi:solar-power"
-      value_template: >-
-        {% set avgfuture = states('sensor.7_daags_gemiddelde_verwachte_zonneopbrengst') | round(1) %}
-        {% set avgpast = states('sensor.7_daags_gemiddelde_zonneopbrengst') | round(1) %}
-        {% set tomorrow = states('sensor.solar_sim_energy_tomorrow') | round(1) %}
-        {{ tomorrow * ( avgpast / avgfuture ) | round(1) }}
 
 
     # Code voor het wegfilteren van exuberante waarden
@@ -118,90 +218,6 @@ sensor:
     #              {% else %}
     #                {{ 'error' }}
     #              {% endif %}"
-
-    net_neutrality:
-      unit_of_measurement: "%"
-      friendly_name: "netonafhankelijkheid totaal"
-      icon_template: "mdi:solar-power"
-      value_template: >-
-        {% set sp = states('sensor.sma_energy_total') | float %}
-        {% set nc = states('sensor.net_consumption_energy_total') | float %}
-        {% set ni = states('sensor.net_injection_energy_total') | float %}
-        {{ ((sp - ni ) / ( sp - ni + nc) * 100 ) | round(1) }}
-
-    net_neutrality_home:
-      unit_of_measurement: "%"
-      friendly_name: "netonafhankelijkheid huis"
-      icon_template: "mdi:solar-power"
-      value_template: >-
-        {% set sp = states('sensor.sma_energy_total') | float %}
-        {% set nc = states('sensor.net_consumption_energy_total') | float %}
-        {% set ni = states('sensor.net_injection_energy_total') | float %}
-        {% set car_net = states('sensor.car_charge_net_energy') | round() %}
-        {% set car_sun = states('sensor.car_charge_solar_energy') | round() %}
-        {{ (((sp - ni - car_sun) / (sp - ni + nc - car_net - car_sun) ) * 100 ) | round(1) }}
-
-    net_neutrality_car:
-      unit_of_measurement: "%"
-      friendly_name: "netonafhankelijkheid auto"
-      icon_template: "mdi:solar-power"
-      value_template: >-
-        {% set car_net = states('sensor.car_charge_net_energy') | round() %}
-        {% set car_sun = states('sensor.car_charge_solar_energy') | round() %}
-        {{ (car_sun / (car_net + car_sun) * 100 ) | round(1)}}
-
-    solar_self_consumption:
-      unit_of_measurement: "kWh"  # of kWh ?
-      friendly_name: "zelfverbruik zonne-energie"
-      icon_template: "mdi:solar-power"
-      value_template: >-
-        {% set sp = states('sensor.sma_energy_total') | float %}
-        {% set ni = states('sensor.net_injection_energy_total') | float %}
-        {{ sp - ni }}
-
-    net_neutrality_now:
-      unit_of_measurement: "%"
-      friendly_name: "netonafhankelijkheid nu"
-      icon_template: "mdi:solar-power"
-      value_template: >-
-        {% set sp = states('sensor.solar_power') | float %}
-        {% set hc = states('sensor.huisverbruik') | float %}
-        {% set result = [((sp  / hc ) * 100 ) | round(1), 100] | min %}
-        {{ result }}
-      availability_template: >
-        {% if result < 0 %}
-          false
-        {% endif %}
-
-    net_injection_savings:
-      unit_of_measurement: "EUR"
-      friendly_name: "winst teruggave"
-      value_template: >-
-          {% set np = states('sensor.net_injection_daily') | float(default=0) %}
-          {% set i = states('input_number.elektriciteitsprijs_injectie') | float() %}
-          {{ (np * i) | round(1) }}
-
-    solar_selfconsumption_savings:
-      unit_of_measurement: "EUR"
-      friendly_name: "winst zelfverbruik"
-      value_template: >-
-          {% set sp = states('sensor.zonne_energie_totaal') | float(default=0) %}
-          {% set i = states('sensor.net_injection_daily') | float(default=0) %}
-          {% set c = states('input_number.elektriciteitsprijs_afname') | float() %}
-          {{ ((sp - i ) * c ) | round(1) }}
-
-    solar_terraszijde_efficiency:
-      unit_of_measurement: "%"
-      friendly_name: zonnepanelen terraszijde efficiëntie
-      value_template: >-
-        {{ (states('sensor.solar_terraszijde_energie_daily') | float / 6150 * 1000 * 100) | round(1) }}
-
-    solar_voorzijde_efficiency:
-      unit_of_measurement: "%"
-      friendly_name: zonnepanelen voorzijde efficiëntie
-      value_template: >-
-        {{ (states('sensor.solar_voorzijde_energie_daily') | float / 8610 * 1000 * 100) | round(1) }}
-
 
 # # Get the sensor value at a specified time
 # Do not define the SQL in this config file, but put it in the integration via the GUI

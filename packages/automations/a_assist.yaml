@@ -11,7 +11,7 @@ automation:
     message: >
       {% set c = states('sensor.car_1_soc') %}
       {% if c == 'unknown' %}De gegevens zijn niet beschikbaar
-      {% else %}De auto is {{ states('sensor.car_1_soc') }}% geladen.
+      {% else %}De auto is {{ states('sensor.car_1_soc') | int() }}% geladen. Dit is voor {{ states('sensor.car_1_range') }} km.
       {% endif %}    
   action:
     - service: script.from_atom_to_speaker
@@ -39,7 +39,7 @@ automation:
         {% if p < 0 %}Er is {{ p | abs }} Watt overschot.
         {% elif p > 0 %}Er is geen zonne-overschot. Er wordt {{ p | abs }} Watt verbruikt.
         {% endif %}
-      {% elif c > 0 %}De auto laadt aan {{ c | abs }} Watt. Als de auto stopt met laden kan er {{ (c + p) | round(-2) | int | abs }} Watt worden gebruikt.
+      {% elif c > 0 %}De auto laadt aan {{ c | abs }} Watt. Als de auto stopt met laden, kan er {{ (c + p) | round(-2) | int | abs }} Watt worden gebruikt.
       {% endif %}   
   action:  
     - service: script.from_atom_to_speaker
@@ -89,3 +89,23 @@ automation:
   action:
   - service: script.living_google_tv_kodi_launch
   mode: single
+
+
+- alias: Assist // speel kerstmuziek
+  id: '42ee28b6-c789-407c-acbb-16fe33c9c138'
+  description: ''
+  trigger:
+  - platform: conversation
+    command: speel kerstmuziek
+  condition: []
+  action:
+    - service: media_player.play_media
+      data:
+        entity_id: media_player.living_speaker
+        media_content_id: >
+          http://playerservices.streamtheworld.com/api/livestream-redirect/SRGSTR08.mp3
+        media_content_type: 'audio/mp4'
+  mode: single
+
+
+  # https://dpgmedia.streamtheuniverse.com/joe-christmas.aac

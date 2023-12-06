@@ -24,6 +24,13 @@ input_number:
     step: 5
     mode: box
 
+input_boolean:
+  # toggle om te zien of ontvochtiger extra draait of door noodzaak (vb. douche)
+  dehumidifier_1_extrarun:
+    name: extra ontvochtigen
+
+  dehumidifier_2_extrarun:
+    name: extra ontvochtigen    
 
 timer:
   dehumidifier_timer:

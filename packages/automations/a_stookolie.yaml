@@ -1,0 +1,14 @@
+automation:
+
+- alias: Stookolie morgen goedkoper
+  id: 'b5a2c0af-5bb4-42de-a3b0-316e0d820e5f'
+  trigger:
+  - platform: template
+    value_template: >
+       {{ states('sensor.carbu_com_oilstd_1000l_prediction') | float() < 0 }}
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      message: "Stookolie morgen goedkoper! Prijs daalt met {{ states('sensor.carbu_com_oilstd_1000l_prediction') }}%"
+  mode: single

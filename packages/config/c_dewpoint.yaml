@@ -1,15 +1,12 @@
-
-
-
-sensor:
-  - platform: template
-    sensors:
-      eikenbos_dewpoint_dif:
-        friendly_name: 'verschil dauwpunt en temperatuur'
+template:
+  - sensor:
+      - name: eikenbos_dewpoint_dif
+        attributes:      
+          friendly_name: 'verschil dauwpunt en temperatuur'
         device_class: temperature
         unit_of_measurement: '°C'
-        icon_template: mdi:thermometer-water
-        value_template: >
+        icon: mdi:thermometer-water
+        state: >
           {% set t = states('sensor.eikenbos_temperature') | float(default=0) %}
           {% set d = states('sensor.outside_thermal_dew_point') | float(default=0) %}
           {{ t-d }}

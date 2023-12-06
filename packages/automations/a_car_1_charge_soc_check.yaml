@@ -1,6 +1,9 @@
 ############################ Automations ################################## 
 automation:
 
+#   🔋 morgen naar Toyota Evere = check 21u30 voldoende geladen?
+#   🔋 morgen naar Toyota Diest = check 21u30 voldoende geladen?
+
 
 #######################################
 # Check lading 's avonds om 21u25
@@ -29,8 +32,8 @@ automation:
       title: Morgen naar Toyota Evere
       message: >
         Auto heeft nu {{states('sensor.car_1_soc')}}%.
-        {% if states('sensor.car_1_soc') | round() > 50 %}Voldoende batterijniveau.
-        {% else %} Onvoldoende geladen. Best 20% à 25%.
+        {% if states('sensor.car_1_soc') | round() > 45 %}Voldoende batterijniveau.
+        {% else %} Onvoldoende geladen. Best 40% à 45%.
           {% if states('sensor.car_1_plug_state') == 'connected' %}Laadkabel is verbonden.
           {% else %}Opgelet: laadkabel is niet verbonden.
           {% endif %}

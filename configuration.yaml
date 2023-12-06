@@ -141,8 +141,6 @@ automation: !include automations.yaml
 google_assistant: !include google_assistant_integration.yaml
 shell_command: !include shell_commands.yaml
 
-
-
 #####################################################
 homeassistant:
   name: Eikenbos
@@ -216,8 +214,6 @@ homeassistant:
     sensor.master_bedroom_tv_energieverbruik:
       device_class: energy
       state_class: total_increasing
-
-
 
   # secrets should not be mentioned in this file; it is automatic !
   # secrets: !include secrets.yaml
@@ -545,25 +541,14 @@ sensor:
       - filter: time_simple_moving_average
         window_size: "00:01"
 
-  - platform: filter
-    name: charger current power avg 2min
-    entity_id: sensor.charger_current_power
-    unique_id: '0c2d0f18-dbdf-4fad-912e-4ee6c83a496c'
-    filters:
-      - filter: outlier
-        window_size: 6   # number of samples taken (was vroeger 6, nu aangepast naar 20 als test)
-        radius: 10000  # ignore readings if difference is bigger than 10000
-      - filter: time_simple_moving_average
-        window_size: "00:02"
-
 ###############################################################################
 # template / sensor
 ###############################################################################
 
+# this is the new way to define sensors via templates
+
 template:
   - sensor:
-
-      # this is the new way to define sensors via templates
       - name: net_consumption_energy_total
         unit_of_measurement: kWh # dit moet kWh (exact zo geschreven)
         device_class: energy    
@@ -581,10 +566,8 @@ template:
         attributes:         
           last_reset: '1970-01-01T00:00:00+00:00'
 
-      # this is the new way to define sensors via templates
-      # this works !
       - name: net_injection_energy_total
-        unit_of_measurement: kWh # dit moet kWh (exact zo geschreven)
+        unit_of_measurement: kWh # dit moet kWh zijn (exact zo geschreven)
         device_class: energy
         state_class: total    # or "measurement"
         state: >
@@ -621,8 +604,6 @@ binary_sensor:
     name: google_server
     host: 8.8.8.8
     scan_interval: 5    # scan every 5 minutes
-
-
 
 rest_command:
 # webhook om meterstanden op de site energieid te posten
@@ -738,3 +719,18 @@ camera:
 #       dashboard_url: http://192.168.68.100:8123/lovelace-verbruik/zonne-energie" #Required: Dashboard URL to be casted
 
 
+
+intent_script:
+  solar_injection:
+    action: []    
+    speech:
+      text: >
+        {% set p = states('sensor.net_power_avg') | round(-2) | int %}
+        {% set c = states('sensor.charger_current_power') | round(-2) | int %}
+        {% if c == 0 %}
+          {% if p < 0 %}Er is {{ p | abs }} Watt overschot.
+          {% elif p > 0 %}Er is geen zonne-overschot. Er wordt {{ p | abs }} Watt verbruikt.
+          {% endif %}
+        {% elif c > 0 %}De auto laadt aan {{ c | abs }} Watt. Als de auto stopt met laden, kan er {{ (c + p) | round(-2) | int | abs }} Watt worden gebruikt.
+        {% endif %}      
+        {{ message }}
