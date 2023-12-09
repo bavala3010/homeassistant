@@ -1,0 +1,95 @@
+living_links_avondeten:
+  alias: living links avondeten
+  sequence:
+  - service: light.turn_on
+    data:
+      transition: 3
+      kelvin: 3000
+    target:
+      entity_id:
+        - light.living_links
+  icon: mdi:track-light        
+  mode: single
+
+living_links_home_work:
+  alias: living links home work
+  sequence:
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.living_links_1
+  mode: single
+  icon: mdi:track-light
+
+
+master_bedroom_play_bart_gradual_light:
+  sequence:
+    - service: light.turn_on
+      data:
+        brightness_pct: 1
+        kelvin: 2000
+      target:
+        entity_id: 
+          - light.master_bedroom_play_bart
+    - repeat:
+        until:
+          - condition: template
+            value_template: "{{state_attr('light.master_bedroom_play_bart', 'brightness') == '255' }}"
+        sequence:
+          - service: light.turn_on
+            data:
+              brightness_step_pct: 1
+              kelvin: 2000
+            target:
+              entity_id: 
+                - light.master_bedroom_play_bart
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 6
+              milliseconds: 0
+          - if:
+              - condition: template
+                value_template: "{{ states('light.master_bedroom_play_bart') == 'off' }}"
+            then:
+              - service: script.turn_off
+                data:
+                  stop_actions: true
+                target:
+                  entity_id: script.master_bedroom_play_bart_gradual_light
+
+master_bedroom_play_madouce_gradual_light:
+  sequence:
+    - service: light.turn_on
+      data:
+        brightness_pct: 1
+        kelvin: 2000
+      target:
+        entity_id: 
+          - light.master_bedroom_play_madouce
+    - repeat:
+        until:
+          - condition: template
+            value_template: "{{state_attr('light.master_bedroom_play_madouce', 'brightness') == '255' }}"
+        sequence:
+          - service: light.turn_on
+            data:
+              brightness_step_pct: 1
+              kelvin: 2000
+            target:
+              entity_id: 
+                - light.master_bedroom_play_madoiuce
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 6
+              milliseconds: 0
+          - if:
+              - condition: template
+                value_template: "{{ states('light.master_bedroom_play_madouce') == 'off' }}"
+            then:
+              - service: script.turn_off
+                data:
+                  stop_actions: true
+                target:
+                  entity_id: script.master_bedroom_play_madouce_gradual_light                  

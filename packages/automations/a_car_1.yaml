@@ -115,11 +115,10 @@ automation:
   description: ''
   trigger:
   - platform: time
-    at: sensor.sm_g986b_next_alarm  
-  - platform: time
-    at: '07:15'
-  - platform: time
-    at: '07:45'
+    at: 
+      - sensor.sm_g986b_next_alarm 
+      - '07:15'
+      - '07:45'
   condition:
   - condition: template
     value_template: >
@@ -139,11 +138,10 @@ automation:
   description: ''
   trigger:
   - platform: time
-    at: sensor.sm_g986b_next_alarm  
-  - platform: time
-    at: '07:15'
-  - platform: time
-    at: '07:45'
+    at: 
+      - sensor.sm_g986b_next_alarm  
+      - '07:15'
+      - '07:45'
   condition:
   - condition: template
     value_template: >

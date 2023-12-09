@@ -31,9 +31,22 @@ automation:
   - service: notify.bart_madouce_phone
     data:
       message: '{{ ["Joehoe, de kerstverlichting brandt weer!","Jingle bells", "Merry Christmas with lots of love.", "Kerst is leuker met lichtjes.", "Wishing you a Christmas that is merry and bright!"] | random }}'
+  # rode lamp living links 4 op kerstboom
+  - service: light.turn_on
+    target:
+      entity_id:
+        - light.living_links_4
+      device_id: []
+      area_id: []
+    data:
+      brightness: 31
+      rgb_color:
+        - 255
+        - 67
+        - 106      
   mode: single
   
-- alias: 🎄 Kerstverlichting buiten aan tijdens week vanaf 7u00
+- alias: 🎄 Kerstverlichting buiten aan tijdens week vanaf 7u00 (10 min. random)
   id: 006a516d-4cd0-4201-944c-0cf1b6ae3991
   description: ''
   trigger:

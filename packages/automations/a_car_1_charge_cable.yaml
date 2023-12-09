@@ -16,11 +16,10 @@ automation:
   description: ''
   trigger:
   - platform: time
-    at: '10:00'
-  - platform: time
-    at: '21:30'
-  - platform: time
-    at: '22:30'
+    at: 
+      - '10:00'
+      - '21:30'
+      - '22:30'
   condition:
   - condition: state
     entity_id: device_tracker.audi_e_tron_sportback_position

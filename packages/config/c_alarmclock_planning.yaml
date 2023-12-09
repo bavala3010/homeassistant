@@ -1,0 +1,92 @@
+input_select:
+  bart_day_1:
+    name: maandag
+    options:
+      - telewerk
+      - kantoor
+      - vrijaf
+    icon: mdi:calendar
+
+  bart_day_2:
+    name: dinsdag
+    options:
+      - telewerk
+      - kantoor
+      - vrijaf
+    icon: mdi:calendar
+
+  bart_day_3:
+    name: woensdag
+    options:
+      - telewerk
+      - kantoor
+      - vrijaf
+    icon: mdi:calendar
+
+  bart_day_4:
+    name: donderdag
+    options:
+      - telewerk
+      - kantoor
+      - vrijaf
+    icon: mdi:calendar
+
+  bart_day_5:
+    name: vrijdag
+    options:
+      - telewerk
+      - kantoor
+      - vrijaf
+    icon: mdi:calendar
+
+  bart_day_6:
+    name: zaterdag
+    options:
+      - weekend
+    icon: mdi:calendar
+
+  bart_day_7:
+    name: zondag
+    options:
+      - weekend
+    icon: mdi:calendar
+
+input_datetime:
+  madouce_alarmclock_time:
+    name: Madouce wekker
+    icon: mdi:timer-edit-outline
+    has_date: false
+    has_time: true
+
+  bart_alarmclock_time:
+    name: Bart wekker
+    icon: mdi:timer-edit-outline
+    has_date: false
+    has_time: true
+
+  bart_alarmclock_telework:
+    name: Bart wekker telewerk
+    icon: mdi:timer-edit-outline
+    has_date: false
+    has_time: true
+
+  bart_alarmclock_office:
+    name: Bart wekker kantoor
+    icon: mdi:timer-edit-outline
+    has_date: false
+    has_time: true
+
+  bart_alarmclock_free:
+    name: Bart wekker vrijaf
+    icon: mdi:timer-edit-outline
+    has_date: false
+    has_time: true
+
+input_boolean:
+  bart_alarmclock_toggle:
+    name: Bart wekker
+    icon: mdi:timer-edit-outline
+
+  madouce_alarmclock_toggle:
+    name: Madouce wekker
+    icon: mdi:timer-edit-outline    

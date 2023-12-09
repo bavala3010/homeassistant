@@ -287,27 +287,6 @@
       entity_id: cover.garagepoort
     data: {}
   mode: single
-- id: '1694120074755'
-  alias: Amilya airco uit om 0u, 1u en 2u
-  description: ''
-  trigger:
-  - platform: time
-    at: 01:00:00
-  - platform: time
-    at: 02:00:00
-  - platform: time
-    at: 00:00:00
-  - platform: time
-    at: 06:00:00
-  - platform: time
-    at: 05:00:00
-  condition: []
-  action:
-  - service: climate.turn_off
-    data: {}
-    target:
-      entity_id: climate.amilya_airco
-  mode: single
 - id: '1697358918402'
   alias: Assist // Geef de katten eten
   description: ''

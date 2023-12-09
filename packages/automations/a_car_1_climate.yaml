@@ -84,11 +84,11 @@ automation:
   action:
   - choose:
     # indien aankomst thuis, niets doen
-    - conditions:
-      - condition: state
-        entity_id: person.bart
-        state: "home"
-      sequence:
+    # - conditions:
+    #   - condition: state
+    #     entity_id: person.bart
+    #     state: "home"
+    #   sequence:
     # indien aankomst bij sauna, onmiddellijk vragen
     - conditions:
       - condition: template
@@ -188,12 +188,12 @@ automation:
   action:
   - choose:
     # indien aankomst thuis, niets doen
-    - conditions:
-      - condition: state
-        entity_id: person.madouce
-        state: "home"
-      sequence:
-      # indien aankomst bij sauna, onmiddellijk vragen
+    # - conditions:
+    #   - condition: state
+    #     entity_id: person.madouce
+    #     state: "home"
+    #   sequence:
+    # indien aankomst bij sauna, onmiddellijk vragen
     - conditions:  
       - condition: template
         value_template: "{{ states('person.madouce') in ['Sauna Elzenhof', 'Sauna Hezemeer', 'Sauna Boetfort', 'The White Oak'] }}"

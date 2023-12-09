@@ -53,14 +53,18 @@ daikin_residential:
 
 device_tracker:
   # - platform: bluetooth_tracker  
-  - platform: bluetooth_le_tracker
-    track_new_devices: true
-    interval_seconds: 30
-  - platform: tomato
-    host: 192.168.68.1
-    username: root
-    password: admin
-    http_id: TID3fac41d84c91e1a8
+
+  # gedesactiveerd op 8 dec 2023 (veel te veel smart tags gevonden)
+  # - platform: bluetooth_le_tracker
+  #   track_new_devices: true
+  #   interval_seconds: 30
+
+
+  # - platform: tomato
+  #   host: 192.168.68.1
+  #   username: root
+  #   password: admin
+  #   http_id: TID3fac41d84c91e1a8
 dhcp:
 # discover:
 energy:
@@ -107,6 +111,12 @@ usb:
 webhook:
 zeroconf:
 zone:
+
+# lovelace:
+#   mode: yaml
+#   resources:
+#     - url: /hacsfiles/lovelace-time-picker-card/time-picker-card.js
+#       type: module
 
 # lovelace:
 #   mode: yaml
@@ -170,7 +180,6 @@ homeassistant:
   allowlist_external_dirs:
     - "/config"
 
-  ### The following installs all package files, including lights, alarm, humidity etc.
   packages: !include_dir_named packages
   
   customize:

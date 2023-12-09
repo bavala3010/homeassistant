@@ -13,3 +13,6 @@ lovelace:
     # adding the card-mod plugin enable an advanced card look configuration
     - url: /hacsfiles/lovelace-card-mod/card-mod.js
       type: module
+
+    - url: /hacsfiles/lovelace-time-picker-card/time-picker-card.js
+      type: module

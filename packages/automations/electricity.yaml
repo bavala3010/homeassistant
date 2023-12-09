@@ -36,11 +36,10 @@ automation:
   id: 'd623e813-117a-485c-b7f1-ea50c8635010'
   trigger:
   - platform: time
-    at: "20:00"
-  - platform: time
-    at: "21:00"
-  - platform: time
-    at: "22:00"    
+    at: 
+      - "20:00"
+      - "21:00"
+      - "22:00"    
   condition:
   - condition: state
     entity_id: switch.bart_laptop_brum05007458

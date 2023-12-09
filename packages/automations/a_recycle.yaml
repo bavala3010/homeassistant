@@ -4,9 +4,9 @@ automation:
   id: 50cbd530-9e44-4283-95f9-24f8ca182701
   trigger:
   - platform: time
-    at: '19:00:00'
-  - platform: time
-    at: '20:30:00'
+    at: 
+      - '19:00:00'
+      - '20:30:00'
   condition:
   - condition: not
     conditions:

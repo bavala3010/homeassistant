@@ -3,7 +3,7 @@ automation:
 # device_id airco living = 1c560bbc7917f45d737e87d3e2bd0d89
 
 - alias: temperatuur living boven 23 graden
-  id: 'clkcycfbi0000ycsndoxz5snk'
+  id: 'f9348f08-a5db-4172-8410-2593768dd9c9'
   description: ''
   trigger:
   - platform: numeric_state
