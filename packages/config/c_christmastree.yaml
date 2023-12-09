@@ -1,0 +1,4 @@
+input_boolean:
+  christmas_tree_spot_switch:
+    name: kerstboom spot
+    icon: mdi:track-light

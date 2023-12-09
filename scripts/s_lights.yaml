@@ -4,7 +4,8 @@ living_links_avondeten:
   - service: light.turn_on
     data:
       transition: 3
-      kelvin: 3000
+      kelvin: 2700
+      brightness_pct: 70      
     target:
       entity_id:
         - light.living_links
@@ -22,74 +23,343 @@ living_links_home_work:
   icon: mdi:track-light
 
 
-master_bedroom_play_bart_gradual_light:
-  sequence:
-    - service: light.turn_on
-      data:
-        brightness_pct: 1
-        kelvin: 2000
-      target:
-        entity_id: 
-          - light.master_bedroom_play_bart
-    - repeat:
-        until:
-          - condition: template
-            value_template: "{{state_attr('light.master_bedroom_play_bart', 'brightness') == '255' }}"
-        sequence:
-          - service: light.turn_on
-            data:
-              brightness_step_pct: 1
-              kelvin: 2000
-            target:
-              entity_id: 
-                - light.master_bedroom_play_bart
-          - delay:
-              hours: 0
-              minutes: 0
-              seconds: 6
-              milliseconds: 0
-          - if:
-              - condition: template
-                value_template: "{{ states('light.master_bedroom_play_bart') == 'off' }}"
-            then:
-              - service: script.turn_off
-                data:
-                  stop_actions: true
-                target:
-                  entity_id: script.master_bedroom_play_bart_gradual_light
+# master_bedroom_play_bart_gradual_light:
+#   sequence:
+#     - service: light.turn_on
+#       data:
+#         brightness_pct: 1
+#         kelvin: 2000
+#       target:
+#         entity_id: 
+#           - light.master_bedroom_play_bart
+#     - repeat:
+#         until:
+#           - condition: template
+#             value_template: "{{state_attr('light.master_bedroom_play_bart', 'brightness') == '255' }}"
+#         sequence:
+#           - service: light.turn_on
+#             data:
+#               brightness_step_pct: 1
+#               kelvin: 2000
+#             target:
+#               entity_id: 
+#                 - light.master_bedroom_play_bart
+#           - delay:
+#               hours: 0
+#               minutes: 0
+#               seconds: 6
+#               milliseconds: 0
+#           - if:
+#               - condition: template
+#                 value_template: "{{ states('light.master_bedroom_play_bart') == 'off' }}"
+#             then:
+#               - service: script.turn_off
+#                 data: {}
+#                 target:
+#                   entity_id: script.master_bedroom_play_bart_gradual_light
+#   mode: restart
 
-master_bedroom_play_madouce_gradual_light:
+# master_bedroom_play_madouce_gradual_light:
+#   sequence:
+#     - service: light.turn_on
+#       data:
+#         brightness_pct: 1
+#         kelvin: 2000
+#       target:
+#         entity_id: 
+#           - light.master_bedroom_play_madouce
+#     - repeat:
+#         until:
+#           - condition: template
+#             value_template: "{{state_attr('light.master_bedroom_play_madouce', 'brightness') == '255' }}"
+#         sequence:
+#           - service: light.turn_on
+#             data:
+#               brightness_step_pct: 1
+#               kelvin: 2000
+#             target:
+#               entity_id: 
+#                 - light.master_bedroom_play_madouce
+#           - delay:
+#               hours: 0
+#               minutes: 0
+#               seconds: 6
+#               milliseconds: 0
+#           - if:
+#               - condition: template
+#                 value_template: "{{ states('light.master_bedroom_play_madouce') == 'off' }}"
+#             then:
+#               - service: script.turn_off
+#                 data: {}
+#                 target:
+#                   entity_id: script.master_bedroom_play_madouce_gradual_light
+#   mode: restart
+
+master_bedroom_play_bart_sunrise:
   sequence:
-    - service: light.turn_on
+    - service: script.sunrise_simulator
       data:
-        brightness_pct: 1
-        kelvin: 2000
-      target:
-        entity_id: 
+        duration: 10
+        target: 
+          - light.master_bedroom_play_bart
+        max_brightness: 100
+
+
+master_bedroom_play_madouce_sunrise:
+  sequence:
+    - service: script.sunrise_simulator
+      data:
+        duration: 10
+        target: 
           - light.master_bedroom_play_madouce
-    - repeat:
-        until:
-          - condition: template
-            value_template: "{{state_attr('light.master_bedroom_play_madouce', 'brightness') == '255' }}"
-        sequence:
-          - service: light.turn_on
-            data:
-              brightness_step_pct: 1
-              kelvin: 2000
-            target:
-              entity_id: 
-                - light.master_bedroom_play_madoiuce
-          - delay:
-              hours: 0
-              minutes: 0
-              seconds: 6
-              milliseconds: 0
-          - if:
-              - condition: template
-                value_template: "{{ states('light.master_bedroom_play_madouce') == 'off' }}"
-            then:
-              - service: script.turn_off
-                data:
-                  stop_actions: true
-                target:
-                  entity_id: script.master_bedroom_play_madouce_gradual_light                  
+        max_brightness: 100
+
+
+# https://community.home-assistant.io/t/sunrise-simulator-wake-up-gently-to-light/493778
+sunrise_simulator:
+  sequence:
+    - parallel:
+        - if:
+            - condition: template
+              value_template: "{{ wled | count > 0 }}"
+          then:
+            - repeat:
+                for_each: "{{ wled }}"
+                sequence:
+                  - service: light.turn_on
+                    data:
+                      effect: Sunrise
+                    target:
+                      entity_id: |
+                        {{ repeat.item }}
+                  - service: number.set_value
+                    data:
+                      value: "{{ [(255 * (maxbri/100)) | int, 255] | min }}"
+                    target:
+                      entity_id: |
+                        {{ device_entities(device_id(repeat.item))
+                              | select('search', 'number.')
+                              | select('search', 'intensity')
+                              | list }}
+                  - service: number.set_value
+                    data:
+                      value: |
+                        {{ [dur, 128] | min }}
+                    target:
+                      entity_id: |
+                        {{ device_entities(device_id(repeat.item))
+                              | select('search', 'number.')
+                              | select('search', 'speed')
+                              | list }}
+        - if:
+            - condition: template
+              value_template: "{{ bright | count > 0 }}"
+          then:
+            - repeat:
+                while:
+                  - condition: template
+                    value_template: |
+                      {{ repeat.index <= maxbri
+                            and not ( repeat.index > 1 
+                                              and states.light
+                                                          | selectattr('entity_id', 'in', bright)
+                                                          | selectattr('state', 'eq', 'on') | list | count 
+                                                        ==  0 ) }}
+                sequence:
+                  - variables:
+                      bright: |
+                        {% if repeat.index > 1 %}
+                          {{ expand(bright)
+                                | selectattr('state', 'eq', 'on')
+                                | map(attribute = 'entity_id')
+                                | list }}
+                        {% else %}
+                          {{ bright }}
+                        {% endif %}
+                  - service: light.turn_on
+                    data:
+                      transition: |
+                        {{ ( ( dur * 60 ) / (maxbri) ) | int }}
+                      brightness_pct: |
+                        {{ [maxbri, ((repeat.index * maxbri) / 100)] | min }}
+                    target:
+                      entity_id: |
+                        {{ bright }}
+                  - delay:
+                      milliseconds: |
+                        {{ (  ( ( dur  * 60 ) / (maxbri) ) * 1000
+                        ) | int }}
+        - if:
+            - condition: template
+              value_template: "{{ temp | count > 0 }}"
+          then:
+            - repeat:
+                while:
+                  - condition: template
+                    value_template: |
+                      {{ repeat.index <= 100
+                            and not ( repeat.index > 1 
+                                              and states.light
+                                                          | selectattr('entity_id', 'in', temp)
+                                                          | selectattr('state', 'eq', 'on') | list | count 
+                                                        ==  0 ) }}
+                sequence:
+                  - variables:
+                      step: "{{ repeat.index }}"
+                      temp: |
+                        {% if repeat.index > 1 %}
+                          {{ expand(temp)
+                                | selectattr('state', 'eq', 'on')
+                                | map(attribute = 'entity_id')
+                                | list }}
+                        {% else %}
+                          {{ temp }}
+                        {% endif %}
+                  - repeat:
+                      for_each: "{{ temp }}"
+                      sequence:
+                        - service: light.turn_on
+                          data:
+                            transition: |
+                              {{ ( ( dur * 60) / 100 ) | int }}
+                            brightness_pct: |
+                              {{ [ ((step * maxbri) / 100) | int, maxbri] | min }}
+                          target:
+                            entity_id: |
+                              {{ repeat.item }}
+                        - service: light.turn_on
+                          data:
+                            color_temp: >
+                              {% set max = state_attr(repeat.item, 'max_mireds')
+                              %} {% set min = state_attr(repeat.item,
+                              'min_mireds') %} {% set dec = (max-min) / 100 %} {{
+                              iif( step < 100, ( max - (dec * (step - 1) ) ) |
+                              int, min ) }}
+                          target:
+                            entity_id: |
+                              {{ repeat.item }}
+                  - delay:
+                      milliseconds: |
+                        {{ (  ( ( dur  * 60 ) / 100 ) * 1000
+                        ) | int }}
+        - if:
+            - condition: template
+              value_template: "{{ color | count > 0 }}"
+          then:
+            - repeat:
+                while:
+                  - condition: template
+                    value_template: |
+                      {{ repeat.index <= 100
+                            and not ( repeat.index > 1 
+                                              and states.light
+                                                          | selectattr('entity_id', 'in', color)
+                                                          | selectattr('state', 'eq', 'on') | list | count 
+                                                        == 0 ) }}
+                sequence:
+                  - variables:
+                      color: |
+                        {% if repeat.index > 1 %}
+                          {{ expand(color)
+                                | selectattr('state', 'eq', 'on')
+                                | map(attribute = 'entity_id')
+                                | list }}
+                        {% else %}
+                          {{ color }}
+                        {% endif %}
+                  - service: light.turn_on
+                    data:
+                      transition: |
+                        {{ (  ( dur * 60 ) / 100  ) | int }}
+                      brightness_pct: >
+                        {{ [((repeat.index * maxbri) / 100) | int , maxbri] | min
+                        }}
+                    target:
+                      entity_id: |
+                        {{ color }}
+                  - service: light.turn_on
+                    data:
+                      rgb_color: |
+                        {% if repeat.index <= 20 %}
+                          [255,0,0]
+                        {% elif repeat.index <= 40  %}
+                          [255,77,0]
+                        {% elif repeat.index <= 60 %}
+                          [255,103,0]
+                        {% elif repeat.index <= 80 %}
+                          [255,129,0]  
+                        {% else %}
+                          [255,167,0]
+                        {% endif %}
+                    target:
+                      entity_id: |
+                        {{ color }}
+                  - delay:
+                      milliseconds: |
+                        {{ (  ( ( dur * 60 ) / 100 ) * 1000 ) | int }}
+  variables:
+    dur: |
+      {{ duration | default(10, true) | int(10) }}
+    entities: |
+      {% if target is defined %}
+        {% if target in states.light 
+                          | rejectattr('state','in', ['unavailable', 'unknown', None])
+                          | selectattr('attributes.supported_color_modes', 'defined')
+                          | rejectattr('attributes.supported_color_modes', 'eq', None)
+                          | map(attribute='entity_id') 
+                          | map('area_name')
+                          | list %}
+          {% set target = area_entities(target) %}
+        {% endif %}
+        {{ expand(target)
+              | selectattr('domain', 'eq', 'light')
+              | selectattr('attributes.supported_color_modes', 'defined')
+              | rejectattr('attributes.supported_color_modes', 'eq', None)
+              | rejectattr('state', 'in', ['unavailable', 'unknown', None])
+              | map(attribute='entity_id')
+              | list }}
+      {% elif cct is not defined
+          and brightness is not defined %}
+        {{ states.light 
+                | rejectattr('state','in', ['unavailable', 'unknown', None])
+                | selectattr('attributes.supported_color_modes', 'defined')
+                | rejectattr('attributes.supported_color_modes', 'eq', None)
+                | map(attribute='entity_id') 
+                | list }}
+      {% endif %}
+    bright: |
+      {{ expand(entities)
+            | selectattr('attributes.supported_color_modes', 'eq', [ 'brightness'])
+            | map(attribute='entity_id')
+            | list + expand( brightness | default([], true) )
+                        | rejectattr('state', 'in', [ 'unavailable', 'unknown', None ])
+                        | rejectattr('entity_id', 'in', entities)
+                        | selectattr('attributes.supported_color_modes', 'defined')
+                        | selectattr('attributes.supported_color_modes', 'search', 'brightness')
+                        | map(attribute='entity_id')
+                        | list  }}
+    temp: |
+      {{ expand(entities)
+            | selectattr('attributes.supported_color_modes', 'eq', [ 'color_temp'])
+            | map(attribute='entity_id')
+            | list + expand( cct | default([], true) )
+                        | rejectattr('state', 'in', [ 'unavailable', 'unknown', None ])
+                        | rejectattr('entity_id', 'in', entities)
+                        | selectattr('attributes.supported_color_modes', 'defined')
+                        | selectattr('attributes.supported_color_modes', 'search', 'color_temp')
+                        | map(attribute='entity_id')
+                        | list }}
+    wled: |
+      {{ integration_entities('wled')
+            | select('in', expand(entities)
+                              | selectattr('attributes.effect_list', 'defined')
+                              | selectattr('attributes.effect_list', 'search', 'Sunrise')
+                              | map(attribute='entity_id')
+                              | list)
+            | list }}
+    color: |
+      {{ entities | reject('in', temp + wled + bright) | list  }}
+    maxbri: >
+      {% set bri = max_brightness | default(100, true) | int(100) %} {{ bri if bri
+      < 100 else 100 }}
+  mode: single

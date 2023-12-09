@@ -271,3 +271,39 @@ automation:
       entity_id: switch.kerstboom
   mode: single
     
+
+- alias: 🎄 Kerstboom binnen // spot aan met switch
+  id: 'bb65a17b-c601-4ca1-8a83-a8267072d34a'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.christmas_tree_spot_switch
+    to: "on"
+  condition: []
+  action:
+    - service: light.turn_on
+      data:
+        transition: 3
+        rgb_color: 
+          - 255
+          - 83
+          - 231
+        brightness_pct: 40
+      target:
+        entity_id:
+          - light.living_links_4       
+  mode: single
+
+- alias: 🎄 Kerstboom binnen // spot uit met switch
+  id: '4a571da0-5feb-4b45-bc89-97abd17367ac'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.christmas_tree_spot_switch
+    to: "off"
+  condition: []
+  action:
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id:
+          - light.living_links_4       
+  mode: single  

@@ -230,6 +230,11 @@ veranda_lichten:
     - light.veranda
     - light.veranda_staande_lamp
 
+naaihoek_lichten:
+  name: naaihoek
+  entities:  
+    - light.naaihoek_ledstrip_light
+    - light.naaihoek_ledbalk
 
 buiten_lichten:
   name: buiten

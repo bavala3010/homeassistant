@@ -85,14 +85,8 @@ automation:
           #     uri: /dashboard-car/car-charging
   variables:
     message: >
-      {% set soc = states('sensor.car_1_soc') | round(default=0) %} {% set
-      targetsoc = states('input_number.car_1_optimal_target_soc') |
-      round(default=0) %} {% set targetrange =
-      states('input_number.car_1_target_range') | round(default=0) %} Laden
-      met timer van {{ as_timestamp(states('sensor.car_charge_stoptimer_starttime')) |
-      timestamp_custom('%a %-Hu%M')}} tot {{
-      state_attr('input_datetime.car_charge_target_time', 'timestamp') |
-      timestamp_custom("%a %-Hu%M") }}.<br> Er wordt geladen van {{ soc }}% naar
+      {% set soc = states('sensor.car_1_soc') | round(default=0) %}
+      {% set targetsoc = states('input_number.car_1_optimal_target_soc') | round(default=0) %} {% set targetrange = states('input_number.car_1_target_range') | round(default=0) %} Laden met timer van {{ as_timestamp(states('sensor.car_charge_stoptimer_starttime')) | timestamp_custom('%a %-Hu%M')}} tot {{ state_attr('input_datetime.car_charge_target_time', 'timestamp') | timestamp_custom("%a %-Hu%M") }}.<br> Er wordt geladen van {{ soc }}% naar
       {{ targetsoc }}% = {{ targetrange }} km.
 
 - alias: "🚗 car 1 // 🔋 charge // laadkabel zopas ingeplugd zonder laadmodus = melding (enkel thuis)"

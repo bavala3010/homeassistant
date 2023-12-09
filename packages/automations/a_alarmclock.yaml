@@ -1,7 +1,7 @@
 automation:
 
-- alias: Bart - wekker met licht
-  id: 'd769b6f3-1e97-40da-a805-ebe3888dcd1a'
+- alias: wekker Bart gezet via HA = wakker worden met zonlicht en ringtone
+  id: 'd769b6f3-40da-a805-ebe3888dcd1a'
   description: ''
   trigger:
   - platform: template
@@ -9,11 +9,11 @@ automation:
       {{  now() >= today_at(states('input_datetime.bart_alarmclock_time')) - timedelta(minutes= 5 | int) }}
   condition:
     - condition: state
-      entity_id: input_boolean.bart_alarmclock_toggle
+      entity_id: input_boolean.bart_ha_alarmclock
       state: "on"
   action:
     - parallel: 
-        - service: script.master_bedroom_play_bart_gradual_light
+        - service: script.master_bedroom_play_bart_sunrise
           data: {}
         - sequence:  
             - wait_template: ''
@@ -29,30 +29,58 @@ automation:
                 media_content_type: music
   mode: restart
 
-- alias: script 'master_bedroom_play_bart_gradual_light' uitgeschakeld = terug starten
-  id: '0f7fbddf-aacc-492a-bfb2-9e2678103c2a'
+- alias: wekker Bart gezet op smartphone = wakker worden met zonlicht en ringtone
+  id: 'fd733e3e-a43f-4e97-807e-156d0e1279db'
   description: ''
   trigger:
-    - platform: state
-      entity_id:
-        - script.master_bedroom_play_bart_gradual_light
-      to: "off"
-      for:
-        hours: 0
-        minutes: 0
-        seconds: 10
-  condition: []
+  - platform: template
+    value_template: >
+      {{ as_timestamp(states('sensor.sm_s916b_next_alarm')) | int() == as_timestamp(now() + timedelta(minutes=5)) | int() }}
+  condition:
+    - condition: state
+      entity_id: input_boolean.bart_alarmclock_sunrise
+      state: "on"  
   action:
-    - service: automation.turn_on
-      target:
-        entity_id: script.master_bedroom_play_bart_gradual_light
-      data: {}
+    - parallel: 
+        - service: script.master_bedroom_play_bart_sunrise
+          data: {}
+        - sequence:  
+            - wait_template: ''
+              timeout: 00:05:00
+            - service: media_player.volume_set
+              data:
+                entity_id: media_player.master_bedroom_speaker
+                volume_level: 0.3
+            - service: media_player.play_media
+              data:
+                entity_id: media_player.master_bedroom_speaker
+                media_content_id: http://192.168.68.100:8123/local/soft_morning_alarm.mp3
+                media_content_type: music
   mode: restart
 
+# - alias: script 'master_bedroom_play_bart_gradual_light' uitgeschakeld = terug starten
+#   id: '0f7fbddf-aacc-492a-bfb2-9e2678103c2a'
+#   description: ''
+#   trigger:
+#     - platform: state
+#       entity_id:
+#         - script.master_bedroom_play_bart_gradual_light
+#       to: "off"
+#       for:
+#         hours: 0
+#         minutes: 0
+#         seconds: 10
+#   condition: []
+#   action:
+#     - service: automation.turn_on
+#       target:
+#         entity_id: script.master_bedroom_play_bart_gradual_light
+#       data: {}
+#   mode: restart
 
 
 
-- alias: Madouce - wekker met licht
+- alias: wekker Madouce gezet via HA = wakker worden met zonlicht en ringtone
   id: '3e1809eb-7415-4e45-8fa5-2b67285695fb'
   description: ''
   trigger:
@@ -61,11 +89,11 @@ automation:
         {{  now() >= today_at(states('input_datetime.madouce_alarmclock_time')) - timedelta(minutes= 5 | int) }}
   condition:
     - condition: state
-      entity_id: input_boolean.madouce_alarmclock_toggle
+      entity_id: input_boolean.madouce_ha_alarmclock
       state: "on"
   action:
     - parallel: 
-        - service: script.master_bedroom_play_madouce_gradual_light
+        - service: script.master_bedroom_play_madouce_sunrise
           data: {}
         - sequence:  
             - wait_template: ''
@@ -81,22 +109,52 @@ automation:
                 media_content_type: music
   mode: restart
 
-- alias: script 'master_bedroom_play_madouce_gradual_light' uitgeschakeld = terug starten
-  id: '10fb8e38-e7a4-44d9-878e-f51dc28c3b33'
+- alias: wekker Madouce gezet op smartphone = wakker worden met zonlicht en ringtone
+  id: '136908f0-6ba8-4afb-bdfb-698e90cf56a8'
   description: ''
   trigger:
-    - platform: state
-      entity_id:
-        - script.master_bedroom_play_madouce_gradual_light
-      to: "off"
-      for:
-        hours: 0
-        minutes: 0
-        seconds: 10
-  condition: []
+  - platform: template
+    value_template: >
+      {{ as_timestamp(states('sensor.sm_g986b_next_alarm')) | int() == as_timestamp(now() + timedelta(minutes=5)) | int() }}
+  condition:
+    - condition: state
+      entity_id: input_boolean.madouce_alarmclock_sunrise
+      state: "on"  
   action:
-    - service: automation.turn_on
-      target:
-        entity_id: script.master_bedroom_play_madouce_gradual_light
-      data: {}
+    - parallel: 
+        - service: script.master_bedroom_play_madouce_sunrise
+          data: {}
+        - sequence:  
+            - wait_template: ''
+              timeout: 00:05:00
+            - service: media_player.volume_set
+              data:
+                entity_id: media_player.master_bedroom_speaker
+                volume_level: 0.3
+            - service: media_player.play_media
+              data:
+                entity_id: media_player.master_bedroom_speaker
+                media_content_id: http://192.168.68.100:8123/local/soft_morning_alarm.mp3
+                media_content_type: music
   mode: restart
+
+
+# - alias: script 'master_bedroom_play_madouce_gradual_light' uitgeschakeld = terug starten
+#   id: '10fb8e38-e7a4-44d9-878e-f51dc28c3b33'
+#   description: ''
+#   trigger:
+#     - platform: state
+#       entity_id:
+#         - script.master_bedroom_play_madouce_gradual_light
+#       to: "off"
+#       for:
+#         hours: 0
+#         minutes: 0
+#         seconds: 10
+#   condition: []
+#   action:
+#     - service: automation.turn_on
+#       target:
+#         entity_id: script.master_bedroom_play_madouce_gradual_light
+#       data: {}
+#   mode: restart

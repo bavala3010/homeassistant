@@ -83,10 +83,18 @@ input_datetime:
     has_time: true
 
 input_boolean:
-  bart_alarmclock_toggle:
-    name: Bart wekker
+  bart_ha_alarmclock:
+    name: Bart wekker vanuit HA
     icon: mdi:timer-edit-outline
 
-  madouce_alarmclock_toggle:
-    name: Madouce wekker
-    icon: mdi:timer-edit-outline    
+  bart_alarmclock_sunrise:
+    name: Bart wekker met simulatie zonsopgang
+    icon: mdi:timer-edit-outline
+
+  madouce_ha_alarmclock:
+    name: Madouce wekker vanuit HA
+    icon: mdi:timer-edit-outline
+
+  madouce_alarmclock_sunrise:
+    name: Madouce wekker met simulatie zonsopgang
+    icon: mdi:timer-edit-outline

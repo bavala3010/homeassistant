@@ -127,7 +127,7 @@ automation:
   action:
   - service: notify.madouce_phone
     data:
-      title: Goede morgen, schat!
+      title: Goede morgen, Madouce!
       message: "Reistijd naar Toyota Evere is {{states('sensor.waze_travel_time_huis_toyota_evere')}} minuten."
       data:
         tag: auto_laden
@@ -150,7 +150,7 @@ automation:
   action:
   - service: notify.madouce_phone
     data:
-      title: Goede morgen, schat!
+      title: Goede morgen, Madouce!
       message: "Reistijd naar Toyota Diest is {{states('sensor.waze_travel_time_huis_toyota_diest')}} minuten."
       data:
         tag: auto_laden
