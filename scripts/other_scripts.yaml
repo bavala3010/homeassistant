@@ -17,19 +17,6 @@
         brightness: 130
         rgb_color: [255,0,0]
 
-'restart_google_wifi':
-  alias: restart Google Wifi
-  sequence:
-  - service: googlewifi.reset
-    data:
-      entity_id: binary_sensor.google_wifi_system_aaaaabzipgy
-
-'restart_google_access_point':
-  alias: restart Google access point
-  sequence:
-  - service: googlewifi.reset
-    data:
-      entity_id: binary_sensor.wifi_access_point
 
 speak:
   alias: TTS handler

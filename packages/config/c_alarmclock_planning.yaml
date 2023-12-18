@@ -1,5 +1,5 @@
 input_select:
-  bart_day_1:
+  bart_activity_day_1:
     name: maandag
     options:
       - telewerk
@@ -7,7 +7,7 @@ input_select:
       - vrijaf
     icon: mdi:calendar
 
-  bart_day_2:
+  bart_activity_day_2:
     name: dinsdag
     options:
       - telewerk
@@ -15,7 +15,7 @@ input_select:
       - vrijaf
     icon: mdi:calendar
 
-  bart_day_3:
+  bart_activity_day_3:
     name: woensdag
     options:
       - telewerk
@@ -23,7 +23,7 @@ input_select:
       - vrijaf
     icon: mdi:calendar
 
-  bart_day_4:
+  bart_activity_day_4:
     name: donderdag
     options:
       - telewerk
@@ -31,7 +31,7 @@ input_select:
       - vrijaf
     icon: mdi:calendar
 
-  bart_day_5:
+  bart_activity_day_5:
     name: vrijdag
     options:
       - telewerk
@@ -39,13 +39,13 @@ input_select:
       - vrijaf
     icon: mdi:calendar
 
-  bart_day_6:
+  bart_activity_day_6:
     name: zaterdag
     options:
       - weekend
     icon: mdi:calendar
 
-  bart_day_7:
+  bart_activity_day_7:
     name: zondag
     options:
       - weekend

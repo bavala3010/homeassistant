@@ -9,9 +9,25 @@ input_datetime:
     has_date: true
     has_time: true
 
+  dehumidifier_2_start_time:
+    name: "ontvochtiger 2 starttijd"
+    has_date: true
+    has_time: true
+
+  dehumidifier_2_stop_time:
+    name: "ontvochtiger 2 eindtijd"
+    has_date: true
+    has_time: true
+
 input_select:
   dehumidifier_state:
     name: "onvochtiger status"
+    options:
+      - aan
+      - uit
+
+  dehumidifier_2_state:
+    name: "onvochtiger 2 status"
     options:
       - aan
       - uit
@@ -24,6 +40,14 @@ input_number:
     step: 5
     mode: box
 
+  dehumidifier_2_timer_minutes:
+    name: ontvochtigen met ontvochtiger 2
+    min: 0
+    max: 240
+    step: 5
+    mode: box
+
+
 input_boolean:
   # toggle om te zien of ontvochtiger extra draait of door noodzaak (vb. douche)
   dehumidifier_1_extrarun:
@@ -35,6 +59,12 @@ input_boolean:
 timer:
   dehumidifier_timer:
     name: "onvochtiger timer"
+    duration: "00:30:00"
+    restore: true
+    icon: mdi:clock
+
+  dehumidifier_2_timer:
+    name: "onvochtiger 2 timer"
     duration: "00:30:00"
     restore: true
     icon: mdi:clock

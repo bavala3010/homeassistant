@@ -114,6 +114,16 @@ master_bedroom_play_madouce_sunrise:
           - light.master_bedroom_play_madouce
         max_brightness: 100
 
+master_bedroom_play_sunrise:
+  sequence:
+    - service: script.sunrise_simulator
+      data:
+        duration: 10
+        target:
+          - light.master_bedroom_play_bart
+          - light.master_bedroom_play_madouce
+        max_brightness: 100
+
 
 # https://community.home-assistant.io/t/sunrise-simulator-wake-up-gently-to-light/493778
 sunrise_simulator:

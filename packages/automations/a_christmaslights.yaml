@@ -73,7 +73,7 @@ automation:
       entity_id: switch.kerstverlichting
   mode: single
 
-- alias: 🎄 Kerstverlichting buiten aan bij beweging voordeur of oprit
+- alias: 🎄 Kerstverlichting buiten aan bij beweging voordeur of oprit of openen voordeur
   id: '03c6e49e-fca7-4bb5-b444-b149ef19e9bd'
   description: ''
   trigger:
@@ -85,6 +85,9 @@ automation:
     entity_id: binary_sensor.oprit_bewegingssensor_motion
     from: 'off'
     to: 'on'
+  - platform: state
+    entity_id: binary_sensor.voordeur
+    to: "on"    
   condition:
   - condition: state
     entity_id: switch.kerstverlichting

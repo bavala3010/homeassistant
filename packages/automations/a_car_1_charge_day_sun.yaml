@@ -6,6 +6,9 @@ automation:
     - platform: time_pattern
       minutes: '/1'
   condition:
+    - condition: state
+      entity_id: input_boolean.car_charge_day_sun
+      state: 'on'    
     - condition: template
       value_template: "{{ as_timestamp(states('sensor.sunrise')) < as_timestamp(now()) < as_timestamp(states('sensor.sunset')) }}"
     # only if charger cable is connected to home charger or already charging        
@@ -23,9 +26,9 @@ automation:
       Vandaag al {{ states('sensor.car_charge_solar_energy_daily') | round(1) }} kWh geladen met zon en {{ states('sensor.car_charge_net_energy_daily') | round(1) }} kWh van het net.                
   action:
     - if:
-        - condition: state
-          entity_id: input_boolean.car_charge_day_sun
-          state: 'on'    
+        # - condition: state
+        #   entity_id: input_boolean.car_charge_day_sun
+        #   state: 'on'    
         - condition: template
           value_template: "{{ wattage > 1.3 }}"          
       then:   

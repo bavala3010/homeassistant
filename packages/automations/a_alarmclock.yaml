@@ -13,7 +13,7 @@ automation:
       state: "on"
   action:
     - parallel: 
-        - service: script.master_bedroom_play_bart_sunrise
+        - service: script.master_bedroom_play_sunrise
           data: {}
         - sequence:  
             - wait_template: ''
@@ -158,3 +158,16 @@ automation:
 #         entity_id: script.master_bedroom_play_madouce_gradual_light
 #       data: {}
 #   mode: restart
+
+
+- alias: om 12u 's middags zet wekker volgens planning
+  id: c06883d6-d98a-48f1-aad6-4f0d6b5acc12
+  description: ""
+  trigger:
+    - platform: time
+      at: "12:00:00"
+  condition: []
+  action:
+    - service: script.set_alarmclock_bart_based_on_calendar
+      data: {}
+  mode: single

@@ -85,11 +85,12 @@ start_charger:
 
 charger_define_phase_1_or_3_based_on_watt:
   alias: "laadpaal - bepaal 1 of 3 fases"
+  # 3 phases as of 4 kw, but 4.2 to have some buffer
   sequence:
   - service: >-
-      {% if states('input_number.car_charger_watt') | float < 4 %}
+      {% if states('input_number.car_charger_watt') | float < 4.2 %}
       script.set_charger_to_1_phase
-      {% elif states('input_number.car_charger_watt') | float >= 4 %}
+      {% elif states('input_number.car_charger_watt') | float >= 4.2 %}
       script.set_charger_to_3_phases
       {% endif %}
 
@@ -130,8 +131,8 @@ charger_define_ampere_based_on_watt:
           {% elif 2.4 <= W < 2.5 %} 11
           {% elif 2.6 <= W < 2.8 %} 12
           {% elif 2.8 <= W < 3.1 %} 13
-          {% elif 3.1 <= W < 4   %} 14
-          {% elif 4   <= W < 4.6 %} 6
+          {% elif 3.1 <= W < 4.2 %} 14
+          {% elif 4.2 <= W < 4.6 %} 6
           {% elif 4.6 <= W < 5.3 %} 7
           {% elif 5.3 <= W < 6.0 %} 8
           {% elif 6.0 <= W < 6.6 %} 9
@@ -171,99 +172,6 @@ send_ampere_to_charger:
       unit: 1
       hub: car_charger
       value: "{{ registervalue }}"
-
-########################
-
-set_charger_to_6_a:
-  alias: "laadpaal - zet max. op 6 A"
-  sequence:
-  - service: modbus.write_register
-    data:
-      address: 1210
-      unit: 1
-      hub: car_charger
-      value: [0x40c0, 0x0000]
-
-set_charger_to_7_a:
-  alias: "laadpaal - zet max. op 7 A"
-  sequence:
-  - service: modbus.write_register
-    data:
-      address: 1210
-      unit: 1
-      hub: car_charger
-      value: [0x40e0, 0x0000]
-
-set_charger_to_8_a:
-  alias: "laadpaal - zet max. op 8 A"
-  sequence:
-  - service: modbus.write_register
-    data:
-      address: 1210
-      unit: 1
-      hub: car_charger
-      value: [0x4100, 0x0000]
-
-set_charger_to_9_a:
-  alias: "laadpaal - zet max. op 9 A"
-  sequence:
-  - service: modbus.write_register
-    data:
-      address: 1210
-      unit: 1
-      hub: car_charger
-      value: [0x4110, 0x0000]
-
-set_charger_to_10_a:
-  alias: "laadpaal - zet max. op 10 A"
-  sequence:
-  - service: modbus.write_register
-    data:
-      address: 1210
-      unit: 1
-      hub: car_charger
-      value: [0x4120, 0x0000]
-
-set_charger_to_11_a:
-  alias: "laadpaal - zet max. op 11 A"
-  sequence:
-  - service: modbus.write_register
-    data:
-      address: 1210
-      unit: 1
-      hub: car_charger
-      value: [0x4130, 0x0000]
-
-set_charger_to_12_a:
-  alias: "laadpaal - zet max. op 12 A"
-  sequence:
-  - service: modbus.write_register
-    data:
-      address: 1210
-      unit: 1
-      hub: car_charger
-      value: [0x4140, 0x0000]
-
-set_charger_to_13_a:
-  alias: "laadpaal - zet max. op 13 A"
-  sequence:
-  - service: modbus.write_register
-    data:
-      address: 1210
-      unit: 1
-      hub: car_charger
-      value: [0x4150, 0x0000]
-
-set_charger_to_14_a:
-  alias: "laadpaal - zet max. op 14 A"
-  sequence:
-  - service: modbus.write_register
-    data:
-      address: 1210
-      unit: 1
-      hub: car_charger
-      value: [0x4160, 0x0000]
-
 
 
 ###################

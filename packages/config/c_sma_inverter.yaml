@@ -3,8 +3,8 @@
 modbus:
   - name: sma
     type: tcp
-    host: 192.168.68.102    # wireless
-    #host: 192.168.1.6      # wired
+    #host: 192.168.68.102    # wireless
+    host: 192.168.1.6      # wired
     port: 502
     sensors:
       - name: SMA power AC
