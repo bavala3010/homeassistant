@@ -4,7 +4,7 @@ automation:
 # BADKAMER AAN
 ###########################################################################
 
-- alias: ♨️ badkamer elektrische verwarming // aan volgens schema op werkdagen als auto niet thuis is
+- alias: ♨️ badkamer elektrische verwarming // auto niet thuis (volgens planning) = aan (volgens verwarmingsschema)
   id: 'f6eadb96-1403-472e-a5bf-09650d26032d'
   description: ""
   trigger:
@@ -35,7 +35,7 @@ automation:
   mode: single
 
 
-- alias: ♨️ badkamer elektrische verwarming // aan als wasbaklicht 5 minuten aan is
+- alias: ♨️ badkamer elektrische verwarming // wasbaklicht 5 minuten aan + <14u = aan
   id: '0f400a47-87a1-43d0-b39e-d35ba7d84dea'
   description: ""
   trigger:
@@ -53,7 +53,7 @@ automation:
         entity_id: sensor.badkamer_raam
         state: "gesloten"
       - condition: template
-        value_template: "{{ 6 < now().hour < 13 }}"
+        value_template: "{{ 6 < now().hour < 14 }}"
   action:
   - service: switch.turn_on
     target:
