@@ -42,6 +42,9 @@
 
 assist_pipeline:
 backup:
+
+battery_notes:
+
 bluetooth:
 cloud:                  # for Nabu Case cloud
 config:

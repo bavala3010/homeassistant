@@ -44,7 +44,7 @@ automation:
       message: Geniet er dadelijk van ;)
   mode: single
 
-- alias: 🛌 Madouce thuis en <15° in slaapkamer = matras aan om 1u, 2u, 3u, 4u en 5u gedurende 10 min.
+- alias: 🛌 Madouce thuis en <15° in slaapkamer = matras aan om 1u, 2u, 3u gedurende 10 min.
   id: ad5d827e-8978-4b83-84cd-8260167f51f2
   description: ''
   trigger:
@@ -52,10 +52,7 @@ automation:
     at: 
       - '01:00'
       - '02:00'
-      - '03:00'        
-      - '04:00'
-      - '05:00'
-      - '06:00'        
+      - '03:00'
   condition:
   - condition: state
     entity_id: person.madouce
@@ -92,4 +89,3 @@ automation:
     target:
       entity_id: switch.madouce_matrasverwarmer
   mode: single
-  

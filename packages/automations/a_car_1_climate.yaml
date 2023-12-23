@@ -14,7 +14,7 @@ automation:
 # Auto climatisatie
 #########################  
 
-- alias: 🚗 car 1 // climate // start op uur bepaald in GUI
+- alias: 🚗 car 1 // climate // start op uur bepaald in HA app
   id: '583aabff-84db-4aac-a7de-023aee0d79f1'
   trigger:
   - platform: template
@@ -476,4 +476,44 @@ automation:
           title: Voor meer info, klik hier
           uri: /dashboard-car/car-heater
   - service: script.auto_start_climatisatie_nu          
+  mode: single
+
+#####################################################
+# Automatisch climatiseren bij sauna
+#####################################################
+
+- alias: 🚗 car 1 // climate // The White Oak (niet vrijdag) = start climatisatie om 21u50
+   # Ma/Woe/Do/Zon/feestdagen open tot 22u30
+  id: 'e0f16f48-bc89-4b74-82ba-ebb7ebc3161b'
+  description: ''
+  trigger:
+    - platform: time
+      at: '21:50'
+  condition:    
+    - condition: state
+      entity_id: person.bart
+      state: "The White Oak"
+    - condition: template
+      value_template: >
+        {% if now().date().isoweekday() != 5 %} true {% endif %}        
+  action:      
+    - service: script.auto_start_climatisatie_nu
+  mode: single
+
+- alias: 🚗 car 1 // climate // The White Oak (vrijdag) = start climatisatie om 22u20
+  # vrijdag open tot 23u00
+  id: 'fa9e136b-7d36-4395-adb0-08a5289699b3'
+  description: ''
+  trigger:
+    - platform: time
+      at: '22:20'
+  condition:    
+    - condition: state
+      entity_id: person.bart
+      state: "The White Oak"
+    - condition: template
+      value_template: >
+        {% if now().date().isoweekday() == 5 %} true {% endif %}      
+  action:      
+    - service: script.auto_start_climatisatie_nu
   mode: single

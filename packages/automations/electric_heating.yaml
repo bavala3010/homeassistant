@@ -4,7 +4,7 @@ automation:
 # BADKAMER AAN
 ###########################################################################
 
-- alias: badkamer elektrische verwarming aan volgens schema op werkdagen als auto niet thuis is
+- alias: ♨️ badkamer elektrische verwarming // aan volgens schema op werkdagen als auto niet thuis is
   id: 'f6eadb96-1403-472e-a5bf-09650d26032d'
   description: ""
   trigger:
@@ -35,7 +35,7 @@ automation:
   mode: single
 
 
-- alias: badkamer elektrische verwarming aan als wasbaklicht 5 minuten aan is
+- alias: ♨️ badkamer elektrische verwarming // aan als wasbaklicht 5 minuten aan is
   id: '0f400a47-87a1-43d0-b39e-d35ba7d84dea'
   description: ""
   trigger:
@@ -51,7 +51,9 @@ automation:
         below: 18
       - condition: state
         entity_id: sensor.badkamer_raam
-        state: "gesloten"      
+        state: "gesloten"
+      - condition: template
+        value_template: "{{ 6 < now().hour < 13 }}"
   action:
   - service: switch.turn_on
     target:
@@ -59,7 +61,7 @@ automation:
   mode: single
 
 
-- alias: badkamer elektrische verwarming aan met licht douche
+- alias: ♨️ badkamer elektrische verwarming // aan met licht douche
   id: 'ff0ae353-0a49-4842-92cf-b9cc31037b6a'
   description: ""
   trigger:
@@ -86,7 +88,7 @@ automation:
         entity_id: switch.badkamer_electric_heater
   mode: single
 
-- alias: elektrische verwarming start
+- alias: ♨️ badkamer elektrische verwarming // start
   id: 'f9111ba9-c29d-4c73-8d36-b7849c3f3a63'
   description: ''
   trigger:
@@ -111,7 +113,7 @@ automation:
 # BADKAMER UIT
 ###########################################################################
 
-- alias: badkamer elektrische verwarming uit volgens schema of raam open
+- alias: ♨️ badkamer elektrische verwarming // uit volgens schema of raam open
   id: '6cc75694-e37d-4d40-8f51-2c5b4ee710b1'
   description: ""
   trigger:
@@ -134,7 +136,7 @@ automation:
         entity_id: input_datetime.badkamer_electric_heater_stop_time        
   mode: single
 
-- alias: badkamer elektrische verwarming uit als wasbaklicht uit gaat na douche
+- alias: ♨️ badkamer elektrische verwarming // uit als wasbaklicht uit gaat na douche
   id: '3de4957b-b355-4dd0-a051-d01d1572680c'
   description: ""
   trigger:
@@ -159,7 +161,7 @@ automation:
       entity_id: input_datetime.badkamer_electric_heater_stop_time      
   mode: single
 
-- alias: badkamer elektrische verwarming altijd uit na 20 minuten
+- alias: ♨️ badkamer elektrische verwarming // altijd uit na 20 minuten
   id: '0b4d20ec-4aa4-4e02-a043-fdd54312f14e'
   description: ""
   trigger:  
