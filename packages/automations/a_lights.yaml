@@ -520,7 +520,7 @@ automation:
 # Gang, toilet, garage
 #################################################
 
-- alias: '💡 lights // garage // melding licht lang aan'
+- alias: '💡 lights // garage // licht lang aan = melding'
   id: c3801d8a-dd6e-444e-9a25-0adc8c0655d8
   description: ''
   trigger:
@@ -621,7 +621,7 @@ automation:
       entity_id: light.toilet
   mode: single
   
-- alias: 💡 lights // licht toilet overdag helder
+- alias: 💡 lights // toilet // overdag = helder
   id: 94fb34e5-4b03-49b9-9586-f922960cb5c0
   description: ''
   trigger:
@@ -641,7 +641,7 @@ automation:
       entity_id: light.toilet
   mode: single  
 
-- alias: "💡 lights // licht gang: zon onder = gedimd"
+- alias: "💡 lights // gang // zon onder = gedimd"
   id: 151c0615-8998-408b-a0ab-0a31af6c3ea8
   description: ''
   trigger:
@@ -661,7 +661,7 @@ automation:
       entity_id: light.gang
   mode: single
 
-- alias: "💡 lights // licht gang: zon op = helder"
+- alias: "💡 lights // gang // zon op = helder"
   id: 80b10678-6e3b-41a7-ba87-fdb427cfc2ce
   description: ''
   trigger:
@@ -681,7 +681,7 @@ automation:
       entity_id: light.gang
   mode: single
 
-- alias: 💡 lights // beweging inkomhal = licht aan
+- alias: 💡 lights // inkomhal // beweging = licht aan
   id: '5a0fc2cc-355d-4274-a816-0508fbf8bdce'
   description: ''
   trigger:

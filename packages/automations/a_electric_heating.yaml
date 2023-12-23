@@ -119,11 +119,14 @@ automation:
   trigger:
     - platform: state
       entity_id: schedule.badkamer_verwarmingsschema
-      to: "off"
+      to: 'off'
     - platform: state
       entity_id: binary_sensor.badkamer_raam_kantel
-      to: "on"
-  condition: []
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: switch.badkamer_electric_heater
+      state: 'on'  
   action:
     - service: switch.turn_off
       data: {}
@@ -140,10 +143,13 @@ automation:
   id: '3de4957b-b355-4dd0-a051-d01d1572680c'
   description: ""
   trigger:
-  - platform: state
-    entity_id: light.badkamer_douche
-    to: unavailable
-  condition: []
+    - platform: state
+      entity_id: light.badkamer_douche
+      to: unavailable
+  condition:
+    - condition: state
+      entity_id: switch.badkamer_electric_heater
+      state: 'on'  
   action:
   - repeat:
       while:

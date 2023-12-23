@@ -127,7 +127,7 @@
       milliseconds: 0
   mode: single
 - id: '1671288400613'
-  alias: 'Bij extreem piekverbruik: melding en laden auto stoppen'
+  alias: extreem piekverbruik = melding en stop laden auto
   description: ''
   trigger:
   - platform: numeric_state

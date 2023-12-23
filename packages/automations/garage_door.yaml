@@ -1,7 +1,7 @@
 automation:
 
 
-- alias: 🔑 garage // garagepoort staat lang open
+- alias: 🔑 garage // garagepoort lang open = melding
   id: '89cce371-bbfd-4154-a909-1ffeab77f9de'
   description: ''
   trigger:

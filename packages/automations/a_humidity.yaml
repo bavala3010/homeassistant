@@ -46,37 +46,6 @@ automation:
           uri: /lucht-vocht-temperatuur/vocht-gram
   mode: single
   
-- alias: "💧 humidity // check vocht % master bedroom om 20u30"
-  id: '9309eba6-275f-4a93-953a-908b937358ec'
-  description: ''
-  trigger:
-  - platform: time
-    at: '20:30'
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.master_bedroom_humidity
-    above: '75'
-  - condition: numeric_state
-    entity_id: sensor.eikenbos_humidity
-    above: '75'
-  action:
-  - service: notify.bart_phone
-    data:
-      title: Veel vocht in master bedroom. Raam is {{states('sensor.master_bedroom_raam')}}.
-      message: >
-        Vocht is {{states('sensor.master_bedroom_humidity')}}% en {{states('sensor.master_bedroom_thermal_absolute_humidity') | round(1)}} gram
-        water /m³.<br>Zet eventueel machine aan.
-      data:
-        notification_icon: "mdi:water-percent-alert"      
-        color: "#0E86D4"
-        tag: window_master_bedroom
-        channel: Vocht
-        actions:
-        - action: URI
-          title: Meer info
-          uri: /lucht-vocht-temperatuur/vocht-gram
-  mode: single
-
 - alias: "💧 humidity // vocht gram in badkamer >14 gram/m³"
   id: 8358a61f-74f1-4045-ba75-563bbca3b4e3
   description: ''

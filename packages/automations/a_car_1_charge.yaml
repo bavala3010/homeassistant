@@ -71,7 +71,7 @@ automation:
   - platform: state
     entity_id: sensor.car_1_charging_state
     from: 'off'
-    to: 'charge'
+    to: 'charging'
   condition:
   - condition: template
     value_template: "{{ states('device_tracker.audi_e_tron_sportback_position') != 'home' }}"
@@ -221,14 +221,14 @@ automation:
   trigger:
   - platform: state
     entity_id: sensor.car_1_charging_state
-    to: 'charge'
+    to: 'charging'
   condition: []
   action:
   - repeat:
       while:
       - condition: state
         entity_id: sensor.car_1_charging_state
-        state: 'charge'
+        state: 'charging'
       sequence:
       - service: audiconnect.refresh_data
         data:

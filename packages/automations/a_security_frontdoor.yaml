@@ -167,7 +167,7 @@ automation:
         color: red
   mode: single
 
-- alias: security // Voordeur staat lang open
+- alias: security // voordeur lang open = melding
   id: 'c1657da2-d8b2-4c18-a2c4-ae5c3c11b85e'
   description: ''
   trigger:

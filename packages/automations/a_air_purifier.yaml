@@ -4,7 +4,7 @@ automation:
 # luchtzuivering living
 ##############################
 
-- alias: 💨 air // purifier // Air Quality Index > 8 = purifier aan
+- alias: 💨 air // purifier // Air Quality Index > 8 = aan
   id: '7e3043d1-8299-4121-ad8b-08da26340065'
   description: ''
   trigger:
@@ -26,7 +26,7 @@ automation:
       preset_mode: auto
   mode: single
 
-- alias: 💨 air // purifier // Air Quality Index < 8 = purifier uit
+- alias: 💨 air // purifier // Air Quality Index < 8 = uit
   id: '991a6848-2b77-4573-a2c4-76d603eeb899'
   description: ''
   trigger:
@@ -44,7 +44,7 @@ automation:
       entity_id: fan.mi_air
   mode: single
 
-- alias: 💨 not home = Air purifier uit
+- alias: 💨 air // purifier // niet thuis = uit
   id: '0c3adcca-2586-4ee3-a3bc-a78f38f65937'
   description: ''
   trigger:
@@ -59,7 +59,7 @@ automation:
       entity_id: fan.mi_air
   mode: single
 
-- alias: 💨 air // purifier // om 23u00 = Air purifier uit
+- alias: 💨 air // purifier // 23u00 = uit
   id: 'c046f93d-d49a-4db3-8dbf-4e3231374926'
   description: ''
   trigger:
@@ -72,7 +72,7 @@ automation:
       entity_id: fan.mi_air
   mode: single
 
-- alias: 💨 air // purifier // aan het koken = air purifier aan
+- alias: 💨 air // purifier // aan het koken = aan
   id: 'ef2b8563-60f8-4962-a357-6ac1589b08cd'
   description: ''
   trigger:
@@ -125,7 +125,7 @@ automation:
       entity_id: input_boolean.busy_cooking
   mode: restart
   
-- alias: 💨 air // purifier // koken gedaan = air purifier uit
+- alias: 💨 air // purifier // koken gedaan = uit
   id: 'dd3f89f5-e628-408a-a5aa-9aa9afbbd6d6'
   description: ''
   trigger:

@@ -1,0 +1,115 @@
+automation:
+
+# INSCHAKELEN
+
+- alias: 💧 humidity // master bedroom ontvochtiger // injectie, vocht in master bedroom = aan
+  id: '76f7964b-8362-46e0-a11f-025fa4a4b684'
+  description: ""
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.net_power_avg
+      for:
+        hours: 0
+        minutes: 15
+        seconds: 0
+      below: -300
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.master_bedroom_humidity
+      above: 65
+    - condition: template
+      value_template: " {{ states('binary_sensor.master_bedroom_raam_wijd') != 'on' }}"      
+  action:
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.dehumidifier_2_switch         
+  mode: single
+
+- alias: "💧 humidity // master bedroom ontvochtiger // aan = start timer"
+  id: '8cba9ab1-f3d8-4d82-aaaf-41af932085d1'
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: switch.dehumidifier_2_switch
+      to: 'on'
+  condition: []
+  action:
+    - service: timer.start
+      data:
+        duration: "{{ states('input_number.dehumidifier_2_timer_minutes') | float * 60 }}"   
+      target:
+        entity_id: timer.dehumidifier_2_timer
+  mode: single
+
+- alias: "💧 humidity // master bedroom ontvochtiger // 20u30 & vocht = aan"
+  id: '9309eba6-275f-4a93-953a-908b937358ec'
+  description: ''
+  trigger:
+    - platform: time
+      at: '20:55'
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.master_bedroom_humidity
+      above: '70'
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - condition: template
+      value_template: " {{ states('binary_sensor.master_bedroom_raam_wijd') != 'on' }}"  
+  action:
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.dehumidifier_2_switch
+    - service: timer.start
+      data:
+        duration: "{{ states('input_number.dehumidifier_2_timer_minutes') | float * 60 }}"   
+      target:
+        entity_id: timer.dehumidifier_2_timer
+    - service: notify.bart_phone
+      data:
+        title: Ontvochtiger in master bedroom ingeschakeld. 
+        message: >
+          Vocht is {{states('sensor.master_bedroom_humidity')}}% en {{states('sensor.master_bedroom_thermal_absolute_humidity') | round(1)}} gram
+          water /m³.
+        data:
+          notification_icon: "mdi:water-percent-alert"      
+          color: "#0E86D4"
+          tag: window_master_bedroom
+          channel: Vocht
+          actions:
+          - action: URI
+            title: Meer info
+            uri: /lucht-vocht-temperatuur/vocht-gram
+  mode: single
+
+
+# UITSCHAKELEN
+
+- alias: 💧 humidity // master bedroom ontvochtiger // timer komt op 0 of raam open of <65% vocht = uit
+  id: 'af5b8e5a-9024-4e37-8289-5a15d6b7beed'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+      - timer.dehumidifier_2_timer
+    from: active
+    to: idle
+  - platform: state
+    entity_id: binary_sensor.master_bedroom_raam_kantel
+    to: "on"
+  - platform: numeric_state
+    entity_id: sensor.master_bedroom_humidity
+    below: 65
+  condition: []
+  action:  
+    - service: switch.turn_off
+      data: {}
+      target:
+        entity_id: switch.dehumidifier_2_switch
+    - service: timer.cancel
+      data: {}
+      target:
+        entity_id: timer.dehumidify_2_timer           
+  mode: single

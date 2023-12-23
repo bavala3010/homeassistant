@@ -392,7 +392,7 @@ automation:
   mode: single
 
 
-- alias: Bart komt thuis en binnen wifi bereik en donker = zet buitenverlichting aan
+- alias: Bart komt thuis en binnen wifi bereik en donker = doe buitenverlichting aan
   id: '414f37c0-6ee6-4056-8ec2-956495096cb4'
   description: ""
   trigger:
@@ -430,7 +430,7 @@ automation:
               - light.buiten_voordeur         
   mode: single
 
-- alias: Madouce komt thuis en binnen wifi bereik en donker = zet buitenverlichting aan
+- alias: Madouce komt thuis en binnen wifi bereik en donker = doe buitenverlichting aan
   id: '68b8a483-f1f1-4a26-93b2-17df92b17736'
   description: ""
   trigger:

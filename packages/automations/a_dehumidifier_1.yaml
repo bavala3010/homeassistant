@@ -2,7 +2,7 @@ automation:
 
 # INSCHAKELEN
 
-- alias: 💧 humidity // ontvochtiger // start
+- alias: 💧 humidity // badkamer ontvochtiger // start
   id: '5b2dc339-366f-40d0-af5a-2d56ea56f23c'
   description: ''
   trigger:
@@ -32,7 +32,7 @@ automation:
         entity_id: timer.dehumidifier_timer              
   mode: single
 
-- alias: 💧 humidity // ontvochtiger // licht douche = inschakelen
+- alias: 💧 humidity // badkamer ontvochtiger // licht douche = inschakelen
   id: 'cef6103e-ddcd-4cf9-abef-41cf20411ded'
   description: ""
   trigger:
@@ -54,7 +54,7 @@ automation:
   mode: single
 
 
-- alias: 💧 humidity // ontvochtiger // staat al 15 min. aan
+- alias: 💧 humidity // badkamer ontvochtiger // staat al 15 min. aan
   id: '0bd10dde-0f91-479c-9ddb-ebc484c0178d'
   description: ''
   trigger:
@@ -94,7 +94,7 @@ automation:
     starttijd: "{{ as_timestamp(state_attr('automation.ontvochtiger_staat_al_15_min_aan', 'last_triggered')) }}"      
   mode: single
 
-- alias: 💧 humidity // ontvochtiger // injectie, vocht in badkamer en niemand thuis = inschakelen
+- alias: 💧 humidity // badkamer ontvochtiger // injectie, vocht in badkamer = inschakelen
   id: '7d40ccc1-3c6b-4621-bc2b-4c4a02bc7338'
   description: ""
   trigger:
@@ -102,13 +102,15 @@ automation:
       entity_id: sensor.net_power_avg
       for:
         hours: 0
-        minutes: 15
+        minutes: 20
         seconds: 0
-      below: -400
+      below: -300
   condition:
     - condition: numeric_state
       entity_id: sensor.badkamer_humidity
       above: 65
+    - condition: template
+      value_template: " {{ states('binary_sensor.badkamer_raam_wijd') != 'on' }}"      
     # - condition: state
     #   entity_id: group.gezin
     #   state: not_home
@@ -122,7 +124,7 @@ automation:
 
 # UITSCHAKELEN
 
-- alias: 💧 humidity // ontvochtiger // uit
+- alias: 💧 humidity // badkamer ontvochtiger // uit
   id: '35121fab-a415-454e-af0a-fb863aa20b37'
   description: ''
   trigger:
@@ -160,7 +162,7 @@ automation:
           tag: ontvochtiger                
   mode: single
 
-- alias: 💧 humidity // ontvochtiger // timer komt op 0 of raam open of <70% vocht = uitschakelen
+- alias: 💧 humidity // badkamer ontvochtiger // timer komt op 0 of raam open of <65% vocht = uitschakelen
   id: 'cf189eff-93b5-4452-b62d-8c14cdbd7bb4'
   description: ''
   trigger:
@@ -174,7 +176,7 @@ automation:
     to: "on"
   - platform: numeric_state
     entity_id: sensor.badkamer_humidity
-    below: 70
+    below: 65
   condition: []
   action:  
     - service: switch.turn_off
@@ -184,5 +186,7 @@ automation:
     - service: timer.cancel
       data: {}
       target:
-        entity_id: timer.airco_dehumidify_timer           
+        entity_id: timer.dehumidify_timer           
   mode: single
+
+  

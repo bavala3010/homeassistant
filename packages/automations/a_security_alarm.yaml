@@ -5,7 +5,7 @@
 #     niemand thuis (enkel melding)
 #     iemand thuis (enkel melding)
 #     niemand thuis = alarm aanzetten
-#     Iemand komt thuis (wifi) = alarm uitzetten
+#     Iemand komt thuis = alarm uitzetten
 #     alarm ingeschakeld aan voordeur
 #     alarm uitgeschakeld aan voordeur
 #     alarm bij beweging
@@ -16,18 +16,12 @@
 
 automation:
 
-- alias: 🚨 alarm // Bart, Madouce en/of Alunya komt thuis (zone) = alarm uit
+- alias: 🚨 alarm // thuiskomst (zone) = alarm uit
   id: '8bc11499-60b0-4b90-9c5b-e36dcd5d03fc'
   description: ''
   trigger:
   - platform: state
-    entity_id: person.bart
-    to: 'home'
-  - platform: state
-    entity_id: person.madouce
-    to: 'home'
-  - platform: state
-    entity_id: person.alunya
+    entity_id: group.gezin
     to: 'home'
   condition:
   - condition: state
@@ -72,7 +66,7 @@ automation:
         notification_icon: mdi:security    
   mode: single
 
-- alias: 🚨 alarm // Iemand komt thuis (wifi) = alarm automatisch uitzetten
+- alias: 🚨 alarm // Iemand komt thuis = zet alarm uit
   id: 'f17014e2-4cf5-43f0-90ae-be7d609f2a28'
   description: ''
   trigger:
@@ -171,7 +165,7 @@ automation:
       volume_level: 0.4
   mode: single
   
-- alias: 🚨 alarm // alarm bij beweging
+- alias: 🚨 alarm // beweging = alarm
   id: 'f4cc29aa-ef63-411b-a755-343f97a9b721'
   description: ''
   trigger:
@@ -211,7 +205,7 @@ automation:
     entity_id: alarm_control_panel.home_alarm
   mode: single
 
-- alias: 🚨 alarm // melding bij alarm trigger
+- alias: 🚨 alarm // alarm trigger = melding
   id: '5fef4d2e-d1e1-4247-9c1f-0cb97130c86e'
   description: NOK
   trigger:

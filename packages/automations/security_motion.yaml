@@ -83,7 +83,7 @@ automation:
   mode: single
   max_exceeded: silent
 
-- alias: 👀 motion // beweging in tuin en alarm ingeschakeld = melding smartphone
+- alias: 👀 motion // beweging in tuin en alarm ingeschakeld = melding
   id: '28641c60-8f5e-4856-96a9-e69ceb8c9cc8'
   description: ''
   trigger:
@@ -147,7 +147,7 @@ automation:
   mode: single
   max_exceeded: silent
 
-- alias: 👀 motion // beweging op terras en alarm ingeschakeld = melding smartphone
+- alias: 👀 motion // beweging op terras en alarm ingeschakeld = melding
   id: '554afe6c-1cde-4bbd-93e2-dc4851424fc6'
   description: ''
   trigger:

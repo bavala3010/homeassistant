@@ -1,6 +1,6 @@
 automation:
 
-- alias: wasmachine start
+- alias: 👕 wasmachine // start
   id: '802f6420-28cb-46e6-aac1-a94d38a3c1f5'
   description: ''
   trigger:
@@ -31,7 +31,7 @@ automation:
         entity_id: input_datetime.washing_machine_expected_stop_time
   mode: single
 
-- alias: wasmachine bezig met water verwarmen
+- alias: 👕 wasmachine // bezig met water verwarmen
   id: 'e07f24be-a789-40a2-9b9a-bfca2568f8ba'
   description: ''
   trigger:
@@ -51,7 +51,7 @@ automation:
       entity_id: input_select.washing_machine_phase
   mode: single
 
-- alias: wasmachine bezig met wassen
+- alias: 👕 wasmachine // bezig met wassen
   id: '94efde78-ad57-498a-830b-840bad4cb742'
   # nog aan te passen
   description: ''
@@ -69,7 +69,7 @@ automation:
       entity_id: input_select.washing_machine_phase
   mode: single
 
-- alias: wasmachine bezig met centrifugeren
+- alias: 👕 wasmachine // bezig met centrifugeren
   id: '430514c0-2df7-40f6-858f-8547a5a42e3a'
   # nog aan te passen
   description: ''
@@ -87,7 +87,7 @@ automation:
       entity_id: input_select.washing_machine_phase
   mode: single
 
-- alias: wasmachine is klaar
+- alias: 👕 wasmachine // klaar
   id: 'a53e90ee-9eef-44dd-bc1a-4700b85e4910'
   description: ""
   trigger:
@@ -142,8 +142,7 @@ automation:
                 rate: -10%
   mode: single
 
-
-- alias: was nog in wasmachine = melding op smartphone
+- alias: 👕 wasmachine // was nog in wasmachine = melding op smartphone
   id: '5c874c7e-b0c4-431d-be1f-3096330b6653'
   description: ""
   trigger:
@@ -173,7 +172,7 @@ automation:
           notification_icon: "mdi:washing-machine"
   mode: single
 
-- alias: was nog in wasmachine = melding op speaker
+- alias: 👕 wasmachine // was nog in wasmachine = melding op speaker
   id: 'a619ad1d-0a66-4764-8aad-636524845152'
   description: ""
   trigger:
@@ -215,7 +214,7 @@ automation:
               state: "klaar"
   mode: single
 
-- alias: was is klaar en deur wasmachine wordt geopend = wasmachine uit
+- alias: 👕 wasmachine // was is klaar en deur wasmachine wordt geopend = wasmachine uit
   id: 'f0cb7490-e53a-4c30-add5-1e8849c228be'
   trigger:
     - platform: state
@@ -249,7 +248,7 @@ automation:
   mode: single
 
 
-- alias: wasmachine in uitgestelde start
+- alias: 👕 wasmachine // uitgestelde start
   id: '8c917d8b-bde7-4f83-b4f1-80e0d7a46817'
   description: ''
   trigger:
