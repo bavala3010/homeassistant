@@ -5,7 +5,7 @@ automation:
   description: ''
   trigger:
   - platform: numeric_state
-    entity_id: sensor.precip_rate_leuven24_wunderground
+    entity_id: sensor.eikenbos_rain_rate_piezo
     above: '0'
   condition: []
   action:
@@ -36,7 +36,7 @@ automation:
   description: ''
   trigger:
   - platform: numeric_state
-    entity_id: sensor.precip_rate_leuven24_wunderground
+    entity_id: sensor.eikenbos_rain_rate_piezo
     above: '0'
   condition:
   - condition: state

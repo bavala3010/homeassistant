@@ -228,15 +228,17 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: update.home_assistant_core_update
+    entity_id: binary_sensor.home_assistant_website_update_available
     to: 'on'
   condition: []
   action:
   - service: notify.bart_phone
     data:
       title: Er is een update van Home Assistant beschikbaar.
-      message: "Nieuwe versie: {{ state_attr('update.home_assistant_core_update',
-        'latest_version') }} "
+      message: >
+        Nieuwe versie beschikbaar sinds {{state_attr('sensor.home_assistant_website', 'release_date').split('T')[0] }}.<br>
+        Versie: {{states('sensor.home_assistant_website')}}
+        Info: {{state_attr('sensor.home_assistant_website','release_notes')}}
   mode: single
 
 - alias: switch ventilator niet beschikbaar

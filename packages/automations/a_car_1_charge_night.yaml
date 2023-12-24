@@ -16,10 +16,10 @@ automation:
     value_template: "{{ states('sensor.charger_status') in ['charging', 'connected'] }}"
   variables:
       wattage: >
-        {% set net = states('sensor.net_power_excl_charger_avg2min') | float %}
-        {% set charger = states('sensor.charger_current_power') | float(default=0) %}        
         {% set maxpower = states('input_number.car_charge_peak_netwattage') | float(default=0) %}
-        {{ (( maxpower - net ) / 1000) | float }}
+        {% set net = states('sensor.net_power_avg') | float %}
+        {% set charger = states('sensor.charger_current_power') | float(default=0) %}
+        {{ (( maxpower - net + charger ) / 1000) | float }}
   action:
     - if:
         - condition: state

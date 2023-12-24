@@ -61,9 +61,8 @@ automation:
       value: >-
         {% set charger = states('sensor.charger_current_power') | float(default=0) %}        
         {% set maxpower = states('input_number.car_charge_sun_max_netwattage') | float(default=0) %}
-        {# set net = states('sensor.net_power_avg') | float(default=0) #}
         {% set net = (states('sensor.net_power_avg') | float(default=0) + states('sensor.net_power') | float(default=0) ) / 2 %}
-        {{ - (net - maxpower - charger) /1000 }}
+        {{ (maxpower - net + charger) /1000 }}
   - wait_template: ''
     timeout: '00:00:05'
   - service: script.charger_define_phase_1_or_3_based_on_watt
@@ -113,7 +112,7 @@ automation:
         {% set maxpower = states('input_number.car_charge_sun_max_netwattage') | float(default=0) %}
         {# set net = states('sensor.net_power_avg') | float(default=0) #}
         {% set net = (states('sensor.net_power_avg') | float(default=0) + states('sensor.net_power') | float(default=0) ) / 2 %}
-        {{ (- (net - maxpower - charger) / 1000) | float }}  
+        {{ (maxpower - net + charger) /1000 }} 
   action:
     - if:
         - condition: template

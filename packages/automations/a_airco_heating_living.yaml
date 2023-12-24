@@ -7,7 +7,7 @@ automation:
   description: ""
   trigger:
     - platform: state
-      entity_id: schedule.living_normal_temp_schema
+      entity_id: schedule.living_normal_temperature_schema
       to: "on"
     - platform: state
       entity_id: group.gezin
@@ -18,7 +18,7 @@ automation:
         states('input_number.living_normal_temperature') | float }}
   condition:
     - condition: state
-      entity_id: schedule.living_normal_temp_schema
+      entity_id: schedule.living_normal_temperature_schema
       state: "on"
     - condition: state
       entity_id: group.gezin

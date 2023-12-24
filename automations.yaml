@@ -172,19 +172,6 @@
     data:
       message: Amilya airco terug aangezet hoewel nog meer dan 20° in kamer
   mode: single
-- id: '1688289009625'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - input_text.arriving_home_madouce
-  condition: []
-  action:
-  - service: input_boolean.turn_on
-    data: {}
-    target:
-      entity_id: input_boolean.arriving_home_reminder_madouce
-  mode: single
 - id: '1688289428572'
   alias: Herinnering thuiskomst Madouce
   description: ''

@@ -26,6 +26,7 @@ modbus:
         address: 344
         data_type: float32
         unit_of_measurement: W
+        scan_interval: 5     # otherwise, default update is only every 15 seconds
       - name: charger_mode3_state
         slave: 1
         address: 1201

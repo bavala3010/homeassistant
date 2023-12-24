@@ -75,7 +75,7 @@ automation:
           entity_id: person.alunya
           state: home
         - condition: state
-          entity_id: binary_sensor.kamer_alunya_ramen
+          entity_id: group.kamer_alunya_ramen
           state: 'off'
         - condition: numeric_state
           entity_id: sensor.kamer_alunya_temperature

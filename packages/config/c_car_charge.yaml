@@ -54,7 +54,7 @@ input_boolean:
   car_charge_night_net:
     name: laden 's nachts van net
 
-  car_charger_morning_net_busy:
+  car_charge_morning_net_busy:
   car_charge_day_sun_busy:
   car_charge_day_net_busy:
   car_charge_evening_net_busy:

@@ -111,5 +111,5 @@ automation:
     - service: timer.cancel
       data: {}
       target:
-        entity_id: timer.dehumidify_2_timer           
+        entity_id: timer.dehumidifier_2_timer           
   mode: single

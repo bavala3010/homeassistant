@@ -18,11 +18,11 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: sensor.uvindex_leuven24_wunderground
+    entity_id: sensor.eikenbos_uv_index
     to: '2'
     for: '00:25:00'
   - platform: state
-    entity_id: sensor.uvindex_leuven24_wunderground
+    entity_id: sensor.eikenbos_uv_index
     to: '3'
     for: '00:25:00'
   condition:
@@ -33,7 +33,7 @@ automation:
   - service: notify.bart_phone
     data:
       title: Zon & gezondheid
-      message: "UV-index is hoog: {{states('sensor.uvindex_leuven24_wunderground')}}. Huid verbrandt langzaam."
+      message: "UV-index is hoog: {{states('sensor.eikenbos_uv_index')}}. Huid verbrandt langzaam."
       data:
         color: yellow
         tag: uv_index
@@ -46,11 +46,11 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: sensor.uvindex_leuven24_wunderground
+    entity_id: sensor.eikenbos_uv_index
     to: '4'
     for: '00:25:00'
   - platform: state
-    entity_id: sensor.uvindex_leuven24_wunderground
+    entity_id: sensor.eikenbos_uv_index
     to: '5'
     for: '00:25:00'
   condition:
@@ -61,7 +61,7 @@ automation:
   - service: notify.bart_phone
     data:
       title: "Zon & gezondheid: waarschuwing"
-      message: "UV-index is zeer hoog: {{states('sensor.uvindex_leuven24_wunderground')}}. Huid verbrandt gemakkelijk."
+      message: "UV-index is zeer hoog: {{states('sensor.eikenbos_uv_index')}}. Huid verbrandt gemakkelijk."
       data:
         color: yellow
         tag: uv_index
@@ -74,11 +74,11 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: sensor.uvindex_leuven24_wunderground
+    entity_id: sensor.eikenbos_uv_index
     to: '6'
     for: '00:25:00'
   - platform: state
-    entity_id: sensor.uvindex_leuven24_wunderground
+    entity_id: sensor.eikenbos_uv_index
     to: '7'
     for: '00:25:00'
   condition:
@@ -89,7 +89,7 @@ automation:
   - service: notify.bart_phone
     data:
       title: "Zon & gezondheid: gevaar"
-      message: "UV-index is extreem hoog: {{states('sensor.uvindex_leuven24_wunderground')}}. Huid verbrandt zeer snel."
+      message: "UV-index is extreem hoog: {{states('sensor.eikenbos_uv_index')}}. Huid verbrandt zeer snel."
       data:
         color: red
         tag: uv_index
@@ -102,11 +102,11 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: sensor.uvindex_leuven24_wunderground
+    entity_id: sensor.eikenbos_uv_index
     to: '2'
     for: '00:25:00'
   - platform: state
-    entity_id: sensor.uvindex_leuven24_wunderground
+    entity_id: sensor.eikenbos_uv_index
     to: '3'
     for: '00:25:00'
   condition:
@@ -117,7 +117,7 @@ automation:
   - service: notify.madouce_phone
     data:
       title: Zon & gezondheid
-      message: "UV-index is hoog: {{states('sensor.uvindex_leuven24_wunderground')}}. Huid verbrandt langzaam."
+      message: "UV-index is hoog: {{states('sensor.eikenbos_uv_index')}}. Huid verbrandt langzaam."
       data:
         color: yellow
         tag: uv_index
@@ -130,11 +130,11 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: sensor.uvindex_leuven24_wunderground
+    entity_id: sensor.eikenbos_uv_index
     to: '4'
     for: '00:25:00'
   - platform: state
-    entity_id: sensor.uvindex_leuven24_wunderground
+    entity_id: sensor.eikenbos_uv_index
     to: '5'
     for: '00:25:00'
   condition:
@@ -145,7 +145,7 @@ automation:
   - service: notify.madouce_phone
     data:
       title: "Zon & gezondheid: waarschuwing"
-      message: "UV-index is zeer hoog: {{states('sensor.uvindex_leuven24_wunderground')}}. Huid verbrandt gemakkelijk."
+      message: "UV-index is zeer hoog: {{states('sensor.eikenbos_uv_index')}}. Huid verbrandt gemakkelijk."
       data:
         color: yellow
         tag: uv_index
@@ -158,11 +158,11 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: sensor.uvindex_leuven24_wunderground
+    entity_id: sensor.eikenbos_uv_index
     to: '6'
     for: '00:25:00'
   - platform: state
-    entity_id: sensor.uvindex_leuven24_wunderground
+    entity_id: sensor.eikenbos_uv_index
     to: '7'
     for: '00:25:00'
   condition:
@@ -173,7 +173,7 @@ automation:
   - service: notify.madouce_phone
     data:
       title: "Zon & gezondheid: gevaar"
-      message: "UV-index is extreem hoog: {{states('sensor.uvindex_leuven24_wunderground')}}. Huid verbrandt zeer snel."
+      message: "UV-index is extreem hoog: {{states('sensor.eikenbos_uv_index')}}. Huid verbrandt zeer snel."
       data:
         color: red
         tag: uv_index

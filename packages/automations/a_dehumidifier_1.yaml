@@ -167,8 +167,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id:
-      - timer.dehumidifier_timer
+    entity_id: timer.dehumidifier_timer
     from: active
     to: idle
   - platform: state
@@ -186,7 +185,7 @@ automation:
     - service: timer.cancel
       data: {}
       target:
-        entity_id: timer.dehumidify_timer           
+        entity_id: timer.dehumidifier_timer           
   mode: single
 
   

@@ -472,8 +472,7 @@ automation:
   id: 82a22db8-f370-42e5-8b56-c7db3c69a8ce
   trigger:
     - platform: state
-      entity_id:
-        - input_text.arriving_home_madouce
+      entity_id: input_text.arriving_home_reminder_madouce
   condition: []
   action:
     - service: input_boolean.turn_on
