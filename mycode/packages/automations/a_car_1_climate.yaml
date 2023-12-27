@@ -17,9 +17,11 @@ automation:
 - alias: 🚗 car 1 // climate // start op uur bepaald in HA app
   id: '583aabff-84db-4aac-a7de-023aee0d79f1'
   trigger:
-  - platform: template
-    value_template: >
-      {{ states('sensor.time') == (states.input_datetime.car_climatisation_time.attributes.timestamp | timestamp_custom('%H:%M', False)) }}
+  - platform: time
+    at: input_datetime.car_climatisation_time  
+  # - platform: template
+  #   value_template: >
+  #     {{ states('sensor.time') == (states.input_datetime.car_climatisation_time.attributes.timestamp | timestamp_custom('%H:%M', False)) }}
   condition:
   - condition: state
     entity_id: input_boolean.car_climatisation_timer
@@ -32,7 +34,7 @@ automation:
   - service: script.auto_start_climatisatie_nu      
   mode: restart
 
-- alias: 🚗 car 1 // climate // Om 19u in Waarschoot en koud = vraag auto climatiseren
+- alias: 🚗 car 1 // climate // 19u in Waarschoot en koud = vraag auto climatiseren
   id: '8fa06ed3-7c9f-453d-80d4-a246df6633f8'
   description: ''
   trigger:

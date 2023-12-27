@@ -32,3 +32,18 @@ utility_meter:
     cycle: monthly
 
 
+
+input_datetime:
+  car_climatisation_time:
+    name: climatisatie auto startuur
+    has_time: true
+    has_date: false
+
+input_boolean:
+  car_climatisation_timer:
+    name: climatisatie auto timerswitch
+
+timer:
+  car_climatisation:
+    name: climatisatie auto timer  
+    icon: mdi:radiator

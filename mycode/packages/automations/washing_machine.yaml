@@ -8,8 +8,8 @@ automation:
     entity_id: sensor.washing_machine_power
     for:
       hours: 0
-      minutes: 1
-      seconds: 0
+      minutes: 0
+      seconds: 30
     above: 500
   condition: []
   action:

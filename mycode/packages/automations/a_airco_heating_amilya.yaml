@@ -90,6 +90,25 @@ automation:
         - service: script.amilya_airco_start_heating
           data: {} 
 
+- alias: "♨️ airco heating // Amilya // starttimer = start airco en schakel timer uit"
+  id: '45b9dceb-fbb6-4615-b814-2f3e5d273b95'
+  description: ""
+  trigger:
+    - platform: time
+      at: input_datetime.amilya_airco_starttime
+  condition:
+    - condition: state
+      entity_id: input_boolean.amilya_airco_timer_switch
+      state: "on"  
+  action:
+    - service: input_boolean.turn_off
+      data: {}
+      target:
+        entity_id: input_boolean.amilya_airco_timer_switch
+    - service: script.amilya_airco_21
+      data: {}
+  mode: single
+
 
 ##################
 # Uit

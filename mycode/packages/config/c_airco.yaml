@@ -45,6 +45,11 @@ input_datetime:
     has_date: false
     has_time: true
 
+  amilya_airco_starttime:
+    name: Amilya airco starttijd
+    has_date: false
+    has_time: true
+
   alunya_airco_timer:
     name: Alunya airco timer
     has_date: false
@@ -128,11 +133,15 @@ input_number:
     icon: mdi:heat-wave
 
 
-
 input_boolean:
   living_airco_timer_switch:
     name: living airco timerschakelaar
     icon: mdi:switch
+
+  amilya_airco_timer_switch:
+    name: "airco Amilya timer switch"
+    icon: mdi:toggle-switch-off-outline
+
 
 input_select:
   living_airco_timer_mode:

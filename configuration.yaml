@@ -101,15 +101,12 @@ network:
 person:
 scene: !include scenes.yaml
 schedule:
-script: !include_dir_merge_named scripts
 ssdp:
 stream:
 sun:
 system_health:
 tag:
 timer:
-  car_climatisation:
-    icon: mdi:radiator
 usb:
 webhook:
 zeroconf:
@@ -148,8 +145,16 @@ tts:
     language: nl-BE-DenaNeural    #nl-BE-ArnaudNeural
 
 ##### YAML file locations #####################################    
-group: !include groups.yaml
-automation: !include automations.yaml
+# automation: !include automations.yaml
+
+# Automations I create in the UI
+automation ui: !include automations.yaml
+
+# automation manual: !include_dir_merge_list mycode/automations/
+# automation mine: !include_dir_merge_list automations/
+
+group: !include_dir_merge_named mycode/groups
+script: !include_dir_merge_named mycode/scripts
 
 google_assistant: !include google_assistant_integration.yaml
 shell_command: !include shell_commands.yaml
@@ -183,7 +188,7 @@ homeassistant:
   allowlist_external_dirs:
     - "/config"
 
-  packages: !include_dir_named packages
+  packages: !include_dir_named mycode/packages
   
   customize:
     zone.home:
@@ -291,6 +296,7 @@ recorder:
   include:
     entities:
       - device_tracker.bart_s10
+      - device_tracker.sm_a536b
       - device_tracker.bart_s23plus   # nodig voor automatisatie voordeur opendoen bij thuiskomst
       - device_tracker.madouce_s20    # nodig voor automatisatie voordeur opendoen bij thuiskomst
   exclude:
@@ -310,8 +316,6 @@ recorder:
       - binary_sensor.alunya_a71_apparaat_vergrendeld
       - binary_sensor.alunya_a71_interactief
       - binary_sensor.sm_g975f_interactive
-      - sensor.google_wifi_system_aaaaabzipgy_upload_traffic
-      - sensor.google_wifi_system_aaaaabzipgy_download_traffic
       - sensor.network_in_eth0
       # - sensor.net_neutrality_home
       # - sensor.net_neutrality_car
@@ -668,7 +672,13 @@ panel_iframe:
     url: "http://192.168.68.100:8086/orgs/6fe6192d84027fb4/dashboards/096bf9184c088000?lower=now%28%29%20-%202d"
     icon: mdi:backup-restore
     require_admin: true
-  
+
+  music_assistant:
+    title: "Music Assistant"
+    url: "http://192.168.68.100:8095/#/home"
+    icon: mdi:music
+    require_admin: true
+
 panel_custom:
   - name: automations-tree
     # url_path needs to be unique for each panel_custom config
