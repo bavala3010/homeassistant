@@ -18,7 +18,7 @@ automation:
     wattage: >
         {% set maxpower = states('input_number.car_charge_peak_netwattage') | float(default=0) %}
         {% set net = states('sensor.net_power_avg') | float %}
-        {% set charger = states('sensor.charger_current_power') | float(default=0) %}
+        {% set charger = states('sensor.charger_current_power_avg') | float(default=0) %}
         {{ (( maxpower - net + charger ) / 1000) | float }}
     message: >
       Zon: {{ states('sensor.solar_power') | int }} W | Net: {{ states('sensor.net_power')}} W | Auto laadt nu aan {{states('input_number.car_charger_watt') | round(1)}} kW<br>
@@ -35,7 +35,7 @@ automation:
         - service: input_boolean.turn_on
           data: {}
           target:
-            entity_id: input_boolean.car_charge_day_net_busy
+            entity_id: input_boolean.car_charge_busy
         - service: input_number.set_value
           target:
             entity_id: input_number.car_charger_watt

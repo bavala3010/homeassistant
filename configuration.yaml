@@ -323,7 +323,7 @@ recorder:
     domains:
       - automation
       - camera
-      - device_tracker  # nearly every device has a location tracker
+      # - device_tracker  # nearly every device has a location tracker
       - group
       - persistent_notification
       - scene

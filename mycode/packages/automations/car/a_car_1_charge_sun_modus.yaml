@@ -45,6 +45,12 @@ automation:
   - condition: state
     entity_id: input_boolean.car_charge_sun_busy
     state: 'off'
+  variables:
+      wattage: >
+        {% set charger = states('sensor.charger_current_power') | float(default=0) %}        
+        {% set maxpower = states('input_number.car_charge_sun_max_netwattage') | float(default=0) %}
+        {% set net = (states('sensor.net_power_avg') | float(default=0) + states('sensor.net_power') | float(default=0) ) / 2 %}
+        {{ (maxpower - net + charger) / 1000 }}       
   action:
   # toggle the switches to keep track of the status
   - service: input_boolean.turn_on
@@ -58,11 +64,7 @@ automation:
     target:
       entity_id: input_number.car_charger_watt
     data:
-      value: >-
-        {% set charger = states('sensor.charger_current_power') | float(default=0) %}        
-        {% set maxpower = states('input_number.car_charge_sun_max_netwattage') | float(default=0) %}
-        {% set net = (states('sensor.net_power_avg') | float(default=0) + states('sensor.net_power') | float(default=0) ) / 2 %}
-        {{ (maxpower - net + charger) /1000 }}
+      value: "{{ wattage }}"
   - wait_template: ''
     timeout: '00:00:05'
   - service: script.charger_define_phase_1_or_3_based_on_watt

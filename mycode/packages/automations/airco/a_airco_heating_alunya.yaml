@@ -93,7 +93,7 @@ automation:
             entity_id: input_number.alunya_airco_timer_minutes
         - delay:
             seconds: 2
-        - service: script.alunya_airco_start_heating_heating
+        - service: script.alunya_airco_start_heating
           data: {}   
 
 

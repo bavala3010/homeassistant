@@ -43,27 +43,27 @@ automation:
       entity_id: cover.garagepoort
   - service: media_player.volume_set
     data:
-      entity_id: media_player.master_bedroom_speaker
+      entity_id: media_player.living_speaker
       volume_level: 0.6
   - service: media_player.volume_set
     data:
-      entity_id: media_player.master_bedroom_speaker
+      entity_id: media_player.living_speaker
       volume_level: 0.6
   - service: tts.speak
     data:
-      entity_id: media_player.master_bedroom_speaker
+      entity_id: media_player.living_speaker
       message: Garagepoort gaat open!
   - service: tts.speak
     data:
-      entity_id: media_player.master_bedroom_speaker
+      entity_id: media_player.living_speaker
       message: Garagepoort gaat open!
   - service: media_player.volume_set
     data:
-      entity_id: media_player.master_bedroom_speaker
+      entity_id: media_player.living_speaker
       volume_level: 0.4
   - service: media_player.volume_set
     data:
-      entity_id: media_player.master_bedroom_speaker
+      entity_id: media_player.living_speaker
       volume_level: 0.4
   mode: single       
   
@@ -89,7 +89,7 @@ automation:
           Het is nu {{ as_timestamp(now()) |timestamp_custom('%-H') }} uur {{
           as_timestamp(now()) |timestamp_custom('%-M') }}. Buiten is het {{ states('sensor.eikenbos_temperature') |string|replace('.', ',') }} graden.
     - delay: '00:00:02'
-    - wait_template: "{{ is_state('media_player.veranda_speaker', 'idle')}}"
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
     - service: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
@@ -97,7 +97,7 @@ automation:
           {% from 'relative_time_plus.jinja' import relative_time_plus %}
           Jullie zijn al {{ relative_time_plus('2022-04-30', 4, language='nl') }} getrouwd. {{("Dat begint al te tellen!", "Lukt het nog altijd als man en vrouw?", "Ik vind jullie ringen nog altijd schitterend!", "Het kleur van de jurk was de verrassing van de dag. Weet je nog?", "En lukt het nog met de geloften?" )|random }}
     - delay: '00:00:02'
-    - wait_template: "{{ is_state('media_player.veranda_speaker', 'idle')}}"
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
     # - service: tts.speak
     #   data:
     #     entity_id: media_player.master_bedroom_speaker
@@ -106,7 +106,7 @@ automation:
     #       {% else %} De auto is op slot.
     #       {% endif %}
     # - delay: '00:00:02'
-    - wait_template: "{{ is_state('media_player.veranda_speaker', 'idle')}}"
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
     - service: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
@@ -127,7 +127,7 @@ automation:
           Het laaddoel van {{ target }}% is al bereikt.
           {% endif %}
     - delay: '00:00:02'
-    - wait_template: "{{ is_state('media_player.veranda_speaker', 'idle')}}"
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
     - service: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
@@ -136,7 +136,7 @@ automation:
           {% if is_state('lock.voordeur_nuki', 'unlocked') %} De voordeur is niet op
           slot. {% else %} De voordeur is op slot. {% endif %}
     - delay: '00:00:02'
-    - wait_template: "{{ is_state('media_player.veranda_speaker', 'idle')}}"
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
     - service: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
@@ -160,7 +160,7 @@ automation:
           |selectattr('state','eq','on') | map(attribute='name')| list }}
           {% endif %}
     - delay: '00:00:02'
-    - wait_template: "{{ is_state('media_player.veranda_speaker', 'idle')}}"
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
     - service: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
@@ -196,7 +196,7 @@ automation:
           Het wordt vandaag maximum {{ states('input_number.weather_eikenbos_max_temp_today') | replace(".", ",") }} graden.
           De volgende 4 uren wordt het {{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | round() }} graden.
     - delay: '00:00:02'
-    - wait_template: "{{ is_state('media_player.veranda_speaker', 'idle')}}"
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
     - service: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
@@ -204,7 +204,7 @@ automation:
         message: >-
           Er wordt vandaag {{ states('sensor.solar_sim_energy_today_adj') | round() }} kilowatuur zon verwacht.
     - delay: '00:00:02'
-    - wait_template: "{{ is_state('media_player.veranda_speaker', 'idle')}}"
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
     - service: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
@@ -225,7 +225,7 @@ automation:
           Het laaddoel van {{ target }}% is al bereikt.
           {% endif %}
     - delay: '00:00:02'
-    - wait_template: "{{ is_state('media_player.veranda_speaker', 'idle')}}"
+    - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
     - service: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker

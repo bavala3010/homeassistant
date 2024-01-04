@@ -170,3 +170,22 @@ automation:
       to:
   action:
     - service: rest_command.update_abrp
+
+
+
+- alias: 🚗 car 1 // trip logging // bewaar ritstatistieken
+  id: '9733861e-23dd-482b-99de-fdcce78b9bf6'
+  description: ''
+  trigger:
+    - platform: template
+      value_template: "{{ state_attr('sensor.audi_e_tron_sportback_trip_short_current','tripID')  }}"
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Nieuwe ritstatistieken beschikbaar
+      message: >
+        afstand: {{state_attr('sensor.audi_e_tron_sportback_trip_short_current','mileage')}}<br>
+        gem. snelheid: {{state_attr('sensor.audi_e_tron_sportback_trip_short_current','averageSpeed')}}<br>
+        gem. verbruik: {{state_attr('sensor.audi_e_tron_sportback_trip_short_current','averageFuelConsumption')}}<br>
+  mode: single

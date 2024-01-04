@@ -31,6 +31,8 @@ automation:
   - service: notify.bart_madouce_phone
     data:
       message: '{{ ["Joehoe, de kerstverlichting brandt weer!","Jingle bells. Laat de lichtjes maar branden!", "Merry Christmas with lots of love.", "Kerst is leuker met lichtjes.", "Wishing you a Christmas that is merry and bright!"] | random }}'
+      data:
+        timeout: 25200  # 7 uren
   # rode lamp living links 4 op kerstboom
   - service: light.turn_on
     target:
@@ -145,6 +147,8 @@ automation:
   - service: notify.bart_madouce_phone
     data:
       message: Wat jammer, de kerstverlichting is weer uit!
+      data:
+        timeout: 25200  # 7 uren
   mode: single
 
 

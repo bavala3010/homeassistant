@@ -52,8 +52,8 @@ sensor:
     end: '{{ now() }}'
 
   - platform: history_stats
-    name: "Alunya licht wasbak aan vandaag"
-    entity_id: light.alunya_wasbak
+    name: "Alunya licht nachtkastje aan vandaag"
+    entity_id: light.alunya_nachtkastje
     state: 'on'
     type: time
     start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'

@@ -188,7 +188,7 @@ sensor:
       - sensor.net_power_excl_charger
 
   - platform: average
-    name: "charger current power avg2min"
+    name: "charger current power avg"
     duration: 00:02:00
     entities:
       - sensor.charger_current_power

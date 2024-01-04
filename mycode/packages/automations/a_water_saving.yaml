@@ -1,0 +1,25 @@
+automation:
+
+- alias: waterbesparing // 5 minuten douchen = flash douche licht 
+  id: '9913cdbb-8e0a-431e-a27c-81c277130d54'
+  description: ""
+  trigger:
+  - platform: state
+    entity_id:
+      - light.badkamer_douche
+    to: "on"
+    for:
+      minutes: 5
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.watermeter_active_water_usage
+    above: 5
+  action:
+  - service: script.light_badkamer_douche_flash
+    metadata: {}
+    data: {}
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.badkamer_douche
+  mode: single

@@ -39,7 +39,8 @@ automation:
         title: Vocht
         message: >
           Vocht % in huis is heel hoog: {{states('sensor.avg_inside_humidity')}}%.
-        color: "#0E86D4"
+        data:
+          color: "#0E86D4"
         actions:
         - action: URI
           title: meer info

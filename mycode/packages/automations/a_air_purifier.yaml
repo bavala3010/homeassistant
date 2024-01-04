@@ -12,7 +12,7 @@ automation:
     platform: time_pattern
   condition:
   - condition: template
-    value_template: "{{ states('sensor.mi_air_pm2_5') |float(default=0) > 8 }}"
+    value_template: "{{ states('sensor.zhimi_mb3_83f2_pm25') |float(default=0) > 8 }}"
   - condition: state
     entity_id: group.gezin
     state: 'home'
@@ -22,7 +22,7 @@ automation:
   action:
   - service: fan.set_preset_mode
     data:
-      entity_id: fan.mi_air
+      entity_id: zhimi_mb3_83f2_air_purifier
       preset_mode: auto
   mode: single
 
@@ -34,14 +34,14 @@ automation:
     platform: time_pattern
   condition:
   - condition: template
-    value_template: "{{ states('sensor.mi_air_pm2_5') |float(default=0) < 8 }}"
+    value_template: "{{ states('sensor.zhimi_mb3_83f2_pm25') |float(default=0) < 8 }}"
   - condition: state
     entity_id: input_boolean.busy_cooking
     state: 'off'    
   action:
   - service: fan.turn_off
     target:
-      entity_id: fan.mi_air
+      entity_id: zhimi_mb3_83f2_air_purifier
   mode: single
 
 - alias: 💨 air // purifier // niet thuis = uit
@@ -56,7 +56,7 @@ automation:
   action:
   - service: fan.turn_off
     target:
-      entity_id: fan.mi_air
+      entity_id: zhimi_mb3_83f2_air_purifier
   mode: single
 
 - alias: 💨 air // purifier // 23u00 = uit
@@ -69,7 +69,7 @@ automation:
   action:
   - service: fan.turn_off
     target:
-      entity_id: fan.mi_air
+      entity_id: zhimi_mb3_83f2_air_purifier
   mode: single
 
 - alias: 💨 air // purifier // aan het koken = aan
@@ -91,7 +91,7 @@ automation:
       entity_id: input_boolean.busy_cooking
   - service: fan.turn_on
     target:
-      entity_id: fan.mi_air
+      entity_id: zhimi_mb3_83f2_air_purifier
     data: {}
   - service: notify.bart_phone
     data:
@@ -136,7 +136,7 @@ automation:
   action:
   - service: fan.turn_off
     target:
-      entity_id: fan.mi_air
+      entity_id: zhimi_mb3_83f2_air_purifier
     data: {}
   - service: tts.edge_tts_say
     data:

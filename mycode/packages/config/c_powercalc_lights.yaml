@@ -52,7 +52,7 @@ powercalc:
       entities:
         -  entity_id: light.alunya_bol
         -  entity_id: light.alunya_staande_lamp
-        -  entity_id: light.alunya_wasbak
+        -  entity_id: light.alunya_nachtkastje
 
     - create_group: master bedroom alle lichten
       entities:

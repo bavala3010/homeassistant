@@ -301,7 +301,7 @@ automation:
               clickAction: "{{ trigger.to_state.attributes['item_url'] }}"           
   mode: single
 
-- alias: TGTG // niet meer beschikbaar
+- alias: TGTG // TGTG entiteiten niet meer beschikbaar = herlaad TGTG integratie 
   id: 'c83b4e5c-c7af-4a76-862b-e5d4c520bb9f'
   description: ''
   trigger:

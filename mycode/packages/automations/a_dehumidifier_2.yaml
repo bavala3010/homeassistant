@@ -47,7 +47,7 @@ automation:
   description: ''
   trigger:
     - platform: time
-      at: '20:55'
+      at: '20:30'
   condition:
     - condition: numeric_state
       entity_id: sensor.master_bedroom_humidity

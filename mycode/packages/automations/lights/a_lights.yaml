@@ -233,6 +233,56 @@ automation:
   mode: single
 
 
+- alias: 💡 lights // living // aanwezigheidsensor
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.keuken_presence
+      to: "on"
+      id: keuken aanwezigheid
+    - platform: state
+      entity_id:
+        - binary_sensor.keuken_presence
+      to: "off"
+      id: keuken afwezigheid
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.living_keuken_presence_light_level
+      below: 15
+    - condition: time
+      after: "19:00:00"
+      before: "17:00:00"
+  action:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id:
+                - keuken aanwezigheid
+          sequence:
+            - service: light.turn_on
+              data:
+                brightness_pct: 70
+                rgb_color:
+                  - 255
+                  - 236
+                  - 220
+              target:
+                entity_id: light.living_rechts_4
+        - conditions:
+            - condition: trigger
+              id:
+                - keuken afwezigheid
+          sequence:
+            - wait_template: ""
+              timeout: "00:00:02"
+            - service: light.turn_off
+              data: {}
+              target:
+                entity_id: light.living_rechts_4
+  mode: parallel
+
+
 #################################################  
 # Amilya
 #################################################
@@ -420,7 +470,7 @@ automation:
       entity_id:
         - light.alunya_bol
         - light.alunya_staande_lamp
-        - light.alunya_wasbak
+        - light.alunya_nachtkastje
   mode: single
 
 - alias: 💡 lights // Alunya // uit om 1u, 2u, 3u en 4u 's nachts
@@ -440,7 +490,7 @@ automation:
       entity_id:
         - light.alunya_bol
         - light.alunya_staande_lamp
-        - light.alunya_wasbak
+        - light.alunya_nachtkastje
   mode: single
 
 
@@ -729,7 +779,8 @@ automation:
         entity_id:
           - light.buiten_oprit
           - light.buiten_voordeur
-      data: {}
+      data:
+        brightness_step_pct: 60      
     - wait_template: ''
       timeout: 00:03:00
     - service: light.turn_off

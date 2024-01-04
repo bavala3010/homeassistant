@@ -1,23 +1,27 @@
 ############################ Table of Contents ############################ 
 # 
 #   Automations
-#     🏡 Om 22u30 doe voordeur op slot
-#     🏡 Niemand meer thuis = doe voordeur op slot
-#     🏡 kind(eren) alleen thuis = doe voordeur op slot
-#     🏡 Bart alleen thuis = doe voordeur op slot
-#     🏡 Madouce alleen thuis = doe voordeur op slot
-#
+#     🔐 security // om 20u30, 22u30, 23u00 en 24u00 doe voordeur op slot
+#     🔐 security // Niemand meer thuis = doe voordeur op slot
+#     🔐 security // kind(eren) alleen thuis = doe voordeur op slot
+#     🔐 security // Bart alleen thuis = doe voordeur op slot
+#     🔐 security // Madouce alleen thuis = doe voordeur op slot
+#     🔐 security // Bart en Madouce op terras = voordeur op slot
+#     🔐 security // voordeur lang open = melding
+#     🔐 security // Niemand meer thuis en Bart in auto = check voordeur
+#     🔐 security // Voordeur opengedaan met code
 ############################ Automations ################################## 
 
 automation:
 
-- alias: security // om 22u30, 23u00 en 24u00 doe voordeur op slot
+- alias: 🔐 security // om 20u30, 22u30, 23u00 en 24u00 doe voordeur op slot
   id: '35bab60f-cbaf-4969-839c-46a117a46e50'
   description: ""
   mode: single
   trigger:
     - platform: time
       at: 
+        - "20:30:00"
         - "22:30:00"
         - "23:00:00"
         - "00:00:00"
@@ -29,7 +33,7 @@ automation:
       target:
         entity_id: lock.voordeur_nuki
 
-- alias: security // Niemand meer thuis = doe voordeur op slot
+- alias: 🔐 security // Niemand meer thuis = doe voordeur op slot
   id: '97b2e13f-ab8c-4346-983a-970cfacb4c4e'
   description: ''
   trigger:
@@ -52,8 +56,8 @@ automation:
         color: red
   mode: single
 
-        
-- alias: security // kind(eren) alleen thuis = doe voordeur op slot
+
+- alias: 🔐 security // kind(eren) alleen thuis = doe voordeur op slot
   id: '70541658-6b67-46f1-8e90-64a0600c646d'
   description: ''
   trigger:
@@ -88,7 +92,7 @@ automation:
         color: red
   mode: single
   
-- alias: security // Bart alleen thuis = doe voordeur op slot
+- alias: 🔐 security // Bart alleen thuis = doe voordeur op slot
   id: '77234403-213e-41a5-ad01-a159f3b0978c'
   description: ''
   trigger:
@@ -116,7 +120,7 @@ automation:
         color: red
   mode: single
 
-- alias: security // Madouce alleen thuis = doe voordeur op slot
+- alias: 🔐 security // Madouce alleen thuis = doe voordeur op slot
   id: 'eb26f9a9-6603-4ab5-a224-e845e45790fd'
   description: ''
   trigger:
@@ -144,7 +148,7 @@ automation:
         color: red
   mode: single
 
-- alias: security // Bart en Madouce op terras = voordeur op slot
+- alias: 🔐 security // Bart en Madouce op terras = voordeur op slot
   id: 'b77f3de1-256a-41cb-8c90-44ae5667dc6e'
   description: ''
   trigger:
@@ -167,7 +171,7 @@ automation:
         color: red
   mode: single
 
-- alias: security // voordeur lang open = melding
+- alias: 🔐 security // voordeur lang open = melding
   id: 'c1657da2-d8b2-4c18-a2c4-ae5c3c11b85e'
   description: ''
   trigger:
@@ -212,7 +216,7 @@ automation:
         tag: voordeur_staat_open
   mode: single
 
-- alias: security // Niemand meer thuis en Bart in auto = check voordeur
+- alias: 🔐 security // Niemand meer thuis en Bart in auto = check voordeur
   id: '2a2c5a0a-36e5-45c8-bc20-a18d20fc4388'
   description: ''
   trigger:
@@ -245,7 +249,7 @@ automation:
   mode: single
 
 
-- alias: Voordeur opengedaan met code
+- alias: 🔐 security // Voordeur opengedaan met code
   id: 'c9ccdb95-0f71-4dfa-a91f-2c34de88df75'
   description: ''
   trigger:

@@ -137,7 +137,7 @@ alunya_lichten:
   name: Alunya
   entities:
     - light.alunya_bol
-    - light.alunya_wasbak
+    - light.alunya_nachtkastje
     - light.alunya_staande_lamp    
 
 master_bedroom_lichten:

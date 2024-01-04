@@ -37,7 +37,7 @@ automation:
         temperature: >
           {% set target = states('input_number.living_normal_temperature') | float %}
           {% set temp = states('sensor.living_temperature') | float %}
-          {% set adj = target - temp  %}
+          {% set adj = target - temp %}
           {{ (state_attr('climate.living_airco', 'current_temperature') + adj ) | round(1, 'half', 0) }}
       target:
         device_id: 1c560bbc7917f45d737e87d3e2bd0d89
@@ -55,7 +55,7 @@ automation:
       target:
         entity_id: input_number.living_airco_target_temperature
       data:
-        value: "{{ states('input_number.living_normal_temperature') | float() }}"        
+        value: "{{ states('input_number.living_normal_temperature') | float() }}"
   mode: single
 
 
@@ -90,7 +90,7 @@ automation:
     data:
       hvac_mode: heat
       temperature: >-
-        {% set adj = (states('input_number.living_comfort_temperature') | float) - (states('sensor.living_temperature') | float) %}        
+        {% set adj = (states('input_number.living_comfort_temperature') | float) - (states('sensor.living_temperature') | float) %}
         {{ (state_attr('climate.living_airco', 'current_temperature') + adj) | round(1, 'half', 0) }} 
     target:
       device_id: 1c560bbc7917f45d737e87d3e2bd0d89
@@ -106,7 +106,7 @@ automation:
       device_id: 1c560bbc7917f45d737e87d3e2bd0d89
   - service: input_number.set_value
     target:
-      entity_id: input_number.living_airco_target_temperature   
+      entity_id: input_number.living_airco_target_temperature
     data:
       value: "{{ states('input_number.living_comfort_temperature') | float() }}"
   mode: single
@@ -147,7 +147,7 @@ automation:
     - service: timer.finish
       data: {}
       target:
-        entity_id: timer.living_airco_timer        
+        entity_id: timer.living_airco_timer
   mode: single
 
 
@@ -173,7 +173,7 @@ automation:
     target:
       entity_id: input_number.living_airco_timer_minutes
   - service: script.living_airco_start_heating
-    data: {}  
+    data: {}
   mode: restart
 
 
@@ -210,7 +210,7 @@ automation:
           {% set adj = (states('input_number.living_airco_target_temperature') | float) - (states('sensor.living_temperature') | float) %}
           {{ (state_attr('climate.living_airco', 'current_temperature') + adj) | round(1, 'half', 0) }} 
       target:
-        entity_id: climate.living_airco          
+        entity_id: climate.living_airco
     # - service: climate.set_temperature
     #   data:
     #     hvac_mode: heat
@@ -244,7 +244,7 @@ automation:
     value_template: >
   - platform: template
     value_template: >
-      {{ ( states('input_number.living_airco_target_temperature') | float ) - ( states('sensor.living_temperature') | float ) <= 0.0  }}
+      {{ ( states('input_number.living_airco_target_temperature') | float ) - ( states('sensor.living_temperature') | float ) <= 0.0 }}
   condition: []
   action:
     - service: climate.turn_off
@@ -272,7 +272,7 @@ automation:
     entity_id: climate.living_airco
     to: "off"
     for: "00:03:00"
-    id: airco-uit       
+    id: airco-uit
   condition: []
   action:
   - choose:
@@ -282,7 +282,7 @@ automation:
         sequence:
           - service: fan.turn_on
             data:
-              percentage: 35            
+              percentage: 35
             target:
               entity_id: fan.living_ventilator
       - conditions:

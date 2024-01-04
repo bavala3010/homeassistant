@@ -34,6 +34,7 @@ automation:
           {% else %}{% set t = now().date() + timedelta(days=1) %}{% set d = 'morgen' %}
           {% endif %}
           {% set target_soc = 'input_number.car_1_min_target_soc_day_' ~ t.isoweekday() %}
+          {% set current_soc = states('sensor.car_1_soc') | round(default=0) %}
           {% set use = 'input_select.car_1_use_day_' ~ t.isoweekday() %}
           {% set v = states('sensor.solar_sim_energy_today_adj') | int %}
           {% set m = states('sensor.solar_sim_energy_tomorrow_adj') | int %}
@@ -42,11 +43,14 @@ automation:
           {% set resturen = (((states('sensor.sun_next_setting') | as_timestamp) - (now() | as_timestamp)) / 3600 ) %}
           {% set restperuur = (restzon / resturen) | round(1) %}
           Welkom thuis Bart!
-          {% if states('sensor.car_1_soc') | float(default=0) <  states(target_soc) | float(default=0) %}Vergeet de laadkabel niet in te steken. Er moet geladen worden van {{states('sensor.car_1_soc') | round(default=0)}}% naar {{ states(target_soc) | round(default=0) }}%.
-            {% if restperuur > 1 and states('sensor.sun_phase') =="Day" %}Je kan met zon laden. Er wordt vandaag nog {{ restzon }} kilowatuur zon verwacht.
+          {% if states('sensor.car_1_soc') | float(default=0) <  states(target_soc) | float(default=0) %}Vergeet niet de laadkabel in te steken.
+            {% if current_soc == unavailable %}Er moet geladen worden tot {{ states(target_soc) | round(default=0) }}%
+            {% else %}Er moet geladen worden van {{ current_soc }}% naar {{ states(target_soc) | round(default=0) }}%.
+            {% endif %}
+            {% if restperuur > 1 and states('sensor.sun_phase') =="Day" %}Je kan met zon laden. Er wordt vandaag nog {{ restzon }} kilowattuur zon verwacht.
             {% endif %}
           {% else %}De auto heeft {{states('sensor.car_1_soc') | round(default=0) }}% batterij en dit is voldoende voor {{ d }}. Er is {{d}} maar {{ states(target_soc) | round(default=0) }}% nodig.
-            {% if restperuur > 1 %}Je mag de kabel insteken om met zon te laden. Er wordt vandaag nog {{ restzon }} kilowatuur zon verwacht.
+            {% if restperuur > 1 %}Je mag de kabel insteken om met zon te laden. Er wordt vandaag nog {{ restzon }} kilowattuur zon verwacht.
             {% elif restperuur <= 1 and m > 5 and ( states(use) == 'thuis' or t.isoweekday() > 5 ) %}Aangezien de auto {{ d }} waarschijnlijk thuis is, mag je wel de kabel insteken om met zon te laden. Er wordt {{ d }} {{ m }} kilowatuur zon verwacht.
             {% endif %}
           {% endif %}
@@ -392,8 +396,8 @@ automation:
   mode: single
 
 
-- alias: Bart komt thuis en binnen wifi bereik en donker = doe buitenverlichting aan
-  id: '414f37c0-6ee6-4056-8ec2-956495096cb4'
+- alias: 💡 lights // Bart komt thuis en binnen wifi bereik en donker = doe buitenverlichting aan
+  id: 'f8ac109d-3e7d-4a31-958a-fc4ad5a60c9f'
   description: ""
   trigger:
     - platform: state
@@ -402,12 +406,12 @@ automation:
       to: BMWifi
   condition:
     - condition: state
-      entity_id: person.madouce
+      entity_id: person.bart
       state: home
     - condition: template
       value_template: >-
-        {% set dif = as_timestamp(now()) - as_timestamp(states.person.madouce.last_changed) %}
-        {{ 30 < dif < 600 }}
+        {% set dif = as_timestamp(now()) -
+        as_timestamp(states.person.bart.last_changed) %} {{ 30 < dif < 600 }}
   action:
     - if:
         - condition: template
@@ -420,17 +424,17 @@ automation:
             entity_id:
               - light.buiten_oprit
               - light.buiten_voordeur
-        - wait_template: ''
+        - wait_template: ""
           timeout: "00:05:00"
         - service: light.turn_off
           data: {}
           target:
             entity_id:
               - light.buiten_oprit
-              - light.buiten_voordeur         
-  mode: single
+              - light.buiten_voordeur
+  mode: single  
 
-- alias: Madouce komt thuis en binnen wifi bereik en donker = doe buitenverlichting aan
+- alias: 💡 lights // Madouce komt thuis en binnen wifi bereik en donker = doe buitenverlichting aan
   id: '68b8a483-f1f1-4a26-93b2-17df92b17736'
   description: ""
   trigger:
@@ -440,11 +444,11 @@ automation:
       to: BMWifi
   condition:
     - condition: state
-      entity_id: person.bart
+      entity_id: person.madouce
       state: home
     - condition: template
       value_template: >-
-        {% set dif = as_timestamp(now()) - as_timestamp(states.person.bart.last_changed) %}
+        {% set dif = as_timestamp(now()) - as_timestamp(states.person.madouce.last_changed) %}
         {{ 30 < dif < 600 }}
   action:
     - if:

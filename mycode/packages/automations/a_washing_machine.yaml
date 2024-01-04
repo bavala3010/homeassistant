@@ -10,7 +10,7 @@ automation:
       hours: 0
       minutes: 0
       seconds: 30
-    above: 500
+    above: 20
   condition: []
   action:
     - service: input_datetime.set_datetime
@@ -29,6 +29,13 @@ automation:
           | float(0)) | timestamp_local() }}'
       target:
         entity_id: input_datetime.washing_machine_expected_stop_time
+    - service: notify.bart_madouce_phone
+      data:
+        message: De wasmachine is gestart!
+        title: 👕👙 Wasmachine
+        data:
+          tag: wasmachine
+          notification_icon: "mdi:washing-machine"          
   mode: single
 
 - alias: 👕 wasmachine // bezig met water verwarmen

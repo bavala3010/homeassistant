@@ -1,7 +1,7 @@
 
 automation:
 
-  - alias: 'goodkoopste startuur elektriciteit morgen'
+  - alias: 'goedkoopste startuur elektriciteit morgen'
     id: 'b18ebd1e-4d28-494f-9697-ec4413b4e193'
     description: ''
     trigger:

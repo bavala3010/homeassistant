@@ -31,11 +31,11 @@ automation:
         entity_id: input_number.car_charger_watt
       data:
         value: >-
-          {% set charger = states('sensor.charger_current_power') | float(default=0) / 1000 %}        
+          {% set charger = states('sensor.charger_current_power') | float(default=0) %}        
           {% set maxpower = states('input_number.car_charge_minimum_wattage') | float(default=0) %}
           {% set net = states('sensor.net_power_avg') | float(default=0) %}
           {% if net + charger < maxpower %}
-          {{ (-net + (charger * 1000)) / 1000 }}
+          {{  charger - (net / 1000)  }}
           {% elif net + charger > maxpower %}
           {{ maxpower }}
           {% endif %}

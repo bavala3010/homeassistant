@@ -1,0 +1,142 @@
+automation:
+
+- alias: "🚗 car 1 // 🔋 charge dag van net // start-bezig-stop"
+  id: '614041f4-1aa3-4f45-ab3f-9a5c03112d1a'
+  trigger:
+  - platform: time_pattern
+    minutes: /1
+  condition:
+  - condition: template
+    value_template: "{{ as_timestamp(states('sensor.sunrise')) < as_timestamp(now()) < as_timestamp(states('sensor.sunset')) }}"
+    # only if charger cable is connected to home charger or already charging  
+  - condition: template
+    value_template: "{{ states('sensor.charger_status') in ['charging', 'connected'] }}"
+  variables:
+      wattage: >
+        {% set maxpower = states('input_number.car_charge_peak_netwattage') | float(default=0) %}
+        {% set net = states('sensor.net_power_avg') | float %}
+        {% set charger = states('sensor.charger_current_power_avg') | float(default=0) %}
+        {{ (( maxpower - net + charger ) / 1000) | float }}
+  action:
+    # turn off charging
+    - if:
+        - condition: state
+          entity_id: input_boolean.car_charge_day_net
+          state: 'off' 
+      then:      
+        - service: script.stop_charger
+          data: {}
+        - service: notify.bart_phone
+          data:
+            title: Auto is gestopt met laden. Nu 3 minuten wachten.
+            message: >
+              Gestopt
+        - wait_template: ''
+          timeout: '00:03:00'  
+    - if:
+        - condition: state
+          entity_id: input_boolean.car_charge_day_net
+          state: 'on'    
+        - condition: template
+          value_template: "{{ wattage < 1.1 }}"
+      then:
+        - service: script.stop_charger
+          data: {}
+        - service: notify.bart_phone
+          data:
+            title: Auto is gestopt met laden. Nu 3 minuten wachten.
+            message: >
+              Gestopt
+        - wait_template: ''
+          timeout: '00:03:00'  
+    # turn on charging
+    # between 1.1 and 1.5 check if charger is already charging. If charging, then charger will continue (in order to avoid too frequent start/stops)  
+    - if:
+        - condition: state
+          entity_id: input_boolean.car_charge_day_net
+          state: 'on'
+        - condition: template
+          value_template: "{{ (1.1 <= wattage < 1.5) and (states('sensor.charger_modbus_maxcurrent') | float() > 5) }}"
+      then:
+        - service: input_boolean.turn_on
+          data: {}
+          target:
+            entity_id: input_boolean.car_charge_busy
+        - service: input_number.set_value
+          target:
+            entity_id: input_number.car_charger_watt
+          data:
+            value: "{{ 1.3 }}"
+        - wait_template: ''
+          timeout: '00:00:05'
+        - service: script.charger_define_phase_1_or_3_based_on_watt
+        - service: script.charger_define_ampere_based_on_watt
+        - service: script.charger_define_and_write_register_based_on_ampere
+    # to avoid frequent switching between 1 and 3 phases
+    - if:
+        - condition: state
+          entity_id: input_boolean.car_charge_day_net
+          state: 'on'    
+        - condition: template
+          value_template: "{{ (states('sensor.charger_use_1_or_3_phases') == '1') and (3.5 <= wattage < 4.3) }}"
+      then:
+        - service: input_boolean.turn_on
+          data: {}
+          target:
+            entity_id: input_boolean.car_charge_busy
+        - service: input_number.set_value
+          target:
+            entity_id: input_number.car_charger_watt
+          data:
+            value: "{{ 3.5 }}"
+        - wait_template: ''
+          timeout: '00:00:05'
+        - service: script.charger_define_phase_1_or_3_based_on_watt
+        - service: script.charger_define_ampere_based_on_watt
+        - service: script.charger_define_and_write_register_based_on_ampere      
+    # to avoid frequent switching between 1 and 3 phases
+    - if:
+        - condition: state
+          entity_id: input_boolean.car_charge_day_net
+          state: 'on'    
+        - condition: template
+          value_template: "{{ (states('sensor.charger_use_1_or_3_phases') == '3' ) and (3.5 <= wattage < 4.3) }}"
+      then:
+        - service: input_boolean.turn_on
+          data: {}
+          target:
+            entity_id: input_boolean.car_charge_busy
+        - service: input_number.set_value
+          target:
+            entity_id: input_number.car_charger_watt
+          data:
+            value: "{{ 4 }}"
+        - wait_template: ''
+          timeout: '00:00:05'
+        - service: script.charger_define_phase_1_or_3_based_on_watt
+        - service: script.charger_define_ampere_based_on_watt
+        - service: script.charger_define_and_write_register_based_on_ampere  
+    # above 1.5 there is enough power to start/continue charging
+    - if:
+        - condition: state
+          entity_id: input_boolean.car_charge_day_net
+          state: 'on'    
+        - condition: template
+          value_template: "{{ wattage >= 1.5 and not (3.5 <= wattage < 4.3) }}"
+      then:   
+        - service: input_boolean.turn_on
+          data: {}
+          target:
+            entity_id: input_boolean.car_charge_busy
+        - service: input_number.set_value
+          target:
+            entity_id: input_number.car_charger_watt
+          data:
+            value: "{{ wattage }}"
+        - wait_template: ''
+          timeout: '00:00:05'
+        - service: script.charger_define_phase_1_or_3_based_on_watt
+        - service: script.charger_define_ampere_based_on_watt
+        - service: script.charger_define_and_write_register_based_on_ampere   
+  mode: single
+
