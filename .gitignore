@@ -26,6 +26,8 @@ custom_components
 deps
 docker-compose
 image
+python_scripts
+ssh_keys
 themes
 tts
 www
@@ -36,3 +38,5 @@ ip_bans.yaml
 secrets.yaml
 known_devices.yaml
 google_assistant_integration.yaml
+login_scrape_Edenred.py
+
