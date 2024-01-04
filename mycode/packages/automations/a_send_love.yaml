@@ -1,0 +1,15 @@
+automation:
+
+- alias: Stuur een berichtje op willekeurig tijdstip tussen 7u en 23u
+  id: '28eaf92b-0df1-4668-a2a0-3e0ac23887d9'
+  trigger:
+    - platform: template
+      value_template: "{{ now().replace(hour=random(7,23), minute=random(0,59)) }}"
+  condition: []
+  action:
+    - service: notify.bart_phone
+      data:
+        title: Willekeurig bericht.
+        message: >
+          Het werkt!
+  mode: single

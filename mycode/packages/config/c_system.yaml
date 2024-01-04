@@ -2,6 +2,6 @@ command_line:
   - sensor:
       name: 'lines of code'
       # command: "find /config -name '*.yaml' | xargs cat | wc -l"
-      command: 'find . -name "*.yaml" -not -path "*/custom_components/*" -not -path "*/esphome/*" -not -path "*/blueprints/*" | xargs wc -l | grep "total" | grep "[0-9]*" -o'
+      command: 'find /config/ -name "*.yaml" -not -path "*/custom_components/*" -not -path "*/esphome/*" -not -path "*/blueprints/*" | xargs wc -l | grep "total" | grep "[0-9]*" -o'
       scan_interval: 20000
       unit_of_measurement: 'lines'

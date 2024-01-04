@@ -7,13 +7,5 @@ sensor:
     name: 'The White Oak piekuren'
     address: 'The White Oak, Leuvensesteenweg 116/118, 1910 Kampenhout'
 
-  - platform: populartimes
-    name: !secret strand_name
-    address: !secret strand_address
-
-  - platform: populartimes
-    name: !secret gent_name
-    address: !secret gent_address
-
 # The address should preferably be in the following format:
 # "(location name) , full address, city, province/state/etc, country"
