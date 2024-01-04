@@ -25,9 +25,9 @@ blueprints
 custom_components
 deps
 docker-compose
+home-assistant.log.1
 image
 python_scripts
-ssh_keys
 themes
 tts
 www
@@ -36,6 +36,7 @@ www
 # KEEP THIS LIST AT THE BOTTOM OF THIS FILE
 ip_bans.yaml
 secrets.yaml
+ssh_keys
 known_devices.yaml
 google_assistant_integration.yaml
 login_scrape_Edenred.py
