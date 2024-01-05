@@ -30,6 +30,7 @@ docker-compose
 home-assistant.log.1
 image
 python_scripts
+splitwise.conf
 themes
 tts
 www
