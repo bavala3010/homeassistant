@@ -17,18 +17,19 @@
 *.db
 *.json
 *.log
+*.log.1
 _old_automations.yaml_old
 home-assistant_v2.*
 backups
 appdaemon
 blueprints
-/custom_components
+custom_components
 deps
-/dwains-dashboard
+dwains-dashboard
 docker-compose
 home-assistant.log.1
 image
-/python_scripts
+python_scripts
 themes
 tts
 www
@@ -37,7 +38,7 @@ www
 # KEEP THIS LIST AT THE BOTTOM OF THIS FILE
 ip_bans.yaml
 secrets.yaml
-/ssh_keys
+ssh_keys
 known_devices.yaml
 google_assistant_integration.yaml
 login_scrape_Edenred.py
