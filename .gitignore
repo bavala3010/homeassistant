@@ -24,6 +24,7 @@ appdaemon
 blueprints
 custom_components
 deps
+dwains-dashboard
 docker-compose
 home-assistant.log.1
 image
