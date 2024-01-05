@@ -7,5 +7,9 @@ sensor:
     name: 'The White Oak piekuren'
     address: 'The White Oak, Leuvensesteenweg 116/118, 1910 Kampenhout'
 
+  - platform: populartimes
+    name: 'Thermen Grimbergen piekuren'
+    address: 'Wolvertemsesteenweg 74, 1850 Grimbergen'    
+
 # The address should preferably be in the following format:
 # "(location name) , full address, city, province/state/etc, country"
