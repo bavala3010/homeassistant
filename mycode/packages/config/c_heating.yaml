@@ -22,6 +22,10 @@ input_select:
       - 'eco'
       - 'on'
 
+  heating_mode:
+    options:
+      - 'airco'
+      - 'centrale verwarming'
 
 input_text:
   heating_mode_from_weather_forecast_log:

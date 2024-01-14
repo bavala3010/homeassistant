@@ -18,6 +18,9 @@ automation:
         states('input_number.living_normal_temperature') | float }}
   condition:
     - condition: state
+      entity_id: input_select.heating_mode
+      state: airco      
+    - condition: state
       entity_id: schedule.living_normal_temperature_schema
       state: "on"
     - condition: state
@@ -63,52 +66,55 @@ automation:
   id: '9bb6cb31-9f9f-42c2-a4ac-f551cc970eb7'
   description: ''
   trigger:
-  - platform: state
-    entity_id: schedule.living_comfort_temperature_schema
-    to: "on"
-  - platform: state
-    entity_id: group.bart_madouce
-    to: home
-  - platform: template
-    value_template: >
-      temperature: >
-        {{ states('sensor.living_temperature') | float <
-        states('input_number.living_comfort_temperature') | float }}
+    - platform: state
+      entity_id: schedule.living_comfort_temperature_schema
+      to: "on"
+    - platform: state
+      entity_id: group.bart_madouce
+      to: home
+    - platform: template
+      value_template: >
+        temperature: >
+          {{ states('sensor.living_temperature') | float <
+          states('input_number.living_comfort_temperature') | float }}
   condition:
-  - condition: state
-    entity_id: schedule.living_comfort_temperature_schema
-    state: "on"
-  - condition: state
-    entity_id: group.gezin
-    state: home
-  - condition: template
-    value_template: >
-      {{ states('sensor.living_temperature') | float <
-      states('input_number.living_comfort_temperature') | float }} 
+    - condition: state
+      entity_id: input_select.heating_mode
+      state: airco   
+    - condition: state
+      entity_id: schedule.living_comfort_temperature_schema
+      state: "on"
+    - condition: state
+      entity_id: group.gezin
+      state: home
+    - condition: template
+      value_template: >
+        {{ states('sensor.living_temperature') | float <
+        states('input_number.living_comfort_temperature') | float }} 
   action:
-  - service: climate.set_temperature
-    data:
-      hvac_mode: heat
-      temperature: >-
-        {% set adj = (states('input_number.living_comfort_temperature') | float) - (states('sensor.living_temperature') | float) %}
-        {{ (state_attr('climate.living_airco', 'current_temperature') + adj) | round(1, 'half', 0) }} 
-    target:
-      device_id: 1c560bbc7917f45d737e87d3e2bd0d89
-  - service: climate.set_preset_mode
-    data:
-      preset_mode: eco
-    target:
-      device_id: 1c560bbc7917f45d737e87d3e2bd0d89
-  - service: climate.set_swing_mode
-    data:
-      swing_mode: 3D
-    target:
-      device_id: 1c560bbc7917f45d737e87d3e2bd0d89
-  - service: input_number.set_value
-    target:
-      entity_id: input_number.living_airco_target_temperature
-    data:
-      value: "{{ states('input_number.living_comfort_temperature') | float() }}"
+    - service: climate.set_temperature
+      data:
+        hvac_mode: heat
+        temperature: >-
+          {% set adj = (states('input_number.living_comfort_temperature') | float) - (states('sensor.living_temperature') | float) %}
+          {{ (state_attr('climate.living_airco', 'current_temperature') + adj) | round(1, 'half', 0) }} 
+      target:
+        device_id: 1c560bbc7917f45d737e87d3e2bd0d89
+    - service: climate.set_preset_mode
+      data:
+        preset_mode: eco
+      target:
+        device_id: 1c560bbc7917f45d737e87d3e2bd0d89
+    - service: climate.set_swing_mode
+      data:
+        swing_mode: 3D
+      target:
+        device_id: 1c560bbc7917f45d737e87d3e2bd0d89
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.living_airco_target_temperature
+      data:
+        value: "{{ states('input_number.living_comfort_temperature') | float() }}"
   mode: single
 
 - alias: "♨️ airco heating // living // uit volgens schema/verlaten huis/timer stop"

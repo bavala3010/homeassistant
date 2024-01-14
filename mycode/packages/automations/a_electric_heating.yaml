@@ -60,8 +60,7 @@ automation:
       entity_id: switch.badkamer_electric_heater
   mode: single
 
-
-- alias: ♨️ badkamer elektrische verwarming // aan met licht douche
+- alias: ♨️ badkamer elektrische verwarming // licht douche 34 sec aan = aan
   id: 'ff0ae353-0a49-4842-92cf-b9cc31037b6a'
   description: ""
   trigger:
@@ -88,7 +87,7 @@ automation:
         entity_id: switch.badkamer_electric_heater
   mode: single
 
-- alias: ♨️ badkamer elektrische verwarming // start
+- alias: ♨️ badkamer elektrische verwarming // starttijd = aan
   id: 'f9111ba9-c29d-4c73-8d36-b7849c3f3a63'
   description: ''
   trigger:
@@ -113,7 +112,7 @@ automation:
 # BADKAMER UIT
 ###########################################################################
 
-- alias: ♨️ badkamer elektrische verwarming // uit volgens schema of raam open
+- alias: ♨️ badkamer elektrische verwarming // volgens schema, raam open, 20 min aan = uit
   id: '6cc75694-e37d-4d40-8f51-2c5b4ee710b1'
   description: ""
   trigger:
@@ -123,6 +122,14 @@ automation:
     - platform: state
       entity_id: binary_sensor.badkamer_raam_kantel
       to: 'on'
+    - platform: numeric_state
+      entity_id: sensor.badkamer_temperature
+      above: 20
+    - platform: state
+      entity_id: switch.badkamer_electric_heater
+      to: "on"
+      for:
+        minutes: 20
   condition:
     - condition: state
       entity_id: switch.badkamer_electric_heater
@@ -167,24 +174,3 @@ automation:
       entity_id: input_datetime.badkamer_electric_heater_stop_time      
   mode: single
 
-- alias: ♨️ badkamer elektrische verwarming // altijd uit na 20 minuten
-  id: '0b4d20ec-4aa4-4e02-a043-fdd54312f14e'
-  description: ""
-  trigger:  
-  - platform: state
-    entity_id: switch.badkamer_electric_heater
-    to: "on"
-    for:
-      minutes: 20      
-  condition: []   
-  action:
-    - service: switch.turn_off
-      data: {}
-      target:
-        entity_id: switch.badkamer_electric_heater
-    - service: input_datetime.set_datetime
-      data:
-        datetime: '{{ now() }}'
-      target:
-        entity_id: input_datetime.badkamer_electric_heater_stop_time        
-  mode: single

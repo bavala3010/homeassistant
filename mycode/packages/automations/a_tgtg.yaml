@@ -14,6 +14,13 @@ automation:
     - condition: state
       entity_id: input_boolean.tgtg_geen_brood_nodig
       state: "off"
+  variables:
+    timing: >
+      {% set ophalen = trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom('%-d') | int %}
+      {% set vandaag = as_timestamp(now()) | timestamp_custom('%-d') | int %}
+      {% if ophalen == vandaag %}vandaag
+      {% elif ophalen == vandaag +1 %}morgen
+      {% endif %}
   action:
     - alias: "Send or dismiss"
       choose:
@@ -28,12 +35,7 @@ automation:
         - service: notify.bart_madouce_phone
           data:
             title: >
-              {% set ophalen = trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom('%-d') | int %}
-              {% set vandaag = as_timestamp(now()) | timestamp_custom('%-d') | int %}
-              {% if ophalen == vandaag %}brood vandaag bij
-              {% elif ophalen == vandaag +1 %}brood morgen bij
-              {% endif %}
-              {{ trigger.to_state.name | replace("TGTG ", "") }}
+              brood {{ timing }} {{ trigger.to_state.name | replace("TGTG ", "") }}
             message: >
               Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['item_price'] }} per pakket.<br>
               Ophalen van {{ trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['pickup_end'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
@@ -62,7 +64,7 @@ automation:
               data:
                 message: TTS
                 data:
-                  tts_text: Dag Madoes. Brood beschikbaar.
+                  tts_text: Dag Madoes. Brood beschikbaar {{ timing }}.
                   ttl: 0
                   priority: high
                   media_stream: alarm_stream_max
@@ -78,6 +80,13 @@ automation:
       - sensor.tgtg_bakkerij_gielis_kessel_lo_gebak
     to: ~
   condition: []
+  variables:
+    timing: >
+      {% set ophalen = trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom('%-d') | int %}
+      {% set vandaag = as_timestamp(now()) | timestamp_custom('%-d') | int %}
+      {% if ophalen == vandaag %}vandaag
+      {% elif ophalen == vandaag +1 %}morgen
+      {% endif %}  
   action:
     - alias: "Send or dismiss"
       choose:
@@ -91,7 +100,7 @@ automation:
       default:
         - service: notify.bart_madouce_phone
           data:
-            title: "{{ trigger.to_state.name }}"
+            title: "gebak {{ timing }} bij {{ trigger.to_state.name }}"
             message: >
               Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['item_price'] }} per pakket.<br>
               Ophalen van {{ trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['pickup_end'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
@@ -120,7 +129,7 @@ automation:
               data:
                 message: TTS
                 data:
-                  tts_text: Dag Madoes. Gebak beschikbaar bij Gielis.
+                  tts_text: Dag Madoes. Gebak beschikbaar bij Gielis {{ timing }}.
                   ttl: 0
                   priority: high
                   media_stream: alarm_stream_max                       
@@ -137,7 +146,14 @@ automation:
       - sensor.tgtg_au_flan_breton_linden
       - sensor.tgtg_les_tartes_de_francoise_leuven_zoet
     to: ~
-  condition: []
+  condition: []  
+  variables:
+    timing: >
+      {% set ophalen = trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom('%-d') | int %}
+      {% set vandaag = as_timestamp(now()) | timestamp_custom('%-d') | int %}
+      {% if ophalen == vandaag %}vandaag
+      {% elif ophalen == vandaag +1 %}morgen
+      {% endif %}  
   action:
     - alias: "Send or dismiss"
       choose:
@@ -152,11 +168,7 @@ automation:
         - service: notify.bart_madouce_phone
           data:
             title: >
-              {% set ophalen = trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom('%-d') | int %}
-              {% set vandaag = as_timestamp(now()) | timestamp_custom('%-d') | int %}
-              {% if ophalen == vandaag %}brood en gebak vandaag bij
-              {% elif ophalen == vandaag +1 %}brood en gebak morgen bij
-              {% endif %}
+              brood en gebak {{ timing }} bij
               {{ trigger.to_state.name | replace("TGTG ", "") }}
             message: >
               Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['item_price'] }} per pakket.<br>

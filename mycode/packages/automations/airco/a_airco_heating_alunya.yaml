@@ -30,8 +30,10 @@ automation:
         {{ states('sensor.kamer_alunya_temperature') | float <
         states('input_number.kamer_alunya_normal_temperature') | float }}
   condition:
-    # only between September and April
-    - condition: template
+    - condition: state
+      entity_id: input_select.heating_mode
+      state: airco  
+    - condition: template # only between September and April
       value_template: "{{ now().month < 5 and now().month > 8 }}"
     - condition: state
       entity_id: schedule.kamer_alunya_normal_temperature_schema
@@ -68,7 +70,10 @@ automation:
   trigger:
   - platform: time
     at: '21:45:00'
-  condition: []
+  condition:
+    - condition: state
+      entity_id: input_select.heating_mode
+      state: airco  
   action:
     - if:
         - condition: state

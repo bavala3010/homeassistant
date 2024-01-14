@@ -35,7 +35,7 @@ homeassistant:
             - media_player.living_speaker
             - media_player.veranda_speaker
             - media_player.master_bedroom_speaker
-        default_volume_level: 0.25
+        default_volume_level: 0.3
         dummy_player: media_player.vlc_telnet
         default_resume_delay:
           seconds: 20
@@ -44,7 +44,7 @@ homeassistant:
         # settings for automation
         enable_automation: false
         dashboard_cast: true
-        announce_volume_automation: 0.4
+        announce_volume_automation: 0.5
       # settings for voice script
       voice_settings: &voice_settings
         check_for_title: "Witte ruis"

@@ -110,6 +110,10 @@ timer:
 usb:
 webhook:
 zeroconf:
+zha:
+  # zigpy_config:
+  #   ota:
+  #     ikea_provider: true                        # Auto update Trådfri devices
 zone:
 
 # lovelace:

@@ -118,6 +118,36 @@ living_lichten:
     - light.living_bol
     - light.tv_strip 
     
+keuken_lichten:
+  name: keuken
+  entities:
+    - light.keuken_gang_links_licht
+    - light.keuken_gang_midden_licht
+    - light.keuken_gang_rechts_licht
+    - light.keuken_aanrecht_links_1_licht
+    - light.keuken_aanrecht_links_2_licht
+    - light.keuken_aanrecht_midden_1_licht
+    - light.keuken_aanrecht_midden_2_licht
+    - light.keuken_aanrecht_rechts_1_licht
+    - light.keuken_aanrecht_rechts_2_licht
+
+keuken_gang_lichten:
+  name: keuken gang
+  entities:
+    - light.keuken_gang_links_licht
+    - light.keuken_gang_midden_licht
+    - light.keuken_gang_rechts_licht
+
+keuken_aanrecht_lichten:
+  name: keuken aanrecht
+  entities:
+      - light.keuken_aanrecht_links_1_licht
+      - light.keuken_aanrecht_links_2_licht
+      - light.keuken_aanrecht_midden_1_licht
+      - light.keuken_aanrecht_midden_2_licht
+      - light.keuken_aanrecht_rechts_1_licht
+      - light.keuken_aanrecht_rechts_2_licht
+
 amilya_lichten:
   name: Amilya
   entities:

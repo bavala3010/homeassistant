@@ -65,7 +65,10 @@ automation:
   trigger:
   - platform: time
     at: '21:45:00'
-  condition: []
+  condition:
+    - condition: state
+      entity_id: input_select.heating_mode
+      state: airco
   action:
     - if:
         - condition: state
@@ -227,6 +230,9 @@ automation:
   #   entity_id: sensor.amilya_phone_room
   #   state: "amilya kamer"
   - condition: state
+    entity_id: input_select.heating_mode
+    state: airco
+  - condition: state
     entity_id: person.amilya
     state: home
   action:
@@ -306,7 +312,7 @@ automation:
   mode: single
 
 
-- alias: '♨️ airco heating // Amilya // huidige temperatuur is hoger dan gevraagde temperatuur'
+- alias: '♨️ airco heating // Amilya // huidige temperatuur is hoger dan gevraagde temperatuur = uit'
   id: '4a9c231f-9c19-47f9-a323-50f464622d31'
   description: ''
   trigger:
@@ -316,6 +322,9 @@ automation:
   - condition: state
     entity_id: input_boolean.heating_season
     state: 'on'
+  - condition: state
+    entity_id: input_select.heating_mode
+    state: airco    
   - condition: template
     value_template: '{{ states(''sensor.kamer_amilya_temperature'') | float > states(''input_number.amilya_airco_target_temperature'')
       | float }}'

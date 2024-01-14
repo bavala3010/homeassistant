@@ -103,7 +103,7 @@ automation:
     - service: notify.bart_madouce_phone
       data:
         title: Droogkast
-        message: "Haal de was uit de droogkast. De droogkast was klaar om {{ states('input_datetime.dryer_stop_time') | timestamp_custom('%d-%m-%y %H:%M') }}."
+        message: "Haal de was uit de droogkast. De droogkast was klaar om {{ as_timestamp(states('input_datetime.dryer_stop_time')) | timestamp_custom('%d-%m-%y %H:%M') }}."
         data:
           tag: droogkast        
           notification_icon: "mdi:tumble-dryer"          

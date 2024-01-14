@@ -1,6 +1,5 @@
 automation:
 
-
 - alias: '♨️ airco heating // master bedroom // uit bij verlaten huis/timer stop'
   id: '6f9dd54d-4168-49d5-8bc4-e9b6d157bb44'
   description: ''
@@ -51,7 +50,10 @@ automation:
   trigger:
   - platform: time
     at: '21:45:00'
-  condition: []
+  condition:
+    - condition: state
+      entity_id: input_select.heating_mode
+      state: airco
   action:
     - if:
         - condition: state

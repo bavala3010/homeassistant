@@ -220,8 +220,8 @@ automation:
         minutes: 3         
   condition:
     - condition: state
-      entity_id: switch.madouce_laptop_tme_a_b_1801581_windows_device
-      state: "on"
+      entity_id: device_tracker.madouce_laptop_toyota
+      state: "thuis"
       for:
         minutes: 10
   action:
@@ -233,55 +233,57 @@ automation:
   mode: single
 
 
-- alias: 💡 lights // living // aanwezigheidsensor
+#################################################  
+# Keuken
+#################################################
+
+- alias: 💡 lights // keuken // aanwezigheid = licht aan
+  id: '254150c2-0d94-4ea5-ba36-0a95aaf0b9f2'
   description: ""
   trigger:
     - platform: state
       entity_id:
-        - binary_sensor.keuken_presence
+        - binary_sensor.keuken_presence_sensor
       to: "on"
-      id: keuken aanwezigheid
-    - platform: state
-      entity_id:
-        - binary_sensor.keuken_presence
-      to: "off"
-      id: keuken afwezigheid
   condition:
     - condition: numeric_state
-      entity_id: sensor.living_keuken_presence_light_level
-      below: 15
-    - condition: time
-      after: "19:00:00"
-      before: "17:00:00"
+      entity_id: sensor.presence_sensor_light_level
+      below: 20
+    # - condition: time
+    #   after: "19:00:00"
+    #   before: "17:00:00"
   action:
-    - choose:
-        - conditions:
-            - condition: trigger
-              id:
-                - keuken aanwezigheid
-          sequence:
-            - service: light.turn_on
-              data:
-                brightness_pct: 70
-                rgb_color:
-                  - 255
-                  - 236
-                  - 220
-              target:
-                entity_id: light.living_rechts_4
-        - conditions:
-            - condition: trigger
-              id:
-                - keuken afwezigheid
-          sequence:
-            - wait_template: ""
-              timeout: "00:00:02"
-            - service: light.turn_off
-              data: {}
-              target:
-                entity_id: light.living_rechts_4
-  mode: parallel
+    - service: light.turn_on
+      data:
+        transition: 1
+      target:
+        entity_id:
+          - light.dresden_elektronik_raspbee_ii_keuken_alle_lichten
+    # - service: light.turn_on
+    #   data: {}
+    #   target:
+    #     area_id:      
+    #       - keuken_gang
+    #       - keuken_aanrecht
+  mode: restart
 
+- alias: 💡 lights // keuken // afwezigheid = licht uit
+  id: '22b6df03-81eb-46a3-b26c-df7556216636'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.keuken_presence_sensor
+      to: "off"
+  condition: []
+  action:
+    - service: light.turn_off
+      data:
+        transition: 2
+      target:
+        entity_id:
+          - light.dresden_elektronik_raspbee_ii_keuken_alle_lichten
+  mode: restart
 
 #################################################  
 # Amilya

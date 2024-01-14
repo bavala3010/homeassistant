@@ -1,3 +1,6 @@
+# The address should preferably be in the following format:
+# "(location name) , full address, city, province/state/etc, country"
+
 sensor:
   - platform: populartimes
     name: 'Elzenhof piekuren'
@@ -9,7 +12,8 @@ sensor:
 
   - platform: populartimes
     name: 'Thermen Grimbergen piekuren'
-    address: 'Wolvertemsesteenweg 74, 1850 Grimbergen'    
+    address: 'thermae grimbergen, Wolvertemsesteenweg 74, 1850 Grimbergen'    
 
-# The address should preferably be in the following format:
-# "(location name) , full address, city, province/state/etc, country"
+  - platform: populartimes
+    name: 'Thermen Boetfort piekuren'
+    address: 'Thermae Boetfort Wellness & Hotel, Sellaerstraat 42, 1820 Steenokkerzeel'    
