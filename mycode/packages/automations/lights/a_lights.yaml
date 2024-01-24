@@ -275,6 +275,8 @@ automation:
       entity_id:
         - binary_sensor.keuken_presence_sensor
       to: "off"
+      for:
+        seconds: 10  
   condition: []
   action:
     - service: light.turn_off

@@ -35,7 +35,7 @@ automation:
         - service: notify.bart_madouce_phone
           data:
             title: >
-              brood {{ timing }} {{ trigger.to_state.name | replace("TGTG ", "") }}
+              {{ timing }} brood bij {{ trigger.to_state.name | replace("TGTG ", "") }}
             message: >
               Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['item_price'] }} per pakket.<br>
               Ophalen van {{ trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['pickup_end'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
@@ -100,7 +100,7 @@ automation:
       default:
         - service: notify.bart_madouce_phone
           data:
-            title: "gebak {{ timing }} bij {{ trigger.to_state.name }}"
+            title: "{{ timing }} gebak bij {{ trigger.to_state.name }}"
             message: >
               Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['item_price'] }} per pakket.<br>
               Ophalen van {{ trigger.to_state.attributes['pickup_start'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M")  }} tot {{ trigger.to_state.attributes['pickup_end'] | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}.
@@ -168,7 +168,7 @@ automation:
         - service: notify.bart_madouce_phone
           data:
             title: >
-              brood en gebak {{ timing }} bij
+              {{ timing }} brood en gebak bij
               {{ trigger.to_state.name | replace("TGTG ", "") }}
             message: >
               Nog {{ trigger.to_state.state }} beschikbaar aan {{ trigger.to_state.attributes['item_price'] }} per pakket.<br>

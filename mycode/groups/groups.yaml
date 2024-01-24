@@ -279,7 +279,7 @@ car_2_doors:
     - binary_sensor.aygo_x_leftrearseat_door
     - binary_sensor.aygo_x_passengerseat_door
     - binary_sensor.aygo_x_rightrearseat_door
-    - binary_sensor.aygo_x_trunk_door
+    - binary_sensor.aygo_x_trunk
 
 #######################################################################
 # Waarschoot

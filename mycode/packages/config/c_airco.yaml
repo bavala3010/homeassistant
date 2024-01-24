@@ -170,4 +170,69 @@ input_select:
     options:
       - volgens schema
       - timer
-    initial: timer  
+    initial: timer
+
+sensor:
+  - platform: history_stats
+    name: "living airco vandaag verwarmen"
+    entity_id: climate.living_airco
+    state: 'heat'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "Amilya airco vandaag verwarmen"
+    entity_id: climate.amilya_airco
+    state: 'heat'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "Alunya airco vandaag verwarmen"
+    entity_id: climate.alunya_airco
+    state: 'heat'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "Master bedroom airco vandaag verwarmen"
+    entity_id: climate.master_bedroom_airco
+    state: 'heat'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "living airco vandaag koelen"
+    entity_id: climate.living_airco
+    state: 'cool'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "Amilya airco vandaag koelen"
+    entity_id: climate.amilya_airco
+    state: 'cool'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "Alunya airco vandaag koelen"
+    entity_id: climate.alunya_airco
+    state: 'cool'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: "Master bedroom airco vandaag koelen"
+    entity_id: climate.master_bedroom_airco
+    state: 'cool'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'  

@@ -133,7 +133,7 @@ automation:
   id: '0c41db26-ed5a-46c8-b2f5-ba93514fb638'
   description: ''
   trigger:
-  - minutes: /30
+  - minutes: /25
     platform: time_pattern
   condition:
   - condition: time
@@ -154,7 +154,7 @@ automation:
   id: 'a9ed4d73-ab63-48f1-a05b-e252d9d60694'
   description: ''
   trigger:
-  - minutes: /30
+  - minutes: /25
     platform: time_pattern
   condition:
   - condition: time
@@ -272,4 +272,36 @@ automation:
   action:
     - service: script.badkamer_chauffage_18_graden_30_min
       data: {}
-  mode: single 
+  mode: single
+
+- alias: ♨️ classic heating // sensor onbeschikbaar = herstart Tado integratie
+  id: 'c462aa06-539f-4540-9dae-578263ac70d3'
+  description: Herstart Tado integration als sensor onbeschikbaar is
+  trigger:
+    - platform: state
+      entity_id: 
+        - sensor.living_temperature
+        - sensor.kamer_amilya_temperature
+        - sensor.veranda_temperature
+        - sensor.berging_temperature
+        - sensor.gang_temperature
+        - sensor.badkamer_temperature
+        - sensor.kamer_alunya_temperature
+        - sensor.master_bedroom_temperature
+        # Add other room temperature sensors here
+      to: unknown
+    - platform: time_pattern
+      minutes: '/25'
+  condition:
+    - condition: template
+      value_template: "{{ trigger.to_state.state == 'unknown' }}"
+  action:
+    - service: homeassistant.reload_config_entry
+      target:
+        entity_id: "{{ trigger.entity_id }}"
+    - service: notify.bart_phone
+      data:
+        title: Tado integratie herstart
+        message: "Tado is herstart omdat er een sensor onbeschikbaar was."        
+  mode: single
+  

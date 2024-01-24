@@ -37,7 +37,17 @@ automation:
         title: 👕👙 Wasmachine
         data:
           tag: wasmachine
-          notification_icon: "mdi:washing-machine"          
+          notification_icon: "mdi:washing-machine"
+    - service: script.google_home_resume
+      data:
+        action:
+          - service: tts.edge_tts_say
+            data:
+              entity_id: media_player.living_speaker
+              message: De wasmachine is gestart!
+              options:
+                pitch: +0Hz
+                rate: -10%
   mode: single
 
 - alias: 👕 wasmachine // bezig met water verwarmen
@@ -175,7 +185,7 @@ automation:
     - service: notify.bart_madouce_phone
       data:
         title: Wasmachine
-        message: "Haal de was uit de wasmachine. De wasmachine was klaar om {{ states('input_datetime.washing_machine_stop_time') | as_timestamp| timestamp_custom('%d/%-m %H:%M') }}."
+        message: "Haal de was uit de wasmachine. De wasmachine was klaar op {{ states('input_datetime.washing_machine_stop_time') | as_timestamp| timestamp_custom('%d/%-m om %H:%M') }}."
         data:
           tag: wasmachine
           notification_icon: "mdi:washing-machine"

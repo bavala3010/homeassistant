@@ -28,7 +28,24 @@ automation:
       data:
         option: bezig
       target:
-        entity_id: input_select.dryer_state        
+        entity_id: input_select.dryer_state
+    - service: notify.bart_madouce_phone
+      data:
+        message: De droogkast is gestart!
+        title: 👕👙 Droogkast
+        data:
+          tag: wasmachine
+          notification_icon: "mdi:tumble-dryer"
+    - service: script.google_home_resume
+      data:
+        action:
+          - service: tts.edge_tts_say
+            data:
+              entity_id: media_player.living_speaker
+              message: De droogkast is gestart!
+              options:
+                pitch: +0Hz
+                rate: -10%
   mode: single
 
 - alias: 💨 droogkast // klaar = eerste melding
@@ -103,7 +120,7 @@ automation:
     - service: notify.bart_madouce_phone
       data:
         title: Droogkast
-        message: "Haal de was uit de droogkast. De droogkast was klaar om {{ as_timestamp(states('input_datetime.dryer_stop_time')) | timestamp_custom('%d-%m-%y %H:%M') }}."
+        message: "Haal de was uit de droogkast. De droogkast was klaar op {{ as_timestamp(states('input_datetime.dryer_stop_time')) | timestamp_custom('%d-%m om %H:%M') }}."
         data:
           tag: droogkast        
           notification_icon: "mdi:tumble-dryer"          

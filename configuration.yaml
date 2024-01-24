@@ -42,9 +42,7 @@
 
 assist_pipeline:
 backup:
-
 battery_notes:
-
 bluetooth:
 cloud:                  # for Nabu Case cloud
 config:
@@ -116,6 +114,12 @@ zha:
   #     ikea_provider: true                        # Auto update Trådfri devices
 zone:
 
+
+lovelace:
+  resources:
+    - url: /hacsfiles/numberbox-card/numberbox-card.js
+      type: module
+
 # lovelace:
 #   mode: yaml
 #   resources:
@@ -165,13 +169,13 @@ shell_command: !include shell_commands.yaml
 
 #####################################################
 homeassistant:
-  name: Eikenbos
-  country: BE
-  currency: EUR
-  external_url: https://ha.bartland.duckdns.org
-  internal_url: http://192.168.68.100:8123
-  time_zone: "Europe/Brussels"
-  language: nl
+  # name: Eikenbos
+  # country: BE
+  # currency: EUR
+  # external_url: https://ha.bartland.duckdns.org
+  # internal_url: http://192.168.68.100:8123
+  # time_zone: "Europe/Brussels"
+  # language: nl
 
   auth_providers:
     - type: homeassistant
@@ -345,7 +349,7 @@ influxdb:
   ssl: false
   host: localhost
   port: 8086
-  token: caGcix5eP8n53E1msFJcpBFm6M6gxwXTG2gHAkRfQCEAMdho5E5XrCLVJym3Ndl5nGnU1-DFphLkR3Nh0LIiiw==
+  token: caGcix5eP8n53E1msFJcpBFm6M6gxwXTG2gHAkRfQCEAMdho5E5XrCLVJym3Ndl5nGnU1-DFphLkR3Nh0LIiiw==    # !secret influxdb_token 
   organization: 6fe6192d84027fb4
   bucket: HomeAssistant
   default_measurement: state
@@ -365,12 +369,12 @@ netatmo:
 # create client_id and client_secret at https://dev.netatmo.com/apps
 
 # Eikenbos (bart@van-landschoot.be)
-  client_id: 639ccb520c005b86eb0280a2
-  client_secret: SHtT5LrjtoCwT3IcrSiSCsDySu9eyva2zkJt2uivk5ko
+  client_id: !secret netatmo_eikenbos_client_id       
+  client_secret: !secret netatmo_eikenbos_client_secret
 
 # Waarschoot (bartland@gmail.com)
-#  client_id: 60d72f7458da3d00f57f4fd5 
-#  client_secret: cEP5HXSCw74AEey7KkpEFIBwrzO
+  # client_id: !secret netatmo_waarschoot_client_id       
+  # client_secret: !secret netatmo_waarschoot_client_secret
 
 alarm_control_panel:
   - platform: manual

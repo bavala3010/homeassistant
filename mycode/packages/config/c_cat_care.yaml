@@ -1,0 +1,10 @@
+input_number:
+  cat_1_care_day_counter:
+    name: Rio dagen sinds behandeling
+    min: 0
+    max: 100
+
+  cat_2_care_day_counter:
+    name: Smarty dagen sinds behandeling
+    min: 0
+    max: 100

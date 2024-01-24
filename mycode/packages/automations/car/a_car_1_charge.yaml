@@ -380,6 +380,9 @@ automation:
         minutes: 10
         seconds: 0
       below: "1"
+    # - platform: template
+    #   value_template: >
+    #     {{ as_timestamp(states('sensor.sunset')) | int == as_timestamp(now()) | int }}
   condition:
   - condition: template
     value_template: >
@@ -393,9 +396,14 @@ automation:
         message: >
           {% set target = states('input_number.car_1_optimal_target_soc') | round(default=0) %}
           {% set soc = states('sensor.car_1_soc') | round(default=0) %}
-          Het laaddoel van {{ target }} % is nog niet bereikt.<br>
-          De auto heeft nu {{ soc }} %.
-          Wenst u over te schakelen op laden van het net?
+          Einde van de zonne-energie productie vandaag. Het laaddoel van {{ target }} % is nog niet bereikt.<br>
+          De auto heeft nu {{ soc }} %. Er moet nog {{ target - soc }} % geladen worden.
+          {% if states('input_boolean.car_charge_evening_net') == 'on' and states('input_boolean.car_charge_night_net') == 'on' %}Deze avond en nacht wordt geladen van het net.
+          {% elif states('input_boolean.car_charge_evening_net') == 'on' and states('input_boolean.car_charge_night_net') == 'off' %}Er wordt enkel deze avond nog geladen tot 23u en niet deze nacht.
+          {% elif states('input_boolean.car_charge_evening_net') == 'off' and states('input_boolean.car_charge_night_net') == 'on' %}Er wordt enkel deze nacht geladen.
+          {% elif states('input_boolean.car_charge_evening_net') == 'off' and states('input_boolean.car_charge_night_net') == 'off' %}Er is geen laadplanning ingesteld voor deze avond of nacht.
+          {% endif %}          
+          Wenst u verder te laden van het net?
         data:
           tag: car_charging
           color: green

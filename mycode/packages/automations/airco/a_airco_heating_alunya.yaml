@@ -84,7 +84,7 @@ automation:
           state: 'off'
         - condition: numeric_state
           entity_id: sensor.kamer_alunya_temperature
-          below: 15
+          below: 16
       then:
         - service: input_number.set_value
           data:

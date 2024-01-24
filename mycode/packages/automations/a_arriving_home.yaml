@@ -484,3 +484,61 @@ automation:
       target:
         entity_id: input_boolean.arriving_home_reminder_madouce
   mode: single
+
+- alias: Bart komt thuis na fietsen (iPhone) = doe garagepoort open
+  id: '3873a20f-fa6e-4c9e-8469-91b5626bd24a'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - sensor.bartiphone_ssid
+      to: BMWifi
+  condition:
+    - condition: template
+      value_template: >-
+        {% set act = states('sensor.bartiphone_activity') %} {{ act == 'cycling' }}
+    - condition: template
+      value_template: >-
+        {% set dif = as_timestamp(now()) - as_timestamp(states.cover.garagepoort.last_changed) %} {{ dif > 120 }}    
+  action:
+    - service: cover.open_cover
+      target:
+        entity_id: cover.garagepoort
+      data: {}
+  mode: single
+
+- alias: Bart komt thuis na fietsen = doe garagepoort open
+  id: '1534f878-5e7c-46f7-9956-8d2ecf9b0d2d'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - sensor.sm_s916b_wifi_connection
+      to: BMWifi
+    - platform: state
+      entity_id:
+        - sensor.sm_s916b_wifi_connection
+      to: BMWifiBackup
+  condition:
+    - condition: template
+      value_template: >-
+        {% set act = states('sensor.sm_s916b_detected_activity') %} {{ act ==
+        "on_bicycle" }} # {{ act == "on_bicycle" or act == "walking" }}
+    - condition: template
+      value_template: >-
+        {% set dif = as_timestamp(now()) -
+        as_timestamp(states.cover.garagepoort.last_changed) %} {{ dif > 120 }}    
+  action:
+    - service: notify.bart_phone
+      data:
+        message: TTS
+        data:
+          tts_text: Welkom thuis Bart. De garagepoort gaat nu open.
+          ttl: 0
+          priority: high
+          media_stream: alarm_stream_max
+    - service: cover.open_cover
+      target:
+        entity_id: cover.garagepoort
+      data: {}
+  mode: single

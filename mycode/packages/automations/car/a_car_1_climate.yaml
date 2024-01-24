@@ -31,7 +31,7 @@ automation:
     data: {}
     target:
       entity_id: input_boolean.car_climatisation_timer
-  - service: script.auto_start_climatisatie_nu      
+  - service: script.car_1_climatisation_start_now      
   mode: restart
 
 - alias: 🚗 car 1 // climate // 19u in Waarschoot en koud = vraag auto climatiseren
@@ -115,7 +115,7 @@ automation:
       sequence:
       - wait_template: ''
         timeout: 00:10:00       
-      - service: script.auto_start_climatisatie_nu
+      - service: script.car_1_climatisation_start_now
     # indien aankomst bij plaats met lang verblijf, vragen 
     - conditions:
       - condition: template
@@ -219,7 +219,7 @@ automation:
       sequence:
       - wait_template: ''
         timeout: 00:10:00      
-      - service: script.auto_start_climatisatie_nu
+      - service: script.car_1_climatisation_start_now
     # indien aankomst bij plaats met lang verblijf, vragen 
     - conditions:
       - condition: template
@@ -307,7 +307,7 @@ automation:
         - action: URI
           title: Voor meer info, klik hier
           uri: /dashboard-car/car-heater
-  - service: script.auto_start_climatisatie_nu
+  - service: script.car_1_climatisation_start_now
   mode: single 
 
 
@@ -374,7 +374,7 @@ automation:
         - action: URI
           title: Voor meer info, klik hier
           uri: /dashboard-car/car-heater
-  - service: script.auto_start_climatisatie_nu          
+  - service: script.car_1_climatisation_start_now          
   mode: single
 
 
@@ -410,7 +410,7 @@ automation:
         - action: URI
           title: Voor meer info, klik hier
           uri: /dashboard-car/car-heater
-  - service: script.auto_start_climatisatie_nu
+  - service: script.car_1_climatisation_start_now
   mode: single
 
 
@@ -477,7 +477,7 @@ automation:
         - action: URI
           title: Voor meer info, klik hier
           uri: /dashboard-car/car-heater
-  - service: script.auto_start_climatisatie_nu          
+  - service: script.car_1_climatisation_start_now          
   mode: single
 
 #####################################################
@@ -499,7 +499,7 @@ automation:
       value_template: >
         {% if now().date().isoweekday() != 5 %} true {% endif %}        
   action:      
-    - service: script.auto_start_climatisatie_nu
+    - service: script.car_1_climatisation_start_now
   mode: single
 
 - alias: 🚗 car 1 // climate // The White Oak (vrijdag) = start climatisatie om 22u20
@@ -517,5 +517,5 @@ automation:
       value_template: >
         {% if now().date().isoweekday() == 5 %} true {% endif %}      
   action:      
-    - service: script.auto_start_climatisatie_nu
+    - service: script.car_1_climatisation_start_now
   mode: single

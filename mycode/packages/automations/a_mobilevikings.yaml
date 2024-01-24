@@ -10,7 +10,7 @@ automation:
       entity_id: sensor.mobile_vikings_0456109679_product
       to: unavailable
     - platform: time_pattern
-      minutes: /30      
+      minutes: /25   
   condition:
     - condition: state
       entity_id: sensor.mobile_vikings_0456109679_product
@@ -40,3 +40,47 @@ automation:
     - service: homeassistant.reload_config_entry
       target:
         entity_id: sensor.mobile_vikings_332839874_loyalty_points_available
+
+- alias: Mobile Vikings Anita // credit < 2€ = melding
+  description: ""
+  trigger:
+    - platform: numeric_state
+      entity_id:
+        - sensor.mobile_vikings_0456109679_credit
+      below: 8
+    - platform: numeric_state
+      entity_id:
+        - sensor.mobile_vikings_0456109679_credit
+      below: 7
+    - platform: numeric_state
+      entity_id:
+        - sensor.mobile_vikings_0456109679_credit
+      below: 6
+    - platform: numeric_state
+      entity_id:
+        - sensor.mobile_vikings_0456109679_credit
+      below: 5
+    - platform: numeric_state
+      entity_id:
+        - sensor.mobile_vikings_0456109679_credit
+      below: 4                          
+    - platform: numeric_state
+      entity_id:
+        - sensor.mobile_vikings_0456109679_credit
+      below: 3
+    - platform: numeric_state
+      entity_id:
+        - sensor.mobile_vikings_0456109679_credit
+      below: 2 
+    - platform: numeric_state
+      entity_id:
+        - sensor.mobile_vikings_0456109679_credit
+      below: 1      
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      title: Mobile Vikings krediet van mama is laag.
+      message: >
+        Er is nog {{ states('sensor.mobile_vikings_0456109679_credit')}} € krediet.
+  mode: single

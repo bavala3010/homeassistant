@@ -23,7 +23,10 @@ automation:
   - platform: sun
     event: sunset
     offset: '0'
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.christmas_season_lights
+    state: "on"
   action:
   - service: switch.turn_on
     target:
@@ -55,6 +58,9 @@ automation:
   - platform: time
     at: '07:00:00'
   condition:
+  - condition: state
+    entity_id: input_boolean.christmas_season_lights
+    state: "on" 
   - condition: and
     conditions:
     - condition: time
@@ -92,6 +98,9 @@ automation:
     to: "on"    
   condition:
   - condition: state
+    entity_id: input_boolean.christmas_season_lights
+    state: "on"  
+  - condition: state
     entity_id: switch.kerstverlichting
     state: 'off' 
   action:
@@ -117,7 +126,10 @@ automation:
   - platform: state
     entity_id: sun.sun
     to: 'above_horizon'
-  condition: []    
+  condition:
+  - condition: state
+    entity_id: input_boolean.christmas_season_lights
+    state: "on"      
   action:
   - service: switch.turn_off
     target:
@@ -133,6 +145,9 @@ automation:
     - '22:30'
     - '23:00'
   condition:
+  - condition: state
+    entity_id: input_boolean.christmas_season_lights
+    state: "on"  
   - condition: template
     value_template: >
       {% set h = now().hour %}
@@ -163,6 +178,9 @@ automation:
   - platform: time
     at: '07:00:00'
   condition:
+  - condition: state
+    entity_id: input_boolean.christmas_season_lights
+    state: "on"  
   - condition: and
     conditions:
     - condition: time
@@ -202,6 +220,9 @@ automation:
   - platform: time
     at: '09:00:00'
   condition:
+  - condition: state
+    entity_id: input_boolean.christmas_season_lights
+    state: "on"  
   - condition: and
     conditions:
     - condition: time
@@ -225,7 +246,10 @@ automation:
   - platform: state
     entity_id: group.gezin
     to: 'home'
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.christmas_season_lights
+    state: "on"  
   action:
   - service: switch.turn_on
     target:
@@ -259,6 +283,9 @@ automation:
     entity_id: group.gezin
     to: 'not_home'
   condition:
+  - condition: state
+    entity_id: input_boolean.christmas_season_lights
+    state: "on"  
   - condition: and
     conditions:
     - condition: time
@@ -285,7 +312,10 @@ automation:
   - platform: state
     entity_id: input_boolean.christmas_tree_spot_switch
     to: "on"
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.christmas_season_lights
+    state: "on"  
   action:
     - service: light.turn_on
       data:
@@ -306,7 +336,10 @@ automation:
   - platform: state
     entity_id: input_boolean.christmas_tree_spot_switch
     to: "off"
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.christmas_season_lights
+    state: "on"  
   action:
     - service: light.turn_off
       data: {}

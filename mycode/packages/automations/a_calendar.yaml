@@ -1,0 +1,25 @@
+automation:
+
+- alias: Start item Fortis agenda = melding
+  id: '1d2fb1ef-5eac-4a00-8ee5-75225599477d'
+  description: ""
+  trigger:
+  - platform: calendar
+    event: start
+    offset: -00:10:00
+    entity_id: calendar.fortis
+  condition: []
+  action:
+    - service: fully_kiosk.load_url
+      data: 
+        url: http://192.168.68.100:8123/lovelace-testing/agenda
+      target:
+        device_id: 9db72afc8fd0936719dbe6cdbe6d9711      
+    - wait_template: ''
+      timeout: 00:15:00
+    - service: fully_kiosk.load_url
+      data:
+        url: http://192.168.68.100:8123/dashboard-tablet/0
+      target:
+        device_id: 9db72afc8fd0936719dbe6cdbe6d9711
+  mode: single

@@ -103,11 +103,26 @@ automation:
     - condition: state
       entity_id: sensor.charger_status
       state: connected
+    # - condition: state
+    #   entity_id: input_boolean.car_charge_mode_stoptimer
+    #   state: "off"
+    # - condition: state
+    #   entity_id: input_boolean.car_charge_mode_sun
+    #   state: "off"
     - condition: state
-      entity_id: input_boolean.car_charge_mode_stoptimer
+      entity_id: input_boolean.car_charge_morning_net
+      state: "off" 
+    - condition: state
+      entity_id: input_boolean.car_charge_day_sun
       state: "off"
     - condition: state
-      entity_id: input_boolean.car_charge_mode_sun
+      entity_id: input_boolean.car_charge_day_net
+      state: "off"
+    - condition: state
+      entity_id: input_boolean.car_charge_evening_net
+      state: "off"
+    - condition: state
+      entity_id: input_boolean.car_charge_night_net
       state: "off"
   action:
     - service: notify.bart_madouce_phone
@@ -124,8 +139,7 @@ automation:
           #     uri: /dashboard-car/car-charging
   variables:
     message: >
-      OPGELET: Er is geen laadmodus ingesteld. Kies laden met timer, direct of met
-      zon.
+      OPGELET: Er is geen laadmodus ingesteld.
 
 
 - alias: "🚗 car 1 // 🔋 charge // laadkabel verbonden maar sessie op laadpaal niet gestart (enkel thuis)"
@@ -181,6 +195,11 @@ automation:
       - input_boolean.car_charge_busy
       - input_boolean.car_charge_sun_busy
       - input_boolean.car_charge_net_busy
+      - input_boolean.car_charge_morning_net_busy
+      - input_boolean.car_charge_day_sun_busy
+      - input_boolean.car_charge_day_net_busy
+      - input_boolean.car_charge_evening_net_busy
+      - input_boolean.car_charge_night_net_busy
   # force stop charging by setting charger at 5 A
   - service: script.stop_charger
     data: {}

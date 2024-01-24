@@ -1,6 +1,11 @@
 badkamer_chauffage_18_graden_30_min:
   alias: Badkamer chauffage op 18 graden gedurende 30 minuten
   sequence:
+  - service: climate.set_hvac_mode
+    target:
+      entity_id: climate.badkamer
+    data:
+      hvac_mode: heat
   - service: climate.set_temperature
     data:
       hvac_mode: heat    

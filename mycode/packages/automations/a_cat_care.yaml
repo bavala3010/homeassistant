@@ -1,0 +1,103 @@
+automation:
+
+- alias: 💨 kattenverzorging // verhoog dagteller
+  id: 'f7866095-e069-4321-a45f-ef70c0edf0dd'
+  description: ''
+  trigger:
+  - platform: time
+    at: "01:15:00"
+  condition: []
+  action:
+  - service: input_number.increment
+    metadata: {}
+    data: {}
+    target:
+      entity_id: 
+        - input_number.cat_1_care_day_counter
+        - input_number.cat_2_care_day_counter
+  mode: single
+
+
+- alias: 💨 kattenverzorging // Rio dagteller >= 30 = melding
+  id: '984d211d-d6cb-42cd-82ee-68311e72a4f2'
+  description: ''
+  trigger:
+  - platform: time
+    at: "19:30:00"
+  condition:
+  - condition: numeric_state
+    entity_id:
+      - input_number.cat_1_care_day_counter
+    above: 30
+  action:
+    - if:
+        - condition: state
+          entity_id: person.bart
+          state: "home"
+      then:
+        - service: notify.bart_phone
+          data:
+            title: "Tijd om Rio zijn maandelijkse verzorging te geven."
+            message: >
+              Het is {{ states('input_number.cat_1_care_day_counter') }} dagen geleden.
+            data:
+              tag: katten
+              color: green
+              notification_icon: "mdi:cat"
+    # - if:
+    #     - condition: state
+    #       entity_id: person.madouce
+    #       state: "home"
+    #   then:
+    #     - service: notify.madouce_phone
+    #       data:
+    #         title: "Tijd om Rio zijn maandelijkse verzorging te geven."
+    #         message: >
+    #           Het is {{ states('input_number.cat_1_care_day_counter') }} dagen geleden.
+    #         data:
+    #           tag: katten
+    #           color: green
+    #           notification_icon: "mdi:cat"              
+  mode: single
+
+- alias: 💨 kattenverzorging // Smarty dagteller >= 30 = melding
+  id: '2beb0368-a937-4828-a041-7a4b7aeb054b'
+  description: ''
+  trigger:
+  - platform: time
+    at: "19:30:00"
+  condition:
+  - condition: numeric_state
+    entity_id:
+      - input_number.cat_2_care_day_counter
+    above: 30
+  action:
+    - if:
+        - condition: state
+          entity_id: person.bart
+          state: "home"
+      then:
+        - service: notify.bart_phone
+          data:
+            title: "Tijd om Smarty zijn maandelijkse verzorging te geven."
+            message: >
+              Het is {{ states('input_number.cat_2_care_day_counter') }} dagen geleden.
+            data:
+              tag: katten
+              color: green
+              notification_icon: "mdi:cat"
+    # - if:
+    #     - condition: state
+    #       entity_id: person.madouce
+    #       state: "home"
+    #   then:
+    #     - service: notify.madouce_phone
+    #       data:
+    #         title: "Tijd om Smarty zijn maandelijkse verzorging te geven."
+    #         message: >
+    #           Het is {{ states('input_number.cat_2_care_day_counter') }} dagen geleden.
+    #         data:
+    #           tag: katten
+    #           color: green
+    #           notification_icon: "mdi:cat"              
+  mode: single  

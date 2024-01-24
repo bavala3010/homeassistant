@@ -21,7 +21,7 @@ automation:
         - sensor.audi_e_tron_sportback_range
       to: unavailable
     - platform: time_pattern
-      minutes: /30      
+      minutes: /25   
   condition:
     - condition: state
       entity_id: sensor.audi_e_tron_sportback_range

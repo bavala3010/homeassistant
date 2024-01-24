@@ -19,6 +19,49 @@ automation:
         message: '{{message}}'
   mode: single
 
+- alias: Assist // Verwarm de auto
+  id: '9d75233c-a8c7-4c74-a7f1-036cd22c8ca6'
+  description: ''
+  trigger:
+  - platform: conversation
+    command: Verwarm de auto
+  condition: []   
+  action:
+    - service: script.auto_start_climatisatie_nu_google_home
+  mode: single
+
+
+- alias: Assist // Doe het licht in de keuken uit
+  id: '0f90e4b3-687c-4833-8b0c-daa4415a50f5'
+  description: ''
+  trigger:
+  - platform: conversation
+    command: Doe het licht in de keuken uit
+  condition: []   
+  action:
+    - service: light.turn_off
+      data:
+        transition: 1
+      target:
+        entity_id:
+          - light.dresden_elektronik_raspbee_ii_keuken_alle_lichten
+  mode: single
+
+- alias: Assist // Doe het licht in de keuken aan
+  id: '3d7538c6-fe0f-46ad-8bf0-e5108c2ce5a0'
+  description: ''
+  trigger:
+  - platform: conversation
+    command: Doe het licht in de keuken aan
+  condition: []   
+  action:
+    - service: light.turn_on
+      data:
+        transition: 1
+      target:
+        entity_id:
+          - light.dresden_elektronik_raspbee_ii_keuken_alle_lichten
+  mode: single
 
 - alias: Assist // Hoeveel zon is er?
   id: '41cc7553-b924-4072-90ef-64ab0711a08a'
@@ -52,9 +95,9 @@ automation:
   description: ""
   trigger:
     - platform: conversation
-      command: hoe hard regent het
-    - platform: conversation
-      command: hoeveel regent het
+      command:
+        - hoe hard regent het
+        - hoeveel regent het
   condition: []
   variables:
     message: >

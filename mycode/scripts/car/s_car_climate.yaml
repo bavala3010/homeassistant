@@ -9,7 +9,7 @@
 # auto climatisatie
 ###########################
 
-auto_start_climatisatie_nu_google_home:
+car_1_climatisation_start_now_google_home:
   alias: auto start climatisatie via Google Home
   sequence:
   - service: timer.start
@@ -53,7 +53,7 @@ auto_start_climatisatie_nu_google_home:
         data:
           message: Climatisatie auto gestopt
           data:
-            tag: auto_verwarmen
+            tag: auto_climatisatie
             timeout: 6000  # 10 minuten
             actions:
             - action: URI
@@ -61,347 +61,112 @@ auto_start_climatisatie_nu_google_home:
               uri: /lovelace/e-tron
   mode: restart
 
-auto_start_climatisatie_nu:
+
+car_1_climatisation_start_now:
   alias: auto start climatisatie nu
   sequence:
-  - service: timer.start
+  - service: script.car_1_climatisation_start
     data:
-      duration: '1800'
-    target:
-      entity_id: timer.car_climatisation
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: !secret vin
-      action: start_climatisation
-  - service: notify.bart_madouce_phone
-    data:
-      message: Climatisatie auto gestart
-      data:
-        tag: auto_verwarmen
-        timeout: 18000  # 1800 seconden = half uur
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/e-tron
-  - delay:
-      hours: 0
-      minutes: 30
-      seconds: 0
-      milliseconds: 0
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: !secret vin
-      action: stop_climatisation
-  - if:
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: binary_sensor.madouce_phone_connected_to_car_1
-            state: "off"
-          - condition: state
-            entity_id: binary_sensor.bart_phone_connected_to_car_1
-            state: "off"
-    then:
-      - service: notify.bart_madouce_phone
-        data:
-          message: Climatisatie auto gestopt
-          data:
-            tag: auto_verwarmen
-            timeout: 6000  # 10 minuten
-            actions:
-            - action: URI
-              title: meer info
-              uri: /lovelace/e-tron
+      duration_sec: "1"
+      duration_txt: "nu" 
 
-
-auto_start_climatisatie_30min:
-  alias: auto start climatisatie na 30 min
+car_1_climatisation_start_0h30:
+  alias: auto start climatisatie over 30 min
   sequence:
-  - delay:
-      hours: 0
-      minutes: 30
-      seconds: 0
-      milliseconds: 0
-  - service: timer.start
+  - service: script.car_1_climatisation_start
     data:
-      duration: '1800'
-    target:
-      entity_id: timer.car_climatisation
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: !secret vin
-      action: start_climatisation
-  - service: notify.bart_madouce_phone
-    data:
-      message: Climatisatie auto gestart
-      data:
-        tag: auto_verwarmen
-        timeout: 18000  # 1800 seconden = half uur
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/e-tron
-  - delay:
-      hours: 0
-      minutes: 30
-      seconds: 0
-      milliseconds: 0
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: !secret vin
-      action: stop_climatisation
-  - if:
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: binary_sensor.madouce_phone_connected_to_car_1
-            state: "off"
-          - condition: state
-            entity_id: binary_sensor.bart_phone_connected_to_car_1
-            state: "off"
-    then:
-      - service: notify.bart_madouce_phone
-        data:
-          message: Climatisatie auto gestopt
-          data:
-            tag: auto_verwarmen
-            timeout: 6000  # 10 minuten
-            actions:
-            - action: URI
-              title: meer info
-              uri: /lovelace/e-tron
+      duration_sec: "1800"
+      duration_txt: "een half uur"        
 
-auto_start_climatisatie_60min:
-  alias: auto start climatisatie na 60 min
+car_1_climatisation_start_1h:
+  alias: auto start climatisatie over 1 uur
   sequence:
-  - delay:
-      hours: 1
-      minutes: 00
-      seconds: 0
-      milliseconds: 0
-  - service: timer.start
+  - service: script.car_1_climatisation_start
     data:
-      duration: '1800'
-    target:
-      entity_id: timer.car_climatisation
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: !secret vin
-      action: start_climatisation
-  - service: notify.bart_madouce_phone
-    data:
-      message: Climatisatie auto gestart
-      data:
-        tag: auto_verwarmen
-        timeout: 18000  # 1800 seconden = half uur
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/e-tron
-  - delay:
-      hours: 0
-      minutes: 30
-      seconds: 0
-      milliseconds: 0
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: !secret vin
-      action: stop_climatisation
-  - if:
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: binary_sensor.madouce_phone_connected_to_car_1
-            state: "off"
-          - condition: state
-            entity_id: binary_sensor.bart_phone_connected_to_car_1
-            state: "off"
-    then:
-      - service: notify.bart_madouce_phone
-        data:
-          message: Climatisatie auto gestopt
-          data:
-            tag: auto_verwarmen
-            timeout: 6000  # 10 minuten
-            actions:
-            - action: URI
-              title: meer info
-              uri: /lovelace/e-tron
+      duration_sec: "3600"
+      duration_txt: "een 1 uur"      
 
-
-auto_start_climatisatie_90min:
-  alias: auto start climatisatie na 90 min
+car_1_climatisation_start_1h30:
+  alias: auto start climatisatie over 1,5 uur
   sequence:
-  - delay:
-      hours: 1
-      minutes: 30
-      seconds: 0
-      milliseconds: 0
-  - service: timer.start
+  - service: script.car_1_climatisation_start
     data:
-      duration: '1800'
-    target:
-      entity_id: timer.car_climatisation
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: !secret vin
-      action: start_climatisation
-  - service: notify.bart_madouce_phone
-    data:
-      message: Climatisatie auto gestart
-      data:
-        tag: auto_verwarmen
-        timeout: 18000  # 1800 seconden = half uur
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/e-tron
-  - delay:
-      hours: 0
-      minutes: 30
-      seconds: 0
-      milliseconds: 0
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: !secret vin
-      action: stop_climatisation
-  - if:
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: binary_sensor.madouce_phone_connected_to_car_1
-            state: "off"
-          - condition: state
-            entity_id: binary_sensor.bart_phone_connected_to_car_1
-            state: "off"
-    then:
-      - service: notify.bart_madouce_phone
-        data:
-          message: Climatisatie auto gestopt
-          data:
-            tag: auto_verwarmen
-            timeout: 6000  # 10 minuten
-            actions:
-            - action: URI
-              title: meer info
-              uri: /lovelace/e-tron
+      duration_sec: "5400"
+      duration_txt: "1,5 uur"
 
-
-auto_start_climatisatie_120min:
-  alias: auto start climatisatie na 120 min
+car_1_climatisation_start_2h:
+  alias: auto start climatisatie over 2 uren
   sequence:
-  - delay:
-      hours: 2
-      minutes: 0
-      seconds: 0
-      milliseconds: 0
-  - service: timer.start
+  - service: script.car_1_climatisation_start
     data:
-      duration: '1800'
-    target:
-      entity_id: timer.car_climatisation
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: !secret vin
-      action: start_climatisation
-  - service: notify.bart_madouce_phone
-    data:
-      message: Climatisatie auto gestart
-      data:
-        tag: auto_verwarmen
-        timeout: 18000  # 1800 seconden = half uur
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/e-tron
-  - delay:
-      hours: 0
-      minutes: 30
-      seconds: 0
-      milliseconds: 0
-  - service: audiconnect.execute_vehicle_action
-    data:
-      vin: !secret vin
-      action: stop_climatisation
-  - if:
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: binary_sensor.madouce_phone_connected_to_car_1
-            state: "off"
-          - condition: state
-            entity_id: binary_sensor.bart_phone_connected_to_car_1
-            state: "off"
-    then:
-      - service: notify.bart_madouce_phone
-        data:
-          message: Climatisatie auto gestopt
-          data:
-            tag: auto_verwarmen
-            timeout: 6000  # 10 minuten
-            actions:
-            - action: URI
-              title: meer info
-              uri: /lovelace/e-tron
+      duration_sec: "7200"
+      duration_txt: "2 uren"
 
-
-auto_start_climatisatie_150min:
-  alias: auto start climatisatie na 150 min
+car_1_climatisation_start_2h30:
+  alias: auto start climatisatie over 2,5 uren
   sequence:
-  - delay:
-      hours: 2
-      minutes: 30
-      seconds: 0
-      milliseconds: 0
+  - service: script.car_1_climatisation_start
+    data:
+      duration_sec: "9000"
+      duration_txt: "2,5 uren"
+
+
+car_1_climatisation_start:
+  alias: start climatisatie Audi
+  sequence:
+  - if:
+    - condition: template
+      value_template: "{{ duration_sec != '1' }}"
+    then:
+    - service: notify.bart_madouce_phone
+      data:
+        message: Climatisatie auto zal starten over {{ duration_txt }}.
+        data:
+          tag: auto_climatisatie
+          timeout: 18000  # 1800 seconden = half uur
+          actions:
+          - action: URI
+            title: meer info
+            uri: /dashboard-car/e-tron
   - service: timer.start
     data:
-      duration: '1800'
+      duration: "{{ duration_sec }}"
     target:
       entity_id: timer.car_climatisation
+  - delay: "{{ duration_sec }}"
   - service: audiconnect.execute_vehicle_action
     data:
       vin: !secret vin
       action: start_climatisation
   - service: notify.bart_madouce_phone
     data:
-      message: Climatisatie auto gestart
+      message: Climatisatie auto aangevraagd
       data:
-        tag: auto_verwarmen
+        tag: auto_climatisatie
         timeout: 18000  # 1800 seconden = half uur
         actions:
         - action: URI
           title: meer info
           uri: /dashboard-car/e-tron
-  - delay:
-      hours: 0
-      minutes: 30
-      seconds: 0
-      milliseconds: 0
-  - service: audiconnect.execute_vehicle_action
+  - repeat:
+      while:
+      - condition: state
+        entity_id: sensor.audi_e_tron_sportback_climatisation_state
+        state: 'uit'
+      sequence:
+      - delay:
+          seconds: 30    
+  - service: notify.bart_madouce_phone
     data:
-      vin: !secret vin
-      action: stop_climatisation
-  - if:
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: binary_sensor.madouce_phone_connected_to_car_1
-            state: "off"
-          - condition: state
-            entity_id: binary_sensor.bart_phone_connected_to_car_1
-            state: "off"
-    then:
-      - service: notify.bart_madouce_phone
-        data:
-          message: Climatisatie auto gestopt
-          data:
-            tag: auto_verwarmen
-            timeout: 6000  # 10 minuten
-            actions:
-            - action: URI
-              title: meer info
-              uri: /lovelace/e-tron
-
+      message: Climatisatie auto is effectief gestart.
+      data:
+        tag: auto_climatisatie
+        timeout: 18000  # 1800 seconden = half uur
+        actions:
+        - action: URI
+          title: meer info
+          uri: /dashboard-car/e-tron
+  mode: restart
 
 auto_stop_climatisatie:
   alias: auto stop climatisatie
@@ -427,7 +192,7 @@ auto_stop_climatisatie:
         data:
           message: Climatisatie auto gestopt
           data:
-            tag: auto_verwarmen
+            tag: auto_climatisatie
             timeout: 6000  # 10 minuten
             actions:
             - action: URI
