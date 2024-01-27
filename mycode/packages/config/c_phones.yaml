@@ -156,7 +156,7 @@ binary_sensor:
           {% else %}
             mdi:car
           {% endif %}
-        value_template: "{{ '1C:E1:92:AB:76:E9 (Toyota Smart Connect)' in state_attr('sensor.sm_g916b_bluetooth_connection', 'connected_paired_devices') }}"
+        value_template: "{{ '64:E2:20:69:F7:FB (Toyota Smart Connect)' in state_attr('sensor.sm_s916b_bluetooth_connection', 'connected_paired_devices') }}"
         # do not forget to activate the bluetooth sensor in the Home Assistant companion app on smartphone
 
       madouce_phone_connected_to_car_2:
@@ -168,5 +168,5 @@ binary_sensor:
           {% else %}
             mdi:car
           {% endif %}
-        value_template: "{{ '1C:E1:92:AB:76:E9 (Toyota Smart Connect)' in state_attr('sensor.sm_g986b_bluetooth_connection', 'connected_paired_devices') }}"    
+        value_template: "{{ '64:E2:20:69:F7:FB (Toyota Smart Connect)' in state_attr('sensor.sm_g986b_bluetooth_connection', 'connected_paired_devices') }}"    
         # do not forget to activate the bluetooth sensor in the Home Assistant companion app on smartphone        

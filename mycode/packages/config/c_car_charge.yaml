@@ -32,6 +32,7 @@ input_number:
     step: 100
     unit_of_measurement: W
     mode: box
+    icon: "mdi:transmission-tower"
 
 input_boolean:
   car_charge_mode_peak:

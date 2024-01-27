@@ -3,8 +3,10 @@ sensor:
     station_from: "Leuven"
     station_to: "Brussel-Centraal/Bruxelles-Central"
     exclude_vias: true
+    station_live: "Leuven"
 
   - platform: nmbs
     station_from: "Brussel-Centraal/Bruxelles-Central"
     station_to: "Leuven"
-    exclude_vias: true    
+    exclude_vias: true
+    station_live: "Brussel-Centraal/Bruxelles-Central"

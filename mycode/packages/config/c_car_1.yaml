@@ -23,27 +23,42 @@ template:
 
 
 utility_meter:
-  car_1_today_km:
+  car_1_daily_km:
     source: sensor.audi_e_tron_sportback_mileage
     cycle: daily
+
+  car_1_weekly_km:
+    source: sensor.audi_e_tron_sportback_mileage
+    cycle: weekly
 
   car_1_monthly_km:
     source: sensor.audi_e_tron_sportback_mileage
     cycle: monthly
 
-
+  car_1_yearly_km:
+    source: sensor.audi_e_tron_sportback_mileage
+    cycle: yearly
 
 input_datetime:
-  car_climatisation_time:
+  car_1_climatisation_time:
     name: climatisatie auto startuur
     has_time: true
     has_date: false
 
 input_boolean:
-  car_climatisation_timer:
+  car_1_climatisation_timer:
     name: climatisatie auto timerswitch
 
 timer:
-  car_climatisation:
-    name: climatisatie auto timer  
-    icon: mdi:radiator
+  # car_1_climatisation:
+  #   name: climatisatie timer auto 1  
+  #   icon: mdi:radiator
+  #   duration: "00:00:00"
+
+input_text:
+  car_1_bluetooth_name:
+    name: bluetooth naam auto 1
+    icon: 'mdi:bluetooth'
+    initial: '98:49:14:C1:37:0B (Audi_MMI_9131)'
+
+

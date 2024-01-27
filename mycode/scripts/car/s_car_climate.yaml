@@ -16,7 +16,7 @@ car_1_climatisation_start_now_google_home:
     data:
       duration: '1800'
     target:
-      entity_id: timer.car_climatisation
+      entity_id: timer.car_1_climatisation
   - service: tts.edge_tts_say
     data:
       entity_id: media_player.living_speaker
@@ -55,6 +55,7 @@ car_1_climatisation_start_now_google_home:
           data:
             tag: auto_climatisatie
             timeout: 6000  # 10 minuten
+            notification_icon: "mdi:car-seat-heater"
             actions:
             - action: URI
               title: meer info
@@ -65,23 +66,23 @@ car_1_climatisation_start_now_google_home:
 car_1_climatisation_start_now:
   alias: auto start climatisatie nu
   sequence:
-  - service: script.car_1_climatisation_start
+  - service: script.define_car_1_climatisation_time
     data:
-      duration_sec: "1"
+      duration_sec: "0"
       duration_txt: "nu" 
 
 car_1_climatisation_start_0h30:
   alias: auto start climatisatie over 30 min
   sequence:
-  - service: script.car_1_climatisation_start
+  - service: script.define_car_1_climatisation_time
     data:
       duration_sec: "1800"
-      duration_txt: "een half uur"        
+      duration_txt: "een half uur"      
 
 car_1_climatisation_start_1h:
   alias: auto start climatisatie over 1 uur
   sequence:
-  - service: script.car_1_climatisation_start
+  - service: script.define_car_1_climatisation_time
     data:
       duration_sec: "3600"
       duration_txt: "een 1 uur"      
@@ -89,7 +90,7 @@ car_1_climatisation_start_1h:
 car_1_climatisation_start_1h30:
   alias: auto start climatisatie over 1,5 uur
   sequence:
-  - service: script.car_1_climatisation_start
+  - service: script.define_car_1_climatisation_time
     data:
       duration_sec: "5400"
       duration_txt: "1,5 uur"
@@ -97,7 +98,7 @@ car_1_climatisation_start_1h30:
 car_1_climatisation_start_2h:
   alias: auto start climatisatie over 2 uren
   sequence:
-  - service: script.car_1_climatisation_start
+  - service: script.define_car_1_climatisation_time
     data:
       duration_sec: "7200"
       duration_txt: "2 uren"
@@ -105,45 +106,58 @@ car_1_climatisation_start_2h:
 car_1_climatisation_start_2h30:
   alias: auto start climatisatie over 2,5 uren
   sequence:
-  - service: script.car_1_climatisation_start
+  - service: script.define_car_1_climatisation_time
     data:
       duration_sec: "9000"
       duration_txt: "2,5 uren"
 
-
-car_1_climatisation_start:
-  alias: start climatisatie Audi
+define_car_1_climatisation_time:
+  alias: bepaal startuur climatisatie auto 1
   sequence:
-  - if:
-    - condition: template
-      value_template: "{{ duration_sec != '1' }}"
-    then:
-    - service: notify.bart_madouce_phone
-      data:
-        message: Climatisatie auto zal starten over {{ duration_txt }}.
-        data:
-          tag: auto_climatisatie
-          timeout: 18000  # 1800 seconden = half uur
-          actions:
-          - action: URI
-            title: meer info
-            uri: /dashboard-car/e-tron
+  - service: input_datetime.set_datetime
+    data:
+      time: >
+        {{ (as_timestamp(now()) + ( duration_sec | int) ) | timestamp_custom('%H:%M:%S', true) }}
+    target:
+      entity_id: input_datetime.car_1_climatisation_time
   - service: timer.start
     data:
       duration: "{{ duration_sec }}"
     target:
-      entity_id: timer.car_climatisation
-  - delay: "{{ duration_sec }}"
+      entity_id: timer.car_1_climatisation
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.car_1_climatisation_timer
+  - if: >
+      {{ duration_txt !="nu" }}
+    then:
+      - service: notify.bart_madouce_phone
+        data:
+          message: Climatisatie Audi zal starten over {{ duration_txt }}.
+          data:
+            tag: auto_climatisatie
+            timeout: 18000  # 1800 seconden = half uur
+            notification_icon: "mdi:car-seat-heater"
+            actions:
+            - action: URI
+              title: meer info
+              uri: /dashboard-car/e-tron
+
+car_1_climatisation_start:
+  alias: start climatisatie Audi
+  sequence:
   - service: audiconnect.execute_vehicle_action
     data:
       vin: !secret vin
       action: start_climatisation
   - service: notify.bart_madouce_phone
     data:
-      message: Climatisatie auto aangevraagd
+      message: Climatisatie Audi wordt aangevraagd.
       data:
         tag: auto_climatisatie
         timeout: 18000  # 1800 seconden = half uur
+        notification_icon: "mdi:car-seat-heater"
         actions:
         - action: URI
           title: meer info
@@ -158,22 +172,20 @@ car_1_climatisation_start:
           seconds: 30    
   - service: notify.bart_madouce_phone
     data:
-      message: Climatisatie auto is effectief gestart.
+      message: Climatisatie Audit is effectief gestart.
       data:
         tag: auto_climatisatie
         timeout: 18000  # 1800 seconden = half uur
+        notification_icon: "mdi:car-seat-heater"
         actions:
         - action: URI
           title: meer info
           uri: /dashboard-car/e-tron
   mode: restart
 
-auto_stop_climatisatie:
+car_1_climatisation_stop:
   alias: auto stop climatisatie
   sequence:
-  - service: timer.cancel
-    target:
-      entity_id: timer.car_climatisation
   - service: audiconnect.execute_vehicle_action
     data:
       vin: !secret vin
@@ -194,6 +206,7 @@ auto_stop_climatisatie:
           data:
             tag: auto_climatisatie
             timeout: 6000  # 10 minuten
+            notification_icon: "mdi:car-seat-heater"
             actions:
             - action: URI
               title: meer info

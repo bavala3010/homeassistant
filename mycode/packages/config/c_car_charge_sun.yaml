@@ -1,8 +1,16 @@
 input_number:
   car_charge_sun_start_wattage:
-    name: auto zonnemodus start wattage
-    min: -3000
-    max: 0
+    name: start auto laden bij zonne-overschot
+    min: 0
+    max: 3000
     unit_of_measurement: W
     mode: box
+    icon: mdi:sun-angle
 
+  car_charge_sun_max_netwattage:
+    name: auto zonneladen max netverbruik
+    min: 0
+    max: 1000
+    unit_of_measurement: W
+    mode: box
+    icon: mdi:transmission-tower-import

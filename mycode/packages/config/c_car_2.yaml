@@ -1,0 +1,28 @@
+
+utility_meter:
+  car_2_daily_km:
+    source: sensor.aygo_x_2024_odometer
+    cycle: daily
+
+  car_2_weekly_km:
+    source: sensor.aygo_x_2024_odometer
+    cycle: weekly
+
+  car_2_monthly_km:
+    source: sensor.aygo_x_2024_odometer
+    cycle: monthly
+
+  car_2_yearly_km:
+    source: sensor.aygo_x_2024_odometer
+    cycle: yearly
+
+
+input_text:
+  car_2_bluetooth_name:
+    name: bluetooth naam auto 2
+    icon: 'mdi:bluetooth'
+    initial: '64:E2:20:69:F7:FB (Toyota Smart Connect)'
+
+
+
+

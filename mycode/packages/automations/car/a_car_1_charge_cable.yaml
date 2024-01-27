@@ -124,6 +124,9 @@ automation:
     - condition: state
       entity_id: input_boolean.car_charge_night_net
       state: "off"
+  variables:
+    message: >
+      OPGELET: Er is geen laadmodus ingesteld.
   action:
     - service: notify.bart_madouce_phone
       data:
@@ -137,9 +140,7 @@ automation:
           #   - action: URI
           #     title: meer info
           #     uri: /dashboard-car/car-charging
-  variables:
-    message: >
-      OPGELET: Er is geen laadmodus ingesteld.
+
 
 
 - alias: "🚗 car 1 // 🔋 charge // laadkabel verbonden maar sessie op laadpaal niet gestart (enkel thuis)"

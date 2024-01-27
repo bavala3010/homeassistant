@@ -14,24 +14,21 @@ automation:
 # Auto climatisatie
 #########################  
 
-- alias: 🚗 car 1 // climate // start op uur bepaald in HA app
+- alias: 🚗 car 1 // climate // start op uur bepaald door timer
   id: '583aabff-84db-4aac-a7de-023aee0d79f1'
   trigger:
   - platform: time
-    at: input_datetime.car_climatisation_time  
-  # - platform: template
-  #   value_template: >
-  #     {{ states('sensor.time') == (states.input_datetime.car_climatisation_time.attributes.timestamp | timestamp_custom('%H:%M', False)) }}
+    at: input_datetime.car_1_climatisation_time
   condition:
   - condition: state
-    entity_id: input_boolean.car_climatisation_timer
+    entity_id: input_boolean.car_1_climatisation_timer
     state: 'on'
   action:
   - service: input_boolean.turn_off
     data: {}
     target:
-      entity_id: input_boolean.car_climatisation_timer
-  - service: script.car_1_climatisation_start_now      
+      entity_id: input_boolean.car_1_climatisation_timer
+  - service: script.car_1_climatisation_start    
   mode: restart
 
 - alias: 🚗 car 1 // climate // 19u in Waarschoot en koud = vraag auto climatiseren
@@ -519,3 +516,59 @@ automation:
   action:      
     - service: script.car_1_climatisation_start_now
   mode: single
+
+
+- alias: 🚗 car 1 // climate // timerschakelaar climatisatie aan = start timer
+  id: '23018dc0-d06f-4866-94b4-331cc30f6d83'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+      - input_boolean.car_1_climatisation_timer
+    to: "on"
+  condition: []
+  action:
+  - service: timer.set_duration
+    data:
+      duration: >
+        {{ (as_timestamp(now().replace(hour=strptime(states('input_datetime.car_1_climatisation_time'), '%H:%M:%S').hour,
+        minute=strptime(states('input_datetime.car_1_climatisation_time'), '%H:%M:%S').minute)) - as_timestamp(now())) | int  }}           
+    target:
+      entity_id: timer.car_1_climatisation
+  - service: timer.start
+    data: {}
+    target:
+      entity_id: timer.car_1_climatisation      
+  mode: single
+
+- alias: 🚗 car 1 // climate // timerschakelaar climatisatie uit = timer op 0 
+  id: '3e2fd4a4-7e0e-4bf4-b686-db34580b4395'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+      - input_boolean.car_1_climatisation_timer
+    to: "off"
+  condition: []
+  action:
+  - service: notify.bart_madouce_phone
+    data:
+      message: "clear_notification"
+      data:
+        tag: auto_climatisatie
+        timeout: 18000  # 1800 seconden = half uur
+        actions:
+        - action: URI
+          title: meer info
+          uri: /dashboard-car/e-tron   
+  - service: timer.set_duration
+    data:
+      duration: '0'        
+    target:
+      entity_id: timer.car_1_climatisation
+  - service: timer.finish
+    data: {}
+    target:
+      entity_id: timer.car_1_climatisation    
+  mode: single
+
