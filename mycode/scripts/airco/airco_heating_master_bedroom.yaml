@@ -117,7 +117,7 @@ master_bedroom_airco_increment_temperature:
         target_temperature: "{{ states('input_number.master_bedroom_airco_target_temperature') | float }}"
         current_temperature: "{{ state_attr('climate.master_bedroom_airco', 'current_temperature') | float }}"
         intermediate_temperature: "{{ states('input_number.master_bedroom_airco_intermediate_temperature') | float }}"
-        step: 1 # Stel de stapgrootte in
+        step: 2 # Stel de stapgrootte in
     - repeat:
         while:
         - condition: template

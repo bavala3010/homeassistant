@@ -2,7 +2,10 @@ input_text:
   arriving_home_reminder_madouce:
     max: 255
 
-  arrving_home_reminder_bart:
+  arriving_home_reminder_bart:
+    max: 255
+
+  arriving_home_time_bart:
     max: 255
 
 input_boolean:

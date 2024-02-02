@@ -526,13 +526,22 @@ automation:
     entity_id:
       - input_boolean.car_1_climatisation_timer
     to: "on"
+  # - platform: numeric_state
+  #   entity_id:
+  #     - input_datetime.car_1_climatisation_time 
   condition: []
+  # - condition: state
+  #   entity_id: input_boolean.car_1_climatisation_timer
+  #   state: "on"
   action:
   - service: timer.set_duration
     data:
       duration: >
-        {{ (as_timestamp(now().replace(hour=strptime(states('input_datetime.car_1_climatisation_time'), '%H:%M:%S').hour,
-        minute=strptime(states('input_datetime.car_1_climatisation_time'), '%H:%M:%S').minute)) - as_timestamp(now())) | int  }}           
+        {% set t = (as_timestamp(now().replace(hour=strptime(states('input_datetime.car_1_climatisation_time'), '%H:%M:%S').hour,
+        minute=strptime(states('input_datetime.car_1_climatisation_time'), '%H:%M:%S').minute)) - as_timestamp(now())) | int  %}
+        {% if t < 0 %} {{ 86400 + t }}
+        {% else %} { t }
+        {% endif %}         
     target:
       entity_id: timer.car_1_climatisation
   - service: timer.start
@@ -540,6 +549,35 @@ automation:
     target:
       entity_id: timer.car_1_climatisation      
   mode: single
+
+- alias: 🚗 car 1 // climate // timer climatisatie gewijzigd en timer ingeschakeld = start timer
+  id: '1b04ef03-549b-4ddb-989b-4cebb140d3b9'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+      - input_datetime.car_1_climatisation_time 
+  condition:
+  - condition: state
+    entity_id: input_boolean.car_1_climatisation_timer
+    state: "on"
+  action:
+  - service: timer.set_duration
+    data:
+      duration: >
+        {% set t = (as_timestamp(now().replace(hour=strptime(states('input_datetime.car_1_climatisation_time'), '%H:%M:%S').hour,
+        minute=strptime(states('input_datetime.car_1_climatisation_time'), '%H:%M:%S').minute)) - as_timestamp(now())) | int  %}
+        {% if t < 0 %} {{ 86400 + t }}
+        {% else %} { t }
+        {% endif %}         
+    target:
+      entity_id: timer.car_1_climatisation
+  - service: timer.start
+    data: {}
+    target:
+      entity_id: timer.car_1_climatisation      
+  mode: restart
+
 
 - alias: 🚗 car 1 // climate // timerschakelaar climatisatie uit = timer op 0 
   id: '3e2fd4a4-7e0e-4bf4-b686-db34580b4395'

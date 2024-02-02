@@ -542,3 +542,18 @@ automation:
         entity_id: cover.garagepoort
       data: {}
   mode: single
+
+- alias: Iets na middernacht = reset aankomstuur Bart thuis
+  id: 'e8e1872d-3120-441e-9d39-be5af32e8592'
+  description: ""
+  trigger:
+    - platform: time
+      at: "00:15:00"
+  condition: []
+  action:
+    - service: input_text.set_value
+      data:
+        value: "nog geen uur bepaald"
+      target:
+        entity_id: input_text.arriving_home_time_bart        
+  mode: single

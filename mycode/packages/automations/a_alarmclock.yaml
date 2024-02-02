@@ -29,6 +29,28 @@ automation:
                 media_content_type: music
   mode: restart
 
+
+- alias: wijziging in activiteitskalender Bart = wekker aanpassen
+  id: '28b301dc-7da7-4986-afdc-c060734e7447'
+  description: ''
+  trigger:
+    - platform: state
+      entity_id:
+        - input_select.bart_activity_day_1
+        - input_select.bart_activity_day_1
+        - input_select.bart_activity_day_2
+        - input_select.bart_activity_day_3
+        - input_select.bart_activity_day_4
+        - input_select.bart_activity_day_5
+        - input_select.bart_activity_day_6
+        - input_select.bart_activity_day_7
+  condition: []
+  action:
+    - service: script.set_alarmclock_bart_based_on_calendar
+      data: {}
+  mode: restart
+
+
 - alias: wekker Bart gezet op smartphone = wakker worden met zonlicht en ringtone
   id: 'fd733e3e-a43f-4e97-807e-156d0e1279db'
   description: ''

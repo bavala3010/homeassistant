@@ -132,7 +132,7 @@ binary_sensor:
           {% else %}
             mdi:car
           {% endif %}
-        value_template: "{{ '98:49:14:C1:37:0B (Audi_MMI_9131)' in state_attr('sensor.sm_s916b_bluetooth_connection', 'connected_paired_devices') }}"    
+        value_template: "{{ states('input_text.car_1_bluetooth_name') in state_attr('sensor.sm_s916b_bluetooth_connection', 'connected_paired_devices') }}"    
         # do not forget to activate the bluetooth sensor in the Home Assistant companion app on smartphone
 
       madouce_phone_connected_to_car_1:
@@ -144,7 +144,7 @@ binary_sensor:
           {% else %}
             mdi:car
           {% endif %}
-        value_template: "{{ '98:49:14:C1:37:0B (Audi_MMI_9131)' in state_attr('sensor.sm_g986b_bluetooth_connection', 'connected_paired_devices') }}"    
+        value_template: "{{ states('input_text.car_1_bluetooth_name') in state_attr('sensor.sm_g986b_bluetooth_connection', 'connected_paired_devices') }}"
         # do not forget to activate the bluetooth sensor in the Home Assistant companion app on smartphone
 
       bart_phone_connected_to_car_2:
@@ -156,7 +156,7 @@ binary_sensor:
           {% else %}
             mdi:car
           {% endif %}
-        value_template: "{{ '64:E2:20:69:F7:FB (Toyota Smart Connect)' in state_attr('sensor.sm_s916b_bluetooth_connection', 'connected_paired_devices') }}"
+        value_template: "{{ states('input_text.car_2_bluetooth_name') in state_attr('sensor.sm_s916b_bluetooth_connection', 'connected_paired_devices') }}"
         # do not forget to activate the bluetooth sensor in the Home Assistant companion app on smartphone
 
       madouce_phone_connected_to_car_2:
@@ -168,5 +168,5 @@ binary_sensor:
           {% else %}
             mdi:car
           {% endif %}
-        value_template: "{{ '64:E2:20:69:F7:FB (Toyota Smart Connect)' in state_attr('sensor.sm_g986b_bluetooth_connection', 'connected_paired_devices') }}"    
+        value_template: "{{ states('input_text.car_2_bluetooth_name') in state_attr('sensor.sm_g986b_bluetooth_connection', 'connected_paired_devices') }}"    
         # do not forget to activate the bluetooth sensor in the Home Assistant companion app on smartphone        

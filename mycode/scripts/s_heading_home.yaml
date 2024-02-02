@@ -6,6 +6,11 @@ bart_leaving_brussels_central_station:
           {{ ((now() + timedelta(minutes=45)).replace(minute=((((now().minute + 40) // 5) * 5) % 60))).strftime('%H uur %M') }}
         arrival_hour_written: >
           {{ ((now() + timedelta(minutes=45)).replace(minute=((((now().minute + 40) // 5) * 5) % 60))).strftime('%H:%M') }}            
+    - service: input_text.set_value
+      data:
+        value: "{{ arrival_hour_written }}"
+      target:
+        entity_id: input_text.arriving_home_time_bart
     - service: browser_mod.popup
       data:
         title: Bericht is verstuurd.
@@ -36,7 +41,7 @@ bart_leaving_brussels_central_station:
             message: TTS
             data:
               tts_text: >-
-                Aandacht: Bart is om {{ arrival_hour_spoken }} thuis.
+                Dag Schat. Ik ben om {{ arrival_hour_spoken }} thuis.
               ttl: 0
               priority: high
               media_stream: alarm_stream

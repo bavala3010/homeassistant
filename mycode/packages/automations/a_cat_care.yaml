@@ -39,7 +39,7 @@ automation:
           data:
             title: "Tijd om Rio zijn maandelijkse verzorging te geven."
             message: >
-              Het is {{ states('input_number.cat_1_care_day_counter') }} dagen geleden.
+              Het is {{ states('input_number.cat_1_care_day_counter') | int }} dagen geleden.
             data:
               tag: katten
               color: green
@@ -95,7 +95,7 @@ automation:
     #       data:
     #         title: "Tijd om Smarty zijn maandelijkse verzorging te geven."
     #         message: >
-    #           Het is {{ states('input_number.cat_2_care_day_counter') }} dagen geleden.
+    #           Het is {{ states('input_number.cat_2_care_day_counter') | int }} dagen geleden.
     #         data:
     #           tag: katten
     #           color: green

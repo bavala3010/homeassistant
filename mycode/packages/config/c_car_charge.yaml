@@ -2,11 +2,37 @@ input_select:
   car_charge_minimum_wattage:
     name: autolader minimum wattage
     options:
-      - "1.4 kW (1 fase 6 ampère)"
+      - "1.3 kW (1 fase 6 ampère)"
+      - "1.5 kW (1 fase 7 ampère)"
+      - "1.8 kW (1 fase 8 ampère)"
+      - "2.0 kW (1 fase 9 ampère)"
       - "2.2 kW (1 fase 10 ampère)"
+      - "2.4 kW (1 fase 11 ampère)"
+      - "2.6 kW (1 fase 12 ampère)"
+      - "2.8 kW (1 fase 13 ampère)"
+      - "3.1 kW (1 fase 14 ampère)"
       - "4.0 kW (3 fasen 6 ampère)"
+      - "4.6 kW (3 fasen 7 ampère)"
       - "5.3 kW (3 fasen 8 ampère)"
     icon: mdi:power
+
+  car_charge_fixed_wattage:
+    name: autolader vast wattage
+    options:
+      - "1.3 kW (1 fase 6 ampère)"
+      - "1.5 kW (1 fase 7 ampère)"
+      - "1.8 kW (1 fase 8 ampère)"
+      - "2.0 kW (1 fase 9 ampère)"
+      - "2.2 kW (1 fase 10 ampère)"
+      - "2.4 kW (1 fase 11 ampère)"
+      - "2.6 kW (1 fase 12 ampère)"
+      - "2.8 kW (1 fase 13 ampère)"
+      - "3.1 kW (1 fase 14 ampère)"
+      - "4.0 kW (3 fasen 6 ampère)"
+      - "4.6 kW (3 fasen 7 ampère)"
+      - "5.3 kW (3 fasen 8 ampère)"
+    icon: mdi:power
+
 
 input_number:
   car_charge_minimum_wattage:

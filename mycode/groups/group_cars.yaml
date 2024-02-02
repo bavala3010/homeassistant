@@ -1,0 +1,31 @@
+#######################################################################
+# cars
+#######################################################################
+
+car_1_position:
+  name: locatie Audi E-tron 
+  entities:
+    - device_tracker.audi_e_tron_sportback_position
+
+car_2_position:
+  name: locatie Toyota Aygo 
+  entities:
+    - device_tracker.aygo_x_parking_location
+
+car_2_locks:
+  name: Toyota Aygo sloten
+  entities:
+    - binary_sensor.aygo_x_2024_driverseat_lock
+    - binary_sensor.aygo_x_2024_leftrearseat_lock
+    - binary_sensor.aygo_x_2024_passengerseat_lock
+    - binary_sensor.aygo_x_2024_rightrearseat_lock
+    - binary_sensor.aygo_x_2024_trunk_lock
+
+car_2_doors:
+  name: Toyota Aygo deuren
+  entities:
+    - binary_sensor.aygo_x_2024_driverseat_door
+    - binary_sensor.aygo_x_2024_leftrearseat_door
+    - binary_sensor.aygo_x_2024_passengerseat_door
+    - binary_sensor.aygo_x_2024_rightrearseat_door
+    - binary_sensor.aygo_x_2024_trunk

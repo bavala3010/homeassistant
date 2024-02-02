@@ -82,7 +82,7 @@ automation:
     data: {}
   mode: single
 
-- alias: "🚗 car 1 // 🔋 charge // direct modus // minimum wattage is veranderd in dropdownlijst"
+- alias: "🚗 car 1 // 🔋 charge // direct modus // minimum wattage is veranderd = update"
   id: '6a180451-efc5-4e27-9e7e-f2e152d3ec31'
   trigger:
   - platform: state
@@ -94,11 +94,14 @@ automation:
       data:
         value: "{{ states('input_select.car_charge_minimum_wattage') [0:3] }}"
 
-
-# gebruikt vroeger:
-# input_select.car_charge_minimum_wattage
-# input_number.car_charge_minimum_wattage
-
-# vervangen door:
-# input_select.car_charge_minimum_wattage
-# input_number.car_charge_minimum_wattage
+- alias: "🚗 car 1 // 🔋 charge // direct modus // vast wattage is veranderd = update"
+  id: 'b340993f-3e21-4d0c-90f9-0d79b9af326a'
+  trigger:
+  - platform: state
+    entity_id: input_select.car_charge_fixed_wattage
+  action:
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.car_charge_fixed_wattage
+      data:
+        value: "{{ states('input_select.car_charge_fixed_wattage') [0:3] }}"
