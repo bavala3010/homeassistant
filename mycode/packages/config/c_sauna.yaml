@@ -1,11 +1,24 @@
 counter:
   bart_elzenhof:
+    name: Bart in sauna Elzenhof
+
   bart_whiteoak:
+    name: Bart in The White Oak
+
   bart_grimbergen:
+    name: Bart in Thermen Grimbergen
+
   bart_boetfort:
+    name: Bart in Thermen Boetfort
 
   madouce_elzenhof:
-  madouce_whiteoak:
-  madouce_grimbergen:
-  madouce_boetfort:
+    name: Madouce in Saune Elzenhof
 
+  madouce_whiteoak:
+    name: Madouce in The White Oak
+
+  madouce_grimbergen:
+    name: Madouce in Thermen Grimbergen
+  
+  madouce_boetfort:
+    name: Madouce in Thermen Boetfort

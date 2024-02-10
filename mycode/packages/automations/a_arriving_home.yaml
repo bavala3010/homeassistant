@@ -293,17 +293,21 @@ automation:
     - if:
         - condition: state
           entity_id: lock.voordeur_nuki
-          state: unlocked      
+          state: unlocked
       then:
-        - service: notify.bart_phone
-          data:
-            message: TTS
-            data:
-              channel: "alarm_stream"
-              tts_text: "Welkom thuis Bart. De voordeur is open."
-              ttl: 0
-              priority: high
-              media_stream: alarm_stream_max
+        - if:
+            - condition: template
+              value_template: "{{ 7 < now().hour < 23 }}"
+          then:      
+            - service: notify.bart_phone
+              data:
+                message: TTS
+                data:
+                  channel: "alarm_stream"
+                  tts_text: "Welkom thuis Bart. De voordeur is open."
+                  ttl: 0
+                  priority: high
+                  media_stream: alarm_stream_max
     - if:
         - condition: state
           entity_id: lock.voordeur_nuki
@@ -402,7 +406,7 @@ automation:
   trigger:
     - platform: state
       entity_id:
-        - sensor.sm_g986b_wifi_connection
+        - sensor.sm_s916b_wifi_connection
       to: BMWifi
   condition:
     - condition: state
@@ -440,7 +444,7 @@ automation:
   trigger:
     - platform: state
       entity_id:
-        - sensor.sm_s916b_wifi_connection
+        - sensor.sm_g986b_wifi_connection
       to: BMWifi
   condition:
     - condition: state

@@ -40,6 +40,25 @@ automation:
   mode: single
 
 
+- alias: "♨️ chauffage kamer Amilya aan en heating mode op airco = chauffage op auto"
+  id: '5e6fd3cf-4e8f-4cf1-afb5-1264691f2406'
+  description: ''
+  trigger:
+  - platform: template
+    value_template: >
+      {{ state_attr('climate.kamer_amilya', 'hvac_action') == "heating" 
+      and states('input_select.heating_mode') == "airco" }}
+  action:
+  - service: climate.set_hvac_mode
+    data:
+      hvac_mode: auto
+    target:
+      entity_id: climate.kamer_amilya
+  - service: notify.bart_phone
+    data:
+      message: Chauffage op kamer Amilya werd aangezet, hoewel modus op airco staat. Chauffage terug op automatisch gezet.
+  mode: single
+
 - alias: "♨️ >21 °C gevraagd in kamer Amilya = verwarming op automatisch"
   id: '95335e38-c593-48a6-b356-1be5f78db02c'
   description: ''

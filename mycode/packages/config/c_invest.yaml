@@ -9,26 +9,32 @@ multiscrape:
   #       unit_of_measurement: EUR
 
   - name: Horizon - KBC Highly Dynamic Tolerant Responsible Investing Classic Shares
-    resource: https://markets.ft.com/data/funds/tearsheet/holdings?s=BE6307337095:EUR
+    # resource: https://markets.ft.com/data/funds/tearsheet/holdings?s=BE6307337095:EUR
+    resource: https://markets.ft.com/data/funds/tearsheet/summary?s=BE6307337095:EUR
     scan_interval: 60
     sensor:
       - name: BE6307337095
+        # select: "body > div.o-grid-container.mod-container > div:nth-child(2) > section:nth-child(1) > div > div > div.mod-tearsheet-overview__overview.clearfix > div.mod-tearsheet-overview__quote > ul > li:nth-child(1) > span.mod-ui-data-list__value"
         select: "body > div.o-grid-container.mod-container > div:nth-child(2) > section:nth-child(1) > div > div > div.mod-tearsheet-overview__overview.clearfix > div.mod-tearsheet-overview__quote > ul > li:nth-child(1) > span.mod-ui-data-list__value"
         unit_of_measurement: EUR
 
   - name: Horizon - KBC Dynamic Tolerant Responsible Investing Classic Shares
-    resource: https://markets.ft.com/data/funds/tearsheet/holdings?s=BE6307334068:EUR
+    # resource: https://markets.ft.com/data/funds/tearsheet/holdings?s=BE6307334068:EUR
+    resource: https://markets.ft.com/data/funds/tearsheet/summary?s=BE6307334068:EUR
     scan_interval: 60
     sensor:
       - name: BE6307334068
+        # select: "body > div.o-grid-container.mod-container > div:nth-child(2) > section:nth-child(1) > div > div > div.mod-tearsheet-overview__overview.clearfix > div.mod-tearsheet-overview__quote > ul > li:nth-child(1) > span.mod-ui-data-list__value"
         select: "body > div.o-grid-container.mod-container > div:nth-child(2) > section:nth-child(1) > div > div > div.mod-tearsheet-overview__overview.clearfix > div.mod-tearsheet-overview__quote > ul > li:nth-child(1) > span.mod-ui-data-list__value"
         unit_of_measurement: EUR
-        
+
   - name: KBC Eco Fund - Alternative Energy Classic Cap
-    resource: https://markets.ft.com/data/funds/tearsheet/holdings?s=BE0175280016:EUR
+    # resource: https://markets.ft.com/data/funds/tearsheet/holdings?s=BE0175280016:EUR
+    resource: https://markets.ft.com/data/funds/tearsheet/summary?s=BE0175280016:EUR
     scan_interval: 60
     sensor:
       - name: BE0175280016
+        # select: "body > div.o-grid-container.mod-container > div:nth-child(2) > section:nth-child(1) > div > div > div.mod-tearsheet-overview__overview.clearfix > div.mod-tearsheet-overview__quote > ul > li:nth-child(1) > span.mod-ui-data-list__value"
         select: "body > div.o-grid-container.mod-container > div:nth-child(2) > section:nth-child(1) > div > div > div.mod-tearsheet-overview__overview.clearfix > div.mod-tearsheet-overview__quote > ul > li:nth-child(1) > span.mod-ui-data-list__value"
         unit_of_measurement: EUR
       - name: BE0175280016_changetoday

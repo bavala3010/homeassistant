@@ -1,0 +1,127 @@
+automation:
+
+- alias: 🚗 sauna // Bart in White Oak
+  id: 'ceeaf3d3-250f-4b88-87a9-7ad96fc6c551'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - person.bart
+      to: The White Oak
+      for:
+        hours: 0
+        minutes: 15
+        seconds: 0
+  condition: []
+  action:
+    - service: counter.increment
+      metadata: {}
+      data: {}
+      target:
+        entity_id: counter.bart_whiteoak
+  mode: single
+
+- alias: 🚗 sauna // Bart in sauna Elzenhof
+  id: 'f06efa6c-6ec5-4629-9d63-f32e45321568'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - person.bart
+      to: "sauna Elzenhof"
+      for:
+        hours: 0
+        minutes: 15
+        seconds: 0
+  condition: []
+  action:
+    - service: counter.increment
+      metadata: {}
+      data: {}
+      target:
+        entity_id: counter.bart_elzenhof
+  mode: single
+
+- alias: 🚗 sauna // Madouce in White Oak
+  id: 'da26aee0-f724-4845-b07b-964fa6e6c8db'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - person.madouce
+      to: The White Oak
+      for:
+        hours: 0
+        minutes: 15
+        seconds: 0
+  condition: []
+  action:
+    - service: counter.increment
+      metadata: {}
+      data: {}
+      target:
+        entity_id: counter.madouce_whiteoak
+  mode: single
+
+- alias: 🚗 sauna // Madouce in sauna Elzenhof
+  id: 'c41ed922-2242-42be-9b8a-abaca69cf39a'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - person.madouce
+      to: "sauna Elzenhof"
+      for:
+        hours: 0
+        minutes: 15
+        seconds: 0
+  condition: []
+  action:
+    - service: counter.increment
+      metadata: {}
+      data: {}
+      target:
+        entity_id: counter.madouce_elzenhof
+  mode: single
+
+- alias: 🚗 sauna // Bart in Thermen Grimbergen
+  id: 'bc8dea8d-845c-4049-a34d-bb3597454a75'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - person.bart
+      to: Thermen Grimbergen
+      for:
+        hours: 0
+        minutes: 15
+        seconds: 0
+  condition: []
+  action:
+    - service: counter.increment
+      metadata: {}
+      data: {}
+      target:
+        entity_id: counter.bart_grimbergen
+  mode: single
+
+- alias: 🚗 sauna // Madouce in Thermen Grimbergen
+  id: '487dea9d-3b75-4055-bef4-75f1e66a697e'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id:
+        - person.madouce
+      to: Thermen Grimbergen
+      for:
+        hours: 0
+        minutes: 15
+        seconds: 0
+  condition: []
+  action:
+    - service: counter.increment
+      metadata: {}
+      data: {}
+      target:
+        entity_id: counter.madouce_grimbergen
+  mode: single

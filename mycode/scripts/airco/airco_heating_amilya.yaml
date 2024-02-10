@@ -157,3 +157,5 @@ amilya_airco_increment_temperature:
             target:
               entity_id: input_number.amilya_airco_intermediate_temperature
           - wait_template: "{{ current_temperature >= intermediate_temperature }}"  
+
+

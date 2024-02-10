@@ -104,7 +104,7 @@ automation:
         hours: 0
         minutes: 20
         seconds: 0
-      below: -300
+      below: -250
   condition:
     - condition: numeric_state
       entity_id: sensor.badkamer_humidity

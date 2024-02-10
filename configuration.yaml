@@ -365,12 +365,11 @@ influxdb:
 #    token: !secret purifier_3H_token
 #    model: zhimi.airpurifier.mb3
 
-netatmo:
 # create client_id and client_secret at https://dev.netatmo.com/apps
 
 # Eikenbos (bart@van-landschoot.be)
-  client_id: !secret netatmo_eikenbos_client_id       
-  client_secret: !secret netatmo_eikenbos_client_secret
+  # client_id: !secret netatmo_eikenbos_client_id       
+  # client_secret: !secret netatmo_eikenbos_client_secret
 
 # Waarschoot (bartland@gmail.com)
   # client_id: !secret netatmo_waarschoot_client_id       

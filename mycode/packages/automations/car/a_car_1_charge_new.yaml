@@ -58,7 +58,7 @@ automation:
               data:
                 title: Auto is gestopt met laden wegens te weinig vermogen. Nu 3 minuten wachten.
                 message: >
-                  Gestopt
+                  Beschikbaar vermogen was {{ wattage | round(2) }} kW.
             - wait_template: ''
               timeout: '00:03:00'
         - if: # between 1.1 and 1.5 kW available and charger is already charging
@@ -139,10 +139,10 @@ automation:
         - if:
             - condition: template # charger is currently charging (more than 5 Ampère)
               value_template: "{{ states('sensor.charger_modbus_maxcurrent') | float() > 5 }}"
-            # - condition: template # when current period is not in the "day sun" modus 
-            #   value_template: >
-            #     {{ not as_timestamp(states('sensor.sunrise')) < as_timestamp(now()) < as_timestamp(states('sensor.sunset')) 
-            #     and states('input_boolean.car_charge_day_sun') =='on' }}              
+            - condition: template # when current period is not in the "day sun" modus 
+              value_template: >
+                {{ not as_timestamp(states('sensor.sunrise')) < as_timestamp(now()) < as_timestamp(states('sensor.sunset')) 
+                and states('input_boolean.car_charge_day_sun') =='on' }}              
           then:
             - service: input_boolean.turn_off
               data: {}
@@ -154,7 +154,7 @@ automation:
               data:
                 title: Auto is gestopt met laden. Nu 3 minuten wachten.
                 message: >
-                  Gestopt (via charge van net // start-bezig-stop (nieuw))
+                  Beschikbaar vermogen was {{ wattage | round(2) }} kW.
   mode: single
 
 
@@ -173,7 +173,6 @@ automation:
   variables:
       wattage: >
         {% set charger = states('sensor.charger_current_power_avg') | float(default=0) %}
-        {% set maxpower = states('input_number.car_charge_sun_max_netwattage') | float(default=0) / 1000 %}
         {% set net = states('sensor.net_power_avg') | float %}
         {{ (( 0 - net + charger ) / 1000) | float }}
   action:
@@ -190,8 +189,8 @@ automation:
         - if: # not enough power available 
             - condition: template 
               value_template: >
-                {% set maxpower = states('input_number.car_charge_sun_max_netwattage') | float(default=0) / 1000 %}
-                {{ wattage + maxpower < 1.3 }}
+                {% set max_net = states('input_number.car_charge_sun_max_netwattage') | float(default=0) / 1000 %}
+                {{ wattage + max_net < 1.3 }}
             - condition: template # charger is currently charging (more than 5 Ampère)
               value_template: "{{ states('sensor.charger_modbus_maxcurrent') | float() > 5 }}"              
           then: # stop charger
@@ -205,14 +204,15 @@ automation:
               data:
                 title: Auto is gestopt met laden. Nu 3 minuten wachten.
                 message: >
-                  Gestopt
+                  De auto was aan het laden met zon, maar wordt nu gestopt.
+                  Beschikbaar vermogen was {{ wattage | round(2) }} kW.
             - wait_template: ''
               timeout: '00:03:00'
         - if:
             - condition: template 
               value_template: > # start charging even if injection is only 500 W
-                {% set sun = states('input_number.car_charge_sun_start_wattage') | int / 1000 %}
-                {{ sun <= wattage <= 1.3 }}
+                {% set max_net = states('input_number.car_charge_sun_max_netwattage') | float(default=0) / 1000 %}
+                {{  1.3 <= wattage + max_net <= 1.5 }}
           then: # set the charger at 1.3 kW
             - service: input_boolean.turn_on
               data: {}
@@ -231,7 +231,7 @@ automation:
         - if: # between 1.1 and 1.5 kW available and charger is already charging
             - condition: template
               value_template: >
-                {% set maxpower = states('input_number.car_charge_sun_max_netwattage') | float(default=0) / 1000 %}
+                {% set max_net = states('input_number.car_charge_sun_max_netwattage') | float(default=0) / 1000 %}
                 {{ (1.1 <= wattage < 1.5) and (states('sensor.charger_modbus_maxcurrent') | float() > 5) }}
           then: # keep the charger on at 1.3 kW
             - service: input_boolean.turn_on
@@ -321,9 +321,9 @@ automation:
               data: {}
             - service: notify.bart_phone
               data:
-                title: Auto is gestopt met laden. Niet genoeg zon. Er wordt 3 minuten gewacht.
+                title: Auto is gestopt met laden met zon. Niet genoeg zon. Er wordt 3 minuten gewacht.
                 message: >
-                  Gestopt
+                  "Else // onderaan routine. Beschikbaar vermogen was {{ wattage | round(2) }} kW."
   mode: single
 
 - alias: "🚗 car 1 // 🔋 charge overdag met zon of net // schakel tussen zon en net"

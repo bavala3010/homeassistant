@@ -59,7 +59,11 @@ automation:
       minutes: 1
       seconds: 0
     below: 100
-  condition: []
+  condition: 
+    not:
+      - condition: state
+        entity_id: input_select.dryer_state
+        state: klaar
   action:
     - service: input_datetime.set_datetime
       data:
@@ -120,7 +124,7 @@ automation:
     - service: notify.bart_madouce_phone
       data:
         title: Droogkast
-        message: "Haal de was uit de droogkast. De droogkast was klaar op {{ as_timestamp(states('input_datetime.dryer_stop_time')) | timestamp_custom('%d/%-m om %H:%M') }}."
+        message: "Haal de was uit de droogkast. De droogkast was klaar op {{ as_timestamp(states('input_datetime.dryer_stop_time')) | timestamp_custom('%-d/%-m om %-H:%M') }}."
         data:
           tag: droogkast        
           notification_icon: "mdi:tumble-dryer"          

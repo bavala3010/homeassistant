@@ -17,7 +17,7 @@
 
 automation:
 
-- alias: 🚀 Pi CPU temp >70 °C = melding
+- alias: 🚀 system // Pi CPU temp >70 °C = melding
   id: '64c59baf-e8fb-4fc0-b789-cf74742e57e4'
   description: ''
   trigger:
@@ -39,7 +39,7 @@ automation:
           uri: /lovelace-systeem/1
   mode: single
   
-- alias: 🚀 Pi CPU > 50% = melding
+- alias: 🚀 system // Pi CPU > 50% = melding
   id: 'db887805-238d-4fe2-8512-e10b918eefe3'
   description: ''
   trigger:
@@ -95,7 +95,7 @@ automation:
           uri: /lovelace-systeem/1
   mode: single
 
-- alias: 🚀 HA stopt
+- alias: 🚀 system // HA stopt
   id: 'f15aa89e-f40c-45ad-8c54-dfa8317a98d1'
   description: ''
   trigger:
@@ -107,7 +107,7 @@ automation:
       message: Home Assistant wordt gestopt.
   mode: single
 
-- alias: 🚀 HA is herstart
+- alias: 🚀 system // HA is herstart
   id: 'c7eacdc5-7bf3-4a6f-a4a4-03fb7e62262c'
   description: ''
   trigger:
@@ -121,7 +121,7 @@ automation:
   mode: single
 
 
-- alias: 🚀 HA update beschikbaar
+- alias: 🚀 system // HA update beschikbaar
   id: 'caa45056-75d6-4e17-9620-00e3dda60170'
   description: ""
   trigger:
@@ -137,7 +137,7 @@ automation:
         message: "Versie {{ states('sensor.home_assistant_website') }} is nu beschikbaar."
   mode: single
 
-- alias: 🚀 Melding lage batterij voor alle batterijsensoren
+- alias: 🚀 system // Melding lage batterij voor alle batterijsensoren
   id: '9e972067-200b-4b7c-9a33-4a1d79543085'
   description: ''
   use_blueprint:
@@ -154,7 +154,7 @@ automation:
       time: '12:00:00'
   mode: single
 
-- alias: 🚀 Database cleanen
+- alias: 🚀 system // Database cleanen
   id: '9bda21a0-65f4-4c33-8c17-e12f4331522b'
   description: ''
   trigger:
@@ -168,7 +168,7 @@ automation:
       repack: true  # if you do not repack, the database size will not reduce
   mode: single
 
-- alias: 🚀 Google servers onbereikbaar = melding internetprobleem
+- alias: 🚀 system // Google servers onbereikbaar = melding internetprobleem
   id: 'ba3fab2f-867f-4e94-a699-9580bacd8f27'
   description: ''
   trigger:
@@ -190,7 +190,7 @@ automation:
           title: herstart wifi
   mode: single
 
-- alias: wifi herstarten
+- alias: system // wifi herstarten
   id: 'c2176a54-1f37-4923-b61e-9bbe33d093dc'
   trigger:
   - platform: event
@@ -207,7 +207,7 @@ automation:
       entity_id: binary_sensor.wifi_access_point
   mode: single
 
-- alias: 🚀 Google servers terug bereikbaar = melding sturen
+- alias: 🚀 system // Google servers terug bereikbaar = melding sturen
   id: '0f7ada67-01bc-4603-8da3-124b26cf1e24'
   description: ''
   trigger:
@@ -223,7 +223,7 @@ automation:
       message: Google servers konden opnieuw worden bereikt.
   mode: single
 
-- alias: 🚀 Nieuwe versie Home Assistant beschikbaar
+- alias: 🚀 system // Nieuwe versie Home Assistant beschikbaar
   id: '3a8a47a3-6df3-4ffa-a2f3-71db3ce80938'
   description: ''
   trigger:
@@ -241,7 +241,7 @@ automation:
         Info: {{state_attr('sensor.home_assistant_website','release_notes')}}
   mode: single
 
-- alias: switch ventilator niet beschikbaar
+- alias: system // switch ventilator niet beschikbaar
   id: 'ffae2d1a-cdf6-4dae-8227-eeb699e6ecf0'
   description: ''
   trigger:
@@ -256,4 +256,18 @@ automation:
       title: Switch van ventilator onbereikbaar.
       message: "Herstart switch op zolder."
   mode: single    
+
+
+- alias: system // at 3:15 = create backup
+  id: 'ea13be6e-29a1-4728-bb4e-1f90886fad8f'
+  description: 'maak backup elke nacht om 3u15'
+  trigger:
+  - platform: time
+    at: '03:15:00'
+  condition: []
+  action:
+    - service: backup.create
+      data: {}
+  mode: single 
+
 
