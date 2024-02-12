@@ -56,7 +56,7 @@ automation:
               data: {}
             - service: notify.bart_phone
               data:
-                title: Auto is gestopt met laden wegens te weinig vermogen. Nu 3 minuten wachten.
+                title: Auto gestopt met laden van het net wegens te weinig vermogen.
                 message: >
                   Beschikbaar vermogen was {{ wattage | round(2) }} kW.
             - wait_template: ''
@@ -152,7 +152,7 @@ automation:
               data: {}
             - service: notify.bart_phone
               data:
-                title: Auto is gestopt met laden. Nu 3 minuten wachten.
+                title: Auto gestopt met laden van het net wegens te weinig vermogen.
                 message: >
                   Beschikbaar vermogen was {{ wattage | round(2) }} kW.
   mode: single
@@ -202,9 +202,8 @@ automation:
               data: {}
             - service: notify.bart_phone
               data:
-                title: Auto is gestopt met laden. Nu 3 minuten wachten.
+                title: Auto is gestopt met laden met zon.
                 message: >
-                  De auto was aan het laden met zon, maar wordt nu gestopt.
                   Beschikbaar vermogen was {{ wattage | round(2) }} kW.
             - wait_template: ''
               timeout: '00:03:00'
@@ -321,7 +320,7 @@ automation:
               data: {}
             - service: notify.bart_phone
               data:
-                title: Auto is gestopt met laden met zon. Niet genoeg zon. Er wordt 3 minuten gewacht.
+                title: Auto is gestopt met laden met zon.
                 message: >
                   "Else // onderaan routine. Beschikbaar vermogen was {{ wattage | round(2) }} kW."
   mode: single

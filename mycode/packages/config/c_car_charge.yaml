@@ -175,7 +175,7 @@ template:
         unit_of_measurement: kWh
         state: >
           {% set hours = 7.5 %}
-          {% set wattage = states('input_number.car_charge_peak_netwattage') | float() / 1000 %}          
+          {% set wattage = (states('input_number.car_charge_peak_netwattage') | float() / 1000) - 0.4 %}
           {{ hours * wattage }}
 
       - name: net_power_excl_charger

@@ -346,4 +346,58 @@ input_number:
     min: 0
     max: 100
     unit_of_measurement: kWh
-    
+
+  min_wattage_ontvochtiger_master_bedroom:
+    min: 0
+    max: 500
+    step: 10
+    icon: mdi:flash
+
+  min_wattage_ontvochtiger_badkamer:
+    min: 0
+    max: 500
+    step: 10
+    icon: mdi:flash
+
+  min_wattage_auto:
+    min: 0
+    max: 5000
+    step: 100
+    icon: mdi:flash
+
+  min_wattage_living_airco:
+    min: 0
+    max: 3000
+    step: 100
+    icon: mdi:flash      
+
+input_select:
+  load_priority_1:
+    options:
+      - 'ontvochtiger master bedroom'
+      - 'ontvochtiger badkamer'
+      - 'auto'
+      - 'living airco'
+
+  load_priority_2:
+    options:
+      - 'ontvochtiger master bedroom'
+      - 'ontvochtiger badkamer'
+      - 'auto'
+      - 'living airco'
+
+  load_priority_3:
+    options:
+      - 'ontvochtiger master bedroom'
+      - 'ontvochtiger badkamer'
+      - 'auto'
+      - 'living airco'
+
+  load_priority_4:
+    options:
+      - 'ontvochtiger master bedroom'
+      - 'ontvochtiger badkamer'
+      - 'auto'
+      - 'living airco'
+
+

@@ -8,8 +8,8 @@ automation:
   id: '7e3043d1-8299-4121-ad8b-08da26340065'
   description: ''
   trigger:
-  - minutes: /5
-    platform: time_pattern
+  - platform: time_pattern 
+    minutes: /5
   condition:
   - condition: template
     value_template: "{{ states('sensor.zhimi_mb3_83f2_pm25') |float(default=0) > 8 }}"

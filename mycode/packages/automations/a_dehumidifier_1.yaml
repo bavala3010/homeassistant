@@ -99,12 +99,8 @@ automation:
   description: ""
   trigger:
     - platform: numeric_state
-      entity_id: sensor.net_power_avg
-      for:
-        hours: 0
-        minutes: 20
-        seconds: 0
-      below: -250
+      entity_id: sensor.net_power_avg_15min
+      below: -275
   condition:
     - condition: numeric_state
       entity_id: sensor.badkamer_humidity

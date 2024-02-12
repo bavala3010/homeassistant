@@ -159,7 +159,7 @@ automation:
   description: ''
   trigger:
   - platform: time
-    at: 09:00
+    at: 04:00
   condition: []
   action:
   - service: recorder.purge

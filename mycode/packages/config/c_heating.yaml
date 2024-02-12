@@ -27,6 +27,11 @@ input_select:
       - 'airco'
       - 'centrale verwarming'
 
+  heating_mode_living:
+    options:
+      - 'airco'
+      - 'centrale verwarming'
+
 input_text:
   heating_mode_from_weather_forecast_log:
     max: 255

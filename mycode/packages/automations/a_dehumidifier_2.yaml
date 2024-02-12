@@ -7,11 +7,7 @@ automation:
   description: ""
   trigger:
     - platform: numeric_state
-      entity_id: sensor.net_power_avg
-      for:
-        hours: 0
-        minutes: 15
-        seconds: 0
+      entity_id: sensor.net_power_avg_15min
       below: -250
   condition:
     - condition: numeric_state
