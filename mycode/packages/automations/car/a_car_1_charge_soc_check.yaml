@@ -31,7 +31,7 @@ automation:
     data:
       title: Morgen naar Toyota Evere
       message: >
-        Auto heeft nu {{states('sensor.car_1_soc')}}%.
+        Auto heeft nu {{states('sensor.car_1_soc') | int() }}%.
         {% if states('sensor.car_1_soc') | round() > 45 %}Voldoende batterijniveau.
         {% else %} Onvoldoende geladen. Best 40% à 45%.
           {% if states('sensor.car_1_plug_state') == 'connected' %}Laadkabel is verbonden.
@@ -65,7 +65,7 @@ automation:
     data:
       title: Morgen naar Toyota Diest
       message: >
-        Auto heeft nu {{states('sensor.car_1_soc')}}%.
+        Auto heeft nu {{states('sensor.car_1_soc') | int() }}%.
         {% if states('sensor.car_1_soc') | round() > 40 %}Voldoende batterijniveau.
         {% else %} Onvoldoende geladen. Best +/- 40%.
           {% if states('sensor.car_1_plug_state') == 'connected' %}Laadkabel is verbonden.

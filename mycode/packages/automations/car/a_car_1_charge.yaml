@@ -112,6 +112,7 @@ automation:
     data:
       message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.car_1_soc') | round()}}%. {{states('sensor.car_1_range')}} km."
       data:
+        notification_icon: mdi:car-electric
         color: green
         tag: auto_laden
         timeout: 43200

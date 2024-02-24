@@ -66,7 +66,7 @@ automation:
         data:
           title: "Veel vocht in badkamer! Raam is {{states('sensor.badkamer_raam')}}."
           message: "{{states('sensor.badkamer_thermal_absolute_humidity') | round(1) }} gram
-            water /m³ en {{states('sensor.badkamer_humidity')}}% vocht."
+            water /m³ en {{states('sensor.badkamer_humidity') | round(0) }}% vocht."
           data:
             notification_icon: "mdi:water-percent-alert"          
             color: "#0E86D4"
@@ -104,7 +104,7 @@ automation:
         data:
           title: "Veel vocht in master bedroom! Raam is {{states('sensor.master_bedroom_raam')}}"
           message: "{{states('sensor.master_bedroom_thermal_absolute_humidity') | round(1)}} gram
-            water /m³ en {{states('sensor.master_bedroom_humidity')}}% vocht."
+            water /m³ en {{states('sensor.master_bedroom_humidity') | round(0) }}% vocht."
           data:
             notification_icon: "mdi:water-percent-alert"          
             color: "#0E86D4"
@@ -143,7 +143,7 @@ automation:
         data:
           title: "Veel vocht in kamer Alunya! Raam is {{states('binary_sensor.kamer_alunya_raam')}}"
           message: "{{states('sensor.kamer_alunya_thermal_absolute_humidity') | round(1)}} gram
-            water /m³ en {{states('sensor.kamer_alunya_humidity')}}% vocht."
+            water /m³ en {{states('sensor.kamer_alunya_humidity') | round(0) }}% vocht."
           data:
             notification_icon: "mdi:water-percent-alert"          
             color: "#0E86D4"

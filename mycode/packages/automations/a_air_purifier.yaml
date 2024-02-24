@@ -8,11 +8,10 @@ automation:
   id: '7e3043d1-8299-4121-ad8b-08da26340065'
   description: ''
   trigger:
-  - platform: time_pattern 
-    minutes: /5
+  - platform: template
+    value_template: >
+      {{ states('sensor.zhimi_mb3_83f2_pm25') |float(default=0) > 8 }}
   condition:
-  - condition: template
-    value_template: "{{ states('sensor.zhimi_mb3_83f2_pm25') |float(default=0) > 8 }}"
   - condition: state
     entity_id: group.gezin
     state: 'home'
@@ -30,11 +29,10 @@ automation:
   id: '991a6848-2b77-4573-a2c4-76d603eeb899'
   description: ''
   trigger:
-  - minutes: /5
-    platform: time_pattern
+  - platform: template  
+    value_template: >
+      {{ states('sensor.zhimi_mb3_83f2_pm25') |float(default=0) <= 8 }}
   condition:
-  - condition: template
-    value_template: "{{ states('sensor.zhimi_mb3_83f2_pm25') |float(default=0) < 8 }}"
   - condition: state
     entity_id: input_boolean.busy_cooking
     state: 'off'    

@@ -304,12 +304,12 @@ http:
 recorder:
   purge_keep_days: 14
   commit_interval: 30
-  include:
-    entities:
-      - device_tracker.bart_s10
-      - device_tracker.sm_a536b
-      - device_tracker.bart_s23plus   # nodig voor automatisatie voordeur opendoen bij thuiskomst
-      - device_tracker.madouce_s20    # nodig voor automatisatie voordeur opendoen bij thuiskomst
+  # include:  # if set, only the entities listed will be recorded
+  #   entities:
+  #     - device_tracker.bart_s10
+  #     - device_tracker.sm_a536b
+  #     - device_tracker.bart_s23plus   # nodig voor automatisatie voordeur opendoen bij thuiskomst
+  #     - device_tracker.madouce_s20    # nodig voor automatisatie voordeur opendoen bij thuiskomst
   exclude:
     entities:
       - sensor.date
@@ -338,7 +338,7 @@ recorder:
       - group
       - persistent_notification
       - scene
-      - script
+      # - script
       - sun
       - updater
       - weather

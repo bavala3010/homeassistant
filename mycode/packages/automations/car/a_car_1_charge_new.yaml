@@ -190,7 +190,7 @@ automation:
             - condition: template 
               value_template: >
                 {% set max_net = states('input_number.car_charge_sun_max_netwattage') | float(default=0) / 1000 %}
-                {{ wattage + max_net < 1.3 }}
+                {{ (wattage + max_net) | round(1) < 1.3 }}
             - condition: template # charger is currently charging (more than 5 Ampère)
               value_template: "{{ states('sensor.charger_modbus_maxcurrent') | float() > 5 }}"              
           then: # stop charger
@@ -202,9 +202,14 @@ automation:
               data: {}
             - service: notify.bart_phone
               data:
-                title: Auto is gestopt met laden met zon.
+                title: Auto is gestopt met zonneladen.
                 message: >
-                  Beschikbaar vermogen was {{ wattage | round(2) }} kW.
+                  {% set max = states('input_number.car_charge_sun_max_netwattage') | float(default=0) / 1000 %}
+                  Totaal vermogen was minder dan 1.3 kW.<br>
+                  Zon {{ wattage | round(1) }} kW + max. net {{ max }} kW = {{ (wattage + max ) | round(1) }} kW.
+                data:
+                  notification_icon: mdi:lightning-bolt
+                  color: red                  
             - wait_template: ''
               timeout: '00:03:00'
         - if:

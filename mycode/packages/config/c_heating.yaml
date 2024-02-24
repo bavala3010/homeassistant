@@ -15,6 +15,24 @@ input_number:
     unit_of_measurement: °C
     mode: box
     
+  living_target_temperature:
+    name: "living doeltemperatuur (verwarmen met zonne-energie)"
+    min: 14
+    max: 23
+    step: 0.5
+
+  living_airco_injection:
+    name: "verwarmen living starten bij injectie"
+    min: 0
+    max: 3000
+    step: 50
+
+  alunya_airco_injection:
+    name: "verwarmen kamer Alunya starten bij injectie"
+    min: 0
+    max: 3000
+    step: 50  
+
 input_select:
   heating_mode_from_weather_forecast:
     options:
@@ -28,6 +46,11 @@ input_select:
       - 'centrale verwarming'
 
   heating_mode_living:
+    options:
+      - 'airco'
+      - 'centrale verwarming'
+
+  heating_mode_kamer_alunya:
     options:
       - 'airco'
       - 'centrale verwarming'

@@ -209,7 +209,7 @@ sensor:
   #       window_size: "00:02"  
 
   - platform: average
-    name: "net power excl charger avg2min"
+    name: "net power excl charger avg 2min"
     duration: 00:02:00
     entities:
       - sensor.net_power_excl_charger
@@ -217,5 +217,11 @@ sensor:
   - platform: average
     name: "charger current power avg"
     duration: 00:02:00
+    entities:
+      - sensor.charger_current_power
+
+  - platform: average
+    name: "charger current power avg 15min"
+    duration: 00:15:00
     entities:
       - sensor.charger_current_power

@@ -63,10 +63,10 @@ automation:
   variables:
     title: "Sluit raam van living/keuken!"  
     message: >
-      Vocht sinds openen raam: {{ ((states('sensor.living_humidity') | float(default=0)) - ((states('input_number.living_initial_humidity_percentage') | float(default=0)))) | round(1)}}% verschil.<br>
+      Vocht sinds openen raam: {{ ((states('sensor.living_humidity') | float(default=0)) - ((states('input_number.living_initial_humidity_percentage') | float(default=0)))) | round()}}% verschil.<br>
       Vocht living: {{states('sensor.gram_water_living') | round(1) }} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
-      Vocht living: {{states('sensor.living_humidity')}}%. Buiten: {{states('sensor.eikenbos_humidity')}}%.<br>
-      Temp living: {{states('sensor.living_temperature')}} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.
+      Vocht living: {{states('sensor.living_humidity') | round() }}%. Buiten: {{states('sensor.eikenbos_humidity')}}%.<br>
+      Temp living: {{states('sensor.living_temperature') | round(1) }} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.
     tag: "window_living"
     action_window_pause: "living_window_pause"
     reason: >
@@ -121,10 +121,10 @@ automation:
   variables:
     title: "Sluit het raam van Amilya!"
     message: >
-      Vocht sinds openen raam: {{ ((states('sensor.kamer_amilya_humidity') | float(default=0)) - ((states('input_number.kamer_amilya_initial_humidity_percentage') | float(default=0)))) | round(1)}}% verschil.<br>
+      Vocht sinds openen raam: {{ ((states('sensor.kamer_amilya_humidity') | float(default=0)) - ((states('input_number.kamer_amilya_initial_humidity_percentage') | float(default=0)))) | round()}}% verschil.<br>
       Vocht kamer Amilya: {{states('sensor.gram_water_kamer_amilya') | round(1) }} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
-      Vocht kamer Amilya: {{states('sensor.kamer_amilya_humidity')}}%. Buiten: {{states('sensor.eikenbos_humidity')}}%.<br>
-      Temp kamer Amilya: {{states('sensor.kamer_amilya_temperature')}} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.
+      Vocht kamer Amilya: {{states('sensor.kamer_amilya_humidity') | round()}}%. Buiten: {{states('sensor.eikenbos_humidity')}}%.<br>
+      Temp kamer Amilya: {{states('sensor.kamer_amilya_temperature') | round(1) }} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.
     tag: "window_kamer_amilya"
     action_window_pause: "kamer_amilya_window_pause"
     reason: >
@@ -179,10 +179,10 @@ automation:
   variables:
     title: "Sluit het raam van de veranda!"  
     message: >
-      Vocht sinds openen raam: {{ ((states('sensor.veranda_humidity') | float(default=0)) - ((states('input_number.veranda_initial_humidity_percentage') | float(default=0)))) | round(1)}}% verschil.<br>
+      Vocht sinds openen raam: {{ ((states('sensor.veranda_humidity') | float(default=0)) - ((states('input_number.veranda_initial_humidity_percentage') | float(default=0)))) | round()}}% verschil.<br>
       Vocht veranda: {{states('sensor.gram_water_veranda') | round(1) }} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
-      Vocht veranda: {{states('sensor.veranda_humidity')}}%. Buiten: {{states('sensor.eikenbos_humidity')}}%.<br>
-      Temp veranda: {{states('sensor.veranda_temperature')}} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.
+      Vocht veranda: {{states('sensor.veranda_humidity') | round() }}%. Buiten: {{states('sensor.eikenbos_humidity')}}%.<br>
+      Temp veranda: {{states('sensor.veranda_temperature') | round(1) }} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.
     tag: "window_veranda"
     action_window_pause: "veranda_window_pause"
     reason: >
@@ -294,10 +294,10 @@ automation:
   variables:
     title: "Sluit badkamer raam ({{states('sensor.badkamer_raam')}})!"    
     message: >
-      Vocht sinds openen raam: {{ ((states('sensor.badkamer_humidity') | float(default=0)) - ((states('input_number.badkamer_initial_humidity_percentage') | float(default=0)))) | round(1)}}% verschil.<br>
+      Vocht sinds openen raam: {{ ((states('sensor.badkamer_humidity') | float(default=0)) - ((states('input_number.badkamer_initial_humidity_percentage') | float(default=0)))) | round()}}% verschil.<br>
       Vocht badkamer: {{states('sensor.gram_water_badkamer') | round(1) }} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
-      Vocht badkamer: {{states('sensor.badkamer_humidity')}}%. Buiten: {{states('sensor.eikenbos_humidity')}}%.<br>
-      Temp badkamer: {{states('sensor.badkamer_temperature')}} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.
+      Vocht badkamer: {{states('sensor.badkamer_humidity') | round() }}%. Buiten: {{states('sensor.eikenbos_humidity')}}%.<br>
+      Temp badkamer: {{states('sensor.badkamer_temperature') | round(1) }} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.
     tag: "window_badkamer"
     action_window_pause: "badkamer_window_pause"
     reason: >
@@ -357,10 +357,10 @@ automation:
   variables:
     title: "Sluit het raam van Alunya!"
     message: >
-      Vocht sinds openen raam: {{ ((states('sensor.kamer_alunya_humidity') | float(default=0)) - ((states('input_number.kamer_alunya_initial_humidity_percentage') | float(default=0)))) | round(1)}}% verschil.<br>
+      Vocht sinds openen raam: {{ ((states('sensor.kamer_alunya_humidity') | float(default=0)) - ((states('input_number.kamer_alunya_initial_humidity_percentage') | float(default=0)))) | round()}}% verschil.<br>
       Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya') | round(1) }} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
-      Vocht kamer Alunya: {{states('sensor.kamer_alunya_humidity')}}%. Buiten: {{states('sensor.eikenbos_humidity')}}%.<br>
-      Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.
+      Vocht kamer Alunya: {{states('sensor.kamer_alunya_humidity') | round() }}%. Buiten: {{states('sensor.eikenbos_humidity')}}%.<br>
+      Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature') | round(1) }} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.
     tag: "window_kamer_alunya"
     action_window_pause: "kamer_alunya_window_pause"
     reason: >
@@ -415,10 +415,10 @@ automation:
   variables:
     title: "Sluit master bedroom raam ({{states('sensor.master_bedroom_raam')}})!"
     message: >
-      Vocht sinds openen raam: {{ ((states('sensor.master_bedroom_humidity') | float(default=0)) - ((states('input_number.master_bedroom_initial_humidity_percentage') | float(default=0)))) | round(1)}}% verschil.<br>
+      Vocht sinds openen raam: {{ ((states('sensor.master_bedroom_humidity') | float(default=0)) - ((states('input_number.master_bedroom_initial_humidity_percentage') | float(default=0)))) | round()}}% verschil.<br>
       Vocht master bedroom: {{states('sensor.gram_water_master_bedroom') | round(1) }} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
-      Vocht master bedroom: {{states('sensor.master_bedroom_humidity')}}%. Buiten: {{states('sensor.eikenbos_humidity')}}%.<br>
-      Temp master bedroom: {{states('sensor.master_bedroom_temperature')}} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.
+      Vocht master bedroom: {{states('sensor.master_bedroom_humidity') | round() }}%. Buiten: {{states('sensor.eikenbos_humidity')}}%.<br>
+      Temp master bedroom: {{states('sensor.master_bedroom_temperature') | round(1) }} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.
     tag: "window_master_bedroom"
     action_window_pause: "master_bedroom_window_pause"
     reason: >

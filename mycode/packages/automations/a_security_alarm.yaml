@@ -207,7 +207,7 @@ automation:
 
 - alias: 🚨 alarm // alarm trigger = melding
   id: '5fef4d2e-d1e1-4247-9c1f-0cb97130c86e'
-  description: NOK
+  description: ''
   trigger:
   - platform: state
     entity_id: alarm_control_panel.home_alarm
@@ -222,7 +222,7 @@ automation:
         tts_text: "Alarm in Eikenboslaan!"
         ttl: 0
         priority: high
-        media_stream: alarm_stream
+        media_stream: alarm_stream_max
   - service: notify.bart_madouce_phone
     data:
       title: '🚨 alarm // Alarm!'
@@ -236,24 +236,39 @@ automation:
           title: Meer info
           uri: /lovelace/alarm
         vibrationPattern: 10, 10, 10, 10, 10, 10, 10        
-  #  - service: media_player.volume_set
-  #    data:
-  #      entity_id: media_player.nestaudio3875
-  #      volume_level: 0.8
-  #  - service: media_player.play_media
-  #    data:
-  #      entity_id: media_player.living_speaker
-  #      media_content_id: http://192.168.68.100:8123/local/siren.mp3
-  #      media_content_type: music
-  #  - service: media_player.play_media
-  #    data:
-  #      entity_id: media_player.nestaudio3875
-  #      media_content_id: http://192.168.68.100:8123/local/siren.mp3
-  #      media_content_type: music
-  #  - service: media_player.volume_set
-  #    data:
-  #      entity_id: media_player.nestaudio3875
-  #      volume_level: 0.8
+  - service: media_player.volume_set
+    data:
+      entity_id: 
+      - media_player.living_speaker
+      - media_player.veranda_speaker
+      - media_player.master_bedroom_speaker
+      volume_level: 0.8
+  - repeat:
+      until:
+        - condition: state
+          entity_id: alarm_control_panel.home_alarm
+          state: "disarmed"
+      sequence:
+        - service: media_player.play_media
+          data:
+            entity_id: media_player.living_speaker
+            media_content_id: http://192.168.68.100:8123/local/siren.mp3
+            media_content_type: music
+        - service: media_player.play_media
+          data:
+            media_content_id: http://192.168.68.100:8123/local/siren.mp3
+            media_content_type: music
+          target:
+            entity_id: media_player.veranda_speaker
+        - delay:
+            seconds: 30          
+  - service: media_player.volume_set
+    data:
+      entity_id: 
+      - media_player.living_speaker
+      - media_player.veranda_speaker
+      - media_player.master_bedroom_speaker
+      volume_level: 0.3
   mode: queued
 
 - alias: set_alarm_arm_away

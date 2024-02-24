@@ -378,6 +378,8 @@ input_select:
       - 'ontvochtiger badkamer'
       - 'auto'
       - 'living airco'
+      - 'Alunya airco'
+      - 'Amilya airco'
 
   load_priority_2:
     options:
