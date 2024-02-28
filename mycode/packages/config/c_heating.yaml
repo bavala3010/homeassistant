@@ -45,12 +45,12 @@ input_select:
       - 'airco'
       - 'centrale verwarming'
 
-  heating_mode_living:
+  living_heating_mode:
     options:
       - 'airco'
       - 'centrale verwarming'
 
-  heating_mode_kamer_alunya:
+  kamer_alunya_heating_mode:
     options:
       - 'airco'
       - 'centrale verwarming'

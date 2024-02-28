@@ -568,6 +568,16 @@ sensor:
         window_size: "00:01"
 
   - platform: filter
+    name: net power avg 5min
+    entity_id: sensor.net_power
+    unique_id: 'cabb62fe-50ab-4e62-a761-fbdd3631a0b9'
+    filters:
+      - filter: outlier
+        radius: 10000  # ignore readings if difference is bigger than 10000
+      - filter: time_simple_moving_average
+        window_size: "00:05"
+
+  - platform: filter
     name: net power avg 15min
     entity_id: sensor.net_power
     unique_id: '36d36639-6265-4c87-ad98-47e19a0f8fea'

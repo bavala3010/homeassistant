@@ -67,7 +67,7 @@ automation:
       data:
         title: Ontvochtiger in master bedroom ingeschakeld. 
         message: >
-          Vocht is {{states('sensor.master_bedroom_humidity') | round(1) }}% en {{states('sensor.master_bedroom_thermal_absolute_humidity') | round(1)}} gram
+          Vocht is {{states('sensor.master_bedroom_humidity') | round() }}% en {{states('sensor.master_bedroom_thermal_absolute_humidity') | round(1)}} gram
           water /m³.
         data:
           notification_icon: "mdi:water-percent-alert"      

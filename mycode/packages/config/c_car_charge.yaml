@@ -225,3 +225,9 @@ sensor:
     duration: 00:15:00
     entities:
       - sensor.charger_current_power
+  
+  - platform: average
+    name: "charger current power avg 5min"
+    duration: 00:05:00
+    entities:
+      - sensor.charger_current_power  

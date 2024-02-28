@@ -107,8 +107,9 @@ automation:
       data:
         title: Zonne-energie
         message: >
-          Vandaag heeft de zon {{ states('sensor.sma_today') }} kWh opgebracht.<br>
-          Morgen wordt er {{ states('sensor.solar_sim_energy_tomorrow_adj') }} kWh verwacht.
+          Vandaag heeft de zon {{ states('sensor.sma_today') | round(1) }} kWh opgebracht.<br>
+          Er werd vandaag {{ states('sensor.solar_sim_energy_today_adj') | round(1) }} kWh verwacht.
+          Morgen wordt er {{ states('sensor.solar_sim_energy_tomorrow_adj') | round(1) }} kWh verwacht.
         data:
           notification_icon: mdi:sun-wireless-outline
   mode: single

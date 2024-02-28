@@ -10,10 +10,8 @@
 #     alarm uitgeschakeld aan voordeur
 #     alarm bij beweging
 #     garagepoort staat lang open
-#     beweging op oprit
 
-############################ Automations ################################## 
-
+############################ Automations ##################################
 automation:
 
 - alias: 🚨 alarm // thuiskomst (zone) = alarm uit

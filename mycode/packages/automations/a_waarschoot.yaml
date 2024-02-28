@@ -125,9 +125,9 @@ automation:
       data:
         title: "Waarschoot verlaten: Verwarming uit en alarm aan"
         message: >
-          De verwarming wordt uitgeschakeld door het verlaten van het huis. Het is
-          nu nog {{ states('sensor.waarschoot_living_temperature') }} graden in de
-          living.
+          De verwarming wordt uitgeschakeld door het verlaten van het huis.<br>
+          Het is nu nog {{ states('sensor.waarschoot_living_temperature') | round(1) }}°C in de living en {{
+          states('sensor.waarschoot_keuken_temperature') | round(1) }}°C in de keuken.
     - service: notify.anita_phone
       data:
         message: TTS
@@ -186,16 +186,16 @@ automation:
       data:
         title: Verwarming aan (volgens schema)
         message: >
-          De verwarming wordt ingeschakeld bij aankomst thuis. Het is nu nog {{
-          states('sensor.waarschoot_living_temperature') }}°C in de living en {{
-          states('sensor.waarschoot_keuken_temperature') }}°C in de keuken.
+          De verwarming wordt ingeschakeld bij aankomst thuis.<br>
+          Het is nu nog {{ states('sensor.waarschoot_living_temperature') | round(1) }}°C in de living en {{
+          states('sensor.waarschoot_keuken_temperature') | round(1) }}°C in de keuken.
     - service: notify.bart_phone
       data:
         title: "Waarschoot thuiskomst: Verwarming aan (volgens schema)"
         message: >
           De verwarming wordt ingeschakeld bij aankomst thuis. Het is nu nog {{
-          states('sensor.waarschoot_living_temperature') }}°C in de living en {{
-          states('sensor.waarschoot_keuken_temperature') }}°C in de keuken.
+          states('sensor.waarschoot_living_temperature') | round(1) }}°C in de living en {{
+          states('sensor.waarschoot_keuken_temperature') | round(1) }}°C in de keuken.
     - service: notify.anita_phone
       data:
         message: TTS
