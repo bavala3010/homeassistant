@@ -125,6 +125,8 @@ automation:
     - platform: state
       entity_id: binary_sensor.kamer_alunya_raam
       to: "on"
+      for:
+        minutes: 1
     - platform: time
       at: input_datetime.alunya_airco_timer_stop      
   condition: []

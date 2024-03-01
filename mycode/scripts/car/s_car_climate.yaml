@@ -172,7 +172,7 @@ car_1_climatisation_start:
           seconds: 30    
   - service: notify.bart_madouce_phone
     data:
-      message: Climatisatie Audit is effectief gestart.
+      message: Climatisatie Audi is effectief gestart.
       data:
         tag: auto_climatisatie
         timeout: 18000  # 1800 seconden = half uur

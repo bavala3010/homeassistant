@@ -4,6 +4,121 @@ automation:
 # Airco living
 #############################################################
 
+- alias: 'zonne-energie verwarmen // 1000 W beschikbaar'
+  id: 'ec00f801-4648-4c1e-a4ba-481076567b26'
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - condition: template
+      value_template: >
+        {% set net = ( states('sensor.net_power_avg_15min') | float() * 0.4 ) + ( states('sensor.net_power_avg_5min') | float() * 0.6 ) %}
+        {% set charger = ( states('sensor.charger_current_power_avg_15min') | float() * 0.4 ) + ( states('sensor.charger_current_power_avg_5min') | float() * 0.6 ) %}
+        {{ (net - charger) | int() < - 1000 }}      
+  action:
+    - if:
+        - condition: state
+          entity_id: input_select.load_priority_1
+          state: "living airco"
+        - condition: state
+          entity_id: input_select.living_heating_mode
+          state: "airco"
+        - condition: state
+          entity_id: input_select.load_priority_2
+          state: "Alunya airco"
+        - condition: state
+          entity_id: input_select.kamer_alunya_heating_mode
+          state: "centrale verwarming"
+        - condition: state
+          entity_id: person.alunya
+          state: "home"        
+      then:
+        - service: notify.bart_phone
+          metadata: {}
+          data:
+            title: Verwarming kamer Alunya ingesteld op airco
+            message: >
+              {% set net = ( states('sensor.net_power_avg_15min') | float() * 0.4 ) + ( states('sensor.net_power_avg_5min') | float() * 0.6 ) %}
+              {% set charger = ( states('sensor.charger_current_power_avg_15min') | float() * 0.4 ) + ( states('sensor.charger_current_power_avg_5min') | float() * 0.6 ) %}
+              Meer dan 1000 W injectie laatste 15 min.: Er is {{ - ( net - charger) | int() }} W beschikbaar.
+        - service: input_select.select_option
+          target:
+            entity_id: input_select.kamer_alunya_heating_mode
+          data:
+            option: airco
+        - service: tado.set_climate_timer
+          target:
+            entity_id: climate.kamer_alunya
+          data:
+            requested_overlay: MANUAL
+            temperature: 14
+    - if:
+        - condition: state
+          entity_id: input_select.load_priority_1
+          state: living airco
+        - condition: state
+          entity_id: input_select.living_heating_mode
+          state: centrale verwarming
+        - condition: state
+          entity_id: group.bart_madouce
+          state: home
+      then:
+        - service: notify.bart_phone
+          metadata: {}
+          data:
+            title: Verwarming living ingesteld op airco
+            message: >
+              {% set net = ( states('sensor.net_power_avg_15min') | float() * 0.4 ) + ( states('sensor.net_power_avg_5min') | float() * 0.6 ) %}
+              {% set charger = ( states('sensor.charger_current_power_avg_15min') | float() * 0.4 ) + ( states('sensor.charger_current_power_avg_5min') | float() * 0.6 ) %}
+              Meer dan 1000 W injectie laatste 15 min.<br>
+              Er is {{ - ( net - charger ) | int() }} W beschikbaar.
+        - service: input_select.select_option
+          target:
+            entity_id: input_select.living_heating_mode
+          data:
+            option: airco
+        - service: tado.set_climate_timer
+          target:
+            entity_id: climate.living
+          data:
+            requested_overlay: MANUAL
+            temperature: 14    
+    - if:
+        - condition: state
+          entity_id: input_select.load_priority_1
+          state: "Alunya airco"
+        - condition: state
+          entity_id: group.kamer_alunya_ramen
+          state: "off"        
+        - condition: state
+          entity_id: input_select.kamer_alunya_heating_mode
+          state: "centrale verwarming"
+      then:
+        - service: notify.bart_phone
+          metadata: {}
+          data:
+            title: Verwarming kamer Alunya ingesteld op airco
+            message: >
+              {% set net = ( states('sensor.net_power_avg_15min') | float() * 0.4 ) + ( states('sensor.net_power_avg_5min') | float() * 0.6 ) %}
+              {% set charger = ( states('sensor.charger_current_power_avg_15min') | float() * 0.4 ) + ( states('sensor.charger_current_power_avg_5min') | float() * 0.6 ) %}
+              Meer dan 1000 W injectie laatste 15 min.: Er is {{ - ( net - charger) | int() }} W beschikbaar.
+        - service: input_select.select_option
+          target:
+            entity_id: input_select.kamer_alunya_heating_mode
+          data:
+            option: airco
+        - service: tado.set_climate_timer
+          target:
+            entity_id: climate.kamer_alunya
+          data:
+            requested_overlay: MANUAL
+            temperature: 14
+  mode: single
+
 - alias: 'zonne-energie verwarmen // injectie meer dan 1000 W gem. 15 min. = living verwarming modus op airco'
   id: '68d14511-ef1e-468e-bc78-4a41113f1f24'
   description: ''
@@ -101,6 +216,8 @@ automation:
         temperature: 22
       target:
         device_id: 1c560bbc7917f45d737e87d3e2bd0d89
+    - wait_template: ''
+      timeout: "00:00:10"
     - service: climate.set_preset_mode
       data:
         preset_mode: eco
@@ -157,16 +274,16 @@ automation:
         {{ (net - charger) | int() < - ( states('input_number.alunya_airco_injection') | float() ) }}
     - condition: state
       entity_id: input_select.kamer_alunya_heating_mode
-      state: centrale verwarming
+      state: "centrale verwarming"
     - condition: state
       entity_id: input_select.load_priority_1
-      state: 'Alunya airco'
+      state: "Alunya airco"
     - condition: state
       entity_id: group.kamer_alunya_ramen
-      state: off
+      state: "off"
     - condition: state
       entity_id: group.bart_madouce
-      state: home
+      state: "home"
   action:
   - service: notify.bart_phone
     metadata: {}

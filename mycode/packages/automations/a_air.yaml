@@ -254,7 +254,7 @@ automation:
         title: Verlucht master bedroom.
         message: >
           CO2 waarde is {{ states('sensor.kooldioxide_detector_carbon_dioxide') | int() }} PPM.
-          De luchtvochtigheid is {{states('sensor.master_bedroom_humidity') | round() }} %.
+          De luchtvochtigheid is {{states('sensor.master_bedroom_humidity') | round() }}%.
         data:
           color: red          
   mode: single

@@ -9,7 +9,9 @@ automation:
     to: not_home
   - platform: state
     entity_id: binary_sensor.master_bedroom_raam_kantel
-    to: "on"    
+    to: "on"
+    for:
+      minutes: 1 
   - platform: time
     at: input_datetime.master_bedroom_airco_timer_stop    
   condition: []

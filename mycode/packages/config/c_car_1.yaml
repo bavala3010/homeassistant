@@ -5,12 +5,12 @@
 template:
   - sensor:
       - name: "car 1 soc"
-        state: "{{ states('sensor.audi_e_tron_sportback_state_of_charge') }}"
+        state: "{{ states('sensor.audi_e_tron_sportback_tank_level') }}"
         unit_of_measurement: "%"
         unique_id: 'f360094b-df19-4102-9c00-6b33ffd71986'
 
       - name: "car 1 range"
-        state: "{{ states('sensor.audi_e_tron_sportback_primary_engine_range') }}"
+        state: "{{ states('sensor.audi_e_tron_sportback_range') }}"
         unit_of_measurement: km
 
       - name: "car 1 plug state"
