@@ -1,0 +1,10 @@
+input_number:
+  plant_1_care_day_counter:
+    name: Plant 1 dagen sinds bewatering
+    min: 0
+    max: 100
+
+  plant_2_care_day_counter:
+    name: Plant 2 dagen sinds bewatering
+    min: 0
+    max: 100

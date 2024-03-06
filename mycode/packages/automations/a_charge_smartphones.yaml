@@ -30,7 +30,7 @@ automation:
   action:
   - service: switch.turn_on
     target:
-      entity_id: switch.bart_gsm
+      entity_id: switch.bart_gsm_charger
   mode: single
 
 - alias: 🔌 Madouce gsm < 90% om 22:00 = gsm-lader inschakelen
@@ -51,7 +51,7 @@ automation:
   action:
   - service: switch.turn_on
     target:
-      entity_id: switch.smart_power_strip_3
+      entity_id: switch.madouce_gsm_lader
   mode: single
 
 - alias: 🔌 Bij thuiskomst Madouce na 22u00 = gsm-lader inschakelen
@@ -69,7 +69,7 @@ automation:
   action:
   - service: switch.turn_on
     target:
-      entity_id: switch.smart_power_strip_3
+      entity_id: switch.madouce_gsm_lader
   mode: single
 
 - alias: 🔌 Bij thuiskomst Bart na 22u00 = gsm-lader inschakelen
@@ -87,7 +87,7 @@ automation:
   action:
   - service: switch.turn_on
     target:
-      entity_id: switch.bart_gsm
+      entity_id: switch.bart_gsm_charger
   mode: single
 
 - alias: 🔌 Madouce gsm 90% geladen = stekker uit
@@ -104,7 +104,7 @@ automation:
   action:
   - service: switch.turn_off
     target:
-      entity_id: switch.smart_power_strip_3
+      entity_id: switch.madouce_gsm_lader
   mode: single
 
 - alias: 🔌 Bart gsm 90% geladen = stekker uit
@@ -121,7 +121,7 @@ automation:
   action:
   - service: switch.turn_off
     target:
-      entity_id: switch.bart_gsm
+      entity_id: switch.bart_gsm_charger
   mode: single
 
 - alias: 🔌 's morgens Madouce gsm nog bijladen
@@ -137,12 +137,12 @@ automation:
   action:
   - service: switch.turn_on
     target:
-      entity_id: switch.smart_power_strip_3
+      entity_id: switch.madouce_gsm_lader
   - wait_template: ''
     timeout: 02:00:00
   - service: switch.turn_off
     target:
-      entity_id: switch.smart_power_strip_3
+      entity_id: switch.madouce_gsm_lader
   mode: single
   
 - alias: 🔌 's morgens Bart gsm nog bijladen
@@ -158,12 +158,12 @@ automation:
   action:
   - service: switch.turn_on
     target:
-      entity_id: switch.bart_gsm
+      entity_id: switch.bart_gsm_charger
   - wait_template: ''
     timeout: 02:00:00
   - service: switch.turn_off
     target:
-      entity_id: switch.bart_gsm
+      entity_id: switch.bart_gsm_charger
   mode: single
 
 

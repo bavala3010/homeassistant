@@ -16,6 +16,30 @@ automation:
       - sensor.net_power
   mode: single
 
+- alias: 100% op zonne-energie = melding
+  id: 'a934040a-79fd-4e8b-9988-aa75193cd4bd'
+  description: ""
+  mode: single
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.net_neutrality_now
+      for:
+        minutes: 5
+      above: "99"
+  condition: []
+  action:
+    - service: notify.bart_phone
+      data:
+        title: Proficiat. Je verbruik is nu 100% ecologisch.
+        message: "Er wordt nu {{ states('sensor.solar_power') | round() }} W zonne-energie opgewekt."
+        data:
+          notification_icon: mdi:sun-wireless-outline
+          color: orange
+          actions:
+          - action: URI
+            title: meer info
+            uri: /lovelace-verbruik/zonne-energie
+
 - alias: injectie meer dan 2,5 kW = melding dat auto kan worden geladen of machine aangezet
   id: '2d15d773-5a7f-4c83-ab27-fceef60120ae'
   description: ""

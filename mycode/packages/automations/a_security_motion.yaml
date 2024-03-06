@@ -62,18 +62,19 @@ automation:
                 data:
                   entity_id: media_player.veranda_speaker
                   message: Beweging op oprit!
-    - parallel:
-        - service: fully_kiosk.load_url
-          data:
-            url: http://192.168.68.100:8123/lovelace-security/c
-          target:
-            device_id: 9db72afc8fd0936719dbe6cdbe6d9711
-        - service: camera.play_stream
-          data:
-            format: hls
-            media_player: media_player.living_speaker
-          target:
-            entity_id: camera.eikenbos_oprit        
+    - service: fully_kiosk.load_url
+      data:
+        url: http://192.168.68.100:8123/lovelace-security/c
+      target:
+        device_id: 9db72afc8fd0936719dbe6cdbe6d9711
+    - wait_template: ''
+      timeout: 00:02:00        
+    - service: camera.play_stream
+      data:
+        format: hls
+        media_player: media_player.living_speaker
+      target:
+        entity_id: camera.eikenbos_oprit        
     - wait_template: ''
       timeout: 00:02:00
     - service: fully_kiosk.load_url

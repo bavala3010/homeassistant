@@ -44,7 +44,7 @@ automation:
             message: >
               {% set net = ( states('sensor.net_power_avg_15min') | float() * 0.4 ) + ( states('sensor.net_power_avg_5min') | float() * 0.6 ) %}
               {% set charger = ( states('sensor.charger_current_power_avg_15min') | float() * 0.4 ) + ( states('sensor.charger_current_power_avg_5min') | float() * 0.6 ) %}
-              Meer dan 1000 W injectie laatste 15 min.: Er is {{ - ( net - charger) | int() }} W beschikbaar.
+              Meer dan 1000 W injectie laatste 15 min. Er is {{ - ( net - charger) | int() }} W beschikbaar.
         - service: input_select.select_option
           target:
             entity_id: input_select.kamer_alunya_heating_mode
@@ -105,7 +105,7 @@ automation:
             message: >
               {% set net = ( states('sensor.net_power_avg_15min') | float() * 0.4 ) + ( states('sensor.net_power_avg_5min') | float() * 0.6 ) %}
               {% set charger = ( states('sensor.charger_current_power_avg_15min') | float() * 0.4 ) + ( states('sensor.charger_current_power_avg_5min') | float() * 0.6 ) %}
-              Meer dan 1000 W injectie laatste 15 min.: Er is {{ - ( net - charger) | int() }} W beschikbaar.
+              Meer dan 1000 W injectie laatste 15 min.<br>Er is {{ - ( net - charger) | int() }} W beschikbaar.
         - service: input_select.select_option
           target:
             entity_id: input_select.kamer_alunya_heating_mode
@@ -292,7 +292,7 @@ automation:
       message: >
         {% set net = ( states('sensor.net_power_avg_15min') | float() * 0.4 ) + ( states('sensor.net_power_avg_5min') | float() * 0.6 ) %}
         {% set charger = ( states('sensor.charger_current_power_avg_15min') | float() * 0.4 ) + ( states('sensor.charger_current_power_avg_5min') | float() * 0.6 ) %}
-        Meer dan 1000 W injectie laatste 15 min.: Er is {{ - ( net - charger) | int() }} W beschikbaar.
+        Meer dan 1000 W injectie laatste 15 min.<br>Er is {{ - ( net - charger) | int() }} W beschikbaar.
   - service: input_select.select_option
     target:
       entity_id: input_select.kamer_alunya_heating_mode

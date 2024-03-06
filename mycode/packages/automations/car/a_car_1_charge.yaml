@@ -287,7 +287,7 @@ automation:
     - platform: state
       entity_id:
         - sensor.car_1_charging_state
-      to: error
+      to: invalid
   condition: []
   action:
     - if:
@@ -334,7 +334,7 @@ automation:
         while:
         - condition: state
           entity_id: sensor.car_1_charging_state
-          state: error
+          state: invalid
         sequence:
         - delay:
             minutes: 1

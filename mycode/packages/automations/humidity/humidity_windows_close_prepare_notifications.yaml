@@ -70,10 +70,9 @@ automation:
     tag: "window_living"
     action_window_pause: "living_window_pause"
     reason: >
-      {% set d = states('sensor.gram_water_living_diff_outside') | float(default=0) %}
-      {% set h = states('sensor.living_humidity') %}
-      {% if states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) < 16 %}Te koud buiten.
-      {% elif states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) > 23 %}Te warm buiten.
+      {% set d = states('sensor.gram_water_living_diff_outside') | float(default=0) %}{% set h = states('sensor.living_humidity') %}{% set temp_forecast = states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) %}
+      {% if temp_forecast < 16 %}Te koud buiten.
+      {% elif temp_forecast > 23 %}Te warm buiten.
       {% elif d <= 0 %}Buiten vochtiger dan binnen.
       {% elif d < 0.5 %}Buiten maar iets minder vocht dan binnen.
       {% endif %}
@@ -128,8 +127,7 @@ automation:
     tag: "window_kamer_amilya"
     action_window_pause: "kamer_amilya_window_pause"
     reason: >
-      {% set d = states('sensor.gram_water_kamer_amilya_diff_outside') | float(default=0) %}
-      {% set h = states('sensor.kamer_amilya_humidity') %}
+      {% set d = states('sensor.gram_water_kamer_amilya_diff_outside') | float(default=0) %}{% set h = states('sensor.kamer_amilya_humidity') %}
       {% if states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) < 16 %}Te koud buiten.
       {% elif states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) > 23 %}Te warm buiten.
       {% elif d <= 0 %}Buiten vochtiger dan binnen.
@@ -186,8 +184,7 @@ automation:
     tag: "window_veranda"
     action_window_pause: "veranda_window_pause"
     reason: >
-      {% set d = states('sensor.gram_water_veranda_diff_outside') | float(default=0) %}
-      {% set h = states('sensor.veranda_humidity') %}
+      {% set d = states('sensor.gram_water_veranda_diff_outside') | float(default=0) %}{% set h = states('sensor.veranda_humidity') %}
       {% if states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) < 16 %}Te koud buiten.
       {% elif states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) > 23 %}Te warm buiten.
       {% elif d <= 0 %}Buiten vochtiger dan binnen.

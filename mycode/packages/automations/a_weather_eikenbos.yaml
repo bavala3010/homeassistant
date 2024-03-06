@@ -21,3 +21,37 @@ automation:
       target:
         entity_id: input_number.weather_eikenbos_max_temp_today        
   mode: single
+
+
+- alias: "At 7:15 on workdays announce slipperiness risk"
+  id: 'e471c3a2-5061-486c-a50c-9fc240e46367'
+  description: ""
+  trigger:
+  - platform: time
+    at: '07:10'
+  condition:
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: "on"
+    - condition: numeric_state
+      entity_id: sensor.eikenbos_temperature
+      below: 4
+    - condition: numeric_state
+      entity_id: sensor.eikenbos_humidity
+      below: 70
+  action:
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.living_speaker
+      volume_level: 0.5      
+  - service: tts.edge_tts_say
+    data:
+      entity_id: media_player.living_speaker
+      message: >
+        Opgelet: het kan buiten glad zijn. Het is {{ states('sensor.eikenbos_temperature') | round() }} graden.
+  - delay: '00:00:10'
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.living_speaker
+      volume_level: 0.4
+  mode: single

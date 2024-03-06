@@ -1,47 +1,47 @@
 input_datetime:
-  dehumidifier_start_time:
-    name: "ontvochtiger starttijd"
+  badkamer_dehumidifier_start_time:
+    name: "badkamer ontvochtiger starttijd"
     has_date: true
     has_time: true
 
-  dehumidifier_stop_time:
-    name: "ontvochtiger eindtijd"
+  badkamer_dehumidifier_stop_time:
+    name: "badkamer ontvochtiger eindtijd"
     has_date: true
     has_time: true
 
-  dehumidifier_2_start_time:
-    name: "ontvochtiger 2 starttijd"
+  master_bedroom_dehumidifier_start_time:
+    name: "master bedroom ontvochtiger starttijd"
     has_date: true
     has_time: true
 
-  dehumidifier_2_stop_time:
-    name: "ontvochtiger 2 eindtijd"
+  master_bedroom_dehumidifier_stop_time:
+    name: "master bedroom ontvochtiger eindtijd"
     has_date: true
     has_time: true
 
 input_select:
-  dehumidifier_state:
-    name: "onvochtiger status"
+  badkamer_dehumidifier_state:
+    name: "badkamer onvochtiger status"
     options:
       - aan
       - uit
 
-  dehumidifier_2_state:
-    name: "onvochtiger 2 status"
+  master_bedroom_dehumidifier_state:
+    name: "master bedroom onvochtiger status"
     options:
       - aan
       - uit
 
 input_number:
-  dehumidifier_timer_minutes:
+  badkamer_dehumidifier_timer_minutes:
     name: ontvochtigen met ontvochtiger
     min: 0
     max: 240
     step: 5
     mode: box
 
-  dehumidifier_2_timer_minutes:
-    name: ontvochtigen met ontvochtiger 2
+  master_bedroom_dehumidifier_timer_minutes:
+    name: ontvochtigen met master bedroom ontvochtiger
     min: 0
     max: 240
     step: 5
@@ -50,28 +50,28 @@ input_number:
 
 input_boolean:
   # toggle om te zien of ontvochtiger extra draait of door noodzaak (vb. douche)
-  dehumidifier_1_extrarun:
+  badkamer_dehumidifier_extrarun:
     name: extra ontvochtigen
 
-  dehumidifier_2_extrarun:
+  master_bedroom_dehumidifier_extrarun:
     name: extra ontvochtigen    
 
 timer:
-  dehumidifier_timer:
+  badkamer_dehumidifier_timer:
     name: "onvochtiger timer"
     duration: "00:30:00"
     restore: true
     icon: mdi:clock
 
-  dehumidifier_2_timer:
-    name: "onvochtiger 2 timer"
+  master_bedroom_dehumidifier_timer:
+    name: "master bedroom onvochtiger timer"
     duration: "00:30:00"
     restore: true
     icon: mdi:clock
 
 sensor:
   - platform: integration
-    source: sensor.dehumidifier_power
+    source: sensor.badkamer_dehumidifier_power
     name: ontvochtiger energieverbruik
     unit_prefix: k
     round: 2
@@ -80,6 +80,6 @@ sensor:
     # creates a sensor called sensor.ontvochtiger_energieverbruik
 
 utility_meter:
-  dehumidifier_energy_daily:
+  badkamer_dehumidifier_energy_daily:
     source: sensor.ontvochtiger_energieverbruik
     cycle: daily

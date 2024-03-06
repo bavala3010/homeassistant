@@ -7,7 +7,7 @@ automation:
   description: ''
   trigger:
   - platform: numeric_state
-    entity_id: sensor.dehumidifier_power
+    entity_id: sensor.badkamer_dehumidifier_power
     for:
       hours: 0
       minutes: 0
@@ -19,17 +19,17 @@ automation:
       data:
         option: aan
       target:
-        entity_id: input_select.dehumidifier_state
+        entity_id: input_select.badkamer_dehumidifier_state
     - service: input_datetime.set_datetime
       data:
         datetime: '{{ now() }}'
       target:
-        entity_id: input_datetime.dehumidifier_start_time
+        entity_id: input_datetime.badkamer_dehumidifier_start_time
     - service: timer.start
       data:
-        duration: "{{ states('input_number.dehumidifier_timer_minutes') | float * 60 }}"   
+        duration: "{{ states('input_number.badkamer_dehumidifier_timer_minutes') | float * 60 }}"   
       target:
-        entity_id: timer.dehumidifier_timer              
+        entity_id: timer.badkamer_dehumidifier_timer              
   mode: single
 
 - alias: 💧 humidity // badkamer ontvochtiger // licht douche = inschakelen
@@ -50,7 +50,7 @@ automation:
     - service: switch.turn_on
       data: {}
       target:
-        entity_id: switch.dehumidifier_switch
+        entity_id: switch.badkamer_dehumidifier_switch
   mode: single
 
 
@@ -59,7 +59,7 @@ automation:
   description: ''
   trigger:
   - platform: numeric_state
-    entity_id: sensor.dehumidifier_power
+    entity_id: sensor.badkamer_dehumidifier_power
     above: 0
     for: 00:15:00
   condition: []
@@ -67,7 +67,7 @@ automation:
   - repeat:
       while:
       - condition: numeric_state
-        entity_id: sensor.dehumidifier_power
+        entity_id: sensor.badkamer_dehumidifier_power
         above: 0
       sequence:
       - service: notify.bart_phone      
@@ -114,7 +114,7 @@ automation:
     - service: switch.turn_on
       data: {}
       target:
-        entity_id: switch.dehumidifier_switch
+        entity_id: switch.badkamer_dehumidifier_switch
   mode: single
 
 
@@ -125,7 +125,7 @@ automation:
   description: ''
   trigger:
   - platform: numeric_state
-    entity_id: sensor.dehumidifier_power
+    entity_id: sensor.badkamer_dehumidifier_power
     for:
       hours: 0
       minutes: 0
@@ -137,12 +137,12 @@ automation:
       data:
         option: uit
       target:
-        entity_id: input_select.dehumidifier_state
+        entity_id: input_select.badkamer_dehumidifier_state
     - service: input_datetime.set_datetime
       data:
         datetime: '{{ now() }}'
       target:
-        entity_id: input_datetime.dehumidifier_stop_time
+        entity_id: input_datetime.badkamer_dehumidifier_stop_time
     - service: timer.finish
       data: {}
       target:
@@ -150,7 +150,7 @@ automation:
     - service: switch.turn_off
       data: {}
       target:
-        entity_id: switch.dehumidifier_switch         
+        entity_id: switch.badkamer_dehumidifier_switch         
     - service: notify.bart_madouce_phone
       data:
         message: "clear_notification"
@@ -163,7 +163,7 @@ automation:
   description: ''
   trigger:
   - platform: state
-    entity_id: timer.dehumidifier_timer
+    entity_id: timer.badkamer_dehumidifier_timer
     from: active
     to: idle
   - platform: state
@@ -177,11 +177,11 @@ automation:
     - service: switch.turn_off
       data: {}
       target:
-        entity_id: switch.dehumidifier_switch
+        entity_id: switch.badkamer_dehumidifier_switch
     - service: timer.cancel
       data: {}
       target:
-        entity_id: timer.dehumidifier_timer           
+        entity_id: timer.badkamer_dehumidifier_timer           
   mode: single
 
   

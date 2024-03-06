@@ -26,9 +26,8 @@ automation:
   description: ""
   trigger:
     - platform: state
-      entity_id:
-        - person.bart
-      to: "sauna Elzenhof"
+      entity_id: person.bart
+      to: "Sauna Elzenhof"
       for:
         hours: 0
         minutes: 15
@@ -47,9 +46,8 @@ automation:
   description: ""
   trigger:
     - platform: state
-      entity_id:
-        - person.madouce
-      to: The White Oak
+      entity_id: person.madouce
+      to: "The White Oak"
       for:
         hours: 0
         minutes: 15
@@ -68,9 +66,8 @@ automation:
   description: ""
   trigger:
     - platform: state
-      entity_id:
-        - person.madouce
-      to: "sauna Elzenhof"
+      entity_id: person.madouce
+      to: "Sauna Elzenhof"
       for:
         hours: 0
         minutes: 15

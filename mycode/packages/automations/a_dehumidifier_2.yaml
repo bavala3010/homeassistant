@@ -14,12 +14,18 @@ automation:
       entity_id: sensor.master_bedroom_humidity
       above: 65
     - condition: template
-      value_template: " {{ states('binary_sensor.master_bedroom_raam_wijd') != 'on' }}"      
+      value_template: " {{ states('binary_sensor.master_bedroom_raam_wijd') != 'on' }}"
+    # Als Bart of Madouce thuis is, tijdens de week na 9u en in het weekend na 10u
+    - condition: template
+      value_template: >-
+        {{ (states('group.bart_madouce') == 'home') and
+          ((now().weekday() in range(0, 5) and now().hour >= 9) or
+            (now().weekday() in range(5, 7) and now().hour >= 10)) }}
   action:
     - service: switch.turn_on
       data: {}
       target:
-        entity_id: switch.dehumidifier_2_switch         
+        entity_id: switch.master_bedroom_dehumidifier_switch        
   mode: single
 
 - alias: "💧 humidity // master bedroom ontvochtiger // aan = start timer"
@@ -27,15 +33,15 @@ automation:
   description: ''
   trigger:
     - platform: state
-      entity_id: switch.dehumidifier_2_switch
+      entity_id: switch.master_bedroom_dehumidifier_switch
       to: 'on'
   condition: []
   action:
     - service: timer.start
       data:
-        duration: "{{ states('input_number.dehumidifier_2_timer_minutes') | float * 60 }}"   
+        duration: "{{ states('input_number.master_bedroom_dehumidifier_timer_minutes') | float * 60 }}"   
       target:
-        entity_id: timer.dehumidifier_2_timer
+        entity_id: timer.master_bedroom_dehumidifier_timer
   mode: single
 
 - alias: "💧 humidity // master bedroom ontvochtiger // 20u30 & vocht = aan"
@@ -57,12 +63,12 @@ automation:
     - service: switch.turn_on
       data: {}
       target:
-        entity_id: switch.dehumidifier_2_switch
+        entity_id: switch.master_bedroom_dehumidifier_switch
     - service: timer.start
       data:
-        duration: "{{ states('input_number.dehumidifier_2_timer_minutes') | float * 60 }}"   
+        duration: "{{ states('input_number.master_bedroom_dehumidifier_timer_minutes') | float * 60 }}"   
       target:
-        entity_id: timer.dehumidifier_2_timer
+        entity_id: timer.master_bedroom_dehumidifier_timer
     - service: notify.bart_phone
       data:
         title: Ontvochtiger in master bedroom ingeschakeld. 
@@ -89,7 +95,7 @@ automation:
   trigger:
   - platform: state
     entity_id:
-      - timer.dehumidifier_2_timer
+      - timer.master_bedroom_dehumidifier_timer
     from: active
     to: idle
   - platform: state
@@ -103,9 +109,9 @@ automation:
     - service: switch.turn_off
       data: {}
       target:
-        entity_id: switch.dehumidifier_2_switch
+        entity_id: switch.master_bedroom_dehumidifier_switch
     - service: timer.cancel
       data: {}
       target:
-        entity_id: timer.dehumidifier_2_timer           
+        entity_id: timer.master_bedroom_dehumidifier_timer           
   mode: single
