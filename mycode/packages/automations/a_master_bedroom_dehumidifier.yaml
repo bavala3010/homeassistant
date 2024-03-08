@@ -115,3 +115,34 @@ automation:
       target:
         entity_id: timer.master_bedroom_dehumidifier_timer           
   mode: single
+
+- alias: 'zonne-energie // Netverbruik gem. 15 min. meer dan 200 W + master bedroom ontvochtiger aan = ontvochtiger uit'
+  id: 'db375ea4-f052-4a61-80e1-fb7ba6d48500'
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+    - condition: template
+      value_template: >
+        {% set net = ( states('sensor.net_power_avg_15min') | float() * 0.4 ) + ( states('sensor.net_power_avg_5min') | float() * 0.6 ) %}
+        {% set charger = ( states('sensor.charger_current_power_avg_15min') | float() * 0.4 ) + ( states('sensor.charger_current_power_avg_5min') | float() * 0.6 ) %}
+        {{ (net - charger) | int() > 200 }}
+    - condition: state
+      entity_id: switch.master_bedroom_dehumidifier_switch
+      state: 'on'      
+  action:
+  - service: notify.bart_phone
+    metadata: {}
+    data:
+      title: Master bedroom ontvochtiger uitgeschakeld
+      message: De laatste 15 min. was er geen 200 W injectie beschikbaar. ({{ states('sensor.net_power_avg_15min') | int() }} W)
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.master_bedroom_dehumidifier_switch
+  - service: timer.cancel
+    data: {}
+    target:
+      entity_id: timer.master_bedroom_dehumidifier_timer
+  mode: single

@@ -20,6 +20,18 @@ template:
         {% endif %}
 
   - sensor:
+      - name: "solar forecast Watt"
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        unique_id: solar_forecast_watt
+        availability: "{{state_attr('sensor.solar_forecast_watt_raw', 'watts')[state_attr('sensor.solar_forecast_watt_raw', 'watts')|sort|select('le', now().strftime('%Y-%m-%d %H:%M:%S'))|list|last] |float |is_number }}"  
+        state: >
+            {% set time_now = now().strftime('%Y-%m-%d %H:%M:%S') %}
+            {% set tkey = state_attr('sensor.solar_forecast_watt_raw', 'watts')
+                          |sort|select('le', time_now)|list|last %}
+            {{ state_attr('sensor.solar_forecast_watt_raw', 'watts')[tkey] | float }}
+
       - name: net_neutrality
         unit_of_measurement: "%"
         attributes:
@@ -83,6 +95,7 @@ template:
           {% endif %}
 
       - name: solar_terraszijde_efficiency
+        unique_id: e66135d3-6d2c-48f4-b803-8b6162127a74
         unit_of_measurement: "%"
         attributes:        
           friendly_name: zonnepanelen terraszijde efficiëntie
@@ -90,6 +103,7 @@ template:
           {{ (states('sensor.solar_terraszijde_energie_daily') | float / 6150 * 1000 * 100) | round(1) }}
 
       - name: solar_voorzijde_efficiency
+        unique_id: 6f31cf37-4175-44ea-9dd8-3179f7b18d80     
         unit_of_measurement: "%"
         attributes:        
           friendly_name: zonnepanelen voorzijde efficiëntie
@@ -249,11 +263,46 @@ sensor:
   unit_prefix: k
   round: 3
 
+# - platform: command_line
+#   name: "solar details"
+#   command: "curl -s https://api.forecast.solar/estimate/50.8774/4.7494/25/132/10"
+#   scan_interval: 86400  # vernieuw elke 24 uur (24 uur * 60 minuten * 60 seconden)
+#   json_attributes:
+#     - result
+
+rest:
+  - scan_interval: 3610
+    resource: https://api.forecast.solar/estimate/50.8774/4.7494/25/132/10
+    method: GET
+    sensor:
+      - name: "Solar Forecast Watt Raw"
+        json_attributes_path: "$.result"
+        json_attributes:
+          - watts
+        value_template: 'OK'
+      - name: "Solar Forecast Watt Hours Raw"
+        json_attributes_path: "$.result"
+        json_attributes:
+          - watt_hours
+        value_template: 'OK'
+      - name: "Solar Forecast Watt Hours Day Raw"
+        json_attributes_path: "$.result"
+        json_attributes:
+          - watt_hours_day
+        value_template: 'OK'
+      - name: "Solar Forecast Watt Hours Period Raw"
+        json_attributes_path: "$.result"
+        json_attributes:
+          - watt_hours_period
+        value_template: 'OK'
+
 
 utility_meter:
   solar_terraszijde_energie_daily:
     source: sensor.solar_terraszijde_energie
     cycle: daily
+
+# quarter-hourly
 
   solar_terraszijde_energie_monthly:
     source: sensor.solar_terraszijde_energie

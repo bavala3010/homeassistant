@@ -24,3 +24,5 @@ sensor:
         #   {% set b = states('sensor.shellyem3_bcff4dfd1dbb_channel_b_power') | float(default=0) %}
         #   {% set c = states('sensor.shellyem3_bcff4dfd1dbb_channel_c_power') | float(default=0) %}
         #   {{ ( a + b + c ) | round(default=0) }}
+
+

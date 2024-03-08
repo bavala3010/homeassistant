@@ -3,7 +3,7 @@ sensor:
 - platform: template
   sensors:
     power_peak:
-      friendly_name: piekvermogen
+      friendly_name: piekvermogen deze maand
       unique_id: 'f793ef1d-792b-4fc4-aa85-2ad8f0d75d1e'
       unit_of_measurement: kW
       device_class: power
@@ -12,6 +12,26 @@ sensor:
         {% set max_peak = (states.input_number.power_peak.state | float(default=0)) %}
         {% macro max(X, Y) -%} {{X|float if X|float > Y|float else Y|float }} {%- endmacro %}
         {{ max(max_peak, peak) }}
+
+    current_power_peak:
+      friendly_name: huidig kwartiervermogen 
+      unique_id: 'fe54f2c8-45f1-4d18-8d8b-b5d4ff0c6ef0'
+      unit_of_measurement: kW
+      device_class: power
+      value_template: >
+        {{ ( states('sensor.quarter_hourly_net_power') | round(2) ) * 4 }}
+
+    expected_power_peak:
+      friendly_name: verwacht piekvermogen
+      unique_id: '3a56a4b4-9f6b-490f-b6ba-3a35cb7385aa'
+      unit_of_measurement: kW
+      device_class: power
+      value_template: >
+        {% set now = as_timestamp(now()) %}
+        {% set quarter_hour = ((now // 900) * 900) %}
+        {% set minutes = max(1, ((now - quarter_hour) % 900) // 60) | int %}
+        {% set power = ( states('sensor.quarter_hourly_net_power') | round(2) ) * 4 %}
+        {{ ((power / minutes) * 15 )| round(2) }}     
 
     power_peak_year:
       friendly_name: Gemiddelde jaarpiek
