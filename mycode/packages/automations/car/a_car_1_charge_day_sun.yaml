@@ -10,7 +10,7 @@ automation:
       entity_id: input_boolean.car_charge_day_sun
       state: 'on'    
     - condition: template
-      value_template: "{{ as_timestamp(states('sensor.zon_van_eikenbos_opkomst')) < as_timestamp(now()) < as_timestamp(states('sensor.sunset')) }}"
+      value_template: "{{ as_timestamp(states('sensor.zon_van_eikenbos_opkomst')) < as_timestamp(now()) < as_timestamp(states('sensor.zon_van_eikenbos_ondergang')) }}"
     # only if charger cable is connected to home charger or already charging        
     - condition: template
       value_template: "{{ states('sensor.charger_status') in ['charging', 'connected'] }}"

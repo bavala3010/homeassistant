@@ -383,7 +383,7 @@ automation:
       below: "1"
     # - platform: template
     #   value_template: >
-    #     {{ as_timestamp(states('sensor.sunset')) | int == as_timestamp(now()) | int }}
+    #     {{ as_timestamp(states('sensor.zon_van_eikenbos_ondergang')) | int == as_timestamp(now()) | int }}
   condition:
   - condition: template
     value_template: >

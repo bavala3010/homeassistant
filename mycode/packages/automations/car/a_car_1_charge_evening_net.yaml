@@ -7,7 +7,7 @@ automation:
     minutes: /1
   condition:
   - condition: template
-    value_template: "{{ as_timestamp(states('sensor.sunset')) < as_timestamp(now()) < as_timestamp(now().replace(hour=23, minute=0, second=0)) }}"
+    value_template: "{{ as_timestamp(states('sensor.zon_van_eikenbos_ondergang')) < as_timestamp(now()) < as_timestamp(now().replace(hour=23, minute=0, second=0)) }}"
     # only if charger cable is connected to home charger or already charging
   - condition: template
     value_template: "{{ states('sensor.charger_status') in ['charging', 'connected'] }}"

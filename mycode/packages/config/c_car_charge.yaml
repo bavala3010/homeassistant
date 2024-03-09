@@ -159,7 +159,7 @@ template:
           friendly_name: "mogelijke lading 's avonds na zonsondergang tot 23u"
         unit_of_measurement: kWh
         state: >
-          {% set sunset_time = as_timestamp(states('sensor.sunset')) | timestamp_custom('%H:%M')  %}
+          {% set sunset_time = as_timestamp(states('sensor.zon_van_eikenbos_ondergang')) | timestamp_custom('%H:%M')  %}
           {% set sunset_hours = sunset_time.split(':')[0] | int %}
           {% set sunset_minutes = sunset_time.split(':')[1] | int %}
           {% set sunset_decimal_time = sunset_hours + sunset_minutes / 60 %}
