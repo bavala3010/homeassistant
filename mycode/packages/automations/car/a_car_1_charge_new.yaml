@@ -26,11 +26,11 @@ automation:
           conditions:
             - condition: template # morning till sunrise
               value_template: >
-                {{ as_timestamp(now().replace(hour=6, minute=30, second=0)) < as_timestamp(now()) < as_timestamp(states('sensor.sunrise')) 
+                {{ as_timestamp(now().replace(hour=6, minute=30, second=0)) < as_timestamp(now()) < as_timestamp(states('sensor.zon_van_eikenbos_opkomst')) 
                 and states('input_boolean.car_charge_morning_net') =='on' }}
             - condition: template # day = sunrise till sunset
               value_template: >
-                {{ as_timestamp(states('sensor.sunrise')) < as_timestamp(now()) < as_timestamp(states('sensor.sunset')) 
+                {{ as_timestamp(states('sensor.zon_van_eikenbos_opkomst')) < as_timestamp(now()) < as_timestamp(states('sensor.sunset')) 
                 and states('input_boolean.car_charge_day_net') =='on' }}
             - condition: template # evening = sunset till 23h00
               value_template: >
@@ -141,7 +141,7 @@ automation:
               value_template: "{{ states('sensor.charger_modbus_maxcurrent') | float() > 5 }}"
             - condition: template # when current period is not in the "day sun" modus 
               value_template: >
-                {{ not as_timestamp(states('sensor.sunrise')) < as_timestamp(now()) < as_timestamp(states('sensor.sunset')) 
+                {{ not as_timestamp(states('sensor.zon_van_eikenbos_opkomst')) < as_timestamp(now()) < as_timestamp(states('sensor.sunset')) 
                 and states('input_boolean.car_charge_day_sun') =='on' }}              
           then:
             - service: input_boolean.turn_off
@@ -183,7 +183,7 @@ automation:
           conditions:
             - condition: template # day = sunrise till sunset
               value_template: >
-                {{ as_timestamp(states('sensor.sunrise')) < as_timestamp(now()) < as_timestamp(states('sensor.sunset')) 
+                {{ as_timestamp(states('sensor.zon_van_eikenbos_opkomst')) < as_timestamp(now()) < as_timestamp(states('sensor.sunset')) 
                 and states('input_boolean.car_charge_day_sun') =='on' }}
       then: # check available power to start/stop charger
         - if: # not enough power available 
@@ -314,7 +314,7 @@ automation:
               value_template: "{{ states('sensor.charger_modbus_maxcurrent') | float() > 5 }}"
             - condition: template # when current period is not in the "day net" modus 
               value_template: >
-                {{ not as_timestamp(states('sensor.sunrise')) < as_timestamp(now()) < as_timestamp(states('sensor.sunset')) 
+                {{ not as_timestamp(states('sensor.zon_van_eikenbos_opkomst')) < as_timestamp(now()) < as_timestamp(states('sensor.sunset')) 
                 and states('input_boolean.car_charge_day_net') =='on' }}                
           then:
             - service: input_boolean.turn_off

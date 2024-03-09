@@ -149,7 +149,7 @@ template:
         unit_of_measurement: kWh
         state: >
           {% set solar = states('sensor.solar_sim_energy_today_adj') | float() %}
-          {% set hours = states('sensor.daylight') | round(2) - 1 %}
+          {% set hours = states('sensor.zon_van_eikenbos_daglicht') | round(2) - 1 %}
           {% set result = ( solar / hours ) | round(2) %}
           {% set p = ( ([result - 0.8, 0 ] | max ) * hours ) | round(2) %}
           {{ p }}
