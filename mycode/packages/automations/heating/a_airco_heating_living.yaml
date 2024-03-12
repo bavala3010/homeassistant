@@ -44,11 +44,11 @@ automation:
           {{ (state_attr('climate.living_airco', 'current_temperature') + adj ) | round(1, 'half', 0) }}
       target:
         device_id: 1c560bbc7917f45d737e87d3e2bd0d89
-    - service: climate.set_preset_mode
-      data:
-        preset_mode: eco
-      target:
-        device_id: 1c560bbc7917f45d737e87d3e2bd0d89
+    # - service: climate.set_preset_mode
+    #   data:
+    #     preset_mode: eco
+    #   target:
+    #     device_id: 1c560bbc7917f45d737e87d3e2bd0d89
     - service: climate.set_swing_mode
       data:
         swing_mode: 3D
@@ -100,11 +100,11 @@ automation:
           {{ (state_attr('climate.living_airco', 'current_temperature') + adj) | round(1, 'half', 0) }} 
       target:
         device_id: 1c560bbc7917f45d737e87d3e2bd0d89
-    - service: climate.set_preset_mode
-      data:
-        preset_mode: eco
-      target:
-        device_id: 1c560bbc7917f45d737e87d3e2bd0d89
+    # - service: climate.set_preset_mode
+    #   data:
+    #     preset_mode: eco
+    #   target:
+    #     device_id: 1c560bbc7917f45d737e87d3e2bd0d89
     - service: climate.set_swing_mode
       data:
         swing_mode: 3D
@@ -223,11 +223,11 @@ automation:
     #     temperature: 24.5
     #   target:
     #     entity_id: climate.living_airco
-    - service: climate.set_preset_mode
-      data:
-        preset_mode: eco
-      target:
-        device_id: 1c560bbc7917f45d737e87d3e2bd0d89
+    # - service: climate.set_preset_mode
+    #   data:
+    #     preset_mode: eco
+    #   target:
+    #     device_id: 1c560bbc7917f45d737e87d3e2bd0d89
     - service: climate.set_swing_mode
       data:
         swing_mode: 3D

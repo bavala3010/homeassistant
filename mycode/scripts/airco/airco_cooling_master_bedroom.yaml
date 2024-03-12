@@ -19,11 +19,11 @@ master_bedroom_airco_cooling_start:
         {{ states('input_number.master_bedroom_airco_cooling_temperature') | float }}
     target:
       device_id: 64296bd295e4506b8a3ec42c8aae7e58
-  - service: climate.set_preset_mode
-    data:
-      preset_mode: eco
-    target:
-      device_id: 64296bd295e4506b8a3ec42c8aae7e58
+  # - service: climate.set_preset_mode
+  #   data:
+  #     preset_mode: eco
+  #   target:
+  #     device_id: 64296bd295e4506b8a3ec42c8aae7e58
   - service: climate.set_swing_mode
     data:
       swing_mode: 3D

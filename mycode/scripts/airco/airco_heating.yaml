@@ -9,11 +9,11 @@ alunya_temp_up:
       temperature: "{{ states('sensor.kamer_alunya_temperature') | float + ( value | float) }}"
     target:
       device_id: 3c12e341dfd1d1fe2327ec66f3613321
-  - service: climate.set_preset_mode
-    data:
-      preset_mode: eco
-    target:
-      device_id: 3c12e341dfd1d1fe2327ec66f3613321
+  # - service: climate.set_preset_mode
+  #   data:
+  #     preset_mode: eco
+  #   target:
+  #     device_id: 3c12e341dfd1d1fe2327ec66f3613321
   - service: climate.set_swing_mode
     data:
       swing_mode: 3D

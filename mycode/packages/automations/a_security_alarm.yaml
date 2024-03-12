@@ -105,7 +105,7 @@ automation:
         actions:
         - action: URI
           title: Meer info
-          uri: /lovelace/humidity
+          uri: /lovelace-security/0
   - service: alarm_control_panel.alarm_arm_away
     target:
       entity_id: alarm_control_panel.home_alarm

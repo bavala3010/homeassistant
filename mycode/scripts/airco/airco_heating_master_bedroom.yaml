@@ -24,11 +24,11 @@ master_bedroom_airco_start_heating:
         {{ state_attr('climate.master_bedroom_airco', 'current_temperature') + adj }}
     target:
       device_id: 64296bd295e4506b8a3ec42c8aae7e58
-  - service: climate.set_preset_mode
-    data:
-      preset_mode: eco
-    target:
-      device_id: 64296bd295e4506b8a3ec42c8aae7e58
+  # - service: climate.set_preset_mode
+  #   data:
+  #     preset_mode: eco
+  #   target:
+  #     device_id: 64296bd295e4506b8a3ec42c8aae7e58
   - service: climate.set_swing_mode
     data:
       swing_mode: 3D

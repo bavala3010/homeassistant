@@ -1,0 +1,31 @@
+automation:
+
+- alias: 🚗 car 2 // Toyota benzinetank laag
+  id: 'f224ab63-ffb4-4680-99ff-64bd869ee3e3'
+  description: ""
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.aygo_x_2024_fuel_range
+      below: 50
+    - platform: numeric_state
+      entity_id: sensor.aygo_x_2024_fuel_range
+      below: 40
+    - platform: numeric_state
+      entity_id: sensor.aygo_x_2024_fuel_range
+      below: 30
+    - platform: numeric_state
+      entity_id: sensor.aygo_x_2024_fuel_range
+      below: 20      
+  condition: []
+  action:
+    - service: notify.bart_madouce_phone
+      data:
+        title: Toyota kan maar {{ states('sensor.aygo_x_2024_fuel_range') | int }} km meer rijden
+        message: >
+          {% set fuel_range = states('sensor.aygo_x_2024_fuel_range') | int %}
+          {% if fuel_range < 30 %}
+            Gelieve te tanken. De benzinetank is {{ 'kritiek' if fuel_range < 20 else 'zeer laag' }}.
+          {% else %}
+            Tank bij bij je eerstvolgende gelegenheid. De benzinetank is laag.
+          {% endif %}
+          De goedkoopste benzineprijs is {{ states('sensor.carbu_com_super95_3010_price') }} €/l.

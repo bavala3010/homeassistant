@@ -23,12 +23,12 @@ automation:
   - service: script.notify_bart_windows_open
     data:
       title: Zet raam Amilya nu even open. Beste moment van de dag.
-      message: "Vocht kamer Amilya: {{states('sensor.gram_water_kamer_amilya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br><br>Vocht kamer Amilya: {{states('sensor.kamer_amilya_humidity') | round() }} %. Buiten: {{states('sensor.eikenbos_humidity')}} %<br>Temp kamer Amilya: {{states('sensor.kamer_amilya_temperature')}} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.<br>Raam is vandaag nog niet open geweest."
+      message: "Vocht kamer Amilya: {{states('sensor.gram_water_kamer_amilya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br><br>Vocht kamer Amilya: {{states('sensor.kamer_amilya_humidity') | round() }}%. Buiten: {{states('sensor.eikenbos_humidity')}}%<br>Temp kamer Amilya: {{states('sensor.kamer_amilya_temperature')}} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.<br>Raam is vandaag nog niet open geweest."
       tag: window_kamer_amilya  
   - service: script.notify_madouce_windows_open
     data:
       title: Zet raam Amilya nu even open. Beste moment van de dag.
-      message: "Vocht kamer Amilya: {{states('sensor.gram_water_kamer_amilya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br><br>Vocht kamer Amilya: {{states('sensor.kamer_amilya_humidity') | round() }} %. Buiten: {{states('sensor.eikenbos_humidity')}} %<br>Temp kamer Amilya: {{states('sensor.kamer_amilya_temperature')}} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.<br>Raam is vandaag nog niet open geweest."
+      message: "Vocht kamer Amilya: {{states('sensor.gram_water_kamer_amilya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br><br>Vocht kamer Amilya: {{states('sensor.kamer_amilya_humidity') | round() }}%. Buiten: {{states('sensor.eikenbos_humidity')}}%<br>Temp kamer Amilya: {{states('sensor.kamer_amilya_temperature')}} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.<br>Raam is vandaag nog niet open geweest."
       tag: window_kamer_amilya
   mode: single
 
@@ -50,12 +50,12 @@ automation:
   - service: script.notify_bart_windows_open
     data:
       title: Zet raam Alunya nu even open. Beste moment van de dag.
-      message: "Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Vocht kamer Alunya: {{states('sensor.kamer_alunya_humidity') | round() }} %. Buiten: {{states('sensor.eikenbos_humidity')}} %<br>Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.<br>Raam is vandaag nog niet open geweest."
+      message: "Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Vocht kamer Alunya: {{states('sensor.kamer_alunya_humidity') | round() }}%. Buiten: {{states('sensor.eikenbos_humidity')}}%<br>Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.<br>Raam is vandaag nog niet open geweest."
       tag: window_kamer_alunya
   - service: script.notify_madouce_windows_open
     data:
       title: Zet raam Alunya nu even open. Beste moment van de dag.
-      message: "Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Vocht kamer Alunya: {{states('sensor.kamer_alunya_humidity') | round() }} %. Buiten: {{states('sensor.eikenbos_humidity')}} %<br>Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.<br>Raam is vandaag nog niet open geweest."
+      message: "Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Vocht kamer Alunya: {{states('sensor.kamer_alunya_humidity') | round() }}%. Buiten: {{states('sensor.eikenbos_humidity')}}%<br>Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.<br>Raam is vandaag nog niet open geweest."
       tag: window_kamer_alunya      
   mode: single
 
@@ -253,8 +253,8 @@ automation:
       data:
         title: Verlucht master bedroom.
         message: >
-          CO2 waarde is {{ states('sensor.kooldioxide_detector_carbon_dioxide') | int() }} PPM.
-          De luchtvochtigheid is {{states('sensor.master_bedroom_humidity') | round() }}%.
+          CO2 waarde is {{ states('sensor.kooldioxide_detector_carbon_dioxide') | int() }} PPM.<br>
+          De luchtvochtigheid is {{states('sensor.master_bedroom_humidity') | round() }}%. Buiten: {{states('sensor.eikenbos_humidity')}}%
         data:
           color: red          
   mode: single

@@ -254,11 +254,11 @@ automation:
         device_id: 1c560bbc7917f45d737e87d3e2bd0d89
     - wait_template: ''
       timeout: "00:00:10"
-    - service: climate.set_preset_mode
-      data:
-        preset_mode: eco
-      target:
-        device_id: 1c560bbc7917f45d737e87d3e2bd0d89
+    # - service: climate.set_preset_mode
+    #   data:
+    #     preset_mode: eco
+    #   target:
+    #     device_id: 1c560bbc7917f45d737e87d3e2bd0d89
     - service: climate.set_swing_mode
       data:
         swing_mode: 3D
@@ -363,11 +363,11 @@ automation:
         temperature: 22
       target:
         device_id: 3c12e341dfd1d1fe2327ec66f3613321
-    - service: climate.set_preset_mode
-      data:
-        preset_mode: eco
-      target:
-        device_id: 3c12e341dfd1d1fe2327ec66f3613321
+    # - service: climate.set_preset_mode
+    #   data:
+    #     preset_mode: eco
+    #   target:
+    #     device_id: 3c12e341dfd1d1fe2327ec66f3613321
     - service: climate.set_swing_mode
       data:
         swing_mode: 3D
