@@ -99,9 +99,11 @@ automation:
         - condition: state
           entity_id: input_select.living_heating_mode
           state: centrale verwarming
-        - condition: state
-          entity_id: group.bart_madouce
-          state: home
+        - condition: template  # include 2 last hours of high wattage even if not home
+          value_template: >
+            {% set h = strptime(states('sensor.last_hour_high_wattage'), '%Y-%m-%d %H:%M:%S').strftime('%H') | int %}
+            {% set n = now().hour %}
+            {{ states('group.bart_madouce') == 'home' or (states('group.bart_madouce') == 'not_home' and h <= n <= h+2) }}
       then:
         - service: notify.bart_phone
           metadata: {}

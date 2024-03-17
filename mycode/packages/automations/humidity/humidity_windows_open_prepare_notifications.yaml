@@ -103,14 +103,14 @@ automation:
   variables:
     message: >
       Vocht kamer Amilya: {{states('sensor.gram_water_kamer_amilya') | round(1) }} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
-      Vocht kamer Amilya: {{states('sensor.kamer_amilya_humidity')}}%. Buiten: {{states('sensor.eikenbos_humidity')}}%.<br>
-      Temp kamer Amilya: {{states('sensor.kamer_amilya_temperature')}} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.
+      Vocht kamer Amilya: {{states('sensor.kamer_amilya_humidity') | round }}%. Buiten: {{states('sensor.eikenbos_humidity') | }}%.<br>
+      Temp kamer Amilya: {{states('sensor.kamer_amilya_temperature') | round(1) }} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.
     title: "Open het raam van Amilya!"
     tag: "window_kamer_amilya"
     action_window_pause: "kamer_amilya_window_pause"
     reason: >
       {% set d = states('sensor.gram_water_kamer_amilya_diff_outside') | float(default=0) %}
-      {% set h = states('sensor.kamer_amilya_humidity') %}
+      {% set h = states('sensor.kamer_amilya_humidity') | round %}
       {% if   d >= 3.0 %} Extreem vochtig binnen. {{ h }}%
       {% elif d >= 1.5 %} Veel te vochtig binnen. {{ h }}%
       {% elif d >= 0.5 %} Beetje te vochtig binnen. {{ h }}%
@@ -150,14 +150,14 @@ automation:
   variables:
     message: >
       Vocht veranda {{states('sensor.gram_water_veranda') | round(1) }} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
-      Vocht veranda: {{states('sensor.veranda_humidity')}}%. Buiten: {{states('sensor.eikenbos_humidity')}}%<br>
+      Vocht veranda: {{states('sensor.veranda_humidity') | round }}%. Buiten: {{states('sensor.eikenbos_humidity')}}%<br>
       Temp veranda: {{states('sensor.veranda_temperature')}} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.
     title: "Open het raam van de veranda!"
     tag: "window_veranda"
     action_window_pause: "veranda_window_pause"
     reason: >
       {% set d = states('sensor.gram_water_veranda_diff_outside') | float(default=0) %}
-      {% set h = states('sensor.veranda_humidity') %}
+      {% set h = states('sensor.veranda_humidity') | round %}
       {% if   d >= 3.0 %} Extreem vochtig binnen. {{ h }}%
       {% elif d >= 1.5 %} Veel te vochtig binnen. {{ h }}%
       {% elif d >= 0.5 %} Beetje te vochtig binnen. {{ h }}%

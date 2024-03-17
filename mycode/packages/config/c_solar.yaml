@@ -270,8 +270,38 @@ sensor:
 #   json_attributes:
 #     - result
 
+- platform: template
+  sensors:
+    last_hour_high_wattage:
+      friendly_name: "laatste uur > 1200 W zon en volgend uur > 1000 W"
+      value_template: >
+        {% set ns = namespace(last_time=None, last_watt=0, next_watt=0) %}
+        {% set today = now().strftime('%Y-%m-%d') %}
+        {% set watts = states.sensor.solar_forecast_watt_raw.attributes.watts %}
+        {% set times = watts.keys() | list %}
+        {% for time in times %}
+          {% if loop.last %}
+            {% break %}
+          {% endif %}
+          {% set watt = watts[time] %}
+          {% set next_time = times[loop.index] %}
+          {% set next_watt = watts[next_time] %}
+          {% if watt > 1000 and next_watt > 800 and time.startswith(today) and (ns.last_time is none or time > ns.last_time) %}
+            {% set ns.last_time = time %}
+            {% set ns.last_watt = watt %}
+            {% set ns.next_watt = next_watt %}
+          {% endif %}
+        {% endfor %}
+        {{ ns.last_time }}
+      attribute_templates:
+        watt: >
+          {{ ns.last_watt }}
+        next_hour_watt: >
+          {{ ns.next_watt }}
+
+
 rest:
-  - scan_interval: 3610
+  - scan_interval: 21600    # 21600 seconds is 6 hours
     resource: https://api.forecast.solar/estimate/50.8774/4.7494/25/132/10
     method: GET
     sensor:

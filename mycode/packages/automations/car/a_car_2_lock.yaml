@@ -54,6 +54,7 @@ automation:
       data:
         channel: Important
         tag: auto_2_sluiten
+        notification_icon: mdi:car
         color: red
         actions:
         - action: URI

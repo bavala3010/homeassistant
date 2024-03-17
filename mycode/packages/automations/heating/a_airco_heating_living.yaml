@@ -290,7 +290,7 @@ automation:
             data:
               percentage: 35
             target:
-              entity_id: fan.living_ventilator
+              entity_id: fan.living_ventilator_fan
       - conditions:
           - condition: trigger
             id: airco-uit
@@ -298,6 +298,6 @@ automation:
           - service: fan.turn_off
             data: {}
             target:
-              entity_id: fan.living_ventilator
+              entity_id: fan.living_ventilator_fan
   mode: single
   

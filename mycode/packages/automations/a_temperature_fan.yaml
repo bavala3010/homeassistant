@@ -21,7 +21,7 @@ automation:
   action:
   - service: fan.turn_on
     target:
-      entity_id: fan.xiaomi_smart_fan_3c
+      entity_id: fan.fan_3c_fan
     data:
       percentage: 15
   mode: single
@@ -36,5 +36,5 @@ automation:
   action:
   - service: fan.turn_off
     target:
-      entity_id: fan.xiaomi_smart_fan_3c
+      entity_id: fan.fan.fan_3c_fan
   mode: single

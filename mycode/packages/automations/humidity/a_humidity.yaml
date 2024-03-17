@@ -141,9 +141,11 @@ automation:
       sequence:
       - service: notify.bart_madouce_phone
         data:
-          title: "Veel vocht in kamer Alunya! Raam is {{states('binary_sensor.kamer_alunya_raam')}}"
-          message: "{{states('sensor.kamer_alunya_thermal_absolute_humidity') | round(1)}} gram
-            water /m³ en {{states('sensor.kamer_alunya_humidity') | round(0) }}% vocht."
+          title: >
+            Veel vocht in kamer Alunya! Raam is {{state_translated('binary_sensor.kamer_alunya_raam')}}.
+          message: > 
+            {{states('sensor.kamer_alunya_thermal_absolute_humidity') | round(1)}} gram
+            water /m³ en {{states('sensor.kamer_alunya_humidity') | round(0) }}% vocht.
           data:
             notification_icon: "mdi:water-percent-alert"          
             color: "#0E86D4"
