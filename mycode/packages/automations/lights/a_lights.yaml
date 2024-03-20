@@ -196,14 +196,14 @@ automation:
   mode: single
 
 - alias: 💡 lights // living // 22u = licht plant uitschakelen
-  id: '12c9700e-4602-4e71-9b5d-8a051eb72395'
+  id: 'faa90f72-0f2c-4209-b9bc-e46efae32426'
   description: ''
   trigger:
   - platform: time
     at: '22:00:00'
   condition: []
   action:
-    - service: light.turn_ff
+    - service: light.turn_off
       target:
         entity_id: light.hue_go
   mode: single

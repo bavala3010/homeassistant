@@ -41,4 +41,5 @@
 #   command: "python3 /config/scripts/mobile_vikings_bart.py"
 #   value_template: "{{ value_json['Bart Van Landschoot ']['data_percentage'] }}"
 #   scan_interval: 900
-#   unit_of_measurement: "%"  
+#   unit_of_measurement: "%"
+

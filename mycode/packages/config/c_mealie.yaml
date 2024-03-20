@@ -1,0 +1,89 @@
+sensor:
+  - platform: rest
+    resource: "http://192.168.68.100:9925/api/groups/mealplans/today"
+    method: GET
+    name: Mealie todays meal
+    headers:
+      Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb25nX3Rva2VuIjp0cnVlLCJpZCI6Ijg1MDU0Yzg3LTEwYTgtNDBlOS1iZWRkLTc4MmEzZTRhZmNlYSIsIm5hbWUiOiJob21lLWFzc2lzdGFudCIsImludGVncmF0aW9uX2lkIjoiZ2VuZXJpYyIsImV4cCI6MTg2ODM3MjQ3M30.87WyFFcLtTqCZkWLhUV6LSEfJucyrqTzcTLekxK5v4Y
+    value_template: "{{ value_json[0].recipe.name }}"
+    force_update: true
+    scan_interval: 30
+
+  - platform: rest
+    resource: "http://192.168.68.100:9925/api/groups/mealplans/today"
+    method: GET
+    name: Mealie todays meal ID
+    headers:
+      Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb25nX3Rva2VuIjp0cnVlLCJpZCI6Ijg1MDU0Yzg3LTEwYTgtNDBlOS1iZWRkLTc4MmEzZTRhZmNlYSIsIm5hbWUiOiJob21lLWFzc2lzdGFudCIsImludGVncmF0aW9uX2lkIjoiZ2VuZXJpYyIsImV4cCI6MTg2ODM3MjQ3M30.87WyFFcLtTqCZkWLhUV6LSEfJucyrqTzcTLekxK5v4Y
+    value_template: "{{ value_json[0].recipe.id }}"
+    force_update: true
+    scan_interval: 30
+
+
+
+# Sourcecode by vdbrink.github.io
+rest:
+  - scan_interval: 3600
+    resource: "http://192.168.68.100:9925/api/groups/mealplans?orderBy=date&orderDirection=asc"
+    headers:
+      Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb25nX3Rva2VuIjp0cnVlLCJpZCI6Ijg1MDU0Yzg3LTEwYTgtNDBlOS1iZWRkLTc4MmEzZTRhZmNlYSIsIm5hbWUiOiJob21lLWFzc2lzdGFudCIsImludGVncmF0aW9uX2lkIjoiZ2VuZXJpYyIsImV4cCI6MTg2ODM3MjQ3M30.87WyFFcLtTqCZkWLhUV6LSEfJucyrqTzcTLekxK5v4Y
+    params:
+      start_date: >
+        {{ now().strftime('%Y-%m-%d') }}
+    sensor:
+      - name: "Mealie day0 name"
+        value_template: "{{ value_json['items'][0].recipe.name }}"
+        force_update: true
+        unique_id: 90fb4204-8d79-46fa-b348-3d04e936e464
+      - name: "Mealie day0 date"
+        value_template: "{{ value_json['items'][0].date }}"
+        force_update: true
+        unique_id: ed93e509-4215-4475-abbc-65df8664772c
+      - name: "Mealie day1 name"
+        value_template: "{{ value_json['items'][1].recipe.name }}"
+        force_update: true
+        unique_id: 3d14aab3-a1e8-467f-8dbb-c7a5ae7e134f
+      - name: "Mealie day1 date"
+        value_template: "{{ value_json['items'][1].date }}"
+        force_update: true
+        unique_id: 519be9ae-b514-4f63-b8df-308a32ed6bae
+      - name: "Mealie day2 name"
+        value_template: "{{ value_json['items'][2].recipe.name }}"
+        force_update: true
+        unique_id: 2638b346-504a-4625-9f93-42dfe74e2429
+      - name: "Mealie day2 date"
+        value_template: "{{ value_json['items'][2].date }}"
+        force_update: true
+        unique_id: cb2d4b20-056a-4730-b6ba-c34e73f0e069
+      - name: "Mealie day3 name"
+        value_template: "{{ value_json['items'][3].recipe.name }}"
+        force_update: true
+        unique_id: f1401772-a5f5-4fef-a1f9-a0bfd846a07f
+      - name: "Mealie day3 date"
+        value_template: "{{ value_json['items'][3].date }}"
+        force_update: true
+        unique_id: dc40e74e-f97f-4605-ada3-d187d861f158
+      - name: "Mealie day4 name"
+        value_template: "{{ value_json['items'][4].recipe.name }}"
+        force_update: true
+        unique_id: f8b4a218-5456-4782-a758-8bd6015f8024
+      - name: "Mealie day4 date"
+        value_template: "{{ value_json['items'][4].date }}"
+        force_update: true
+        unique_id: 10c1d0ad-3ad5-4962-a14c-8e5b5a5c93d5
+      - name: "Mealie day5 name"
+        value_template: "{{ value_json['items'][5].recipe.name }}"
+        force_update: true
+        unique_id: 39b4d1b6-7314-4cbf-9825-9214b4db02c4
+      - name: "Mealie day5 date"
+        value_template: "{{ value_json['items'][5].date }}"
+        force_update: true
+        unique_id: 9b34471c-2b51-474a-8bb4-d9cdc0200e83
+      - name: "Mealie day6 name"
+        value_template: "{{ value_json['items'][6].recipe.name }}"
+        force_update: true
+        unique_id: bf7088a4-63f9-43c9-8f01-662aa9b6b7f8
+      - name: "Mealie day6 date"
+        value_template: "{{ value_json['items'][6].date }}"
+        force_update: true
+        unique_id: 0d9437a5-08e8-4d5d-a07b-27cb442b35e0
