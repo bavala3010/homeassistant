@@ -7,7 +7,7 @@ sensor:
       Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb25nX3Rva2VuIjp0cnVlLCJpZCI6Ijg1MDU0Yzg3LTEwYTgtNDBlOS1iZWRkLTc4MmEzZTRhZmNlYSIsIm5hbWUiOiJob21lLWFzc2lzdGFudCIsImludGVncmF0aW9uX2lkIjoiZ2VuZXJpYyIsImV4cCI6MTg2ODM3MjQ3M30.87WyFFcLtTqCZkWLhUV6LSEfJucyrqTzcTLekxK5v4Y
     value_template: "{{ value_json[0].recipe.name }}"
     force_update: true
-    scan_interval: 30
+    scan_interval: 120
 
   - platform: rest
     resource: "http://192.168.68.100:9925/api/groups/mealplans/today"
@@ -17,13 +17,25 @@ sensor:
       Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb25nX3Rva2VuIjp0cnVlLCJpZCI6Ijg1MDU0Yzg3LTEwYTgtNDBlOS1iZWRkLTc4MmEzZTRhZmNlYSIsIm5hbWUiOiJob21lLWFzc2lzdGFudCIsImludGVncmF0aW9uX2lkIjoiZ2VuZXJpYyIsImV4cCI6MTg2ODM3MjQ3M30.87WyFFcLtTqCZkWLhUV6LSEfJucyrqTzcTLekxK5v4Y
     value_template: "{{ value_json[0].recipe.id }}"
     force_update: true
-    scan_interval: 30
+    scan_interval: 120
 
 
 
 # Sourcecode by vdbrink.github.io
 rest:
   - scan_interval: 3600
+    resource: "http://192.168.68.100:9925/api/groups/mealplans/today"
+    headers:
+      Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb25nX3Rva2VuIjp0cnVlLCJpZCI6Ijg1MDU0Yzg3LTEwYTgtNDBlOS1iZWRkLTc4MmEzZTRhZmNlYSIsIm5hbWUiOiJob21lLWFzc2lzdGFudCIsImludGVncmF0aW9uX2lkIjoiZ2VuZXJpYyIsImV4cCI6MTg2ODM3MjQ3M30.87WyFFcLtTqCZkWLhUV6LSEfJucyrqTzcTLekxK5v4Y
+    sensor:
+      - name: "Mealie todays meal ID"
+        value_template: "{{ value_json[0].recipe.id }}"
+        force_update: true
+      - name: "Mealie todays meal"
+        value_template: "{{ value_json[0].recipe.name }}"
+        force_update: true
+
+  - scan_interval: 120
     resource: "http://192.168.68.100:9925/api/groups/mealplans?orderBy=date&orderDirection=asc"
     headers:
       Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb25nX3Rva2VuIjp0cnVlLCJpZCI6Ijg1MDU0Yzg3LTEwYTgtNDBlOS1iZWRkLTc4MmEzZTRhZmNlYSIsIm5hbWUiOiJob21lLWFzc2lzdGFudCIsImludGVncmF0aW9uX2lkIjoiZ2VuZXJpYyIsImV4cCI6MTg2ODM3MjQ3M30.87WyFFcLtTqCZkWLhUV6LSEfJucyrqTzcTLekxK5v4Y
@@ -35,14 +47,22 @@ rest:
         value_template: "{{ value_json['items'][0].recipe.name }}"
         force_update: true
         unique_id: 90fb4204-8d79-46fa-b348-3d04e936e464
+      - name: "Mealie day0 recipe_id"
+        value_template: "{{ value_json['items'][0].recipe.id }}"
+        force_update: true
+        unique_id: 0a8330a9-a241-4f14-bae2-802c08fb1602
       - name: "Mealie day0 date"
         value_template: "{{ value_json['items'][0].date }}"
         force_update: true
-        unique_id: ed93e509-4215-4475-abbc-65df8664772c
+        unique_id: ed93e509-4215-4475-abbc-65df8664772c        
       - name: "Mealie day1 name"
         value_template: "{{ value_json['items'][1].recipe.name }}"
         force_update: true
         unique_id: 3d14aab3-a1e8-467f-8dbb-c7a5ae7e134f
+      - name: "Mealie day1 recipe_id"
+        value_template: "{{ value_json['items'][1].recipe.id }}"
+        force_update: true
+        unique_id: dd382aa5-22fb-42e8-a058-652d65b97201
       - name: "Mealie day1 date"
         value_template: "{{ value_json['items'][1].date }}"
         force_update: true

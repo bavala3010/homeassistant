@@ -1,0 +1,105 @@
+automation:
+
+- alias: Diffuser aan (werkdag)
+  id: '9b923f92-f374-404a-900f-507fc2770233'
+  description: ''
+  trigger:
+    - platform: time
+      at: '07:00:00'
+    - platform: time
+      at: '20:00:00'
+  condition:
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'on'
+    - condition: state
+      entity_id: group.gezin
+      state: home
+  action:
+    - service: light.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: light.diffuser_lightbulb
+    - service: humidifier.turn_on
+      metadata: {}
+      data: {}
+      target:
+        device_id: d803d244c0cb99f74345bfe8f50061ef
+
+- alias: Diffuser uit (werkdag)
+  id: '92b5a7a4-8cb6-4305-bf7e-287ccd3501de'
+  description: ""
+  trigger:
+    - platform: time
+      at: "08:00:00"
+    - platform: time
+      at: "21:00:00"      
+  condition:
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: "on"
+  action:
+    - service: light.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: light.diffuser_lightbulb  
+    - service: humidifier.turn_off
+      target:
+        device_id:
+          - d803d244c0cb99f74345bfe8f50061ef
+      data: {}
+  mode: single
+
+- alias: Diffuser aan (niet-werkdag)
+  id: '3fe1e4c0-5a44-4176-9319-aafea953fe52'
+  description: ''
+  trigger:
+    - platform: time
+      at: '09:00:00'
+    - platform: time
+      at: '20:00:00'
+  condition:
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'off'
+    - condition: state
+      entity_id: group.gezin
+      state: home
+  action:
+    - service: light.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: light.diffuser_lightbulb
+    - service: humidifier.turn_on
+      metadata: {}
+      data: {}
+      target:
+        device_id: d803d244c0cb99f74345bfe8f50061ef
+
+- alias: Diffuser uit (niet-werkdag)
+  id: '9c6a2969-b4a6-4c10-a8f0-5dfd31973291'
+  description: ""
+  trigger:
+    - platform: time
+      at: "10:00:00"
+    - platform: time
+      at: "21:00:00"      
+  condition:
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: "off"
+  action:
+    - service: light.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: light.diffuser_lightbulb  
+    - service: humidifier.turn_off
+      target:
+        device_id:
+          - d803d244c0cb99f74345bfe8f50061ef
+      data: {}
+  mode: single  

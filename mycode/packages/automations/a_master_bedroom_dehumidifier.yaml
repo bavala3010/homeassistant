@@ -15,12 +15,12 @@ automation:
       above: 65
     - condition: template
       value_template: " {{ states('binary_sensor.master_bedroom_raam_wijd') != 'on' }}"
-    # Als Bart of Madouce thuis is, tijdens de week na 9u en in het weekend na 10u
+    # Als Bart of Madouce thuis is, tijdens de week na 9u en in het weekend na 11u
     - condition: template
       value_template: >-
         {{ (states('group.bart_madouce') == 'home') and
           ((now().weekday() in range(0, 5) and now().hour >= 9) or
-            (now().weekday() in range(5, 7) and now().hour >= 10)) }}
+            (now().weekday() in range(5, 7) and now().hour >= 11)) }}
   action:
     - service: switch.turn_on
       data: {}
