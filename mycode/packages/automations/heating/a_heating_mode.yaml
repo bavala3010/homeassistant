@@ -45,6 +45,9 @@ automation:
               {% set net = ( states('sensor.net_power_avg_15min') | float() * 0.4 ) + ( states('sensor.net_power_avg_5min') | float() * 0.6 ) %}
               {% set charger = ( states('sensor.charger_current_power_avg_15min') | float() * 0.4 ) + ( states('sensor.charger_current_power_avg_5min') | float() * 0.6 ) %}
               Meer dan 1000 W injectie laatste 15 min. Er is {{ - ( net - charger) | int() }} W beschikbaar.
+            data:
+              notification_icon: mdi:radiator
+              color: orange  
         - service: input_select.select_option
           target:
             entity_id: input_select.kamer_alunya_heating_mode
@@ -81,6 +84,9 @@ automation:
               {% set net = ( states('sensor.net_power_avg_15min') | float() * 0.4 ) + ( states('sensor.net_power_avg_5min') | float() * 0.6 ) %}
               {% set charger = ( states('sensor.charger_current_power_avg_15min') | float() * 0.4 ) + ( states('sensor.charger_current_power_avg_5min') | float() * 0.6 ) %}
               Meer dan 1000 W injectie laatste 15 min. Er is {{ - ( net - charger) | int() }} W beschikbaar.
+            data:
+              notification_icon: mdi:radiator
+              color: orange              
         - service: input_select.select_option
           target:
             entity_id: input_select.living_heating_mode
@@ -114,6 +120,9 @@ automation:
               {% set charger = ( states('sensor.charger_current_power_avg_15min') | float() * 0.4 ) + ( states('sensor.charger_current_power_avg_5min') | float() * 0.6 ) %}
               Meer dan 1000 W injectie laatste 15 min.<br>
               Er is {{ - ( net - charger ) | int() }} W beschikbaar.
+            data:
+              notification_icon: mdi:radiator
+              color: orange              
         - service: input_select.select_option
           target:
             entity_id: input_select.living_heating_mode
@@ -144,6 +153,9 @@ automation:
               {% set net = ( states('sensor.net_power_avg_15min') | float() * 0.4 ) + ( states('sensor.net_power_avg_5min') | float() * 0.6 ) %}
               {% set charger = ( states('sensor.charger_current_power_avg_15min') | float() * 0.4 ) + ( states('sensor.charger_current_power_avg_5min') | float() * 0.6 ) %}
               Meer dan 1000 W injectie laatste 15 min.<br>Er is {{ - ( net - charger) | int() }} W beschikbaar.
+            data:
+              notification_icon: mdi:radiator
+              color: orange              
         - service: input_select.select_option
           target:
             entity_id: input_select.kamer_alunya_heating_mode
@@ -192,6 +204,9 @@ automation:
         {% set charger = ( states('sensor.charger_current_power_avg_15min') | float() * 0.4 ) + ( states('sensor.charger_current_power_avg_5min') | float() * 0.6 ) %}
         Meer dan 1000 W injectie laatste 15 min.<br>
         Er is {{ - ( net - charger ) | int() }} W beschikbaar.
+      data:
+        notification_icon: mdi:radiator
+        color: orange        
   - service: input_select.select_option
     target:
       entity_id: input_select.living_heating_mode
@@ -226,6 +241,9 @@ automation:
     data:
       title: Verwarming living ingesteld op centrale verwarming
       message: De laatste 15 min. was er geen 1000 W injectie beschikbaar. ({{ states('sensor.net_power_avg_15min') | int() }} W)
+      data:
+        notification_icon: mdi:radiator
+        color: orange      
   - service: input_select.select_option
     target:
       entity_id: input_select.living_heating_mode
@@ -331,6 +349,9 @@ automation:
         {% set net = ( states('sensor.net_power_avg_15min') | float() * 0.4 ) + ( states('sensor.net_power_avg_5min') | float() * 0.6 ) %}
         {% set charger = ( states('sensor.charger_current_power_avg_15min') | float() * 0.4 ) + ( states('sensor.charger_current_power_avg_5min') | float() * 0.6 ) %}
         Meer dan 1000 W injectie laatste 15 min.<br>Er is {{ - ( net - charger) | int() }} W beschikbaar.
+      data:
+        notification_icon: mdi:radiator
+        color: orange        
   - service: input_select.select_option
     target:
       entity_id: input_select.kamer_alunya_heating_mode
@@ -403,6 +424,9 @@ automation:
     data:
       title: Verwarming kamer Alunya ingesteld op centrale verwarming
       message: De laatste 15 min. was er geen 1000 W injectie beschikbaar. ({{ states('sensor.net_power_avg_15min') | int() }} W)
+      data:
+        notification_icon: mdi:radiator
+        color: orange      
   - service: input_select.select_option
     target:
       entity_id: input_select.kamer_alunya_heating_mode
@@ -429,4 +453,4 @@ automation:
     target:
       entity_id: climate.kamer_alunya
   - service: script.alunya_airco_stop
-  mode: single  
+  mode: single

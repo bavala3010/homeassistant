@@ -270,4 +270,7 @@ automation:
             message: >
               {% set s = states('sensor.voordeur_nuki_last_unlock_user') | replace(' (Keypad)', '') %}
               Door {{ s }}.
-  mode: single  
+            data:
+              notification_icon: mdi:door-open
+              color: red
+  mode: single

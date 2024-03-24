@@ -136,11 +136,12 @@ automation:
           {% set dif = (100 - (today_real / today_forecast) * 100) | round %}
           Vandaag heeft de zon {{ today_real | round(1) }} kWh opgebracht.<br>
           {% if dif > 0 %}Dit is {{ dif }}% minder dan verwacht ({{ today_forecast | round(1) }} kWh).<br>
-          {% else %}Dit is {{ dif }}% meer dan verwacht ({{ today_forecast | round(1) }} kWh).<br>
+          {% else %}Dit is {{ -dif }}% meer dan verwacht ({{ today_forecast | round(1) }} kWh).<br>
           {% endif %}
           Morgen wordt er {{ states('sensor.solar_sim_energy_tomorrow_adj') | round(1) }} kWh verwacht.
         data:
           notification_icon: mdi:sun-wireless-outline
+          color: orange
   mode: single
 
 - alias: solar // bewaar zonneproductie van vandaag

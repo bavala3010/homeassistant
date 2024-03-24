@@ -208,7 +208,7 @@ automation:
                   Totaal vermogen was minder dan 1.3 kW.<br>
                   Zon {{ wattage | round(1) }} kW + max. net {{ max }} kW = {{ (wattage + max ) | round(1) }} kW.
                 data:
-                  notification_icon: mdi:lightning-bolt
+                  notification_icon: mdi:car-electric
                   color: red                  
             - wait_template: ''
               timeout: '00:03:00'

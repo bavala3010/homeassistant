@@ -26,6 +26,9 @@ automation:
         title: Bliksem
         message: >
           Opgelet! Er is bliksem op {{ states('sensor.blitzortung_lightning_distance') | round() }} kilometer van huis in het {{ states('sensor.lightning_direction')}}.
+        data:
+          notification_icon: mdi:lightning-bolt
+          color: orange
     # Update the previous distance with the current distance
     - service: input_number.set_value
       data_template:

@@ -45,6 +45,7 @@ automation:
               ttl: 0
               priority: high
               notification_icon: mdi:baguette
+              color: orange
               clickAction: "{{ trigger.to_state.attributes['item_url'] }}"
         - if:
             - condition: state
@@ -110,6 +111,7 @@ automation:
               ttl: 0
               priority: high
               notification_icon: mdi:cake-variant
+              color: orange
               clickAction: "{{ trigger.to_state.attributes['item_url'] }}"
         - if:
             - condition: state
@@ -179,6 +181,7 @@ automation:
               ttl: 0
               priority: high
               notification_icon: mdi:cake-variant
+              color: orange
               clickAction: "{{ trigger.to_state.attributes['item_url'] }}"                   
   mode: single
 
@@ -215,6 +218,7 @@ automation:
               ttl: 0
               priority: high
               notification_icon: mdi:cake-variant
+              color: orange
               clickAction: "{{ trigger.to_state.attributes['item_url'] }}"
         - if:
             - condition: state
@@ -310,6 +314,7 @@ automation:
               ttl: 0
               priority: high
               notification_icon: mdi:shopping
+              color: green
               clickAction: "{{ trigger.to_state.attributes['item_url'] }}"           
   mode: single
 

@@ -1,0 +1,18 @@
+automation:
+
+- alias: Batterij smartwatch Bart laag
+  id: 'c6d96a1c-0379-4688-b180-7e4cc26d6714'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id:
+    - sensor.watch6_battery_level
+    below: 20
+  condition: []
+  action:
+  - service: notify.bart_phone
+    metadata: {}
+    data:
+      message: >
+        Batterij horloge laag: {{ states('sensor.watch6_battery_level') | int }}%
+  mode: single
