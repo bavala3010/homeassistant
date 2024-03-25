@@ -249,13 +249,12 @@ automation:
   mode: single
 
 
-- alias: 🔐 security // Voordeur opengedaan met code
+- alias: 🔐 security // Voordeur opengedaan
   id: 'c9ccdb95-0f71-4dfa-a91f-2c34de88df75'
   description: ''
   trigger:
   - platform: state
-    entity_id:
-    - sensor.voordeur_nuki_last_unlock_user
+    entity_id: sensor.voordeur_nuki_last_unlock_user
   condition: []
   action:
     - if: 
@@ -266,11 +265,21 @@ automation:
       then:     
         - service: notify.bart_phone
           data:
-            title: "Voordeur zopas open gedaan met numeriek pad."
+            title: >
+              {% set full = states('sensor.voordeur_nuki_last_unlock_user') %}
+              {% set contents = states('sensor.voordeur_nuki_last_unlock_user') | replace(' (Keypad)', '') %}
+              {% set user = states('sensor.voordeur_nuki_last_unlock_user').split(' (')[0] %}
+              {% if full.endswith('(Keypad)') %}Voordeur zopas open gedaan door {{ user }}.
+              {% else %}Voordeur zopas open gedaan door automatisatie.
+              {% endif %}
             message: >
-              {% set s = states('sensor.voordeur_nuki_last_unlock_user') | replace(' (Keypad)', '') %}
-              Door {{ s }}.
+              {% if states('binary_sensor.voordeur_nuki')=='off' %}Voordeur is weer gesloten.
+              {% else %}Voordeur is nog open.
+              {% endif %} 
             data:
               notification_icon: mdi:door-open
-              color: red
+              color: >
+                {% if states('binary_sensor.voordeur_nuki')=='off' %}green
+                {% else %}red
+                {% endif %}
   mode: single
