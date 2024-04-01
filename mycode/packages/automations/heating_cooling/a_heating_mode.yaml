@@ -47,7 +47,7 @@ automation:
               Meer dan 1000 W injectie laatste 15 min. Er is {{ - ( net - charger) | int() }} W beschikbaar.
             data:
               notification_icon: mdi:radiator
-              color: orange  
+              color: "#FFC000"  
         - service: input_select.select_option
           target:
             entity_id: input_select.kamer_alunya_heating_mode
@@ -86,7 +86,7 @@ automation:
               Meer dan 1000 W injectie laatste 15 min. Er is {{ - ( net - charger) | int() }} W beschikbaar.
             data:
               notification_icon: mdi:radiator
-              color: orange              
+              color: "#FFC000"              
         - service: input_select.select_option
           target:
             entity_id: input_select.living_heating_mode
@@ -105,7 +105,7 @@ automation:
         - condition: state
           entity_id: input_select.living_heating_mode
           state: centrale verwarming
-        - condition: template  # include 2 last hours of high wattage even if not home
+        - condition: template  # when home or during 2 last hours of high solar when not home
           value_template: >
             {% set h = strptime(states('sensor.last_hour_high_wattage'), '%Y-%m-%d %H:%M:%S').strftime('%H') | int %}
             {% set n = now().hour %}
@@ -122,7 +122,7 @@ automation:
               Er is {{ - ( net - charger ) | int() }} W beschikbaar.
             data:
               notification_icon: mdi:radiator
-              color: orange              
+              color: "#FFC000"              
         - service: input_select.select_option
           target:
             entity_id: input_select.living_heating_mode
@@ -155,7 +155,7 @@ automation:
               Meer dan 1000 W injectie laatste 15 min.<br>Er is {{ - ( net - charger) | int() }} W beschikbaar.
             data:
               notification_icon: mdi:radiator
-              color: orange              
+              color: "#FFC000"              
         - service: input_select.select_option
           target:
             entity_id: input_select.kamer_alunya_heating_mode
@@ -206,7 +206,7 @@ automation:
         Er is {{ - ( net - charger ) | int() }} W beschikbaar.
       data:
         notification_icon: mdi:radiator
-        color: orange        
+        color: "#FFC000"        
   - service: input_select.select_option
     target:
       entity_id: input_select.living_heating_mode
@@ -243,7 +243,7 @@ automation:
       message: De laatste 15 min. was er geen 1000 W injectie beschikbaar. ({{ states('sensor.net_power_avg_15min') | int() }} W)
       data:
         notification_icon: mdi:radiator
-        color: orange      
+        color: "#FFC000"      
   - service: input_select.select_option
     target:
       entity_id: input_select.living_heating_mode
@@ -351,7 +351,7 @@ automation:
         Meer dan 1000 W injectie laatste 15 min.<br>Er is {{ - ( net - charger) | int() }} W beschikbaar.
       data:
         notification_icon: mdi:radiator
-        color: orange        
+        color: "#FFC000"        
   - service: input_select.select_option
     target:
       entity_id: input_select.kamer_alunya_heating_mode
@@ -426,7 +426,7 @@ automation:
       message: De laatste 15 min. was er geen 1000 W injectie beschikbaar. ({{ states('sensor.net_power_avg_15min') | int() }} W)
       data:
         notification_icon: mdi:radiator
-        color: orange      
+        color: "#FFC000"      
   - service: input_select.select_option
     target:
       entity_id: input_select.kamer_alunya_heating_mode

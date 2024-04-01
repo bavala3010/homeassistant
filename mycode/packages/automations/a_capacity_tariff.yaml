@@ -76,10 +76,11 @@ automation:
   - service: notify.bart_phone
     data:
       title: Hoge verbruikspiek
-      message: "Huidig verbruik is {{ (states('sensor.net_power_avg') | float() / 1000) | round(2) }} kWh t.o.v. de maandelijkse piek van {{ states('sensor.power_peak') | round(2) }} kW."
+      message: "Huidig verbruik is {{ (states('sensor.net_power_avg') | float() / 1000) | round(2) }} kW t.o.v. de maandelijkse piek van {{ states('sensor.power_peak') | round(2) }} kW."
       data:
         tag: peak
-        color: red  
+        color: red
+        notification_icon: mdi:transmission-tower-export 
   mode: single
 
 

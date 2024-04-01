@@ -9,7 +9,7 @@
 #     🔐 security // Bart en Madouce op terras = voordeur op slot
 #     🔐 security // voordeur lang open = melding
 #     🔐 security // Niemand meer thuis en Bart in auto = check voordeur
-#     🔐 security // Voordeur opengedaan met code
+#     🔐 security // Voordeur ontgrendeld
 ############################ Automations ################################## 
 
 automation:
@@ -188,7 +188,8 @@ automation:
       message: "Staat al {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.voordeur.last_changed)) / 60 )| int() }} minuten open."
       data:
         color: red
-        tag: voordeur_staat_open
+        tag: voordeur
+        notification_icon: mdi:door-open
   - repeat:
       while:
       - condition: state
@@ -204,8 +205,9 @@ automation:
             Staat al {{ (((as_timestamp(now()) - as_timestamp(state_attr('automation.voordeur_staat_lang_open', 'last_triggered') )) / 60 )+ 3  ) | int() }} minuten open.
           data:
             color: red
-            tag: voordeur_staat_open
+            tag: voordeur
             alert_once: true
+            notification_icon: mdi:door-open
   - service: notify.bart_phone
     data:
       title: "Voordeur is nu terug dicht."
@@ -213,7 +215,9 @@ automation:
       message: >-
         Stond {{ (((as_timestamp(now()) - as_timestamp(state_attr('automation.voordeur_staat_lang_open', 'last_triggered') )) / 60 ) + 3) | int() }} minuten open.
       data:
-        tag: voordeur_staat_open
+        tag: voordeur
+        color: green
+        notification_icon: mdi:door-open
   mode: single
 
 - alias: 🔐 security // Niemand meer thuis en Bart in auto = check voordeur
@@ -249,7 +253,7 @@ automation:
   mode: single
 
 
-- alias: 🔐 security // Voordeur opengedaan
+- alias: 🔐 security // Voordeur ontgrendeld
   id: 'c9ccdb95-0f71-4dfa-a91f-2c34de88df75'
   description: ''
   trigger:
@@ -270,16 +274,16 @@ automation:
               {% set contents = states('sensor.voordeur_nuki_last_unlock_user') | replace(' (Keypad)', '') %}
               {% set user = states('sensor.voordeur_nuki_last_unlock_user').split(' (')[0] %}
               {% if full.endswith('(Keypad)') %}Voordeur zopas open gedaan door {{ user }}.
-              {% else %}Voordeur zopas open gedaan door automatisatie.
+              {% else %}Voordeur zopas ontgrendeld.
               {% endif %}
             message: >
-              {% if states('binary_sensor.voordeur_nuki')=='off' %}Voordeur is weer gesloten.
-              {% else %}Voordeur is nog open.
+              {% if states('lock.voordeur_nuki')=='locked' %}Voordeur is weer vergrendeld.
+              {% else %}Voordeur is nog ontgrendeld.
               {% endif %} 
             data:
               notification_icon: mdi:door-open
               color: >
-                {% if states('binary_sensor.voordeur_nuki')=='off' %}green
+                {% if states('lock.voordeur_nuki')=='locked' %}green
                 {% else %}red
                 {% endif %}
   mode: single

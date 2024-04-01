@@ -219,6 +219,7 @@ input_select:
     options:
       - minimaal doel
       - optimaal doel
+      - 100%
 
 input_boolean:
   car_charge_plan:

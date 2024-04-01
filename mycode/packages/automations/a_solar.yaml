@@ -34,7 +34,7 @@ automation:
         message: "Er wordt nu {{ states('sensor.solar_power') | round() }} W zonne-energie opgewekt."
         data:
           notification_icon: mdi:sun-wireless-outline
-          color: orange
+          color: "#FFC000"
           actions:
           - action: URI
             title: meer info
@@ -141,7 +141,7 @@ automation:
           Morgen wordt er {{ states('sensor.solar_sim_energy_tomorrow_adj') | round(1) }} kWh verwacht.
         data:
           notification_icon: mdi:sun-wireless-outline
-          color: orange
+          color: "#FFC000"
   mode: single
 
 - alias: solar // bewaar zonneproductie van vandaag

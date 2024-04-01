@@ -1,0 +1,47 @@
+automation:
+
+- alias: verlaten huis = alle airco's uitschakelen
+  id: '900f71cd-eb8c-4b47-be94-cd58fa380965'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.gezin
+    to: 'not_home'
+    for: 00:03:00
+  condition:
+  action:
+    - service: climate.turn_off
+      data: {}
+      target:
+        device_id: 
+          - 1c560bbc7917f45d737e87d3e2bd0d89 # living room airco
+          - 61864d1ab32c5af91d5f13faf697c27e # Amilya airco
+          - 3c12e341dfd1d1fe2327ec66f3613321 # Alunya airco
+          - 64296bd295e4506b8a3ec42c8aae7e58 # master bedroom airco
+    - service: climate.set_temperature
+      data:
+        temperature: 14
+      target:
+        device_id: 
+          - 1c560bbc7917f45d737e87d3e2bd0d89 # living room airco
+          - 61864d1ab32c5af91d5f13faf697c27e # Amilya airco
+          - 3c12e341dfd1d1fe2327ec66f3613321 # Alunya airco
+          - 64296bd295e4506b8a3ec42c8aae7e58 # master bedroom airco
+    - service: input_number.set_value
+      data:
+        value: 14
+      target:
+        entity_id: 
+          - input_number.living_airco_target_temperature
+          - input_number.amilya_airco_target_temperature
+          - input_number.alunya_airco_target_temperature
+          - input_number.master_bedroom_airco_target_temperature
+    - service: timer.finish
+      data: {}
+      target:
+        entity_id: 
+          - timer.living_airco_timer
+          - timer.amilya_airco_timer
+          - timer.alunya_airco_timer
+          - timer.master_bedroom_airco_timer
+  mode: single

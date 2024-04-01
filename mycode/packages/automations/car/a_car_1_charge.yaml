@@ -393,7 +393,10 @@ automation:
   action:
     - service: notify.bart_phone
       data:
-        title: "🚗 Laaddoel nog niet bereikt."
+        title: >
+          {% set target = states('input_number.car_1_optimal_target_soc') | round(default=0) %}
+          {% set soc = states('sensor.car_1_soc') | round(default=0) %}
+          🚗 Laaddoel nog niet bereikt: nog {{ target - soc }}%.
         message: >
           {% set target = states('input_number.car_1_optimal_target_soc') | round(default=0) %}
           {% set soc = states('sensor.car_1_soc') | round(default=0) %}
@@ -407,7 +410,7 @@ automation:
           Wenst u verder te laden van het net?
         data:
           tag: car_charging
-          color: green
+          color: red
           clickAction: "/dashboard-car/car-charging"           
           notification_icon: mdi:car-electric
   mode: single

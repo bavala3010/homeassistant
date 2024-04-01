@@ -158,7 +158,7 @@ automation:
           tag: ontvochtiger                
   mode: single
 
-- alias: 💧 humidity // badkamer ontvochtiger // timer komt op 0 of raam open of <65% vocht = uitschakelen
+- alias: 💧 humidity // badkamer ontvochtiger // timer komt op 0 of raam wijd open of <65% vocht = uitschakelen
   id: 'cf189eff-93b5-4452-b62d-8c14cdbd7bb4'
   description: ''
   trigger:
@@ -167,7 +167,7 @@ automation:
     from: active
     to: idle
   - platform: state
-    entity_id: binary_sensor.badkamer_raam_kantel
+    entity_id: binary_sensor.badkamer_raam_wijd
     to: "on"
   - platform: numeric_state
     entity_id: sensor.badkamer_humidity

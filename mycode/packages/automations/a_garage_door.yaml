@@ -5,40 +5,58 @@ automation:
   id: '89cce371-bbfd-4154-a909-1ffeab77f9de'
   description: ''
   trigger:
-  - platform: state
-    entity_id: cover.garagepoort
-    from: 'closed'
-    to: 'open'
-    for: '00:05:00'
+    - platform: state
+      entity_id: cover.garagepoort
+      from: 'closed'
+      to: 'open'
+      for: '00:05:00'
   condition: []
   action:
-  - repeat:
-      while:
-      - condition: state
-        entity_id: cover.garagepoort
-        state: 'open'
-      sequence:
-      - service: notify.bart_phone      
-        data:
-          title: "Garage staat al tijdje open."
-          message: >
-            {% set t = ( (as_timestamp(now()) - starttijd) / 60) | int(default=0) %}
-            Staat al {{ t }} minuten open.
-          data:
-            color: red
-            tag: garage_staat_open
-      - delay:
-          minutes: 2          
-  - service: notify.bart_phone
-    data:
-      title: "Garage is nu terug dicht."
-      message: >
-        {% set t = ((as_timestamp(now()) - starttijd) / 60) | int(default=0) %}
-        Stond {{ t }} minuten open.
+    - service: notify.bart_phone
       data:
-        tag: garage_staat_open
-  variables:
-    starttijd: "{{ as_timestamp(state_attr('automation.garagepoort_staat_lang_open', 'last_triggered')) }}"        
+        title: Garage staat al lang open!
+        message: >-
+          Staat al {{((as_timestamp(now()) -
+          as_timestamp(states.cover.garagepoort.last_changed)) / 60 )| int()
+          }} minuten open.
+        data:
+          tag: garagepoort
+          priority: high
+          color: red
+          notification_icon: mdi:garage-alert
+    - repeat:
+        while:
+          - condition: state
+            entity_id: cover.garagepoort
+            state: 'open'
+        sequence:
+          - delay:
+              minutes: 2
+          - service: notify.bart_phone
+            data:
+              title: Garagepoort staat al lang open!
+              message: >-
+                Staat al {{ (((as_timestamp(now()) -
+                as_timestamp(state_attr('automation.garagepoort_staat_lang_open',
+                'last_triggered') )) / 60 ) + 5 ) | int() }} minuten open.
+              data:
+                tag: garagepoort
+                priority: high
+                alert_once: true
+                color: red
+                notification_icon: mdi:garage-alert
+    - service: notify.bart_phone
+      data:
+        title: Garagepoort is nu terug dicht.
+        message: >-
+          Stond {{ (((as_timestamp(now()) -
+          as_timestamp(state_attr('automation.garagepoort_staat_lang_open',
+          'last_triggered') )) / 60 ) + 5 ) | int() }} minuten open.
+        data:
+          tag: garagepoort
+          color: green
+          notification_icon: mdi:garage-lock
+
   mode: single
 
 

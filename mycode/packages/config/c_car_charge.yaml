@@ -189,6 +189,16 @@ template:
           {% set charger = states('sensor.charger_current_power') | float(default=0) %}
           {{ ( net - charger ) | round(default=0) }}
 
+      - name: car_1_charge_limit
+        attributes:
+          friendly_name: 'laden stoppen bij'
+        unit_of_measurement: '%'
+        state: >
+          {% if states('input_select.car_1_charge_limit') == 'minimum doel'%}{{ states('iput_number.car_1_min_target_soc')}}
+          {% elif states('input_select.car_1_charge_limit') == 'optimaal doel'%}{{ states('input_number.car_1_optimal_target_soc')}}
+          {% elif states('input_select.car_1_charge_limit') == '100%'%}100
+          {% endif %}
+
 sensor:
   # - platform: statistics
   #   name: "charger current power avg2min"
