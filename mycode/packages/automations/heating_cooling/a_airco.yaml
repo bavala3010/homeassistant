@@ -44,4 +44,11 @@ automation:
           - timer.amilya_airco_timer
           - timer.alunya_airco_timer
           - timer.master_bedroom_airco_timer
+    - service: input_select.select_option
+      data:
+        option: 'centrale verwarming'
+      target:
+        entity_id: 
+          - input_select.living_heating_mode
+          - input_select.kamer_alunya_heating_mode
   mode: single

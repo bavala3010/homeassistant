@@ -157,7 +157,7 @@ automation:
   - service: notify.bart_madouce_phone
     data:
       title: Ramen in living mogen open
-      message: Buiten wordt het nu koeler ({{outdoor}}) dan binnen ({{indoor}}).
+      message: Buiten wordt het nu koeler ({{outdoor}}°C) dan binnen ({{indoor}}°C).
       data:
         color: green
         channel: ramen
@@ -165,8 +165,8 @@ automation:
         tag: window_living
         notification_icon: "mdi:window-closed-variant"
   variables:
-    outdoor: "{{ states('sensor.eikenbos_temperature') |float }}"
-    indoor: "{{ states('sensor.living_temperature')| float }}"         
+    outdoor: "{{ states('sensor.eikenbos_temperature') | round(1) }}"
+    indoor: "{{ states('sensor.living_temperature')| round(1) }}"         
 
 - alias: buiten kouder geworden dan in veranda = melding
   id: 'bdb9a781-02a1-429a-a4dd-d9bdcdd79807'
@@ -191,7 +191,7 @@ automation:
     - service: notify.bart_madouce_phone
       data:
         title: Raam in veranda mag open
-        message: Buiten wordt het nu koeler ({{outdoor}}) dan binnen ({{indoor}}).
+        message: Buiten wordt het nu koeler ({{outdoor}}°C) dan binnen ({{indoor}}°C).
         data:
           color: green
           channel: ramen
@@ -199,8 +199,8 @@ automation:
           tag: window_veranda 
           notification_icon: "mdi:window-closed-variant"      
   variables:
-    outdoor: "{{ states('sensor.eikenbos_temperature') |float }}"
-    indoor: "{{ states('sensor.veranda_temperature') |float }}"           
+    outdoor: "{{ states('sensor.eikenbos_temperature') | round(1) }}"
+    indoor: "{{ states('sensor.veranda_temperature') | round(1) }}"           
 
 - alias: buiten kouder geworden dan in kamer Amilya = melding
   id: 'ab17e743-817e-4649-a2a4-d222131f0f44'
@@ -225,7 +225,7 @@ automation:
     - service: notify.bart_madouce_phone
       data:
         title: Raam Amilya mag open
-        message: Buiten wordt het nu koeler ({{outdoor}}) dan binnen ({{indoor}}).
+        message: Buiten wordt het nu koeler ({{outdoor}}°C) dan binnen ({{indoor}}°C).
         data:
           color: green
           channel: ramen
@@ -233,8 +233,8 @@ automation:
           tag: window_amilya
           notification_icon: "mdi:window-closed-variant"                 
   variables:
-    outdoor: "{{ states('sensor.eikenbos_temperature') |float }}"
-    indoor: "{{ states('sensor.kamer_amilya_temperature') |float }}"           
+    outdoor: "{{ states('sensor.eikenbos_temperature') | round(1) }}"
+    indoor: "{{ states('sensor.kamer_amilya_temperature') | round(1) }}"           
 
 - alias: buiten kouder geworden dan in kamer Alunya = melding
   id: '6ac20eb1-35ef-4811-8396-84f98646f425'
@@ -259,7 +259,7 @@ automation:
     - service: notify.bart_madouce_phone
       data:
         title: Raam Alunya mag open
-        message: Buiten wordt het nu koeler ({{outdoor}}) dan binnen ({{indoor}}).
+        message: Buiten wordt het nu koeler ({{outdoor}}°C) dan binnen ({{indoor}}°C).
         data:
           color: green
           channel: ramen
@@ -267,8 +267,8 @@ automation:
           tag: window_alunya
           notification_icon: "mdi:window-closed-variant"               
   variables:
-    outdoor: "{{ states('sensor.eikenbos_temperature') |float }}"
-    indoor: "{{ states('sensor.kamer_alunya_temperature') |float }}"          
+    outdoor: "{{ states('sensor.eikenbos_temperature') | round(1) }}"
+    indoor: "{{ states('sensor.kamer_alunya_temperature') | round(1) }}"          
 
 - alias: buiten kouder geworden dan in master bedroom = melding
   id: '695898c2-c66e-4d93-9598-ff3337f00e05'
@@ -293,7 +293,7 @@ automation:
     - service: notify.bart_madouce_phone
       data:
         title: Raam in master bedroom mag open
-        message: Buiten wordt het nu koeler ({{outdoor}}) dan binnen ({{indoor}}).
+        message: Buiten wordt het nu koeler ({{outdoor}}°C) dan binnen ({{indoor}}°C).
         data:
           color: green
           channel: ramen
@@ -301,5 +301,5 @@ automation:
           tag: window_master_bedroom
           notification_icon: "mdi:window-closed-variant"             
   variables:
-    outdoor: "{{ states('sensor.eikenbos_temperature') |float }}"
-    indoor: "{{ states('sensor.master_bedroom_temperature') |float }}"
+    outdoor: "{{ states('sensor.eikenbos_temperature') | round(1) }}"
+    indoor: "{{ states('sensor.master_bedroom_temperature') | round(1) }}"

@@ -286,4 +286,8 @@ automation:
                 {% if states('lock.voordeur_nuki')=='locked' %}green
                 {% else %}red
                 {% endif %}
+              actions:
+              - action: URI
+                title: Meer info
+                uri: /lovelace-security/overview
   mode: single
