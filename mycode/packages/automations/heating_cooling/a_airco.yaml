@@ -8,7 +8,7 @@ automation:
     entity_id: group.gezin
     to: 'not_home'
     for: 00:03:00
-  condition:
+  condition: []
   action:
     - service: climate.turn_off
       data: {}
