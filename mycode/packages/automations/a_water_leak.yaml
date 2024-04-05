@@ -27,9 +27,6 @@ automation:
           notification_icon: mdi:security      
           color: red
           channel: alarm
-          actions:
-          - action: URI
-            title: Meer info
-            uri: /lovelace/alarm
+          clickAction: "/lovelace/security"
           vibrationPattern: 10, 10, 10, 10, 10, 10, 10
   mode: single

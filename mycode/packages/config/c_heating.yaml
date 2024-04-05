@@ -66,11 +66,15 @@ input_text:
 input_boolean:
   badkamer_18graden:
     name: badkamer 18 graden
-    icon: mdi:heater
+    icon: mdi:radiator
 
   heating_season:
     name: stookseizoen
-    icon: mdi:heater
+    icon: mdi:radiator
+
+  cooling_season:
+    name: koelseizoen
+    icon: mdi:snowflake
 
 input_datetime:
   badkamer_18graden_starttime:

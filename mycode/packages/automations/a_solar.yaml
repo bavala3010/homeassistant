@@ -35,10 +35,7 @@ automation:
         data:
           notification_icon: mdi:sun-wireless-outline
           color: "#FFC000"
-          actions:
-          - action: URI
-            title: meer info
-            uri: /lovelace-verbruik/zonne-energie
+          clickAction: "/lovelace-verbruik/zonne-energie"
 
 - alias: injectie meer dan 2,5 kW = melding dat auto kan worden geladen of machine aangezet
   id: '2d15d773-5a7f-4c83-ab27-fceef60120ae'
@@ -109,10 +106,7 @@ automation:
         data:
           notification_icon: "mdi:lightning-bolt"
           color: red
-          actions:
-          - action: URI
-            title: meer info
-            uri: /lovelace-verbruik/zonne-energie
+          clickAction: "/lovelace-verbruik/zonne-energie"
 
 - alias: "solar // einde van de zonne-energie productie voor vandaag"
   id: '9a576f40-1363-466d-bab3-915845c02e49'

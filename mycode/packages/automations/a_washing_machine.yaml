@@ -38,10 +38,7 @@ automation:
         data:
           tag: wasmachine
           notification_icon: "mdi:washing-machine"
-          actions:
-          - action: URI
-            title: Meer info
-            uri: /lovelace-apparaten/wasmachine          
+          clickAction: "/lovelace-apparaten/wasmachine"
     - service: script.google_home_resume
       data:
         action:
@@ -154,10 +151,7 @@ automation:
           tag: wasmachine
           notification_icon: "mdi:washing-machine" 
           color: blue
-          actions:
-            - action: URI
-              title: Meer info
-              uri: /lovelace-apparaten/wasmachine         
+          clickAction: "/lovelace-apparaten/wasmachine"     
     - service: script.google_home_resume
       data:
         action:
@@ -199,10 +193,7 @@ automation:
           tag: wasmachine
           notification_icon: "mdi:washing-machine"
           color: blue
-          actions:
-            - action: URI
-              title: Meer info
-              uri: /lovelace-apparaten/wasmachine          
+          clickAction: "/lovelace-apparaten/wasmachine"      
   mode: single
 
 - alias: 👕 wasmachine // was nog in wasmachine = melding op speaker

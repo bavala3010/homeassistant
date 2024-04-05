@@ -80,10 +80,7 @@ automation:
           color: "#0E86D4"
           tag: window_master_bedroom
           channel: Vocht
-          actions:
-          - action: URI
-            title: Meer info
-            uri: /lucht-vocht-temperatuur/vocht-gram
+          clickAction: "/lucht-vocht-temperatuur/vocht-gram"
   mode: single
 
 

@@ -205,7 +205,7 @@ automation:
   - service: notify.bart_phone
     data:
       title: Madouce is bijna thuis.
-      message: Hoera.
+      message: Nu in de buurt van {{states('sensor.sm_g986b_geocoded_location')}}.
       data:
         tag: madouce_bijna_thuis
         color: red

@@ -20,10 +20,7 @@ automation:
           Er staan nog ramen wijd open!
           {{expand(states.binary_sensor.kamer_alunya_schuifraam, states.binary_sensor.veranda_schuifraam, states.binary_sensor.badkamer_raam_wijd, states.binary_sensor.master_bedroom_raam_wijd) | selectattr('state','eq','on') | map(attribute='name') | list | join(', ') }}
         color: red
-        actions:
-        - action: URI
-          title: Meer info
-          uri: /lovelace/alarm
+        clickAction: "/lovelace/security"
         vibrationPattern: 10, 10, 10, 10, 10, 10, 10
         media_stream: alarm_stream
   - service: notify.bart_madouce_phone
@@ -59,10 +56,7 @@ automation:
           Er staan nog ramen open!
           {{expand(states.binary_sensor.badkamer_raam_kantel, states.binary_sensor.badkamer_raam_wijd, states.binary_sensor.berging_raam, states.binary_sensor.kamer_alunya_raam, states.binary_sensor.kamer_amilya_raam, states.binary_sensor.kamer_alunya_schuifraam, states.binary_sensor.keuken_raam, states.binary_sensor.living_oprit_raam, states.binary_sensor.living_tuin_raam, states.binary_sensor.master_bedroom_raam_kantel, states.binary_sensor.master_bedroom_raam_wijd, states.binary_sensor.veranda_schuifraam) | selectattr('state','eq','on') | map(attribute='name') | list | join(', ') }}
         color: red
-        actions:
-        - action: URI
-          title: Meer info
-          uri: /lovelace/alarm
+        clickAction: "/lovelace/security"
         vibrationPattern: 10, 10, 10, 10, 10, 10, 10
         media_stream: alarm_stream
   - service: notify.bart_madouce_phone

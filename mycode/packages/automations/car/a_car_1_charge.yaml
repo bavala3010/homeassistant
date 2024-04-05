@@ -58,10 +58,7 @@ automation:
         color: green
         tag: auto_laden
         timeout: 300
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/car      
+        clickAction: "/dashboard-car/car-charging"  
   mode: single
 
 - alias: 🚗 car 1 // 🔋 charge // auto laadt (niet thuis) = melding
@@ -231,7 +228,7 @@ automation:
         entity_id: sensor.car_1_charging_state
         state: 'charging'
       sequence:
-      - service: audiconnect.refresh_data
+      - service: audiconnect.refresh_vehicle_data
         data:
           vin: !secret vin
       - delay:
@@ -394,13 +391,13 @@ automation:
     - service: notify.bart_phone
       data:
         title: >
-          {% set target = states('input_number.car_1_optimal_target_soc') | round(default=0) %}
+          {% set target = states('input_number.car_1_min_target_soc') | round(default=0) %}
           {% set soc = states('sensor.car_1_soc') | round(default=0) %}
           🚗 Laaddoel nog niet bereikt: nog {{ target - soc }}%.
         message: >
-          {% set target = states('input_number.car_1_optimal_target_soc') | round(default=0) %}
+          {% set target = states('input_number.car_1_min_target_soc') | round(default=0) %}
           {% set soc = states('sensor.car_1_soc') | round(default=0) %}
-          Einde van de zonne-energie productie vandaag. Het laaddoel van {{ target }}% is nog niet bereikt.<br>
+          Einde van de zonne-energie productie vandaag. Het minimum doel van {{ target }}% is nog niet bereikt.<br>
           De auto heeft nu {{ soc }}%. Er moet nog {{ target - soc }}% geladen worden.
           {% if states('input_boolean.car_charge_evening_net') == 'on' and states('input_boolean.car_charge_night_net') == 'on' %}Deze avond en nacht wordt geladen van het net.
           {% elif states('input_boolean.car_charge_evening_net') == 'on' and states('input_boolean.car_charge_night_net') == 'off' %}Er wordt enkel deze avond nog geladen tot 23u en niet deze nacht.
@@ -411,6 +408,31 @@ automation:
         data:
           tag: car_charging
           color: red
-          clickAction: "/dashboard-car/car-charging"           
+          clickAction: "/dashboard-car/car-charging"
           notification_icon: mdi:car-electric
   mode: single
+
+
+- alias: "🚗 car 1 // 🔋 charge // remaining charge time verandert = aanpassen timer"
+  id: '53e78619-3cad-4605-8075-fbc4870720d4'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+      - sensor.audi_e_tron_sportback_remaining_charge_time
+  action:
+    - service: timer.set_duration
+      data:
+        duration: >
+          {% set seconds =
+          states('sensor.audi_e_tron_sportback_remaining_charge_time') | int %} {% set
+          hours = seconds // 3600 %} {% set minutes = (seconds % 3600) // 60 %} {% set
+          seconds = seconds % 60 %} {{ '%02d' | format(hours) }}:{{ '%02d' |
+          format(minutes) }}:{{ '%02d' | format(seconds) }}
+      target:
+        entity_id: timer.car_1_remaining_charge_time
+    - service: timer.start
+      data: {}
+      target:
+        entity_id: timer.car_1_remaining_charge_time
+  mode: single      

@@ -46,11 +46,7 @@ automation:
       data:
         tag: car_charging
         color: green
-        clickAction: "/dashboard-car/car-charging"
-        # actions:
-        # - action: URI
-        #   title: meer info
-        #   uri: /dashboard-car/car-charging        
+        clickAction: "/dashboard-car/car-charging"   
   mode: single
 
 - alias: "🚗 car 1 // 🔋 charge // laadkabel zopas ingeplugd = melding (enkel thuis)"
@@ -78,11 +74,7 @@ automation:
         data:
           tag: car_charging
           color: green
-          clickAction: "/dashboard-car/car-charging"          
-          # actions:
-          #   - action: URI
-          #     title: meer info
-          #     uri: /dashboard-car/car-charging
+          clickAction: "/dashboard-car/car-charging"
   variables:
     message: >
       {% set soc = states('sensor.car_1_soc') | round(default=0) %}

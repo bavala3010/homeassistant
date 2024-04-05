@@ -36,10 +36,7 @@ automation:
         data:
           tag: wasmachine
           notification_icon: "mdi:tumble-dryer"
-          actions:
-          - action: URI
-            title: Meer info
-            uri: /lovelace-apparaten/droogkast          
+          clickAction: "/lovelace-apparaten/droogkast"
     - service: script.google_home_resume
       data:
         action:
@@ -92,10 +89,7 @@ automation:
         data:
           tag: droogkast
           notification_icon: "mdi:tumble-dryer" 
-          actions:
-          - action: URI
-            title: Meer info
-            uri: /lovelace-apparaten/droogkast               
+          clickAction: "/lovelace-apparaten/droogkast"              
     - service: script.google_home_resume
       data:
         action:
@@ -135,7 +129,8 @@ automation:
         message: "Haal de was uit de droogkast. De droogkast was klaar op {{ as_timestamp(states('input_datetime.dryer_stop_time')) | timestamp_custom('%-d/%-m om %-H:%M') }}."
         data:
           tag: droogkast        
-          notification_icon: "mdi:tumble-dryer"          
+          notification_icon: "mdi:tumble-dryer"
+          clickAction: "/lovelace-apparaten/droogkast"                 
     - service: script.google_home_resume
       data:
         action:
@@ -211,4 +206,4 @@ automation:
         message: "clear_notification"
         data:
           tag: droogkast                 
-  mode: single  
+  mode: single

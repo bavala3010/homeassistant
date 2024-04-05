@@ -29,6 +29,7 @@ automation:
         data:
           notification_icon: mdi:lightning-bolt
           color: "#FFC000"
+          tag: bliksem
     # Update the previous distance with the current distance
     - service: input_number.set_value
       data_template:

@@ -64,7 +64,7 @@ automation:
                   message: Beweging op oprit!
     - service: fully_kiosk.load_url
       data:
-        url: http://192.168.68.100:8123/lovelace-security/c
+        url: http://192.168.68.100:8123/lovelace-security/camera
       target:
         device_id: 9db72afc8fd0936719dbe6cdbe6d9711
     - wait_template: ''

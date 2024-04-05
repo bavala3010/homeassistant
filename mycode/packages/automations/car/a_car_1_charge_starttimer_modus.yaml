@@ -57,8 +57,5 @@ automation:
       data:
         tag: car_charging
         color: green
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/car-charging
+        clickAction: "/dashboard-car/car-charging" 
   mode: single

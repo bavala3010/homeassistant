@@ -51,10 +51,16 @@ input_boolean:
     name: climatisatie auto timerswitch
 
 timer:
+# These timers could not work correctly when defined via this file.
+# These timers have now been configured via the user interface. 
   # car_1_climatisation:
   #   name: climatisatie timer auto 1  
   #   icon: mdi:radiator
   #   duration: "00:00:00"
+
+  # car_1_remaining_charge_time:
+  #   name: resterende laadtijd
+  #   icon: mdi:timer
 
 input_text:
   car_1_bluetooth_name:

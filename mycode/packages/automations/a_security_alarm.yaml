@@ -102,10 +102,7 @@ automation:
       title: ''
       data:
         color: blue
-        actions:
-        - action: URI
-          title: Meer info
-          uri: /lovelace-security/0
+        clickAction: "/lovelace-security/overview"
   - service: alarm_control_panel.alarm_arm_away
     target:
       entity_id: alarm_control_panel.home_alarm
@@ -229,10 +226,7 @@ automation:
         notification_icon: mdi:security      
         color: red
         channel: alarm
-        actions:
-        - action: URI
-          title: Meer info
-          uri: /lovelace/alarm
+        clickAction: "/lovelace/security"
         vibrationPattern: 10, 10, 10, 10, 10, 10, 10        
   - service: media_player.volume_set
     data:

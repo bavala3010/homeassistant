@@ -81,10 +81,7 @@ automation:
         tag: car_charging_sun
         color: green
         notification_icon: "mdi:car-electric"
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/car-charging
+        clickAction: "/dashboard-car/car-charging" 
   mode: single   
 
 - alias: "🚗 car 1 // 🔋 charge // mode sun // bezig - check elke minuut tijdens zonneladen"
@@ -206,10 +203,7 @@ automation:
       data:
         tag: car_charging
         color: green
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/car-charging      
+        clickAction: "/dashboard-car/car-charging"    
   # stop charging
   - service: script.stop_charger
     data: {}
@@ -241,10 +235,7 @@ automation:
       data:
         tag: car_charging
         color: green
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/car-charging
+        clickAction: "/dashboard-car/car-charging" 
   - service: input_boolean.turn_on
     data: {}
     target:

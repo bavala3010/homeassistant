@@ -3,9 +3,23 @@ bart_leaving_brussels_central_station:
   sequence:
     - variables:
         arrival_hour_spoken: >
-          {{ ((now() + timedelta(minutes=45)).replace(minute=((((now().minute + 40) // 5) * 5) % 60))).strftime('%H uur %M') }}
+          {{ (
+            (now() + timedelta(minutes=45))
+              .replace(
+                minute=((((now().minute + 45) // 5) * 5) % 60), 
+                hour=((now().hour + ((now().minute + 45) // 60)) % 24)
+              )
+            ).strftime('%H uur %M')
+          }}          
         arrival_hour_written: >
-          {{ ((now() + timedelta(minutes=45)).replace(minute=((((now().minute + 40) // 5) * 5) % 60))).strftime('%H:%M') }}            
+          {{ (
+            (now() + timedelta(minutes=45))
+              .replace(
+                minute=((((now().minute + 45) // 5) * 5) % 60), 
+                hour=((now().hour + ((now().minute + 45) // 60)) % 24)
+              )
+            ).strftime('%H:%M')
+          }}
     - service: input_text.set_value
       data:
         value: "{{ arrival_hour_written }}"

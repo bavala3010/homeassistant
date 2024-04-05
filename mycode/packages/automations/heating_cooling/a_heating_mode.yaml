@@ -79,7 +79,7 @@ automation:
         - service: notify.bart_phone
           metadata: {}
           data:
-            title: Verwarming living ingesteld op airco
+            title: Verwarming living op airco
             message: >
               {% set net = ( states('sensor.net_power_avg_15min') | float() * 0.4 ) + ( states('sensor.net_power_avg_5min') | float() * 0.6 ) %}
               {% set charger = ( states('sensor.charger_current_power_avg_15min') | float() * 0.4 ) + ( states('sensor.charger_current_power_avg_5min') | float() * 0.6 ) %}
@@ -114,7 +114,7 @@ automation:
         - service: notify.bart_phone
           metadata: {}
           data:
-            title: Verwarming living ingesteld op airco
+            title: Verwarming living op airco
             message: >
               {% set net = ( states('sensor.net_power_avg_15min') | float() * 0.4 ) + ( states('sensor.net_power_avg_5min') | float() * 0.6 ) %}
               {% set charger = ( states('sensor.charger_current_power_avg_15min') | float() * 0.4 ) + ( states('sensor.charger_current_power_avg_5min') | float() * 0.6 ) %}
@@ -198,7 +198,7 @@ automation:
   - service: notify.bart_phone
     metadata: {}
     data:
-      title: Verwarming living ingesteld op airco
+      title: Verwarming living op airco
       message: >
         {% set net = ( states('sensor.net_power_avg_15min') | float() * 0.4 ) + ( states('sensor.net_power_avg_5min') | float() * 0.6 ) %}
         {% set charger = ( states('sensor.charger_current_power_avg_15min') | float() * 0.4 ) + ( states('sensor.charger_current_power_avg_5min') | float() * 0.6 ) %}
@@ -239,7 +239,7 @@ automation:
   - service: notify.bart_phone
     metadata: {}
     data:
-      title: Verwarming living ingesteld op centrale verwarming
+      title: Verwarming living op centrale verwarming
       message: De laatste 15 min. was er geen 1000 W injectie beschikbaar. ({{ states('sensor.net_power_avg_15min') | int() }} W)
       data:
         notification_icon: mdi:radiator

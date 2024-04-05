@@ -241,10 +241,7 @@ automation:
       data:
         tts_text: De voordeur is niet op slot. Ik zal ze nu vergrendelen.
         color: red
-        actions:
-        - action: URI
-          title: Meer info
-          uri: /lovelace/alarm
+        clickAction: "/lovelace/security"
         vibrationPattern: 10, 10, 10, 10, 10, 10, 10
         media_stream: alarm_stream_max
   - service: lock.lock
@@ -278,7 +275,7 @@ automation:
               {% endif %}
             message: >
               {% if states('lock.voordeur_nuki')=='locked' %}Voordeur is weer vergrendeld.
-              {% else %}Voordeur is nog ontgrendeld.
+              {% else %}Voordeur is nog altijd ontgrendeld.
               {% endif %} 
             data:
               notification_icon: mdi:door-open
@@ -286,8 +283,23 @@ automation:
                 {% if states('lock.voordeur_nuki')=='locked' %}green
                 {% else %}red
                 {% endif %}
-              actions:
-              - action: URI
-                title: Meer info
-                uri: /lovelace-security/overview
+              clickAction: "/lovelace-security/overview"
+              tag: voordeur
+        - wait_template: ''
+          timeout: "00:01:00"
+        - service: notify.bart_phone
+          data:
+            title: Voordeur
+            message: >
+              {% if states('lock.voordeur_nuki')=='locked' %}Voordeur is opnieuw vergrendeld.
+              {% else %}Voordeur is nog altijd ontgrendeld.
+              {% endif %} 
+            data:
+              notification_icon: mdi:door-open
+              color: >
+                {% if states('lock.voordeur_nuki')=='locked' %}green
+                {% else %}red
+                {% endif %}
+              clickAction: "/lovelace-security/overview"
+              tag: voordeur                  
   mode: single

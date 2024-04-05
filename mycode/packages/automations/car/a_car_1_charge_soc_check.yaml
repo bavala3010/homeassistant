@@ -22,7 +22,7 @@ automation:
       {% set car_1_use_day = 'input_select.car_1_use_day_' ~ t.isoweekday() %}  
       {% if states(car_1_use_day) == "Toyota Evere" %} true {% endif %}
   action:
-  - service: audiconnect.refresh_data
+  - service: audiconnect.refresh_vehicle_data
     data:
       vin: !secret vin
   - wait_template: ''
@@ -56,7 +56,7 @@ automation:
       {% set car_1_use_day = 'input_select.car_1_use_day_' ~ t.isoweekday() %}  
       {% if states(car_1_use_day) == "Toyota Diest" %} true {% endif %}
   action:
-  - service: audiconnect.refresh_data
+  - service: audiconnect.refresh_vehicle_data
     data:
       vin: !secret vin
   - wait_template: ''
@@ -90,7 +90,7 @@ automation:
     entity_id: sensor.car_1_plug_state
     state: disconnected
   action:
-  - service: audiconnect.refresh_data
+  - service: audiconnect.refresh_vehicle_data
     data:
       vin: !secret vin  
   - wait_template: ''
@@ -103,8 +103,5 @@ automation:
       data:
         color: green
         tag: auto_laden
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/car-charging
+        clickAction: "/dashboard-car/car-charging" 
   mode: single

@@ -43,10 +43,7 @@ automation:
         tag: car_charging
         color: red
         notification_icon: "mdi:car-electric"
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/car-charging
+        clickAction: "/dashboard-car/car-charging"
   - service: input_boolean.turn_on
     data: {}
     target:
@@ -96,10 +93,7 @@ automation:
         tag: car_charging
         color: green
         notification_icon: "mdi:car-electric"        
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/car-charging
+        clickAction: "/dashboard-car/car-charging" 
   mode: restart
 
 - alias: "🚗 car 1 // 🔋 charge // modus select // stoptimer modus ingeschakeld"
@@ -126,10 +120,7 @@ automation:
         tag: car_charging
         color: green
         notification_icon: "mdi:car-electric"        
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/car-charging
+        clickAction: "/dashboard-car/car-charging"
   mode: restart
 
 - alias: "🚗 car 1 // 🔋 charge // modus select // stoptimer modus uitgeschakeld"
@@ -167,10 +158,7 @@ automation:
         tag: car_charging
         color: green
         notification_icon: "mdi:car-electric"        
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/car-charging
+        clickAction: "/dashboard-car/car-charging" 
   - service: input_number.set_value
     target:
       entity_id: input_number.car_charger_watt

@@ -300,10 +300,7 @@ automation:
         tag: auto_climatisatie
         color: green
         notification_icon: "mdi:car-seat-heater"        
-        actions:
-        - action: URI
-          title: Voor meer info, klik hier
-          uri: /dashboard-car/car-heater
+        clickAction: "/dashboard-car/car-heater"
   - service: script.car_1_climatisation_start_now
   mode: single 
 
@@ -367,10 +364,7 @@ automation:
         tag: auto_climatisatie
         color: green
         notification_icon: "mdi:car-seat-heater"        
-        actions:
-        - action: URI
-          title: Voor meer info, klik hier
-          uri: /dashboard-car/car-heater
+        clickAction: "/dashboard-car/car-heater"
   - service: script.car_1_climatisation_start_now          
   mode: single
 
@@ -403,10 +397,7 @@ automation:
         tag: auto_climatisatie
         color: green
         notification_icon: "mdi:car-seat-heater"        
-        actions:
-        - action: URI
-          title: Voor meer info, klik hier
-          uri: /dashboard-car/car-heater
+        clickAction: "/dashboard-car/car-heater"
   - service: script.car_1_climatisation_start_now
   mode: single
 
@@ -470,10 +461,7 @@ automation:
         tag: auto_climatisatie
         color: green
         notification_icon: "mdi:car-seat-heater"        
-        actions:
-        - action: URI
-          title: Voor meer info, klik hier
-          uri: /dashboard-car/car-heater
+        clickAction: "/dashboard-car/car-heater"
   - service: script.car_1_climatisation_start_now          
   mode: single
 

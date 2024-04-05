@@ -5,19 +5,19 @@
 #    start_charger
 
 
-auto_status_verversen:
-  alias: audi_refresh
+car_1_status_vernieuwen:
+  alias: vernieuwen gegevens Audi
   sequence:
-  - service: audiconnect.refresh_data
+  - service: audiconnect.refresh_vehicle_data
     data:
       vin: !secret vin
   icon: hass:car
   mode: single
   
 check_auto_op_slot:
-  alias: check als auto echt niet op slot is
+  alias: check of auto niet op slot is
   sequence:
-  - service: audiconnect.refresh_data
+  - service: audiconnect.refresh_vehicle_data
     data:
       vin: !secret vin
   - delay: 00:05:00

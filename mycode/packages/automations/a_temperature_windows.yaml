@@ -30,7 +30,7 @@ automation:
   - service: notify.bart_phone
     data:
       title: Nu is het warmste moment van de dag.
-      message: Nu is het warmste moment van de dag.
+      message: Buiten is het nu {{ states('sensor.eikenbos_temperature')}}°C.
   mode: single
 
 - alias: te warm in kamer Amilya - open raam (Bart)
@@ -63,10 +63,7 @@ automation:
         channel: Temperatuur
         timeout: 3600
         tag: temp_amilya
-        actions:
-        - action: URI
-          title: meer info
-          uri: /lovelace/temp_detail
+        clickAction: "/lovelace/temp_detail"
   mode: single
   
 - alias: te warm in kamer Amilya - open raam (Madouce)
@@ -99,10 +96,7 @@ automation:
         channel: Temperatuur
         timeout: 3600
         tag: temp_amilya
-        actions:
-        - action: URI
-          title: meer info
-          uri: /lovelace/temp_detail
+        clickAction: "/lovelace/temp_detail"
   mode: single
 
 - alias: temperatuur in huis stijgt snel = melding
@@ -139,14 +133,17 @@ automation:
   trigger:
   - platform: template
     value_template: >
-      {% set outdoor = states('sensor.eikenbos_temperature') |float %}
-      {% set indoor =  states('sensor.living_temperature') |float %}
+      {% set outdoor = states('sensor.eikenbos_temperature') | float %}
+      {% set indoor =  states('sensor.living_temperature') | float %}
       {% if outdoor < indoor %} true
       {% endif %}
   condition:
   - condition: state
     entity_id: group.living_ramen
     state: "off"
+  - condition: state
+    entity_id: input_boolean.cooling_season
+    state: "on"
   action:
   - service: input_boolean.turn_on
     target:
@@ -181,6 +178,9 @@ automation:
   - condition: state
     entity_id: binary_sensor.veranda_schuifraam
     state: "off"
+  - condition: state
+    entity_id: input_boolean.cooling_season
+    state: "on"    
   action:
     - service: input_boolean.turn_on
       target:
@@ -215,6 +215,9 @@ automation:
   - condition: state
     entity_id: binary_sensor.kamer_amilya_raam
     state: "off"
+  - condition: state
+    entity_id: input_boolean.cooling_season
+    state: "on"    
   action:
     - service: input_boolean.turn_on
       target:
@@ -249,6 +252,9 @@ automation:
   - condition: state
     entity_id: group.kamer_alunya_ramen
     state: "off"
+  - condition: state
+    entity_id: input_boolean.cooling_season
+    state: "on"    
   action:
     - service: input_boolean.turn_on
       target:
@@ -283,6 +289,9 @@ automation:
   - condition: state
     entity_id: binary_sensor.master_bedroom_raam_kantel
     state: "off"
+  - condition: state
+    entity_id: input_boolean.cooling_season
+    state: "on"    
   action:
     - service: input_boolean.turn_on
       target:

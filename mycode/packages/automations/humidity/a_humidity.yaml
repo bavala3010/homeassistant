@@ -41,10 +41,7 @@ automation:
           Vocht % in huis is heel hoog: {{states('sensor.avg_inside_humidity')}}%.
         data:
           color: "#0E86D4"
-        actions:
-        - action: URI
-          title: meer info
-          uri: /lucht-vocht-temperatuur/vocht-gram
+          clickAction: "/lucht-vocht-temperatuur/vocht-gram"
   mode: single
   
 - alias: "💧 humidity // vocht gram in badkamer >14 gram/m³"
@@ -72,10 +69,7 @@ automation:
             color: "#0E86D4"
             tag: badkamer_vocht
             channel: vocht
-            actions:
-            - action: URI
-              title: meer info
-              uri: /lucht-vocht-temperatuur/vocht-gram
+            clickAction: "/lucht-vocht-temperatuur/vocht-gram"
       - delay:
           hours: 1
   - service: notify.bart_madouce_phone
@@ -110,10 +104,7 @@ automation:
             color: "#0E86D4"
             tag: master_bedroom_vocht
             channel: vocht
-            actions:
-            - action: URI
-              title: meer info
-              uri: /lucht-vocht-temperatuur/vocht-gram
+            clickAction: "/lucht-vocht-temperatuur/vocht-gram"
       - delay:
           hours: 1
   - service: notify.bart_madouce_phone
@@ -151,10 +142,7 @@ automation:
             color: "#0E86D4"
             tag: kamer_alunya_vocht
             channel: vocht
-            actions:
-            - action: URI
-              title: meer info
-              uri: /lucht-vocht-temperatuur/vocht-gram
+            clickAction: "/lucht-vocht-temperatuur/vocht-gram"
       - delay:
           hours: 1
   - service: notify.bart_madouce_phone

@@ -56,10 +56,7 @@ car_1_climatisation_start_now_google_home:
             tag: auto_climatisatie
             timeout: 6000  # 10 minuten
             notification_icon: "mdi:car-seat-heater"
-            actions:
-            - action: URI
-              title: meer info
-              uri: /lovelace/e-tron
+            clickAction: "/dashboard-car/car-heater"
   mode: restart
 
 
@@ -139,10 +136,7 @@ define_car_1_climatisation_time:
             tag: auto_climatisatie
             timeout: 18000  # 1800 seconden = half uur
             notification_icon: "mdi:car-seat-heater"
-            actions:
-            - action: URI
-              title: meer info
-              uri: /dashboard-car/e-tron
+            clickAction: "/dashboard-car/car-heater"
 
 car_1_climatisation_start:
   alias: start climatisatie Audi
@@ -158,10 +152,7 @@ car_1_climatisation_start:
         tag: auto_climatisatie
         timeout: 18000  # 1800 seconden = half uur
         notification_icon: "mdi:car-seat-heater"
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/e-tron
+        clickAction: "/dashboard-car/car-heater"
   - repeat:
       while:
       - condition: state
@@ -177,10 +168,7 @@ car_1_climatisation_start:
         tag: auto_climatisatie
         timeout: 18000  # 1800 seconden = half uur
         notification_icon: "mdi:car-seat-heater"
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/e-tron
+        clickAction: "/dashboard-car/car-heater"
   mode: restart
 
 car_1_climatisation_stop:
@@ -207,7 +195,4 @@ car_1_climatisation_stop:
             tag: auto_climatisatie
             timeout: 6000  # 10 minuten
             notification_icon: "mdi:car-seat-heater"
-            actions:
-            - action: URI
-              title: meer info
-              uri: /lovelace/e-tron
+            clickAction: "/dashboard-car/car-heater"

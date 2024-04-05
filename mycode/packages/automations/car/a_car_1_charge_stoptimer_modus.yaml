@@ -56,10 +56,7 @@ automation:
       data:
         tag: car_charging
         color: green
-        actions:
-        - action: URI
-          title: meer info
-          uri: /dashboard-car/car-charging
+        clickAction: "/dashboard-car/car-charging" 
   mode: single
 
 - alias: "🚗 car 1 // 🔋 charge // stoptimer modus // laaddoel bereikt (enkel directe mode en timer mode) = laden stoppen + melding sturen (enkel thuis)"

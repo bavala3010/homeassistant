@@ -33,10 +33,10 @@ automation:
 
 
 #########################
-# Status auto verversen
+# Status auto vernieuwen
 #########################   
 
-- alias: 🚗 car 1 // Bart 3 km van thuis = verversen status auto
+- alias: 🚗 car 1 // Bart 3 km van thuis = vernieuwen status auto
   id: '37cfe751-fb7d-4f9b-9a1e-772eeba15f64'
   trigger:
   - platform: numeric_state
@@ -47,12 +47,12 @@ automation:
   - condition: template
     value_template: '{{ trigger.to_state.attributes.dir_of_travel  == "towards" }}'
   action:
-  - service: audiconnect.refresh_data
+  - service: audiconnect.refresh_vehicle_data
     data:
       vin: !secret vin
   mode: single
   
-- alias: 🚗 car 1 // Madouce 3 km van thuis = verversen status auto
+- alias: 🚗 car 1 // Madouce 3 km van thuis = vernieuwen status auto
   id: '533ee396-e37b-450b-a5e6-c981a9696b31'
   trigger:
   - platform: numeric_state
@@ -63,7 +63,7 @@ automation:
   - condition: template
     value_template: '{{ trigger.to_state.attributes.dir_of_travel  == "towards" }}'
   action:
-  - service: audiconnect.refresh_data
+  - service: audiconnect.refresh_vehicle_data
     data:
       vin: !secret vin
   mode: single  
