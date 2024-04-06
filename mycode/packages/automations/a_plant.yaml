@@ -1,0 +1,20 @@
+automation:
+
+- alias: plant // vochtigheidsgraad fel gestegen = melding
+  id: '198dbedd-123d-4eed-a628-a09691afc5d2'
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: sensor.living_yucca_moisture
+  condition:
+    - condition: template
+      value_template: >
+        {{ trigger.to_state.state | int - trigger.from_state.state | int <= 5 }}
+  action:
+    - service: notify.bart_phone
+      data:
+        title: Test
+        message: >
+          Vorige waarde: {{ trigger.from_state.state }}
+          Nieuwe waarde: {{ trigger.to_state.state }}
+  mode: single

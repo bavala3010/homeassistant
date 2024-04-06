@@ -397,7 +397,7 @@ automation:
         message: >
           {% set target = states('input_number.car_1_min_target_soc') | round(default=0) %}
           {% set soc = states('sensor.car_1_soc') | round(default=0) %}
-          Einde van de zonne-energie productie vandaag. Het minimum doel van {{ target }}% is nog niet bereikt.<br>
+          Het minimum doel van {{ target }}% is nog niet bereikt.<br>
           De auto heeft nu {{ soc }}%. Er moet nog {{ target - soc }}% geladen worden.
           {% if states('input_boolean.car_charge_evening_net') == 'on' and states('input_boolean.car_charge_night_net') == 'on' %}Deze avond en nacht wordt geladen van het net.
           {% elif states('input_boolean.car_charge_evening_net') == 'on' and states('input_boolean.car_charge_night_net') == 'off' %}Er wordt enkel deze avond nog geladen tot 23u en niet deze nacht.
@@ -424,11 +424,12 @@ automation:
     - service: timer.set_duration
       data:
         duration: >
-          {% set seconds =
-          states('sensor.audi_e_tron_sportback_remaining_charge_time') | int %} {% set
-          hours = seconds // 3600 %} {% set minutes = (seconds % 3600) // 60 %} {% set
-          seconds = seconds % 60 %} {{ '%02d' | format(hours) }}:{{ '%02d' |
-          format(minutes) }}:{{ '%02d' | format(seconds) }}
+          {% set seconds = states('sensor.audi_e_tron_sportback_remaining_charge_time') | int %}
+          {% set days = seconds // (3600 * 24) %}
+          {% set hours = (seconds % (3600 * 24)) // 3600 %}
+          {% set minutes = (seconds % 3600) // 60 %}
+          {% set seconds = seconds % 60 %}
+          {{ '%02d' | format(days) }} dagen {{ '%02d' | format(hours) }} uren {{ '%02d' | format(minutes) }} min.
       target:
         entity_id: timer.car_1_remaining_charge_time
     - service: timer.start

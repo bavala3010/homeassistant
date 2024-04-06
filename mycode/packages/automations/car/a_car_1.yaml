@@ -189,3 +189,20 @@ automation:
         gem. snelheid: {{state_attr('sensor.audi_e_tron_sportback_trip_short_current','averageSpeed')}}<br>
         gem. verbruik: {{state_attr('sensor.audi_e_tron_sportback_trip_short_current','averageFuelConsumption')}}<br>
   mode: single
+
+- alias: 🚗 car 1 // locatie veranderd = melding
+  id: d5885051-7845-4b1c-ad4d-70329d383678
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: device_tracker.audi_e_tron_sportback_position
+  action:
+    - service: notify.bart_phone
+      data:
+        title: Audi op nieuwe locatie
+        message: >
+          car_position_state_{{ trigger.entity_id.split(".")[1] }}
+          latitude: {{trigger.from_state.attributes.latitude}}
+          longitude: {{trigger.from_state.attributes.longitude}}
+          second_latitude: {{trigger.to_state.attributes.latitude}}
+          second_longitude: {{trigger.to_state.attributes.longitude}}
