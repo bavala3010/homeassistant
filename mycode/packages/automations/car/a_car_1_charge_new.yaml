@@ -330,33 +330,26 @@ automation:
                   "Else // onderaan routine. Beschikbaar vermogen was {{ wattage | round(2) }} kW."
   mode: single
 
-- alias: "🚗 car 1 // 🔋 charge overdag met zon of net // schakel tussen zon en net"
-  id: 'a1754a3e-5c3d-40c0-8926-6e399c18cc25'
+- alias: "🚗 car 1 // 🔋 charge overdag met zon = schakel laden van net uit"
+  id: 'e3db2c8a-c8cb-47b0-b86f-13b52200d3fe'
   trigger:
-  - platform: state # or when input booleans change
-    entity_id:
-      - input_boolean.car_charge_day_sun
-      - input_boolean.car_charge_day_net
+  - platform: state
+    entity_id: input_boolean.car_charge_day_sun
+    to: 'on'
   condition: []
   action:
-    - if:
-        - condition: template
-          value_template: "{{ states('input_boolean.car_charge_day_sun') =='on' }}"
-      then:    
-        - service: input_boolean.turn_off
-          data: {}
-          target:
-            entity_id: input_boolean.car_charge_day_net
-        - wait_template: ''
-          timeout: '00:00:02'            
-    - if:
-        - condition: template 
-          value_template: "{{ states('input_boolean.car_charge_day_net') =='on' }}"
-      then:    
-        - service: input_boolean.turn_off
-          data: {}
-          target:
-            entity_id: input_boolean.car_charge_day_sun
-        - wait_template: ''
-          timeout: '00:00:02'              
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.car_charge_day_net
   mode: single
+
+- alias: "🚗 car 1 // 🔋 charge overdag van net = schakel laden met zon uit"
+  id: 'acad91f6-3289-4f6f-a8bd-ce7e1f5c3ed8'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.car_charge_day_net
+    to: 'on'
+  condition: []
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.car_charge_day_sun
+  mode: single  

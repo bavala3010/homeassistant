@@ -44,7 +44,7 @@ automation:
         De auto zou moeten laden op {{ as_timestamp(states('sensor.car_charge_stoptimer_starttime')) | timestamp_custom('%a %-Hu%M') }} maar de kabel steekt niet in.
         Huidige lading is {{ soc }}%. Laaddoel is {{ targetsoc }}% = {{ targetrange }} km.
       data:
-        tag: car_charging
+        tag: car_charging_cable
         color: green
         clickAction: "/dashboard-car/car-charging"   
   mode: single
@@ -72,7 +72,7 @@ automation:
         title: De laadkabel is zopas ingeplugd.
         message: "{{ message }}"
         data:
-          tag: car_charging
+          tag: car_charging_cable
           color: green
           clickAction: "/dashboard-car/car-charging"
   variables:
@@ -125,7 +125,7 @@ automation:
         title: De laadkabel is zopas ingeplugd.
         message: "{{ message }}"
         data:
-          tag: car_charging
+          tag: car_charging_cable
           color: green
           clickAction: "/dashboard-car/car-charging"          
           # actions:
@@ -166,7 +166,7 @@ automation:
       message: >
         De laadkabel is ingeplugd maar er is niet gebadget om de sessie te starten.
       data:
-        tag: car_charging
+        tag: car_charging_cable
         color: green
         clickAction: "/dashboard-car/car-charging"     
   mode: single

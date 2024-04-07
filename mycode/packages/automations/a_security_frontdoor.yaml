@@ -287,19 +287,33 @@ automation:
               tag: voordeur
         - wait_template: ''
           timeout: "00:01:00"
-        - service: notify.bart_phone
-          data:
-            title: Voordeur
-            message: >
-              {% if states('lock.voordeur_nuki')=='locked' %}Voordeur is opnieuw vergrendeld.
-              {% else %}Voordeur is nog altijd ontgrendeld.
-              {% endif %} 
-            data:
-              notification_icon: mdi:door-open
-              color: >
-                {% if states('lock.voordeur_nuki')=='locked' %}green
-                {% else %}red
-                {% endif %}
-              clickAction: "/lovelace-security/overview"
-              tag: voordeur                  
+        - if:
+            - condition: state
+              entity_id: lock.voordeur_nuki
+              state: unlocked
+          then:
+            - service: notify.bart_phone
+              data:
+                title: Voordeur
+                message: Voordeur is nog altijd ontgrendeld.
+                data:
+                  notification_icon: mdi:door-open
+                  color: red
+                  clickAction: "/lovelace-security/overview"
+                  tag: voordeur
+        - if:
+            - condition: state
+              entity_id: lock.voordeur_nuki
+              state: locked
+          then:
+            - service: notify.bart_phone
+              data:
+                title: Voordeur
+                message: Voordeur is opnieuw vergrendeld.
+                data:
+                  notification_icon: mdi:door-closed
+                  color: green
+                  clickAction: "/lovelace-security/overview"
+                  tag: voordeur
+                  timeout: 600
   mode: single

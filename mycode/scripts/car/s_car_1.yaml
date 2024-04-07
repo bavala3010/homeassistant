@@ -8,18 +8,22 @@
 car_1_status_vernieuwen:
   alias: vernieuwen gegevens Audi
   sequence:
-  - service: audiconnect.refresh_vehicle_data
-    data:
-      vin: !secret vin
+    - service: audiconnect.refresh_cloud_data
+      data: {} 
+  # - service: audiconnect.refresh_vehicle_data
+  #   data:
+  #     vin: !secret vin
   icon: hass:car
   mode: single
   
 check_auto_op_slot:
   alias: check of auto niet op slot is
   sequence:
-  - service: audiconnect.refresh_vehicle_data
-    data:
-      vin: !secret vin
+  - service: audiconnect.refresh_cloud_data
+    data: {}   
+  # - service: audiconnect.refresh_vehicle_data
+  #   data:
+  #     vin: !secret vin
   - delay: 00:05:00
   - condition: state
     entity_id: lock.audi_e_tron_sportback_door_lock

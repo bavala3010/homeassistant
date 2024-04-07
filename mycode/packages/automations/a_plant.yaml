@@ -9,7 +9,7 @@ automation:
   condition:
     - condition: template
       value_template: >
-        {{ trigger.to_state.state | int - trigger.from_state.state | int <= 5 }}
+        {{ trigger.to_state.state | int - trigger.from_state.state | int >= 5 }}
   action:
     - service: notify.bart_phone
       data:

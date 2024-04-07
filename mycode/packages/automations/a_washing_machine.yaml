@@ -73,14 +73,17 @@ automation:
 
 - alias: 👕 wasmachine // bezig met wassen
   id: '94efde78-ad57-498a-830b-840bad4cb742'
-  # nog aan te passen
   description: ''
   trigger:
   - platform: template
     value_template: >
       {% set p = states('sensor.washing_machine_power') | float %}
       {{ p > 10 and p < 300 }}
-  condition: []
+  condition:
+    not:
+      - condition: state
+        entity_id: input_select.washing_machine_phase
+        state: "centrifugeren"
   action:
   - service: input_select.select_option
     data:

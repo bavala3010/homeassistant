@@ -228,9 +228,11 @@ automation:
         entity_id: sensor.car_1_charging_state
         state: 'charging'
       sequence:
-      - service: audiconnect.refresh_vehicle_data
-        data:
-          vin: !secret vin
+      - service: audiconnect.refresh_cloud_data
+        data: {}       
+      # - service: audiconnect.refresh_vehicle_data
+      #   data:
+      #     vin: !secret vin
       - delay:
           hours: 0
           minutes: 10
@@ -421,19 +423,10 @@ automation:
     entity_id:
       - sensor.audi_e_tron_sportback_remaining_charge_time
   action:
-    - service: timer.set_duration
+    - service: timer.start
       data:
         duration: >
-          {% set seconds = states('sensor.audi_e_tron_sportback_remaining_charge_time') | int %}
-          {% set days = seconds // (3600 * 24) %}
-          {% set hours = (seconds % (3600 * 24)) // 3600 %}
-          {% set minutes = (seconds % 3600) // 60 %}
-          {% set seconds = seconds % 60 %}
-          {{ '%02d' | format(days) }} dagen {{ '%02d' | format(hours) }} uren {{ '%02d' | format(minutes) }} min.
-      target:
-        entity_id: timer.car_1_remaining_charge_time
-    - service: timer.start
-      data: {}
+          {{ states('sensor.audi_e_tron_sportback_remaining_charge_time') | int * 60 }}
       target:
         entity_id: timer.car_1_remaining_charge_time
   mode: single      
