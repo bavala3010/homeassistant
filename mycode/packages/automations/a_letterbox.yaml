@@ -1,0 +1,19 @@
+automation:
+
+- alias: brievenbus beweging
+  id: 608b29df-b216-4f76-9a66-d36de8436ce4
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.letterbox_vibration
+      to: on
+  action:
+    - service: notify.bart_madouce_phone
+      data:
+        title: Brievenbus
+        message: "De klep van brievenbus werd geopend."
+        data:
+          tag: brievenbus        
+          # notification_icon: "mdi:tumble-dryer"
+          # clickAction: "/lovelace-apparaten/droogkast"
+  mode: single  

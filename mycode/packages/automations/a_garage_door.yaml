@@ -45,6 +45,7 @@ automation:
                 alert_once: true
                 color: red
                 notification_icon: mdi:garage-alert
+                clickAction: "lovelace-security/overview" 
     - service: notify.bart_phone
       data:
         title: Garagepoort is nu terug dicht.

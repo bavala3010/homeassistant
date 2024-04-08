@@ -9,7 +9,6 @@
 #     alarm ingeschakeld aan voordeur
 #     alarm uitgeschakeld aan voordeur
 #     alarm bij beweging
-#     garagepoort staat lang open
 
 ############################ Automations ##################################
 automation:

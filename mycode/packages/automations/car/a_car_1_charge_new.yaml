@@ -175,6 +175,10 @@ automation:
         {% set charger = states('sensor.charger_current_power_avg') | float(default=0) %}
         {% set net = states('sensor.net_power_avg') | float %}
         {{ (( 0 - net + charger ) / 1000) | float }}
+      max_net: >
+        {{ states('input_number.car_charge_sun_max_netwattage') | float(default=0) / 1000 }}
+      charger_maxcurrent: >
+        {{ states('sensor.charger_modbus_maxcurrent') | float() }}
   action:
     - if: # check if charging is requested in current period
         - condition: template # only if charger cable is connected to home charger or already charging
@@ -189,10 +193,10 @@ automation:
         - if: # not enough power available 
             - condition: template 
               value_template: >
-                {% set max_net = states('input_number.car_charge_sun_max_netwattage') | float(default=0) / 1000 %}
                 {{ (wattage + max_net) | round(1) < 1.3 }}
             - condition: template # charger is currently charging (more than 5 Ampère)
-              value_template: "{{ states('sensor.charger_modbus_maxcurrent') | float() > 5 }}"              
+              value_template: >
+                {{ charger_maxcurrent > 5 }}
           then: # stop charger
             - service: input_boolean.turn_off
               data: {}
@@ -204,9 +208,8 @@ automation:
               data:
                 title: Auto is gestopt met zonneladen.
                 message: >
-                  {% set max = states('input_number.car_charge_sun_max_netwattage') | float(default=0) / 1000 %}
                   Totaal vermogen was minder dan 1.3 kW.<br>
-                  Zon {{ wattage | round(1) }} kW + max. net {{ max }} kW = {{ (wattage + max ) | round(1) }} kW.
+                  Zon {{ wattage | round(1) }} kW + max. net {{ max_net }} kW = {{ (wattage + max_net ) | round(1) }} kW.
                 data:
                   notification_icon: mdi:car-electric
                   color: red                  
@@ -215,7 +218,6 @@ automation:
         - if:
             - condition: template 
               value_template: > # start charging even if injection is only 500 W
-                {% set max_net = states('input_number.car_charge_sun_max_netwattage') | float(default=0) / 1000 %}
                 {{  1.3 <= wattage + max_net <= 1.5 }}
           then: # set the charger at 1.3 kW
             - service: input_boolean.turn_on
@@ -235,8 +237,7 @@ automation:
         - if: # between 1.1 and 1.5 kW available and charger is already charging
             - condition: template
               value_template: >
-                {% set max_net = states('input_number.car_charge_sun_max_netwattage') | float(default=0) / 1000 %}
-                {{ (1.1 <= wattage < 1.5) and (states('sensor.charger_modbus_maxcurrent') | float() > 5) }}
+                {{ (1.1 <= wattage < 1.5) and ( charger_maxcurrent > 5) }}
           then: # keep the charger on at 1.3 kW
             - service: input_boolean.turn_on
               data: {}
