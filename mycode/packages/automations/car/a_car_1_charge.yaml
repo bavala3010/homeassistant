@@ -417,7 +417,7 @@ automation:
   mode: single
 
 - alias: "🚗 car 1 // 🔋 charge // einde van de zonne-energie productie = check doel om te laden van net"
-  id: '0f427537-d4dd-45b9-9323-46eba24bac39'
+  id: '702368e4-bf9d-4b21-befd-5387c1bd6804'
   description: ''
   trigger:
     - platform: numeric_state
@@ -431,28 +431,36 @@ automation:
     #   value_template: >
     #     {{ as_timestamp(states('sensor.zon_van_eikenbos_ondergang')) | int == as_timestamp(now()) | int }}
   condition:
-  - condition: template
-    value_template: >
-      {% set target = states('input_number.car_1_optimal_target_soc') | round(default=0) %}
-      {% set soc = states('sensor.car_1_soc') | round(default=0) %}
-      {{ soc < target }}
+    - condition: template
+      value_template: >
+        # {% set target = states('input_number.car_1_min_target_soc') | round(default=0) %}
+        # {% set soc = states('sensor.car_1_soc') | round(default=0) %}
+        {{ soc < target }}
+  variables:
+    target: >
+      {{ states('input_number.car_1_min_target_soc') | int }}
+    soc: >
+      {{ states('sensor.car_1_soc') | int }}
   action:
     - service: notify.bart_phone
       data:
         title: >
-          {% set target = states('input_number.car_1_min_target_soc') | round(default=0) %}
-          {% set soc = states('sensor.car_1_soc') | round(default=0) %}
           🚗 Laaddoel nog niet bereikt: nog {{ target - soc }}%.
         message: >
-          {% set target = states('input_number.car_1_min_target_soc') | round(default=0) %}
-          {% set soc = states('sensor.car_1_soc') | round(default=0) %}
           Het minimum doel van {{ target }}% is nog niet bereikt.<br>
           De auto heeft nu {{ soc }}%. Er moet nog {{ target - soc }}% geladen worden.
-          {% if states('input_boolean.car_charge_evening_net') == 'on' and states('input_boolean.car_charge_night_net') == 'on' %}Deze avond en nacht wordt geladen van het net.
-          {% elif states('input_boolean.car_charge_evening_net') == 'on' and states('input_boolean.car_charge_night_net') == 'off' %}Er wordt enkel deze avond nog geladen tot 23u en niet deze nacht.
-          {% elif states('input_boolean.car_charge_evening_net') == 'off' and states('input_boolean.car_charge_night_net') == 'on' %}Er wordt enkel deze nacht geladen.
-          {% elif states('input_boolean.car_charge_evening_net') == 'off' and states('input_boolean.car_charge_night_net') == 'off' %}Er is geen laadplanning ingesteld voor deze avond of nacht.
-          {% endif %}          
+          {{- '\n' }}
+          {% set evening = states('input_boolean.car_charge_evening_net') == 'on' %}
+          {% set night = states('input_boolean.car_charge_night_net') == 'on' %}
+          {% if evening and night %}
+            Deze avond en nacht wordt geladen van het net.
+          {% elif evening %}
+            Er wordt enkel deze avond nog geladen tot 23u en niet deze nacht.
+          {% elif night %}
+            Er wordt enkel deze nacht geladen.
+          {% else %}
+            Er is geen laadplanning ingesteld voor deze avond of nacht.
+          {% endif %}
           Wenst u verder te laden van het net?
         data:
           tag: car_charging

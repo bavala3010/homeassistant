@@ -90,7 +90,7 @@ start_charger:
 
 charger_define_phase_1_or_3_based_on_watt:
   alias: "laadpaal - bepaal 1 of 3 fases"
-  # 3 phases as of 4 kw, but 4.2 to have some buffer
+  # 3 phases as of 4 kw
   sequence:
   - service: >-
       {% if states('input_number.car_charger_watt') | float < 4.0 %}
@@ -138,7 +138,7 @@ charger_define_ampere_based_on_watt:
           {% elif 2.0 <= W < 2.2 %} 9
           {% elif 2.2 <= W < 2.4 %} 10
           {% elif 2.4 <= W < 2.5 %} 11
-          {% elif 2.6 <= W < 2.8 %} 12
+          {% elif 2.5 <= W < 2.8 %} 12
           {% elif 2.8 <= W < 3.1 %} 13
           {% elif 3.1 <= W < 4.0 %} 14
           {% elif 4.0 <= W < 4.6 %} 6
@@ -161,10 +161,10 @@ charger_define_and_write_register_based_on_ampere:
   variables:
     registervalue: >-        
       {% set A = states('input_number.car_charger_ampere') | float %}
-      {% if A == 6 %}[0x40c0, 0x0000]
-      {% elif A == 7 %}[0x40e0, 0x0000]
-      {% elif A == 8 %}[0x4100, 0x0000]
-      {% elif A == 9 %}[0x4110, 0x0000]
+      {% if   A ==  6 %}[0x40c0, 0x0000]
+      {% elif A ==  7 %}[0x40e0, 0x0000]
+      {% elif A ==  8 %}[0x4100, 0x0000]
+      {% elif A ==  9 %}[0x4110, 0x0000]
       {% elif A == 10 %}[0x4120, 0x0000]
       {% elif A == 11 %}[0x4130, 0x0000]
       {% elif A == 12 %}[0x4140, 0x0000]

@@ -94,6 +94,8 @@ automation:
   - service: notify.bart_phone
     data:
       message: Lekker aan het koken? De lucht wordt gezuiverd.
+      data:
+        tag: lucht-zuivering
   - service: media_player.volume_set
     data:
       entity_id: media_player.living_speaker
@@ -121,6 +123,11 @@ automation:
   - service: input_boolean.turn_off
     target:
       entity_id: input_boolean.busy_cooking
+  - service: notify.bart_phone
+    data:
+      message: clear_notification
+      data:
+        tag: lucht-zuivering      
   mode: restart
   
 - alias: 💨 air // purifier // koken gedaan = uit
@@ -143,6 +150,15 @@ automation:
         {{ ("De kooksessie is gedaan. Hopelijk heeft het gesmaakt.",
         "De lucht is weer gezuiverd. Jullie kunnen nu weer ademhalen.",
         "De lucht is hier zo zuiver als aan de zee.",
-        "Haal eens diep adem. Voel je de zuivere lucht?")
+        "Haal eens diep adem. Voel je de zuivere lucht?",
+        "Voel je de frisheid? De lucht is weer zuiver.",
+        "De luchtreiniging is voltooid. Adem diep in en geniet.",
+        "De luchtkwaliteit is weer top. Ontspan en geniet."
+        )
         |random }}
+  - service: notify.bart_phone
+    data:
+      message: clear_notification
+      data:
+        tag: lucht-zuivering        
   mode: restart

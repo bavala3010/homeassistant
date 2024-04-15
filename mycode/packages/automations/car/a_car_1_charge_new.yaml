@@ -48,6 +48,11 @@ automation:
             - condition: template 
               value_template: "{{ wattage < 1.1 }}"
           then: # stop charger
+            - service: input_text.set_value
+              data:
+                value: "{{ wattage | round(1) }} kW: gestopt met laden"
+              target:
+                entity_id: input_text.car_charge_info
             - service: input_boolean.turn_off
               data: {}
               target:
@@ -58,7 +63,7 @@ automation:
               data:
                 title: Auto gestopt met laden van het net wegens te weinig vermogen.
                 message: >
-                  Beschikbaar vermogen was {{ wattage | round(2) }} kW.
+                  Beschikbaar vermogen was {{ wattage | round(1) }} kW.
             - wait_template: ''
               timeout: '00:03:00'
         - if: # between 1.1 and 1.5 kW available and charger is already charging
@@ -74,6 +79,11 @@ automation:
                 entity_id: input_number.car_charger_watt
               data:
                 value: "{{ 1.3 }}"
+            - service: input_text.set_value
+              data:
+                value: "{{ wattage | round(1) }} kW: op 1.3 kW houden"
+              target:
+                entity_id: input_text.car_charge_info
             - wait_template: ''
               timeout: '00:00:05'
             - service: script.charger_define_phase_1_or_3_based_on_watt
@@ -92,7 +102,12 @@ automation:
               target:
                 entity_id: input_number.car_charger_watt
               data:
-                value: "{{ 3.5 }}"
+                value: "{{ 3.1 }}"
+            - service: input_text.set_value
+              data:
+                value: "{{ wattage | round(1) }} kW: op 1 fase en 3.1 kW houden"
+              target:
+                entity_id: input_text.car_charge_info                
             - wait_template: ''
               timeout: '00:00:05'
             - service: script.charger_define_phase_1_or_3_based_on_watt
@@ -112,6 +127,11 @@ automation:
                 entity_id: input_number.car_charger_watt
               data:
                 value: "{{ 4 }}"
+            - service: input_text.set_value
+              data:
+                value: "{{ wattage | round(1) }} kW: op 3 fasen en 4 kW houden"
+              target:
+                entity_id: input_text.car_charge_info                  
             - wait_template: ''
               timeout: '00:00:05'
             - service: script.charger_define_phase_1_or_3_based_on_watt
@@ -130,6 +150,11 @@ automation:
                 entity_id: input_number.car_charger_watt
               data:
                 value: "{{ wattage }}"
+            - service: input_text.set_value
+              data:
+                value: "{{ wattage | round(1) }} kW: normaal wattage"
+              target:
+                entity_id: input_text.car_charge_info                  
             - wait_template: ''
               timeout: '00:00:05'
             - service: script.charger_define_phase_1_or_3_based_on_watt
@@ -144,6 +169,11 @@ automation:
                 {{ not as_timestamp(states('sensor.zon_van_eikenbos_opkomst')) < as_timestamp(now()) < as_timestamp(states('sensor.zon_van_eikenbos_ondergang')) 
                 and states('input_boolean.car_charge_day_sun') =='on' }}              
           then:
+            - service: input_text.set_value
+              data:
+                value: "{{ wattage | round(1) }} kW: gestopt"
+              target:
+                entity_id: input_text.car_charge_info          
             - service: input_boolean.turn_off
               data: {}
               target:
@@ -154,7 +184,7 @@ automation:
               data:
                 title: Auto gestopt met laden van het net wegens te weinig vermogen.
                 message: >
-                  Beschikbaar vermogen was {{ wattage | round(2) }} kW.
+                  Beschikbaar vermogen was {{ wattage | round(1) }} kW.
   mode: single
 
 
