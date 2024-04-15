@@ -44,6 +44,7 @@ automation:
                 priority: high
                 alert_once: true
                 color: red
+                sticky: true
                 notification_icon: mdi:garage-alert
                 clickAction: "lovelace-security/overview" 
     - service: notify.bart_phone

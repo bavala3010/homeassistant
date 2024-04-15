@@ -279,15 +279,17 @@ automation:
       {% endif %}
   mode: single
 
-- alias: charging state "error"
+- alias: 🚗 car 1 // 🔋 charge // fout bij laden
   id: '11dcacf1-6e6e-4500-8bb1-74b5384fde4a'
   description: ""
   trigger:
     - platform: state
-      entity_id:
-        - sensor.car_1_charging_state
+      entity_id: sensor.car_1_charging_state
       to: invalid
-  condition: []
+  condition:
+    - condition: state
+      entity_id: sensor.charger_status
+      state: 'connected'
   action:
     - if:
         - condition: state
@@ -311,7 +313,7 @@ automation:
         message: Status van auto is in "error"
         data:
           color: red
-          tag: auto_error
+          tag: charge_error
     # tip: when the car gets in error status while charging, unlocking the doors solves the error
     # unlock the doors
     - service: lock.unlock
@@ -342,8 +344,53 @@ automation:
         message: "clear_notification"
         data:
           color: red
-          tag: auto_error                  
+          tag: charge_error                  
   mode: single
+
+
+- alias: 🚗 car 1 // 🔋 charge // mogelijk probleem met autolader
+  id: "7ad728fd-c277-4dfb-a853-b64bb15c2b4b"
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id:
+    - sensor.charger_modbus_maxcurrent
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+    above: 5
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.charger_current_power
+    below: 1
+  action:
+  - service: notify.bart_phone
+    metadata: {}
+    data:
+      message: Laadpaal laadt waarschijnlijk niet.
+      title: Mogelijk probleem met auto laden.
+      data:
+        tag: charge_error
+
+
+- alias: 🚗 car 1 // 🔋 charge // fout bij laden opgelost
+  id: 'f7e4598b-9bfc-43af-ae42-27be50547b95'
+  description: ""
+  trigger:
+    - platform: state
+      entity_id: sensor.car_1_charging_state
+      from: "invalid"
+      to: "charging"
+  action:
+    - service: notify.bart_phone
+      data:
+        message: "clear_notification"
+        data:
+          color: red
+          tag: charge_error     
+  mode: single
+
 
 - alias: car charger conflict
   id: '1dec6032-66a2-4437-817e-d93bf1eb2ba3'

@@ -70,7 +70,8 @@ automation:
     tag: "window_living"
     action_window_pause: "living_window_pause"
     reason: >
-      {% set d = states('sensor.gram_water_living_diff_outside') | float(default=0) %}{% set h = states('sensor.living_humidity') %}{% set temp_forecast = states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) %}
+      {% set d = states('sensor.gram_water_living_diff_outside') | float(default=0) %}{% set h = states('sensor.living_humidity') %}
+      {% set temp_forecast = states('sensor.eikenbos_temperature_average_forecast_4_hours') | float(default=0) %}
       {% if temp_forecast < 16 %}Te koud buiten.
       {% elif temp_forecast > 23 %}Te warm buiten.
       {% elif d <= 0 %}Buiten vochtiger dan binnen.

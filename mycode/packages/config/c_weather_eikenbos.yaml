@@ -16,44 +16,76 @@ input_number:
     unit_of_measurement: °C
 
 template:
+  - trigger:
+      - platform: time_pattern
+        hours: /1
+    action:
+      - service: weather.get_forecasts
+        data:
+          type: hourly
+        target:
+          entity_id: weather.eikenbos_openweather
+        response_variable: hourly
+    sensor:
+      - name: eikenbos weather forecast hourly
+        state: "{{ now().isoformat() }}"
+        attributes:
+          forecast: "{{ hourly['weather.eikenbos_openweather'].forecast }}"
+
+  - trigger:
+      - platform: time_pattern
+        hours: /1
+    action:
+      - service: weather.get_forecasts
+        data:
+          type: daily
+        target:
+          entity_id: weather.eikenbos_met_no
+        response_variable: daily
+    sensor:
+      - name: eikenbos weather forecast daily
+        state: "{{ now().isoformat() }}"
+        attributes:
+          forecast: "{{ daily['weather.eikenbos_met_no'].forecast }}"
+
   - sensor:
       - name: "weather_eikenbos_min_temp_tomorrow"
         state: >
-          {{ state_attr('weather.eikenbos_met_no', 'forecast')[0].templow }}
+          {{ state_attr('sensor.eikenbos_weather_forecast_daily', 'forecast')[1].templow }}
         device_class: temperature
         state_class: measurement
         unit_of_measurement: °C
       - name: "weather_eikenbos_max_temp_tomorrow"
         state: >
-          {{ state_attr('weather.eikenbos_met_no', 'forecast')[0].temperature }}
+          {{ state_attr('sensor.eikenbos_weather_forecast_daily', 'forecast')[1].temperature }}
         device_class: temperature
         state_class: measurement
         unit_of_measurement: °C
-
-      - name: eikenbos_temperature_average_forecast_4_hours
-        # You can get a free api key from Openweather
-        # To have hourly temperature forecast, in the OpenWeather integration select the option "onecall_hourly"
-        attributes:           
-          friendly_name: "Eikenbos gemiddelde temperatuur volgende 4 uren"
-        state: "{{ state_attr('weather.eikenbos_openweather', 'forecast')[:4] | map(attribute='temperature') | average | round(1) }}"
-        unit_of_measurement: °C
-        device_class: temperature
 
       - name: eikenbos_temperature_average_forecast_2_hours
         # You can get a free api key from Openweather
         # To have hourly temperature forecast, in the OpenWeather integration select the option "onecall_hourly"
         attributes:        
           friendly_name: "Eikenbos gemiddelde temperatuur volgende 2 uren"
-        state: "{{ state_attr('weather.eikenbos_openweather', 'forecast')[:2] | map(attribute='temperature') | average | round(1) }}"
+        state: "{{ state_attr('sensor.eikenbos_weather_forecast_hourly', 'forecast')[:2] | map(attribute='temperature') | average | round(1) }}"
         unit_of_measurement: °C
         device_class: temperature
-  
+
+      - name: eikenbos_temperature_average_forecast_4_hours
+        # You can get a free api key from Openweather
+        # To have hourly temperature forecast, in the OpenWeather integration select the option "onecall_hourly"
+        attributes:           
+          friendly_name: "Eikenbos gemiddelde temperatuur volgende 4 uren"
+        state: "{{ state_attr('sensor.eikenbos_weather_forecast_hourly', 'forecast')[:4] | map(attribute='temperature') | average | round(1) }}"
+        unit_of_measurement: °C
+        device_class: temperature
+
       - name: eikenbos_temperature_minimum_forecast_8_hours
         # You can get a free api key from Openweather
         # To have hourly temperature forecast, in the OpenWeather integration select the option "onecall_hourly"
         attributes:        
           friendly_name: "Eikenbos minimum temperatuur volgende 8 uren"
-        state: "{{ state_attr('weather.eikenbos_openweather', 'forecast')[:8] | map(attribute='temperature') | min | round(1) }}"
+        state: "{{ state_attr('sensor.eikenbos_weather_forecast_hourly', 'forecast')[:8] | map(attribute='temperature') | min | round(1) }}"
         unit_of_measurement: °C
         device_class: temperature
 

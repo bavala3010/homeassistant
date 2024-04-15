@@ -218,6 +218,7 @@ automation:
         tag: voordeur
         color: green
         notification_icon: mdi:door-open
+        timeout: 900 
   mode: single
 
 - alias: 🔐 security // Niemand meer thuis en Bart in auto = check voordeur
@@ -317,3 +318,19 @@ automation:
                   tag: voordeur
                   timeout: 600
   mode: single
+
+- alias: 🔐 security // Voordeur wordt vergrendeld
+  id: '13d27fdc-b95b-432d-9307-5242c5ebaadb'
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: lock.voordeur_nuki
+      to: locked
+  condition: []
+  action:
+  - service: notify.bart_phone
+    data:
+      message: clear_notification
+      data:
+        tag: voordeur
+  mode: single  

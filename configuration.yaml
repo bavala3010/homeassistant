@@ -5,7 +5,7 @@
 # useful links
 # https://www.uuidgenerator.net/
 # https://emojidb.org/
-# https://pictogrammers.github.io/@mdi/font/6.6.96/
+# https://pictogrammers.com/library/mdi/
 # https://materialdesignicons.com/
 # https://mdi.bessarabov.com/
 # https://www.zapsplat.com/sound-effect-category/sirens-and-alarms/
@@ -92,8 +92,6 @@ light:
 logbook:
 logger:
   default: error
-  logs:
-    custom_components.multiscrape: debug  
 # map:  # Enables in the left menu a map showing the location of tracked devices
 media_source:
 mobile_app:

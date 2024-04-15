@@ -6,7 +6,7 @@ automation:
   trigger:
     - platform: state
       entity_id: binary_sensor.letterbox_vibration
-      to: on
+      to: 'on'
   action:
     - service: notify.bart_madouce_phone
       data:

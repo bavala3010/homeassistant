@@ -5,10 +5,10 @@
 sensor:
   - platform: tgtg
     email: 'bartland@gmail.com'
-    access_token: 'e30.eyJzdWIiOiI0OTkyMTA1IiwiZXhwIjoxNjg1NDM5MTUwLCJ0IjoieE1FZFRXbVJUYm1jNG5CWDYyWll4UTowOjEifQ.wTsZF0gw0FNA9JOcdb1K14YVwmCocyq5pGwf4AKtgag'
-    refresh_token: 'e30.eyJzdWIiOiI0OTkyMTA1IiwiZXhwIjoxNzE2ODg4NzUwLCJ0IjoiNGlISzUtVU9SdVNzUzg2Y1cwQnNPUTowOjAifQ.DWbDGXvPTfAa01slWVhOm6qEUBIw3TIyhX38LWzxXBQ'
+    access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTI5MjcyODYsImlhdCI6MTcxMjc1NDQ4NiwiaXNzIjoidGd0Z19zb3RlcmlhIiwidCI6Ijlac05iNElOUVFlcnJjeThYM2pwcVE6MDoxIiwic3ViIjoiNDk5MjEwNSJ9.7Bcpp9jvM_rjeS44cYewrjywWlQVs7nPNBIvpEpUDs0'
+    refresh_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDQyOTA0ODYsImlhdCI6MTcxMjc1NDQ4NiwiaXNzIjoidGd0Z19zb3RlcmlhIiwidCI6IjI0NldYaDYtUWV5R2lxTjhLejZKdkE6MDowIiwic3ViIjoiNDk5MjEwNSJ9.KcxVuBxmpdR-ZtGHsvNQRNKaJH8WvUafO4Yn5z4TxwA'
     user_id: '4992105'
-    cookie: 'datadome=6RPh-tudDwpI3RTua0qvLe8WPh20gL1Sdn3Qz1JkEY9GzseUzP35JLjSu3M7fD_ghSs0YIz-OK_BSbhbKpvQ58nvEybORMSKoij12KB-Wl2bQqrrAvRD3FEfDzbeC3Jf; Max-Age=5184000; Domain=.apptoogoodtogo.com; Path=/; Secure; SameSite=Lax'
+    cookie: 'datadome=sSITyl33WhTCoL3SCinj1_wzNwDkEzQ60W1yOkBmx4PMtCbmPgIwDfJ~uShTMVR2gnPCnTKz9hD5aNW7PmiB0WKRhfY_x02vpKqE42xuw4XGUxxxtVmZdliSdvl9cMIQ; Max-Age=5184000; Domain=.apptoogoodtogo.com; Path=/; Secure; SameSite=Lax'
     scan_interval: 300
     
 
@@ -16,3 +16,4 @@ input_boolean:
   tgtg_geen_brood_nodig:
     name: "Too Good To Go - geen brood nodig"
     icon: mdi:baguette
+

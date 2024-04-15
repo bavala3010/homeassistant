@@ -1,6 +1,6 @@
 automation:
 
-- alias: plant // vochtigheidsgraad fel gestegen = melding
+- alias: plant // vochtigheidsgraad meer dan 5% gestegen = melding
   id: '198dbedd-123d-4eed-a628-a09691afc5d2'
   description: ''
   trigger:
@@ -13,7 +13,7 @@ automation:
   action:
     - service: notify.bart_phone
       data:
-        title: Test
+        title: De yucca heeft water gekregen.
         message: >
           Vorige waarde: {{ trigger.from_state.state }}
           Nieuwe waarde: {{ trigger.to_state.state }}

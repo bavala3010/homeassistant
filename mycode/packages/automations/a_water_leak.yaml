@@ -7,8 +7,14 @@ automation:
     - platform: state
       entity_id:
         - binary_sensor.kelder_waterdetector_vocht
+        - binary_sensor.wasmachine_waterdetector_vocht
       to: "on"
   condition: []
+  variables:
+      locatie: >
+        {% if trigger.entity_id =='binary_sensor.kelder_waterdetector_vocht' %}afvoerputje kelder
+        {% elif trigger.entity_id =='binary_sensor.wasmachine_waterdetector_vocht' %}wasmachine
+        {% endif %}
   action:
     - service: notify.bart_phone
       data:
@@ -22,10 +28,11 @@ automation:
     - service: notify.bart_phone
       data:
         title: '🚨 Alarm!'
-        message: 'Alarm in Eikenbos: waterlek in kelder'
+        message: 'Waterlek gedetecteerd aan {{ locatie }}.'
         data:
-          notification_icon: mdi:security      
+          notification_icon: mdi:pipe-leak      
           color: red
+          sticky: true
           channel: alarm
           clickAction: "/lovelace/security"
           vibrationPattern: 10, 10, 10, 10, 10, 10, 10

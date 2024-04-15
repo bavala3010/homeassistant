@@ -102,4 +102,26 @@ automation:
         device_id:
           - d803d244c0cb99f74345bfe8f50061ef
       data: {}
-  mode: single  
+  mode: single
+
+- alias: "Diffuser - Waarschuwing bij lage waterstand"
+  id: '13c983e2-3f20-442a-bf7b-0162b5ad53e7'
+  description: ""
+  trigger:
+    platform: state
+    entity_id: humidifier.diffuser_humidifier_dehumidifier
+    to: "on"
+  action:
+    - delay: "00:05:00"
+    - condition: state
+      entity_id: humidifier.diffuser_humidifier_dehumidifier
+      state: "off"
+    - service: notify.bart_phone
+      data:
+        title: Diffuser is gestopt.
+        message: Mogelijk moet je water toevoegen.
+        data:
+          notification_icon: phu:essential-oil-diffuser-alt
+          color: purple
+          sticky: true
+  mode: single

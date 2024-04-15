@@ -1,12 +1,12 @@
 automation:
 
-- alias: "TGTG brood"
+- alias: "TGTG brood bij Het Brood"
   id: '48b0468e-6e19-4cf5-9008-7d52710e2807'
   description: ''
   trigger:
   - platform: state
     entity_id:
-      - sensor.tgtg_t_krok_r_antje_kessel_lo
+      # - sensor.tgtg_t_krok_r_antje_kessel_lo
       - sensor.tgtg_bakkerij_het_brood_kessel_lo_diestsesteenweg_brood_co
     to: ~
   condition:
@@ -64,13 +64,13 @@ automation:
               data:
                 message: TTS
                 data:
-                  tts_text: Dag Madoes. Brood beschikbaar {{ timing }}.
+                  tts_text: Dag Madoes. Brood beschikbaar {{ timing }} bij Het Brood.
                   ttl: 0
                   priority: high
                   media_stream: alarm_stream_max
   mode: single
 
-- alias: "TGTG Gielis brood"
+- alias: "TGTG brood bij Gielis"
   id: 'a15ca06e-9e52-402d-aa10-e99d34fecb51'
   description: ''
   trigger:

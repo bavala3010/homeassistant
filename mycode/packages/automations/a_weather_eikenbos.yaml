@@ -22,6 +22,22 @@ automation:
         entity_id: input_number.weather_eikenbos_max_temp_today        
   mode: single
 
+- alias: "At 7:00 update OpenWeather forecast for Eikenbos"
+  id: 'fa7bbf42-475c-4f40-8e5c-4cf05c273120'
+  description: ""
+  trigger:
+  - platform: time
+    at: '07:00'
+  condition: []
+  action:
+    - service: weather.get_forecasts
+      target:
+        entity_id:
+          - weather.eikenbos_openweather
+      data:
+        type: hourly
+      response_variable: weather_forecast
+  mode: single
 
 - alias: "At 7:15 on workdays announce slipperiness risk"
   id: 'e471c3a2-5061-486c-a50c-9fc240e46367'

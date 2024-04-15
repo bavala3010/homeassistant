@@ -34,7 +34,7 @@ automation:
         message: De droogkast is gestart!
         title: 👕👙 Droogkast
         data:
-          tag: wasmachine
+          tag: droogkast
           notification_icon: "mdi:tumble-dryer"
           clickAction: "/lovelace-apparaten/droogkast"
     - service: script.google_home_resume

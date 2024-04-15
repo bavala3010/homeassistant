@@ -1,3 +1,7 @@
+input_text:
+  car_charge_info:
+    name: laadinfo
+
 input_select:
   car_charge_minimum_wattage:
     name: autolader minimum wattage

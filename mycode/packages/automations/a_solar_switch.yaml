@@ -1,0 +1,39 @@
+automation:
+
+- alias: Zonne-energie // zonnestopcontact
+  id: '37424b21-aca6-456a-8c17-df82eb7e0b99'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.net_power
+    for:
+      hours: 0
+      minutes: 10
+    below: -100
+    id: enough injection
+  - platform: numeric_state
+    entity_id: sensor.net_power
+    for:
+      hours: 0
+      minutes: 10
+    above: -100
+    id: not enough injection
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: enough injection
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id: switch.living_zonnestopcontact
+    - conditions:
+      - condition: trigger
+        id: not enough injection
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.living_zonnestopcontact
