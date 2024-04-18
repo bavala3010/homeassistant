@@ -4,7 +4,7 @@ sensor:
     method: GET
     name: Mealie todays meal
     headers:
-      Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb25nX3Rva2VuIjp0cnVlLCJpZCI6Ijg1MDU0Yzg3LTEwYTgtNDBlOS1iZWRkLTc4MmEzZTRhZmNlYSIsIm5hbWUiOiJob21lLWFzc2lzdGFudCIsImludGVncmF0aW9uX2lkIjoiZ2VuZXJpYyIsImV4cCI6MTg2ODM3MjQ3M30.87WyFFcLtTqCZkWLhUV6LSEfJucyrqTzcTLekxK5v4Y
+      Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb25nX3Rva2VuIjp0cnVlLCJpZCI6IjljMDg4ZTI3LTkzOTMtNGFlYy04OWY0LTNlMjAxMGFiYjIwMCIsIm5hbWUiOiJob21lYXNzaXN0YW50IiwiaW50ZWdyYXRpb25faWQiOiJnZW5lcmljIiwiZXhwIjoxODcxMDY0MDQ0fQ.4R_fnS_IAS9b5460gFJmQVDGnFCHerFfF2t-b9MRZ_0
     value_template: "{{ value_json[0].recipe.name }}"
     force_update: true
     scan_interval: 120
@@ -14,7 +14,7 @@ sensor:
     method: GET
     name: Mealie todays meal ID
     headers:
-      Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb25nX3Rva2VuIjp0cnVlLCJpZCI6Ijg1MDU0Yzg3LTEwYTgtNDBlOS1iZWRkLTc4MmEzZTRhZmNlYSIsIm5hbWUiOiJob21lLWFzc2lzdGFudCIsImludGVncmF0aW9uX2lkIjoiZ2VuZXJpYyIsImV4cCI6MTg2ODM3MjQ3M30.87WyFFcLtTqCZkWLhUV6LSEfJucyrqTzcTLekxK5v4Y
+      Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb25nX3Rva2VuIjp0cnVlLCJpZCI6IjljMDg4ZTI3LTkzOTMtNGFlYy04OWY0LTNlMjAxMGFiYjIwMCIsIm5hbWUiOiJob21lYXNzaXN0YW50IiwiaW50ZWdyYXRpb25faWQiOiJnZW5lcmljIiwiZXhwIjoxODcxMDY0MDQ0fQ.4R_fnS_IAS9b5460gFJmQVDGnFCHerFfF2t-b9MRZ_0
     value_template: "{{ value_json[0].recipe.id }}"
     force_update: true
     scan_interval: 120
@@ -26,7 +26,7 @@ rest:
   - scan_interval: 3600
     resource: "http://192.168.68.100:9925/api/groups/mealplans/today"
     headers:
-      Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb25nX3Rva2VuIjp0cnVlLCJpZCI6Ijg1MDU0Yzg3LTEwYTgtNDBlOS1iZWRkLTc4MmEzZTRhZmNlYSIsIm5hbWUiOiJob21lLWFzc2lzdGFudCIsImludGVncmF0aW9uX2lkIjoiZ2VuZXJpYyIsImV4cCI6MTg2ODM3MjQ3M30.87WyFFcLtTqCZkWLhUV6LSEfJucyrqTzcTLekxK5v4Y
+      Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb25nX3Rva2VuIjp0cnVlLCJpZCI6IjljMDg4ZTI3LTkzOTMtNGFlYy04OWY0LTNlMjAxMGFiYjIwMCIsIm5hbWUiOiJob21lYXNzaXN0YW50IiwiaW50ZWdyYXRpb25faWQiOiJnZW5lcmljIiwiZXhwIjoxODcxMDY0MDQ0fQ.4R_fnS_IAS9b5460gFJmQVDGnFCHerFfF2t-b9MRZ_0
     sensor:
       - name: "Mealie todays meal ID"
         value_template: "{{ value_json[0].recipe.id }}"
@@ -38,7 +38,7 @@ rest:
   - scan_interval: 120
     resource: "http://192.168.68.100:9925/api/groups/mealplans?orderBy=date&orderDirection=asc"
     headers:
-      Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb25nX3Rva2VuIjp0cnVlLCJpZCI6Ijg1MDU0Yzg3LTEwYTgtNDBlOS1iZWRkLTc4MmEzZTRhZmNlYSIsIm5hbWUiOiJob21lLWFzc2lzdGFudCIsImludGVncmF0aW9uX2lkIjoiZ2VuZXJpYyIsImV4cCI6MTg2ODM3MjQ3M30.87WyFFcLtTqCZkWLhUV6LSEfJucyrqTzcTLekxK5v4Y
+      Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb25nX3Rva2VuIjp0cnVlLCJpZCI6IjljMDg4ZTI3LTkzOTMtNGFlYy04OWY0LTNlMjAxMGFiYjIwMCIsIm5hbWUiOiJob21lYXNzaXN0YW50IiwiaW50ZWdyYXRpb25faWQiOiJnZW5lcmljIiwiZXhwIjoxODcxMDY0MDQ0fQ.4R_fnS_IAS9b5460gFJmQVDGnFCHerFfF2t-b9MRZ_0
     params:
       start_date: >
         {{ now().strftime('%Y-%m-%d') }}
