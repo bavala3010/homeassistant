@@ -542,7 +542,7 @@ sensor:
     method: left
 
   - platform: filter
-    name: net power avg
+    name: net power avg 2min
     entity_id: sensor.net_power
     unique_id: 'c6d3b0f5-dcb7-4016-bb3f-c06ccaa1bc71'
     filters:
@@ -599,14 +599,15 @@ template:
         state_class: total    # or "measurement"
         # total of the energy calculated by Shelly 3EM
         state: >
-          {% set phase1 = states('sensor.shellyem3_bcff4dfd1dbb_channel_a_energy') | float(default=0) %}
-          {% set phase2 = states('sensor.shellyem3_bcff4dfd1dbb_channel_b_energy') | float(default=0) %}
-          {% set phase3 = states('sensor.shellyem3_bcff4dfd1dbb_channel_c_energy') | float(default=0) %}
-          {{ float(phase1) + float(phase2) + float(phase3) }}
-        availability: >
-          {{ not ( is_state('sensor.shellyem3_bcff4dfd1dbb_channel_a_energy', 'unavailable') or
-          is_state('sensor.shellyem3_bcff4dfd1dbb_channel_b_energy', 'unavailable') or
-          is_state('sensor.shellyem3_bcff4dfd1dbb_channel_c_energy', 'unavailable') ) }}
+          {{ states('sensor.p1_meter_total_power_import') | float(default=0) }}
+        # {% set phase1 = states('sensor.shellyem3_bcff4dfd1dbb_channel_a_energy') | float(default=0) %}
+        # {% set phase2 = states('sensor.shellyem3_bcff4dfd1dbb_channel_b_energy') | float(default=0) %}
+        # {% set phase3 = states('sensor.shellyem3_bcff4dfd1dbb_channel_c_energy') | float(default=0) %}
+        # {{ float(phase1) + float(phase2) + float(phase3) }}
+        # availability: >
+          # {{ not ( is_state('sensor.shellyem3_bcff4dfd1dbb_channel_a_energy', 'unavailable') or
+          # is_state('sensor.shellyem3_bcff4dfd1dbb_channel_b_energy', 'unavailable') or
+          # is_state('sensor.shellyem3_bcff4dfd1dbb_channel_c_energy', 'unavailable') ) }}
         attributes:         
           last_reset: '1970-01-01T00:00:00+00:00'
 
@@ -615,14 +616,15 @@ template:
         device_class: energy
         state_class: total    # or "measurement"
         state: >
-          {% set phase1 = states('sensor.shellyem3_bcff4dfd1dbb_channel_a_energy_returned') | float(default=0) %}
-          {% set phase2 = states('sensor.shellyem3_bcff4dfd1dbb_channel_b_energy_returned') | float(default=0) %}
-          {% set phase3 = states('sensor.shellyem3_bcff4dfd1dbb_channel_c_energy_returned') | float(default=0) %}
-          {{ float(phase1) + float(phase2) + float(phase3) }}
-        availability: >
-          {{ not ( is_state('sensor.shellyem3_bcff4dfd1dbb_channel_a_energy_returned', 'unavailable') or
-          is_state('sensor.shellyem3_bcff4dfd1dbb_channel_b_energy_returned', 'unavailable') or
-          is_state('sensor.shellyem3_bcff4dfd1dbb_channel_c_energy_returned', 'unavailable') ) }}  
+          {{ states('sensor.p1_meter_total_power_export') | float(default=0) }}
+        #   {% set phase1 = states('sensor.shellyem3_bcff4dfd1dbb_channel_a_energy_returned') | float(default=0) %}
+        #   {% set phase2 = states('sensor.shellyem3_bcff4dfd1dbb_channel_b_energy_returned') | float(default=0) %}
+        #   {% set phase3 = states('sensor.shellyem3_bcff4dfd1dbb_channel_c_energy_returned') | float(default=0) %}
+        #   {{ float(phase1) + float(phase2) + float(phase3) }}
+        # availability: >
+        #   {{ not ( is_state('sensor.shellyem3_bcff4dfd1dbb_channel_a_energy_returned', 'unavailable') or
+        #   is_state('sensor.shellyem3_bcff4dfd1dbb_channel_b_energy_returned', 'unavailable') or
+        #   is_state('sensor.shellyem3_bcff4dfd1dbb_channel_c_energy_returned', 'unavailable') ) }}  
         attributes:         
           last_reset: '1970-01-01T00:00:00+00:00'
 
@@ -775,7 +777,7 @@ intent_script:
     action: []    
     speech:
       text: >
-        {% set p = states('sensor.net_power_avg') | round(-2) | int %}
+        {% set p = states('sensor.net_power_avg_2min') | round(-2) | int %}
         {% set c = states('sensor.charger_current_power') | round(-2) | int %}
         {% if c == 0 %}
           {% if p < 0 %}Er is {{ p | abs }} Watt overschot.

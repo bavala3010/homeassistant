@@ -8,9 +8,9 @@ automation:
     entity_id: sensor.dryer_power
     for:
       hours: 0
-      minutes: 1
-      seconds: 0
-    above: 300
+      minutes: 0
+      seconds: 30
+    above: 100
   condition: []
   action:
     - service: input_datetime.set_datetime
@@ -65,6 +65,9 @@ automation:
       - condition: state
         entity_id: input_select.dryer_state
         state: klaar
+      - condition: state
+        entity_id: input_select.dryer_state
+        state: uit       
   action:
     - service: input_datetime.set_datetime
       data:

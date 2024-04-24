@@ -55,8 +55,8 @@ input_number:
     unit_of_measurement: kW
     mode: box
 
-  car_charge_peak_netwattage:
-    name: 'max. netverbruik (capaciteitstarief)'
+  car_charge_net_max_netwattage:
+    name: 'max. netverbruik bij laden van net'
     min: 0
     max: 5500
     step: 100
@@ -168,7 +168,7 @@ template:
           {% set sunset_minutes = sunset_time.split(':')[1] | int %}
           {% set sunset_decimal_time = sunset_hours + sunset_minutes / 60 %}
           {% set hours = ( 23 - sunset_decimal_time ) | round(2) %}
-          {% set wattage = states('input_number.car_charge_peak_netwattage') | float() / 1000 %}
+          {% set wattage = states('input_number.car_charge_net_max_netwattage') | float() / 1000 %}
           {% if wattage >= 3 %} {{ [(wattage - 1), 1.5] | max * hours }}
           {% else %} 0
           {% endif %}
@@ -179,7 +179,7 @@ template:
         unit_of_measurement: kWh
         state: >
           {% set hours = 7.5 %}
-          {% set wattage = (states('input_number.car_charge_peak_netwattage') | float() / 1000) - 0.4 %}
+          {% set wattage = (states('input_number.car_charge_net_max_netwattage') | float() / 1000) - 0.4 %}
           {{ hours * wattage }}
 
       - name: net_power_excl_charger
@@ -198,7 +198,7 @@ template:
           friendly_name: 'laden stoppen bij'
         unit_of_measurement: '%'
         state: >
-          {% if states('input_select.car_1_charge_limit') == 'minimum doel'%}{{ states('iput_number.car_1_min_target_soc')}}
+          {% if states('input_select.car_1_charge_limit') == 'minimumdoel'%}{{ states('input_number.car_1_min_target_soc')}}
           {% elif states('input_select.car_1_charge_limit') == 'optimaal doel'%}{{ states('input_number.car_1_optimal_target_soc')}}
           {% elif states('input_select.car_1_charge_limit') == '100%'%}100
           {% endif %}

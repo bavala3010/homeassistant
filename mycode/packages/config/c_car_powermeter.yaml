@@ -23,11 +23,10 @@ sensor:
         value_template: >
           {% set charger = states('sensor.charger_current_power') | float(default=0) %}
           {% set solar = states('sensor.solar_power') | float(default=0) %}
-          {% set net = states('sensor.net_power') | float(default=0) %}
-          {% if solar <= charger %}
-              {{ charger - solar }}
-          {% elif net <= 0 and charger >= 0 %}
-              0
+          {% if solar < charger and charger > 0 %}
+            {{ charger - solar }}
+          {% else %}
+            0
           {% endif %}
 
   - platform: integration

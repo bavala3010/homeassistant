@@ -13,8 +13,8 @@ automation:
     value_template: "{{ states('sensor.charger_status') in ['charging', 'connected'] }}"
   variables:
       wattage: >
-        {% set maxpower = states('input_number.car_charge_peak_netwattage') | float(default=0) %}
-        {% set net = states('sensor.net_power_avg') | float %}
+        {% set maxpower = states('input_number.car_charge_net_max_netwattage') | float(default=0) %}
+        {% set net = states('sensor.net_power_avg_2min') | float %}
         {% set charger = states('sensor.charger_current_power_avg') | float(default=0) %}
         {{ (( maxpower - net + charger ) / 1000) | float }}
   action:
@@ -153,7 +153,7 @@ automation:
 #           conditions:
 #             - condition: state
 #               entity_id: input_select.car_1_charge_limit
-#               state: 'minimaal doel'
+#               state: 'minimum'
 #             - condition: template
 #               value_template: "{{ states('sensor.car_1_soc') < states('input_number.car_1_min_target_soc') }}"
 #         - condition: and

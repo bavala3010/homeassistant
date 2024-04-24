@@ -217,7 +217,7 @@ input_select:
   car_1_charge_limit:
     name: laden stoppen bij
     options:
-      - minimaal doel
+      - minimumdoel
       - optimaal doel
       - 100%
 

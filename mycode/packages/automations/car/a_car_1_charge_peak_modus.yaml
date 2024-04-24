@@ -19,8 +19,8 @@ automation:
     value_template: "{{ states('sensor.charger_status') in ['connected', 'charging'] }}"
   variables:
       wattage: >
-        {% set maxpower = states('input_number.car_charge_peak_netwattage') | float(default=0) %}
-        {% set net = states('sensor.net_power_avg') | float %}
+        {% set maxpower = states('input_number.car_charge_net_max_netwattage') | float(default=0) %}
+        {% set net = states('sensor.net_power_avg_2min') | float %}
         {% set charger = states('sensor.charger_current_power_avg') | float(default=0) %}
         {{ (( maxpower - net + charger ) / 1000) | float }}
   action:
@@ -47,7 +47,7 @@ automation:
         #         title: Auto is gestart met laden volgens piekvermogen
         #         message: >
         #           Zon nu {{ states('sensor.solar_power') | int }} W | Net: {{ states('sensor.net_power')}} W | Auto laadt nu aan {{states('input_number.car_charger_watt') | round(1)}} kW<br>
-        #           Laden met netverbruik onder piek: {{states('input_number.car_charge_peak_netwattage')}}<br>
+        #           Laden met netverbruik onder piek: {{states('input_number.car_charge_net_max_netwattage')}}<br>
         #           Auto: {{states('sensor.car_1_soc') | round()}}%. Doel: {{ states('input_number.car_1_optimal_target_soc') | round(0)}}%<br>
         #           Vandaag al {{ states('sensor.car_charge_solar_energy_daily') | round(1) }} kWh geladen met zon en {{ states('sensor.car_charge_net_energy_daily') | round(1) }} kWh van het net.
         #         data:

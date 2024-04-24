@@ -17,7 +17,7 @@ automation:
   variables:
     wattage: >
         {% set maxpower = states('input_number.car_charge_sun_max_netwattage') | float(default=0) %}
-        {% set net = states('sensor.net_power_avg') | float %}
+        {% set net = states('sensor.net_power_avg_2min') | float %}
         {% set charger = states('sensor.charger_current_power_avg') | float(default=0) %}
         {{ (( maxpower - net + charger ) / 1000) | float }}
     message: >

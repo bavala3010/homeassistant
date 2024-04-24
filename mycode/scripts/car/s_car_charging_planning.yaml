@@ -12,8 +12,8 @@ set_target_soc_based_on_calendar:
                 {% set l = states('input_select.car_1_use_day_' ~ repeat.index) %}
                 {% set base = states('sensor.car_range_per_10percent') | float(default=0) / 10  %}
                 {% if l == 'thuis' %}          {{ ( 100       / base ) | round(0) }}
-                {% elif l == 'Toyota Diest' %} {{ ( (94 + 50) / base ) + 10 | round(0) }}
-                {% elif l == 'Toyota Evere' %} {{ ( (54 + 50) / base ) + 10 | round(0) }}
+                {% elif l == 'Toyota Diest' %} {{ ( (75 + 50) / base ) + 10 | round(0) }}
+                {% elif l == 'Toyota Evere' %} {{ ( (56 + 50) / base ) + 10 | round(0) }}
                 {% elif l == '275 km' %}       {{ ( 275       / base ) | round(0) }}
                 {% elif l == 'maximum km' %} 100
                 {% endif %}

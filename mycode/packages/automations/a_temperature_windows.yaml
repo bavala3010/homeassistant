@@ -30,9 +30,10 @@ automation:
   - service: notify.bart_phone
     data:
       title: Nu is het warmste moment van de dag.
-      message: Buiten is het nu {{ states('sensor.eikenbos_temperature')}}°C.
+      message: Buiten is het nu {{ states('sensor.eikenbos_temperature')}} °C.
       data:
         timeout: 3600
+        sticky: true
   mode: single
 
 - alias: te warm in kamer Amilya - open raam (Bart)

@@ -21,12 +21,12 @@ automation:
   - platform: time_pattern
     minutes: /1
   - platform: numeric_state
-    entity_id: sensor.net_power_avg
+    entity_id: sensor.net_power_avg_2min
     below: input_number.car_charge_sun_start_wattage
     for: "00:03:00"
   condition:
   - condition: numeric_state
-    entity_id: sensor.net_power_avg
+    entity_id: sensor.net_power_avg_2min
     below: input_number.car_charge_sun_start_wattage
   # only when SOC is below 100%
   ### removed to reduce dependancy on Audi servers ###
@@ -49,7 +49,7 @@ automation:
       wattage: >
         {% set charger = states('sensor.charger_current_power') | float(default=0) %}        
         {% set maxpower = states('input_number.car_charge_sun_max_netwattage') | float(default=0) %}
-        {% set net = (states('sensor.net_power_avg') | float(default=0) + states('sensor.net_power') | float(default=0) ) / 2 %}
+        {% set net = (states('sensor.net_power_avg_2min') | float(default=0) + states('sensor.net_power') | float(default=0) ) / 2 %}
         {{ (maxpower - net + charger) / 1000 }}       
   action:
   # toggle the switches to keep track of the status
@@ -109,8 +109,8 @@ automation:
       wattage: >
         {% set charger = states('sensor.charger_current_power') | float(default=0) %}        
         {% set maxpower = states('input_number.car_charge_sun_max_netwattage') | float(default=0) %}
-        {# set net = states('sensor.net_power_avg') | float(default=0) #}
-        {% set net = (states('sensor.net_power_avg') | float(default=0) + states('sensor.net_power') | float(default=0) ) / 2 %}
+        {# set net = states('sensor.net_power_avg_2min') | float(default=0) #}
+        {% set net = (states('sensor.net_power_avg_2min') | float(default=0) + states('sensor.net_power') | float(default=0) ) / 2 %}
         {{ (maxpower - net + charger) /1000 }} 
   action:
     - if:
@@ -216,7 +216,7 @@ automation:
   # when the injection sensor (average last 3 minutes) is below the number defined by input_number.car_charge_sun_start_wattage
   trigger:
   - platform: numeric_state
-    entity_id: sensor.net_power_avg
+    entity_id: sensor.net_power_avg_2min
     below: input_number.car_charge_sun_start_wattage
     for: "00:03:00"
   condition:

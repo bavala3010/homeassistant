@@ -69,14 +69,14 @@ automation:
   trigger:
   - platform: template
     value_template: >
-      {{ states('sensor.net_power_avg') | float() / 1000 > states('sensor.power_peak') | float() }}
+      {{ states('sensor.net_power_avg_2min') | float() / 1000 > states('sensor.power_peak') | float() }}
     for: "00:05:00"  
   condition: []
   action:
   - service: notify.bart_phone
     data:
       title: Hoge verbruikspiek
-      message: "Huidig verbruik is {{ (states('sensor.net_power_avg') | float() / 1000) | round(2) }} kW t.o.v. de maandelijkse piek van {{ states('sensor.power_peak') | round(2) }} kW."
+      message: "Huidig verbruik is {{ (states('sensor.net_power_avg_2min') | float() / 1000) | round(2) }} kW t.o.v. de maandelijkse piek van {{ states('sensor.power_peak') | round(2) }} kW."
       data:
         tag: peak
         color: red

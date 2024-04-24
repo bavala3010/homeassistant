@@ -10,10 +10,11 @@ sensor:
     streetname: !secret streetname
     streetnumber: 25
     upcomingsensor: 1
-    dateformat: '%d-%m-%Y'
+    dateformat: '%d-%m'
     dateonly: 0
+    dayofweek: 1
     name: ""
     nameprefix: 1
     builtinicons: 1
-    builtiniconsnew: 1
+    builtiniconsnew: 0
     dutch: 1

@@ -150,7 +150,8 @@ automation:
   - condition: template
     value_template: >
       {% set car_1_use_day = 'input_select.car_1_use_day_' ~ now().isoweekday() %}
-      {%if states(car_1_use_day) == "Toyota Diest"%} true {% endif %}
+      {% if states(car_1_use_day) == "Toyota Diest"%}true
+      {% endif %}
   action:
   - service: notify.madouce_phone
     data:

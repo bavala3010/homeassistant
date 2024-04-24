@@ -47,7 +47,8 @@ input_select:
     name: "wasmachine faze"
     options:
       - uit
-      - water verwarmen
+      - voorspoelen
+      - hoofdwas
       - wassen
       - spoelen
       - centrifugeren

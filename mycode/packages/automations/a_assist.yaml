@@ -76,7 +76,7 @@ automation:
   condition: []
   variables:
     message: >
-      {% set p = states('sensor.net_power_avg') | round(-2) | int %}
+      {% set p = states('sensor.net_power_avg_2min') | round(-2) | int %}
       {% set c = states('sensor.charger_current_power') | round(-2) | int %}
       {% if c == 0 %}
         {% if p < 0 %}Er is {{ p | abs }} Watt overschot.

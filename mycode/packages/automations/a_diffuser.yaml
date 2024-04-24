@@ -124,4 +124,5 @@ automation:
           notification_icon: phu:essential-oil-diffuser-alt
           color: purple
           sticky: true
+          clickAction: "/lovelace-apparaten/diffuser"
   mode: single

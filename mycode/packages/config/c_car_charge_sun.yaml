@@ -10,7 +10,7 @@ input_number:
   car_charge_sun_max_netwattage:
     name: auto zonneladen max netverbruik
     min: 0
-    max: 1300
+    max: 3000
     unit_of_measurement: W
     mode: box
     icon: mdi:transmission-tower-import

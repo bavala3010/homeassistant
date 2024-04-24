@@ -56,7 +56,7 @@ automation:
                 rate: -10%
   mode: single
 
-- alias: 👕 wasmachine // bezig met water verwarmen
+- alias: 👕 wasmachine // bezig met hoofdwas
   id: 'e07f24be-a789-40a2-9b9a-bfca2568f8ba'
   description: ''
   trigger:
@@ -64,7 +64,7 @@ automation:
     entity_id: sensor.washing_machine_power
     for:
       hours: 0
-      minutes: 3
+      minutes: 2
       seconds: 0
     above: 1000
   condition:
@@ -74,7 +74,7 @@ automation:
   action:
     - service: input_select.select_option
       data:
-        option: "water verwarmen"
+        option: "hoofdwas"
       target:
         entity_id: input_select.washing_machine_phase
   mode: single
@@ -90,7 +90,7 @@ automation:
   condition:
     - condition: state
       entity_id: input_select.washing_machine_phase
-      state: "water verwarmen"
+      state: "hoofdwas"
   action:
   - service: input_select.select_option
     data:
@@ -107,7 +107,7 @@ automation:
   - platform: template
     value_template: >
       {% set p = states('sensor.washing_machine_power') | float %}
-      {{ p > 300 and p < 600 }}
+      {{ 300 < p < 600 }}
   condition:
     - condition: state
       entity_id: input_select.washing_machine_phase
@@ -127,8 +127,8 @@ automation:
     - platform: numeric_state
       entity_id: sensor.washing_machine_power
       for:
-        minutes: 3
-      below: 3
+        minutes: 1
+      below: 5
   condition:
     - condition: state
       entity_id: input_select.washing_machine_state
