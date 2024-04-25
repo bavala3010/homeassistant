@@ -101,6 +101,8 @@ automation:
     - platform: numeric_state
       entity_id: sensor.net_power_avg_15min
       below: -275
+      for:
+        minutes: 10
   condition:
     - condition: numeric_state
       entity_id: sensor.badkamer_humidity
