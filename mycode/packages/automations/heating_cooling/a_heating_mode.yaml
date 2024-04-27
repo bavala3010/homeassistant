@@ -18,24 +18,15 @@ automation:
       value_template: >
         {% set net = ( states('sensor.net_power_avg_15min') | float() * 0.4 ) + ( states('sensor.net_power_avg_5min') | float() * 0.6 ) %}
         {% set charger = ( states('sensor.charger_current_power_avg_15min') | float() * 0.4 ) + ( states('sensor.charger_current_power_avg_5min') | float() * 0.6 ) %}
-        {{ (net - charger) | int() < - 1000 }}      
+        {{ (net - charger) | int() < -1000 }}      
   action:
     - if:
-        - condition: state
-          entity_id: input_select.load_priority_1
-          state: "living airco"
-        - condition: state
-          entity_id: input_select.living_heating_mode
-          state: "airco"
-        - condition: state
-          entity_id: input_select.load_priority_2
-          state: "Alunya airco"
-        - condition: state
-          entity_id: input_select.kamer_alunya_heating_mode
-          state: "centrale verwarming"
-        - condition: state
-          entity_id: person.alunya
-          state: "home"
+        - condition: template
+          value_template: >-          
+            {{ is_state('input_select.load_priority_1', 'living airco') and is_state('input_select.living_heating_mode', 'airco') }}
+        - condition: template
+          value_template: >-
+            {{ is_state('input_select.load_priority_2', 'Alunya airco') and is_state('input_select.kamer_alunya_heating_mode', 'centrale verwarming') and is_state('person.alunya', 'home') }}
       then:
         - service: notify.bart_phone
           metadata: {}
@@ -60,21 +51,42 @@ automation:
             requested_overlay: MANUAL
             temperature: 14
     - if:
-        - condition: state
-          entity_id: input_select.load_priority_1
-          state: "Alunya airco"
-        - condition: state
-          entity_id: input_select.kamer_alunya_heating_mode
-          state: "airco"
-        - condition: state
-          entity_id: input_select.load_priority_2
-          state: "living airco"
-        - condition: state
-          entity_id: input_select.living_heating_mode
-          state: "centrale verwarming"
-        - condition: state
-          entity_id: group.bart_madouce
-          state: "home"
+        - condition: template
+          value_template: >-          
+            {{ is_state('input_select.load_priority_1', 'living airco') and is_state('input_select.living_heating_mode', 'airco') }}
+        - condition: template
+          value_template: >-
+            {{ is_state('input_select.load_priority_2', 'master bedroom airco') and is_state('input_select.master_bedroom_heating_mode', 'centrale verwarming') and is_state('sensor.master_bedroom_raam', 'gesloten') }}
+      then:
+        - service: notify.bart_phone
+          metadata: {}
+          data:
+            title: Verwarming master bedroom op airco
+            message: >
+              {% set net = ( states('sensor.net_power_avg_15min') | float() * 0.4 ) + ( states('sensor.net_power_avg_5min') | float() * 0.6 ) %}
+              {% set charger = ( states('sensor.charger_current_power_avg_15min') | float() * 0.4 ) + ( states('sensor.charger_current_power_avg_5min') | float() * 0.6 ) %}
+              Meer dan 1000 W injectie laatste 15 min. Er is {{ - ( net - charger) | int() }} W beschikbaar.
+            data:
+              notification_icon: mdi:radiator
+              color: "#FFC000"  
+        - service: input_select.select_option
+          target:
+            entity_id: input_select.master_bedroom_heating_mode
+          data:
+            option: airco
+        - service: tado.set_climate_timer
+          target:
+            entity_id: climate.master_bedroom
+          data:
+            requested_overlay: MANUAL
+            temperature: 14
+    - if:
+        - condition: template
+          value_template: >-
+            {{ is_state('input_select.load_priority_1', 'Alunya airco') and is_state('input_select.kamer_alunya_heating_mode', 'airco') }}
+        - condition: template
+          value_template: >-
+            {{ is_state('input_select.load_priority_2', 'living airco') and is_state('input_select.living_heating_mode', 'centrale verwarming') and is_state('group.bart_madouce', 'home') }}
       then:
         - service: notify.bart_phone
           metadata: {}
@@ -99,12 +111,9 @@ automation:
             requested_overlay: MANUAL
             temperature: 14            
     - if:
-        - condition: state
-          entity_id: input_select.load_priority_1
-          state: living airco
-        - condition: state
-          entity_id: input_select.living_heating_mode
-          state: centrale verwarming
+        - condition: template
+          value_template: >-          
+            {{ is_state('input_select.load_priority_1', 'living airco') and is_state('input_select.living_heating_mode', 'centrale verwarming') }}
         - condition: template  # when home or during 2 last hours of high solar when not home
           value_template: >
             {% set h = strptime(states('sensor.last_hour_high_wattage'), '%Y-%m-%d %H:%M:%S').strftime('%H') | int %}
@@ -135,15 +144,9 @@ automation:
             requested_overlay: MANUAL
             temperature: 14    
     - if:
-        - condition: state
-          entity_id: input_select.load_priority_1
-          state: "Alunya airco"
-        - condition: state
-          entity_id: group.kamer_alunya_ramen
-          state: "off"        
-        - condition: state
-          entity_id: input_select.kamer_alunya_heating_mode
-          state: "centrale verwarming"
+        - condition: template
+          value_template: >-
+            {{ is_state('input_select.load_priority_1', 'Alunya airco') and is_state('input_select.kamer_alunya_heating_mode', 'centrale verwarming') and is_state('group.kamer_alunya_ramen', 'off') }}
       then:
         - service: notify.bart_phone
           metadata: {}
@@ -403,6 +406,39 @@ automation:
         device_id: 3c12e341dfd1d1fe2327ec66f3613321  
   mode: single
 
+- alias: 'heating modus master bedroom op airco = airco starten'
+  id: '5c930413-0066-4433-a8bf-86c57b1b24aa'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_select.master_bedroom_heating_mode
+    to: airco
+  condition:
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - condition: state
+      entity_id: group.bart_madouce
+      state: home  
+  action:
+    - service: climate.set_temperature
+      data:
+        hvac_mode: heat
+        temperature: 22
+      target:
+        device_id: 64296bd295e4506b8a3ec42c8aae7e58
+    # - service: climate.set_swing_mode
+    #   data:
+    #     swing_mode: 3D
+    #   target:
+    #     device_id: 64296bd295e4506b8a3ec42c8aae7e58
+    - service: climate.set_fan_mode
+      data:
+        fan_mode: auto
+      target:
+        device_id: 64296bd295e4506b8a3ec42c8aae7e58  
+  mode: single
+
 - alias: 'zonne-energie verwarmen // Netverbruik meer dan 200 W + airco Alunya aan = kamer Alunya verwarming modus op centrale verwarming'
   id: 'ad149aa8-0aab-4a0a-a27b-deef5188c27a'
   description: ''
@@ -434,6 +470,38 @@ automation:
       option: centrale verwarming
   mode: single
 
+- alias: 'zonne-energie verwarmen // Netverbruik meer dan 200 W + airco master bedroom aan = master bedroom verwarming modus op centrale verwarming'
+  id: '44a43583-cc8b-46c9-a7e3-ee7a45d43170'
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition:
+    - condition: template
+      value_template: >
+        {% set net = ( states('sensor.net_power_avg_15min') | float() * 0.4 ) + ( states('sensor.net_power_avg_5min') | float() * 0.6 ) %}
+        {% set charger = ( states('sensor.charger_current_power_avg_15min') | float() * 0.4 ) + ( states('sensor.charger_current_power_avg_5min') | float() * 0.6 ) %}
+        {{ (net - charger) | int() > 200 }}
+    - condition: state
+      entity_id: input_select.master_bedroom_heating_mode
+      state: airco        
+  action:
+  - service: notify.bart_phone
+    metadata: {}
+    data:
+      title: Verwarming master bedroom op centrale verwarming
+      message: De laatste 15 min. was er geen 1000 W injectie beschikbaar. ({{ states('sensor.net_power_avg_15min') | int() }} W)
+      data:
+        notification_icon: mdi:radiator
+        color: "#FFC000"      
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.master_bedroom_heating_mode
+    data:
+      option: centrale verwarming
+  mode: single
+
+
 
 - alias: 'heating modus kamer Alunya op centrale verwarming = centrale verwarming op auto en airco stoppen'
   id: '56524a74-e7a1-43db-bf3d-482fc6f8a101'
@@ -454,3 +522,23 @@ automation:
       entity_id: climate.kamer_alunya
   - service: script.alunya_airco_stop
   mode: single
+
+- alias: 'heating modus master bedroom op centrale verwarming = centrale verwarming op auto en airco stoppen'
+  id: 'd7f58576-a873-4335-a236-f5e57ccc1edf'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_select.master_bedroom_heating_mode
+    to: centrale verwarming
+  condition:
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+  action:
+  - service: climate.set_hvac_mode
+    data:
+      hvac_mode: auto
+    target:
+      entity_id: climate.master_bedroom
+  - service: script.master_bedroom_airco_stop
+  mode: single  

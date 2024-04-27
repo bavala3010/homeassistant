@@ -44,7 +44,37 @@ template:
           {% set ni = states('sensor.net_injection_energy_total') | float %}
           {{ ((sp - ni ) / ( sp - ni + nc) * 100 ) | round(1) }}
 
+      - name: net_neutrality_now
+        unique_id: 'c736e6c8-867f-4e41-92d6-9423a8e23b9a'
+        unit_of_measurement: "%"
+        attributes: 
+          friendly_name: "netonafhankelijkheid nu"
+        icon: "mdi:solar-power"
+        state: >-
+          {% set sp = states('sensor.solar_power') | float %}
+          {% set hc = states('sensor.huisverbruik') | float %}
+          {% set result = [((sp  / hc ) * 100 ) | round(), 100] | min %}
+          {{ result }}
+        availability: >
+          {% if result < 0 %}
+            false
+          {% endif %}
+
+      - name: net_neutrality_today
+        unique_id: '23f3acda-b47b-41d7-a236-986bbab40f46'
+        unit_of_measurement: "%"
+        attributes:
+          friendly_name: "netonafhankelijkheid vandaag"
+        state_class: measurement
+        icon: "mdi:solar-power"
+        state: >-
+          {% set sp = states('sensor.sma_today') | float %}
+          {% set nc = states('sensor.net_consumption_daily') | float %}
+          {% set ni = states('sensor.net_injection_daily') | float %}
+          {{ ((sp - ni ) / ( sp - ni + nc) * 100 ) | round() }}
+
       - name: net_neutrality_home
+        unique_id: '56e6377b-0276-49ab-bb4d-87ed86eb3c54'
         unit_of_measurement: "%"
         attributes:
           friendly_name: "netonafhankelijkheid huis"
@@ -79,20 +109,15 @@ template:
           {% set ni = states('sensor.net_injection_energy_total') | float %}
           {{ sp - ni }}
 
-      - name: net_neutrality_now
+      - name: solar_selfconsumption_today
+        unique_id: '666632a2-307f-4e86-886d-1a62744f7de0'
         unit_of_measurement: "%"
-        attributes: 
-          friendly_name: "netonafhankelijkheid nu"
-        icon: "mdi:solar-power"
+        attributes:        
+          friendly_name: "zelfverbruik vandaag"
         state: >-
-          {% set sp = states('sensor.solar_power') | float %}
-          {% set hc = states('sensor.huisverbruik') | float %}
-          {% set result = [((sp  / hc ) * 100 ) | round(1), 100] | min %}
-          {{ result }}
-        availability: >
-          {% if result < 0 %}
-            false
-          {% endif %}
+          {% set sp = states('sensor.sma_today') | float(default=0) %}
+          {% set ni = states('sensor.net_injection_daily') | float %}
+          {{ (((sp - ni ) / sp) * 100 ) | round() }}
 
       - name: solar_terraszijde_efficiency
         unique_id: e66135d3-6d2c-48f4-b803-8b6162127a74
@@ -477,6 +502,7 @@ input_select:
       - 'ontvochtiger badkamer'
       - 'auto'
       - 'living airco'
+      - 'master bedroom airco'      
 
   load_priority_4:
     options:
@@ -484,5 +510,6 @@ input_select:
       - 'ontvochtiger badkamer'
       - 'auto'
       - 'living airco'
+      - 'master bedroom airco'      
 
 

@@ -55,6 +55,11 @@ input_select:
       - 'airco'
       - 'centrale verwarming'
 
+  master_bedroom_heating_mode:
+    options:
+      - 'airco'
+      - 'centrale verwarming'
+
 input_text:
   heating_mode_from_weather_forecast_log:
     max: 255

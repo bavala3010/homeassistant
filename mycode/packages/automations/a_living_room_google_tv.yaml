@@ -1,0 +1,15 @@
+automation:
+
+- alias: Starten Kodi op living Google TV = 
+  id: 'b231a923-cb2e-487e-8def-21cf6f7fba83'
+  trigger:
+    - platform: template
+      value_template: >
+        {{ state_attr('remote.living_google_tv','current_activity') == "org.xbmc.kodi" }}
+  condition: []
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.adguard_home_bescherming
+      data: {}
+  mode: single

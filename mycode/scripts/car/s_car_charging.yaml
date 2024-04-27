@@ -93,9 +93,9 @@ charger_define_phase_1_or_3_based_on_watt:
   # 3 phases as of 4 kw
   sequence:
   - service: >-
-      {% if states('input_number.car_charger_watt') | float < 4.0 %}
+      {% if states('input_number.car_charger_watt') | float < 4 %}
       script.set_charger_to_1_phase
-      {% elif states('input_number.car_charger_watt') | float >= 4.0 %}
+      {% elif states('input_number.car_charger_watt') | float >= 4 %}
       script.set_charger_to_3_phases
       {% endif %}
 

@@ -44,20 +44,22 @@ automation:
               tag: katten
               color: green
               notification_icon: "mdi:cat"
-    # - if:
-    #     - condition: state
-    #       entity_id: person.madouce
-    #       state: "home"
-    #   then:
-    #     - service: notify.madouce_phone
-    #       data:
-    #         title: "Tijd om Rio zijn maandelijkse verzorging te geven."
-    #         message: >
-    #           Het is {{ states('input_number.cat_1_care_day_counter')| int() }} dagen geleden.
-    #         data:
-    #           tag: katten
-    #           color: green
-    #           notification_icon: "mdi:cat"              
+              sticky: true
+    - if:
+        - condition: state
+          entity_id: person.madouce
+          state: "home"
+      then:
+        - service: notify.madouce_phone
+          data:
+            title: "Tijd om Rio zijn maandelijkse verzorging te geven."
+            message: >
+              Het is {{ states('input_number.cat_1_care_day_counter')| int() }} dagen geleden.
+            data:
+              tag: katten
+              color: green
+              notification_icon: "mdi:cat"
+              sticky: true           
   mode: single
 
 - alias: 💨 kattenverzorging // Smarty dagteller >= 30 = melding
@@ -86,18 +88,20 @@ automation:
               tag: katten
               color: green
               notification_icon: "mdi:cat"
-    # - if:
-    #     - condition: state
-    #       entity_id: person.madouce
-    #       state: "home"
-    #   then:
-    #     - service: notify.madouce_phone
-    #       data:
-    #         title: "Tijd om Smarty zijn maandelijkse verzorging te geven."
-    #         message: >
-    #           Het is {{ states('input_number.cat_2_care_day_counter') | int() }} dagen geleden.
-    #         data:
-    #           tag: katten
-    #           color: green
-    #           notification_icon: "mdi:cat"              
+              sticky: true
+    - if:
+        - condition: state
+          entity_id: person.madouce
+          state: "home"
+      then:
+        - service: notify.madouce_phone
+          data:
+            title: "Tijd om Smarty zijn maandelijkse verzorging te geven."
+            message: >
+              Het is {{ states('input_number.cat_2_care_day_counter') | int() }} dagen geleden.
+            data:
+              tag: katten
+              color: green
+              notification_icon: "mdi:cat"
+              sticky: true             
   mode: single  

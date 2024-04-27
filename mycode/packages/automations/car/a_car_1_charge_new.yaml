@@ -307,13 +307,13 @@ automation:
                         entity_id: timer.car_1_remaining_charge_time                        
                     - service: script.stop_charger
                       data: {}
-                    - service: notify.bart_phone
-                      data:
-                        title: Auto gestopt met laden van het net wegens te weinig vermogen.
-                        message: >
-                          {{ as_timestamp(now()) | timestamp_custom('%-d/%-m %H:%M') }}: Beschikbaar vermogen was: {{ wattage }} kW.
-                        data:
-                          sticky: true
+                    # - service: notify.bart_phone
+                    #   data:
+                    #     title: Auto gestopt met laden van het net wegens te weinig vermogen.
+                    #     message: >
+                    #       {{ as_timestamp(now()) | timestamp_custom('%-d/%-m %H:%M') }}: Beschikbaar vermogen was: {{ wattage }} kW.
+                    #     data:
+                    #       sticky: true
                     - wait_template: ''
                       timeout: '00:03:00'
                 - if: # between 1.1 and 1.5 kW available and charger is already charging           
@@ -447,7 +447,7 @@ automation:
               data: {}
             - service: notify.bart_phone
               data:
-                title: Auto gestopt met laden van het net wegens te weinig vermogen.
+                title: Auto gestopt met laden van het net wegens te weinig vermogen. (check 2)
                 message: >
                   {{ as_timestamp(now()) | timestamp_custom('%-d/%-m %H:%M') }}: Beschikbaar vermogen was: {{ wattage }} kW.
                 data:

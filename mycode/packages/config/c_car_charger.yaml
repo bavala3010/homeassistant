@@ -6,8 +6,10 @@
 template:
   - sensor:
       - name: mode3_sanitized
+        force_update: true
         state: "{{states('sensor.charger_mode3_state').replace('\0','') }}"
       - name: charger_status
+        force_update: true
         state: >
           {% set m3 = states('sensor.mode3_sanitized') %}
           {% if m3 in ['A', 'E'] %} available
