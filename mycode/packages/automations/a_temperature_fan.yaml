@@ -4,37 +4,3 @@
 
 automation:
 
-- alias: 'fan: slaapkamer >21° = ventilator aan'
-  id: '88271d4a-b388-4cae-8886-ed4c85529d9e'
-  description: ''
-  trigger:
-  - platform: template
-    value_template: '{{ states(''sensor.master_bedroom_temperature'') | float > 21
-      }}'
-  condition:
-  - condition: time
-    after: '22:30:00'
-    before: '08:00:00'
-  - condition: state
-    entity_id: person.bart
-    state: home
-  action:
-  - service: fan.turn_on
-    target:
-      entity_id: fan.fan_3c_fan
-    data:
-      percentage: 15
-  mode: single
-
-- alias: 'fan: slaapkamer <21° = ventilator uit'
-  id: '1783207d-8943-4734-b76a-9a8a613e5b5d'
-  description: ''
-  trigger:
-  - platform: template
-    value_template: '{{ states(''sensor.master_bedroom_temperature'') | float < 21 }}'
-  condition: []
-  action:
-  - service: fan.turn_off
-    target:
-      entity_id: fan.fan.fan_3c_fan
-  mode: single

@@ -206,8 +206,9 @@ automation:
       data:
         title: Audi op nieuwe locatie
         message: >
-          latitude: {{trigger.from_state.attributes.latitude}}
-          longitude: {{trigger.from_state.attributes.longitude}}
-          second_latitude: {{trigger.to_state.attributes.latitude}}
-          second_longitude: {{trigger.to_state.attributes.longitude}}
-        tag: car_1_location 
+          latitude: {{trigger.from_state.attributes.latitude}}<br>
+          longitude: {{trigger.from_state.attributes.longitude}}<br>
+          second_latitude: {{trigger.to_state.attributes.latitude}}<br>
+          second_longitude: {{trigger.to_state.attributes.longitude}}<br>
+        data:
+          tag: car_1_location 

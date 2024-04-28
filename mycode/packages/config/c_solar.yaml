@@ -494,7 +494,7 @@ input_select:
       - 'living airco'
       - 'Alunya airco'
       - 'Amilya airco'
-      - 'master bedroom airco'      
+      - 'master bedroom airco'    
 
   load_priority_3:
     options:
@@ -502,7 +502,9 @@ input_select:
       - 'ontvochtiger badkamer'
       - 'auto'
       - 'living airco'
-      - 'master bedroom airco'      
+      - 'Alunya airco'
+      - 'Amilya airco'
+      - 'master bedroom airco'    
 
   load_priority_4:
     options:
@@ -510,6 +512,8 @@ input_select:
       - 'ontvochtiger badkamer'
       - 'auto'
       - 'living airco'
-      - 'master bedroom airco'      
+      - 'Alunya airco'
+      - 'Amilya airco'
+      - 'master bedroom airco'     
 
 

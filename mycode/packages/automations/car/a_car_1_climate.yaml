@@ -526,10 +526,15 @@ automation:
     data:
       duration: >
         {% set t = (as_timestamp(now().replace(hour=strptime(states('input_datetime.car_1_climatisation_time'), '%H:%M:%S').hour,
-        minute=strptime(states('input_datetime.car_1_climatisation_time'), '%H:%M:%S').minute)) - as_timestamp(now())) | int  %}
-        {% if t < 0 %} {{ 86400 + t }}
-        {% else %} { t }
-        {% endif %}         
+                minute=strptime(states('input_datetime.car_1_climatisation_time'), '%H:%M:%S').minute)) - as_timestamp(now())) | int  %}
+        {% if t < 0 %}
+          {% set t = t + 86400 %}
+        {% endif %}
+        {% set hours = (t // 3600) %}
+        {% set minutes = ((t % 3600) // 60) %}
+        {% set seconds = (t % 60) %}
+        {% set timestr = "%02d:%02d:%02d"|format(hours, minutes, seconds) %}
+        {{ timestr }}        
     target:
       entity_id: timer.car_1_climatisation
   - service: timer.start
@@ -554,10 +559,15 @@ automation:
     data:
       duration: >
         {% set t = (as_timestamp(now().replace(hour=strptime(states('input_datetime.car_1_climatisation_time'), '%H:%M:%S').hour,
-        minute=strptime(states('input_datetime.car_1_climatisation_time'), '%H:%M:%S').minute)) - as_timestamp(now())) | int  %}
-        {% if t < 0 %} {{ 86400 + t }}
-        {% else %} { t }
-        {% endif %}         
+                minute=strptime(states('input_datetime.car_1_climatisation_time'), '%H:%M:%S').minute)) - as_timestamp(now())) | int  %}
+        {% if t < 0 %}
+          {% set t = t + 86400 %}
+        {% endif %}
+        {% set hours = (t // 3600) %}
+        {% set minutes = ((t % 3600) // 60) %}
+        {% set seconds = (t % 60) %}
+        {% set timestr = "%02d:%02d:%02d"|format(hours, minutes, seconds) %}
+        {{ timestr }}         
     target:
       entity_id: timer.car_1_climatisation
   - service: timer.start

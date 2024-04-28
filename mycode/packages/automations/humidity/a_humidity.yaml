@@ -38,7 +38,7 @@ automation:
       data:
         title: Vocht
         message: >
-          Vocht % in huis is heel hoog: {{states('sensor.avg_inside_humidity')}}%.
+          Vocht % in huis is heel hoog: {{states('sensor.avg_inside_humidity') | int() }}%.
         data:
           color: "#0E86D4"
           clickAction: "/lucht-vocht-temperatuur/vocht-gram"
