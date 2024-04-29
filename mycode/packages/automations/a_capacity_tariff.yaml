@@ -75,8 +75,10 @@ automation:
   action:
   - service: notify.bart_phone
     data:
-      title: Hoge verbruikspiek
-      message: "Huidig verbruik is {{ (states('sensor.net_power_avg_2min') | float() / 1000) | round(2) }} kW t.o.v. de maandelijkse piek van {{ states('sensor.power_peak') | round(2) }} kW."
+      title: Hoog verbruik. Mogelijk piek van {{ states('sensor.expected_power_peak') | round(2) }}.
+      message: 
+        Huidig verbruik is {{ (states('sensor.net_power_avg_2min') | float() / 1000) | round(2) }} kW.
+        De verwachte kwartierpiek is {{ states('sensor.expected_power_peak') | round(2) }}. De huidige maandelijkse piek is {{ states('sensor.power_peak') | round(2) }} kW."
       data:
         tag: peak
         color: red

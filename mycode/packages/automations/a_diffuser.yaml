@@ -1,5 +1,9 @@
 automation:
 
+######################################
+# Diffuser ON
+######################################
+
 - alias: Diffuser aan (werkdag)
   id: '9b923f92-f374-404a-900f-507fc2770233'
   description: ''
@@ -26,6 +30,20 @@ automation:
       data: {}
       target:
         device_id: d803d244c0cb99f74345bfe8f50061ef
+    - delay: "00:05:00"
+    - condition: state
+      entity_id: humidifier.diffuser_humidifier_dehumidifier
+      state: "off"
+    - service: notify.bart_phone
+      data:
+        title: Diffuser is gestopt.
+        message: Mogelijk moet je water toevoegen.
+        data:
+          notification_icon: phu:essential-oil-diffuser-alt
+          color: purple
+          sticky: true
+          clickAction: "/lovelace-apparaten/diffuser"
+  mode: single               
 
 - alias: Diffuser uit (werkdag)
   id: '92b5a7a4-8cb6-4305-bf7e-287ccd3501de'
@@ -51,6 +69,11 @@ automation:
           - d803d244c0cb99f74345bfe8f50061ef
       data: {}
   mode: single
+
+
+######################################
+# Diffuser OFF
+######################################
 
 - alias: Diffuser aan (niet-werkdag)
   id: '3fe1e4c0-5a44-4176-9319-aafea953fe52'
@@ -78,6 +101,20 @@ automation:
       data: {}
       target:
         device_id: d803d244c0cb99f74345bfe8f50061ef
+    - delay: "00:05:00"
+    - condition: state
+      entity_id: humidifier.diffuser_humidifier_dehumidifier
+      state: "off"
+    - service: notify.bart_phone
+      data:
+        title: Diffuser is gestopt.
+        message: Mogelijk moet je water toevoegen.
+        data:
+          notification_icon: phu:essential-oil-diffuser-alt
+          color: purple
+          sticky: true
+          clickAction: "/lovelace-apparaten/diffuser"
+  mode: single                  
 
 - alias: Diffuser uit (niet-werkdag)
   id: '9c6a2969-b4a6-4c10-a8f0-5dfd31973291'
@@ -102,27 +139,4 @@ automation:
         device_id:
           - d803d244c0cb99f74345bfe8f50061ef
       data: {}
-  mode: single
-
-- alias: "Diffuser - Waarschuwing bij lage waterstand"
-  id: '13c983e2-3f20-442a-bf7b-0162b5ad53e7'
-  description: ""
-  trigger:
-    platform: state
-    entity_id: humidifier.diffuser_humidifier_dehumidifier
-    to: "on"
-  action:
-    - delay: "00:05:00"
-    - condition: state
-      entity_id: humidifier.diffuser_humidifier_dehumidifier
-      state: "off"
-    - service: notify.bart_phone
-      data:
-        title: Diffuser is gestopt.
-        message: Mogelijk moet je water toevoegen.
-        data:
-          notification_icon: phu:essential-oil-diffuser-alt
-          color: purple
-          sticky: true
-          clickAction: "/lovelace-apparaten/diffuser"
   mode: single
