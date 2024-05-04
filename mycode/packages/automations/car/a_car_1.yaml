@@ -208,7 +208,5 @@ automation:
         message: >
           latitude: {{trigger.from_state.attributes.latitude}}<br>
           longitude: {{trigger.from_state.attributes.longitude}}<br>
-          second_latitude: {{trigger.to_state.attributes.latitude}}<br>
-          second_longitude: {{trigger.to_state.attributes.longitude}}<br>
         data:
           tag: car_1_location 

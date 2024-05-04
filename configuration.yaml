@@ -310,6 +310,7 @@ recorder:
   #     - device_tracker.madouce_s20    # nodig voor automatisatie voordeur opendoen bij thuiskomst
   exclude:
     entities:
+      - input_text.car_chage_info
       - sensor.date
       - sensor.time
       - sensor.today_is
@@ -329,6 +330,8 @@ recorder:
       # - sensor.net_neutrality_home
       # - sensor.net_neutrality_car
       # - sensor.net_neutrality
+    entity_globs:
+      - sensor.flightradar24*      
     domains:
       - automation
       - camera

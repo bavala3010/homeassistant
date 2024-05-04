@@ -38,5 +38,5 @@ automation:
   - service: notify.bart_phone
     data:
       title: Temperatuur kamer Amilya
-      message: Temperatuur in kamer Amilya is nu {{ states('sensor.kamer_amilya_temperature') }} graden.
+      message: Temperatuur in kamer Amilya is nu {{ states('sensor.kamer_amilya_temperature') | round(1) }} °C.
   mode: single

@@ -1,6 +1,6 @@
 automation:
 
-- alias: Starten Kodi op living Google TV = 
+- alias: Starten Kodi op living Google TV = adblocker uitschakelen
   id: 'b231a923-cb2e-487e-8def-21cf6f7fba83'
   trigger:
     - platform: template
@@ -13,3 +13,18 @@ automation:
         entity_id: switch.adguard_home_bescherming
       data: {}
   mode: single
+
+
+- alias: Kodi gestopt op living Google TV = adblocker inschakelen
+  id: '4539be46-192d-4145-9c53-16daa4c8ee2f'
+  trigger:
+    - platform: template
+      value_template: >
+        {{ state_attr('remote.living_google_tv','current_activity') != "org.xbmc.kodi" }}
+  condition: []
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.adguard_home_bescherming
+      data: {}
+  mode: single  

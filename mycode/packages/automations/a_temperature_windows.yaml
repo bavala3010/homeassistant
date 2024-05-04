@@ -157,7 +157,7 @@ automation:
   - service: notify.bart_madouce_phone
     data:
       title: Ramen in living mogen open
-      message: Buiten wordt het nu koeler ({{outdoor}}°C) dan binnen ({{indoor}}°C).
+      message: Buiten wordt het nu koeler ({{outdoor}} °C) dan binnen ({{indoor}} °C).
       data:
         color: green
         channel: ramen
@@ -194,7 +194,7 @@ automation:
     - service: notify.bart_madouce_phone
       data:
         title: Raam in veranda mag open
-        message: Buiten wordt het nu koeler ({{outdoor}}°C) dan binnen ({{indoor}}°C).
+        message: Buiten wordt het nu koeler ({{outdoor}} °C) dan binnen ({{indoor}} °C).
         data:
           color: green
           channel: ramen
@@ -231,7 +231,7 @@ automation:
     - service: notify.bart_madouce_phone
       data:
         title: Raam Amilya mag open
-        message: Buiten wordt het nu koeler ({{outdoor}}°C) dan binnen ({{indoor}}°C).
+        message: Buiten wordt het nu koeler ({{outdoor}} °C) dan binnen ({{indoor}} °C).
         data:
           color: green
           channel: ramen
@@ -268,7 +268,7 @@ automation:
     - service: notify.bart_madouce_phone
       data:
         title: Raam Alunya mag open
-        message: Buiten wordt het nu koeler ({{outdoor}}°C) dan binnen ({{indoor}}°C).
+        message: Buiten wordt het nu koeler ({{outdoor}} °C) dan binnen ({{indoor}} °C).
         data:
           color: green
           channel: ramen
@@ -305,7 +305,7 @@ automation:
     - service: notify.bart_madouce_phone
       data:
         title: Raam in master bedroom mag open
-        message: Buiten wordt het nu koeler ({{outdoor}}°C) dan binnen ({{indoor}}°C).
+        message: Buiten wordt het nu koeler ({{outdoor}} °C) dan binnen ({{indoor}} °C).
         data:
           color: green
           channel: ramen
