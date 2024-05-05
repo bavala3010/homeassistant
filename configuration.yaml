@@ -301,7 +301,7 @@ http:
 
 recorder:
   purge_keep_days: 14
-  commit_interval: 30
+  commit_interval: 15
   # include:  # if set, only the entities listed will be recorded
   #   entities:
   #     - device_tracker.bart_s10
@@ -333,7 +333,7 @@ recorder:
     entity_globs:
       - sensor.flightradar24*      
     domains:
-      - automation
+      # - automation
       - camera
       # - device_tracker  # nearly every device has a location tracker
       - group

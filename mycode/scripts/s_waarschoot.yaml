@@ -4,12 +4,12 @@ set_waarschoot_chauffage_away:
       preset_mode: away
     target:
       entity_id:
-        - climate.waarschoot_keuken
+        # - climate.waarschoot_keuken
         - climate.waarschoot_living
-        - climate.waarschoot_zitput
-        - climate.waarschoot_overloop
-        - climate.waarschoot_badkamer
-        - climate.waarschoot_slaapkamer
+        # - climate.waarschoot_zitput
+        # - climate.waarschoot_overloop
+        # - climate.waarschoot_badkamer
+        # - climate.waarschoot_slaapkamer
   - service: climate.set_hvac_mode
     data:
       hvac_mode: "off"
@@ -29,12 +29,12 @@ set_waarschoot_chauffage_home:
       preset_mode: home
     target:
       entity_id:
-        - climate.waarschoot_keuken
+        # - climate.waarschoot_keuken
         - climate.waarschoot_living
-        - climate.waarschoot_zitput
-        - climate.waarschoot_overloop
-        - climate.waarschoot_badkamer
-        - climate.waarschoot_slaapkamer
+        # - climate.waarschoot_zitput
+        # - climate.waarschoot_overloop
+        # - climate.waarschoot_badkamer
+        # - climate.waarschoot_slaapkamer
   - service: climate.set_hvac_mode
     data:
       hvac_mode: auto

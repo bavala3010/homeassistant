@@ -59,12 +59,12 @@ automation:
     tag: "window_living"
     action_window_pause: "living_window_pause"
     reason: >
-      {% set d = states('sensor.gram_water_living_diff_outside') | float(default=0) %}
-      {% set h = states('sensor.living_humidity') | round() %}
-      {% if   d >= 3.0 %} Extreem vochtig binnen. {{ h }}%
-      {% elif d >= 1.5 %} Veel te vochtig binnen. {{ h }}%
-      {% elif d >= 0.5 %} Beetje te vochtig binnen. {{ h }}%
-      {% endif %}
+      {%- set d = states('sensor.gram_water_living_diff_outside') | float(default=0) %}
+      {%- set h = states('sensor.living_humidity') | round() %}
+      {%- if   d >= 3.0 %} Extreem vochtig binnen. {{ h }}%
+      {%- elif d >= 1.5 %} Veel te vochtig binnen. {{ h }}%
+      {%- elif d >= 0.5 %} Beetje te vochtig binnen. {{ h }}%
+      {%- endif %}
   mode: single
 
 - alias: 🪟 ramen - open raam kamer Amilya
@@ -103,18 +103,18 @@ automation:
   variables:
     message: >
       Vocht kamer Amilya: {{states('sensor.gram_water_kamer_amilya') | round(1) }} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>
-      Vocht kamer Amilya: {{states('sensor.kamer_amilya_humidity') | round }}%. Buiten: {{states('sensor.eikenbos_humidity') | }}%.<br>
+      Vocht kamer Amilya: {{states('sensor.kamer_amilya_humidity') | round }}%. Buiten: {{states('sensor.eikenbos_humidity') }}%.<br>
       Temp kamer Amilya: {{states('sensor.kamer_amilya_temperature') | round(1) }} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.
     title: "Open het raam van Amilya!"
     tag: "window_kamer_amilya"
     action_window_pause: "kamer_amilya_window_pause"
     reason: >
-      {% set d = states('sensor.gram_water_kamer_amilya_diff_outside') | float(default=0) %}
-      {% set h = states('sensor.kamer_amilya_humidity') | round() %}
-      {% if   d >= 3.0 %} Extreem vochtig binnen. {{ h }}%
-      {% elif d >= 1.5 %} Veel te vochtig binnen. {{ h }}%
-      {% elif d >= 0.5 %} Beetje te vochtig binnen. {{ h }}%
-      {% endif %}
+      {%- set d = states('sensor.gram_water_kamer_amilya_diff_outside') | float(default=0) %}
+      {%- set h = states('sensor.kamer_amilya_humidity') | round() %}
+      {%- if   d >= 3.0 %} Extreem vochtig binnen. {{ h }}%
+      {%- elif d >= 1.5 %} Veel te vochtig binnen. {{ h }}%
+      {%- elif d >= 0.5 %} Beetje te vochtig binnen. {{ h }}%
+      {%- endif %}
   mode: single
 
 - alias: 🪟 ramen - open raam veranda
@@ -156,12 +156,12 @@ automation:
     tag: "window_veranda"
     action_window_pause: "veranda_window_pause"
     reason: >
-      {% set d = states('sensor.gram_water_veranda_diff_outside') | float(default=0) %}
-      {% set h = states('sensor.veranda_humidity') | round() %}
-      {% if   d >= 3.0 %} Extreem vochtig binnen. {{ h }}%
-      {% elif d >= 1.5 %} Veel te vochtig binnen. {{ h }}%
-      {% elif d >= 0.5 %} Beetje te vochtig binnen. {{ h }}%
-      {% endif %}
+      {%- set d = states('sensor.gram_water_veranda_diff_outside') | float(default=0) %}
+      {%- set h = states('sensor.veranda_humidity') | round() %}
+      {%- if   d >= 3.0 %} Extreem vochtig binnen. {{ h }}%
+      {%- elif d >= 1.5 %} Veel te vochtig binnen. {{ h }}%
+      {%- elif d >= 0.5 %} Beetje te vochtig binnen. {{ h }}%
+      {%- endif %}
   mode: single
 
 - alias: 🪟 ramen - open raam berging
@@ -203,12 +203,12 @@ automation:
     tag: "window_berging"
     action_window_pause: "berging_window_pause"
     reason: >
-      {% set d = states('sensor.gram_water_berging_diff_outside') | float(default=0) %}
-      {% set h = states('sensor.berging_humidity') | round() %}
-      {% if   d >= 3.0 %} Extreem vochtig binnen. {{ h }}%
-      {% elif d >= 1.5 %} Veel te vochtig binnen. {{ h }}%
-      {% elif d >= 0.5 %} Beetje te vochtig binnen. {{ h }}%
-      {% endif %}
+      {%- set d = states('sensor.gram_water_berging_diff_outside') | float(default=0) %}
+      {%- set h = states('sensor.berging_humidity') | round() %}
+      {%- if   d >= 3.0 %} Extreem vochtig binnen. {{ h }}%
+      {%- elif d >= 1.5 %} Veel te vochtig binnen. {{ h }}%
+      {%- elif d >= 0.5 %} Beetje te vochtig binnen. {{ h }}%
+      {%- endif %}
   mode: single
 
 - alias: 🪟 ramen - open raam badkamer
@@ -250,12 +250,12 @@ automation:
     tag: "window_badkamer"
     action_window_pause: "badkamer_window_pause"
     reason: >
-      {% set d = states('sensor.gram_water_badkamer_diff_outside') | float(default=0) %}
-      {% set h = states('sensor.badkamer_humidity') | round() %}
-      {% if   d >= 3.0 %} Extreem vochtig binnen. {{ h }}%
-      {% elif d >= 1.5 %} Veel te vochtig binnen. {{ h }}%
-      {% elif d >= 0.5 %} Beetje te vochtig binnen. {{ h }}%
-      {% endif %}
+      {%- set d = states('sensor.gram_water_badkamer_diff_outside') | float(default=0) %}
+      {%- set h = states('sensor.badkamer_humidity') | round() %}
+      {%- if   d >= 3.0 %} Extreem vochtig binnen. {{ h }}%
+      {%- elif d >= 1.5 %} Veel te vochtig binnen. {{ h }}%
+      {%- elif d >= 0.5 %} Beetje te vochtig binnen. {{ h }}%
+      {%- endif %}
   mode: single
 
 - alias: 🪟 ramen - open raam kamer Alunya
@@ -300,12 +300,12 @@ automation:
     tag: "window_kamer_alunya"
     action_window_pause: "kamer_alunya_window_pause"
     reason: >
-      {% set d = states('sensor.gram_water_kamer_alunya_diff_outside') | float(default=0) %}
-      {% set h = states('sensor.kamer_alunya_humidity') | round() %}
-      {% if   d >= 3.0 %} Extreem vochtig binnen. {{ h }}%
-      {% elif d >= 1.5 %} Veel te vochtig binnen. {{ h }}%
-      {% elif d >= 0.5 %} Beetje te vochtig binnen. {{ h }}%
-      {% endif %}
+      {%- set d = states('sensor.gram_water_kamer_alunya_diff_outside') | float(default=0) %}
+      {%- set h = states('sensor.kamer_alunya_humidity') | round() %}
+      {%- if   d >= 3.0 %} Extreem vochtig binnen. {{ h }}%
+      {%- elif d >= 1.5 %} Veel te vochtig binnen. {{ h }}%
+      {%- elif d >= 0.5 %} Beetje te vochtig binnen. {{ h }}%
+      {%- endif %}
   mode: single
 
 - alias: 🪟 ramen - open raam master bedroom
@@ -347,12 +347,12 @@ automation:
     tag: "window_master_bedroom"
     action_window_pause: "master_bedroom_window_pause"
     reason: >
-      {% set d = states('sensor.gram_water_master_bedroom_diff_outside') | float(default=0) %}
-      {% set h = states('sensor.master_bedroom_humidity') | round() %}
-      {% if   d >= 3.0 %} Extreem vochtig binnen. {{ h }}%
-      {% elif d >= 1.5 %} Veel te vochtig binnen. {{ h }}%
-      {% elif d >= 0.5 %} Beetje te vochtig binnen. {{ h }}%
-      {% endif %}
+      {%- set d = states('sensor.gram_water_master_bedroom_diff_outside') | float(default=0) %}
+      {%- set h = states('sensor.master_bedroom_humidity') | round() %}
+      {%- if   d >= 3.0 %} Extreem vochtig binnen. {{ h }}%
+      {%- elif d >= 1.5 %} Veel te vochtig binnen. {{ h }}%
+      {%- elif d >= 0.5 %} Beetje te vochtig binnen. {{ h }}%
+      {%- endif %}
   mode: single
 
 - alias: 🪟 ramen - open raam badkamer (melding op speaker)

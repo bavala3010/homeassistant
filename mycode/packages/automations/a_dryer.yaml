@@ -10,7 +10,7 @@ automation:
       hours: 0
       minutes: 0
       seconds: 30
-    above: 100
+    above: 300
   condition: []
   action:
     - service: input_datetime.set_datetime

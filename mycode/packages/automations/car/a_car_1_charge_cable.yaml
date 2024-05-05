@@ -145,9 +145,11 @@ automation:
     for:
       minutes: 1
   condition:
+  # Check if the car is "not ready for charging".  
   - condition: state
-    entity_id: device_tracker.audi_e_tron_sportback_position
-    state: home  
+    entity_id: sensor.audi_e_tron_sportback_charging_state
+    state: notReadyForCharging
+  # Check if the home charger is "available", meaning no car is connected.    
   - condition: state
     entity_id: sensor.charger_status
     state: 'available'

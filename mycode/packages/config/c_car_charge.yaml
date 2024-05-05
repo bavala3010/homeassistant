@@ -203,6 +203,43 @@ template:
           {% elif states('input_select.car_1_charge_limit') == '100%'%}100
           {% endif %}
 
+
+      - name: car_1_remaining_charge_time_next_24h
+        state: >
+          {% set remaining_time = states('sensor.audi_e_tron_sportback_remaining_charge_time') | int %}
+          {% if remaining_time is not none %}
+            {{ remaining_time }}
+          {% else %}
+            unknown
+          {% endif %}
+        attributes:
+          friendly_name: "Car 1 Remaining Charge Time Next 24h"
+          data_points: >-
+            {% set remaining_time = states('sensor.audi_e_tron_sportback_remaining_charge_time') | int %}
+            {% set current_time = now().strftime('%Y-%m-%d %H:%M') %}
+            {% set data_points = [] %}
+            {% if remaining_time is not none %}
+              {% for minute in range(0, 1440) %}
+                {% set time_diff = minute | int / 60 %}
+                {% set new_time = (as_timestamp(current_time) + time_diff * 60) | timestamp_custom('%Y-%m-%d %H:%M', false) %}
+                {% if minute < remaining_time %}
+                  {% set data_points = data_points + [{'x': new_time, 'y': remaining_time - minute}] %}
+                {% else %}
+                  {% set data_points = data_points + [{'x': new_time, 'y': 0}] %}
+                {% endif %}
+              {% endfor %}
+              {% for data_point in data_points %}
+                {% set data_point_str = '{"x": "' + data_point.x + '", "y": ' + data_point.y|string + '}' %}
+                {% if not loop.last %}
+                  {{ data_point_str }} ,
+                {% else %}
+                  {{ data_point_str }}
+                {% endif %}
+              {% endfor %}
+            {% else %}
+              unknown
+            {% endif %}
+
 sensor:
   # - platform: statistics
   #   name: "charger current power avg2min"

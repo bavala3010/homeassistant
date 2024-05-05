@@ -11,7 +11,18 @@ automation:
     above: 0
   - condition: template
     value_template: "{{ (states('sensor.blitzortung_lightning_distance') | round(0) ) < states('input_number.lightning_previous_distance') | round() }}"    
+  variables:
+    message_text: Er is bliksem op {{ states('sensor.blitzortung_lightning_distance') | round() }} kilometer van huis in het {{ states('sensor.lightning_direction')}}.
   action:
+    - service: notify.bart_madouce_phone
+      data:
+        title: Bliksem!
+        message: >
+          {{ message_text }}
+        data:
+          notification_icon: mdi:lightning-bolt
+          color: "#FFC000"
+          tag: bliksem
     - if:
         - condition: template
           value_template: "{{ 8 < now().hour < 23 }}"
@@ -20,21 +31,12 @@ automation:
           data:
             entity_id: media_player.living_speaker
             message: >
-              Opgelet! Er is bliksem op {{ states('sensor.blitzortung_lightning_distance') | round() }} kilometer van huis in het {{ states('sensor.lightning_direction')}}.
-    - service: notify.bart_madouce_phone
-      data:
-        title: Bliksem
-        message: >
-          Opgelet! Er is bliksem op {{ states('sensor.blitzortung_lightning_distance') | round() }} kilometer van huis in het {{ states('sensor.lightning_direction')}}.
-        data:
-          notification_icon: mdi:lightning-bolt
-          color: "#FFC000"
-          tag: bliksem
+              Opgelet. {{ message_text }}
     # Update the previous distance with the current distance
     - service: input_number.set_value
       data_template:
         entity_id: input_number.lightning_previous_distance
-        value: "{{ states('sensor.blitzortung_lightning_distance') }}"
+        value: "{{ states('sensor.blitzortung_lightning_distance') | round() }}"
     - wait_template: ''
       timeout: "00:02:00"
   mode: single

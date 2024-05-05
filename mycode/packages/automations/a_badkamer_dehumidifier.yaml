@@ -91,7 +91,7 @@ automation:
         tag: ontvochtiger
         notification_icon: "mdi:air-humidifier"
   variables:
-    starttijd: "{{ as_timestamp(state_attr('automation.ontvochtiger_staat_al_15_min_aan', 'last_triggered')) }}"      
+    starttijd: "{{ as_timestamp(state_attr('automation.ontvochtiger_staat_al_15_min_aan', 'last_triggered')) }}"
   mode: single
 
 - alias: 💧 humidity // badkamer ontvochtiger // injectie, vocht in badkamer = inschakelen
@@ -108,10 +108,7 @@ automation:
       entity_id: sensor.badkamer_humidity
       above: 65
     - condition: template
-      value_template: " {{ states('binary_sensor.badkamer_raam_wijd') != 'on' }}"      
-    # - condition: state
-    #   entity_id: group.gezin
-    #   state: not_home
+      value_template: " {{ states('binary_sensor.badkamer_raam_wijd') != 'on' }}"
   action:
     - service: switch.turn_on
       data: {}

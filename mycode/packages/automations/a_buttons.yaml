@@ -67,7 +67,7 @@ automation:
       volume_level: 0.4
   mode: single       
   
-- alias: button nachtkastje Bart avondinfo
+- alias: button nachtkastje Bart info (uitgezonderd 's ochtends)
   id: 'e5b8829b-92b1-400d-aacb-4cd71f93052f'
   description: ''
   trigger:
@@ -79,7 +79,7 @@ automation:
     subtype: remote_button_short_press
   condition:
   - condition: template
-    value_template: "{{ now().hour < 2 or now().hour > 20 }}"
+    value_template:  "{{ not (6 < now().hour < 11) }}"
   action:
     - service: tts.edge_tts_say
       data:
@@ -112,7 +112,7 @@ automation:
         entity_id: media_player.master_bedroom_speaker
         message: >-
           {% set soc = states('sensor.car_1_soc') | int %}
-          {% set target = states('input_number.car_1_optimal_target_soc') | int %}
+          {% set target = states('input_number.car_1_min_target_soc') | int %}
           {% set watt = states('input_number.car_charge_fixed_wattage') %}          
           De auto is {{ soc }}% geladen.
           {% if soc < target %}
@@ -168,7 +168,7 @@ automation:
         message: >-
           {% if now().strftime("%H")|int > 20 %} Slaap lekker straks.
           {% elif now().strftime("%H")|int > 22 %} Het is bijna tijd om te slapen.
-          {% elif now().strftime("%H")|int < 12 %} Nog een prettige dag.
+          {% else %} Nog een prettige dag.
           {% endif %}
   mode: single
 
@@ -184,7 +184,7 @@ automation:
     subtype: remote_button_short_press
   condition:
   - condition: template
-    value_template: "{{ 6 < now().hour < 13 }}"
+    value_template: "{{ 6 < now().hour < 11 }}"
   action:
     - service: tts.edge_tts_say 
       data:

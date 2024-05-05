@@ -517,8 +517,8 @@ automation:
               data:
                 title: Auto is gestopt met zonneladen.
                 message: >
-                  Totaal vermogen was minder dan 1.3 kW.<br>
-                  [{{ as_timestamp(now()) | timestamp_custom('%-d/%-m %H:%M') }}] Zon : {{ wattage | round(1) }} kW + max. net {{ max_net }} kW = {{ (wattage + max_net ) | round(1) }} kW.
+                  Onvoldoende vermogen: {{ (wattage + max_net ) | round(1) }} kW<br>
+                  [{{ as_timestamp(now()) | timestamp_custom('%-d/%-m %H:%M') }}] Zon: {{ wattage | round(1) }} kW + Net: {{ max_net }} kW
                 data:
                   notification_icon: mdi:car-electric
                   color: red

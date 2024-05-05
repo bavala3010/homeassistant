@@ -74,11 +74,11 @@ input_boolean:
     icon: mdi:radiator
 
   heating_season:
-    name: stookseizoen
-    icon: mdi:radiator
+    name: Stookseizoen
+    icon: mdi:heat-wave
 
   cooling_season:
-    name: koelseizoen
+    name: Koelseizoen
     icon: mdi:snowflake
 
 input_datetime:

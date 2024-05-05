@@ -50,9 +50,8 @@ automation:
     data:
       title: "🚙 Autolader is verbonden." 
       message: >
-        {% set Hour, Minute = states.sensor.car_1_remaining_charge_time.state.split(':') %}
-        {% set minutes = Hour | int * 60 + Minute | int %}
-        Nu {{states('sensor.car_1_soc')}}%. Nog {{states('sensor.car_1_remaining_charge_time')}} laden tot 100%.
+        {% set minutes = states('sensor.car_1_remaining_charge_time') %}
+        Nu {{states('sensor.car_1_soc')}}%. Nog {{states('sensor.car_1_remaining_charge_time')}} minuten laden tot 100%.
         Geschat einduur: {{ (as_timestamp(now()) + (minutes | float(default=0) * 60)) | timestamp_custom('%a %d %b %-Hu%M') }}.
       data:
         color: green
@@ -352,26 +351,41 @@ automation:
   id: "7ad728fd-c277-4dfb-a853-b64bb15c2b4b"
   description: ''
   trigger:
-  - platform: numeric_state
-    entity_id:
-    - sensor.charger_modbus_maxcurrent
-    for:
-      hours: 0
-      minutes: 3
-      seconds: 0
-    above: 5
+    - platform: numeric_state
+      entity_id: sensor.charger_current_power
+      below: 10
+      for:
+        hours: 0
+        minutes: 3
+        seconds: 0
   condition:
-  - condition: numeric_state
-    entity_id: sensor.charger_current_power
-    below: 1
+    - condition: numeric_state
+      entity_id: sensor.charger_modbus_maxcurrent
+      above: 5
   action:
-  - service: notify.bart_phone
-    metadata: {}
-    data:
-      message: Laadpaal laadt waarschijnlijk niet.
-      title: Mogelijk probleem met auto laden.
+    - if:
+        - condition: state
+          entity_id: person.bart
+          state: home
+        - condition: template
+          value_template: "{{ 8 < now().hour < 23 }}"          
+      then:
+        - service: notify.bart_phone
+          data:
+            message: TTS
+            data:
+              tts_text: >-
+                Het laden van de auto geeft een fout. 
+              ttl: 0
+              priority: high
+              media_stream: alarm_stream  
+    - service: notify.bart_phone
+      metadata: {}
       data:
-        tag: charge_error
+        message: Laadpaal laadt nu aan {{ states('sensor.charger_current_power') | round() }} W terwijl er {{ states('sensor.charger_modbus_maxcurrent') | int() }} Ampère wordt gevraagd.
+        title: Mogelijk probleem met auto laden.
+        data:
+          tag: charge_error
 
 
 - alias: 🚗 car 1 // 🔋 charge // fout bij laden opgelost
