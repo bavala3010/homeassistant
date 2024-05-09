@@ -386,6 +386,13 @@ automation:
         title: Mogelijk probleem met auto laden.
         data:
           tag: charge_error
+    - service: tts.edge_tts_say
+      data:
+        entity_id: media_player.living_speaker
+        message: Het laden van de auto geeft een fout.
+        options:
+          pitch: +0Hz
+          rate: -10%            
 
 
 - alias: 🚗 car 1 // 🔋 charge // fout bij laden opgelost
