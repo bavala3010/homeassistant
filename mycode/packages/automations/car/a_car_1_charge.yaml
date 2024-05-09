@@ -491,11 +491,15 @@ automation:
   - platform: state
     entity_id:
       - sensor.audi_e_tron_sportback_remaining_charge_time
+      - sensor.car_1_charge_limit
   action:
     - service: timer.start
       data:
         duration: >
-          {{ states('sensor.audi_e_tron_sportback_remaining_charge_time') | int * 60 }}
+          {% set target = states('sensor.car_1_charge_limit') | int %}
+          {% set soc = states('sensor.car_1_soc') | int %}
+          {% set remaining = states('sensor.audi_e_tron_sportback_remaining_charge_time') | int * 60 %}
+          {{ ((target - soc) / 100 * remaining) | int }}
       target:
         entity_id: timer.car_1_remaining_charge_time
   mode: single      

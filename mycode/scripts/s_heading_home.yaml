@@ -34,6 +34,16 @@ bart_leaving_brussels_central_station:
         timeout: 5000
       target:
         entity_id: binary_sensor.bartsamsung
+    - service: script.google_home_resume
+      data:
+        action:
+          - service: tts.edge_tts_say
+            data:
+              entity_id: media_player.living_speaker
+              message: Aandacht. Bart is om {{ arrival_hour_spoken }} thuis.
+              options:
+                pitch: +0Hz
+                rate: -10%        
     - service: notify.madouce_phone
       data:
         title: >

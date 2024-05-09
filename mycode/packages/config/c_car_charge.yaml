@@ -203,7 +203,6 @@ template:
           {% elif states('input_select.car_1_charge_limit') == '100%'%}100
           {% endif %}
 
-
       - name: car_1_remaining_charge_time_next_24h
         state: >
           {% set remaining_time = states('sensor.audi_e_tron_sportback_remaining_charge_time') | int %}
@@ -223,22 +222,30 @@ template:
                 {% set time_diff = minute | int / 60 %}
                 {% set new_time = (as_timestamp(current_time) + time_diff * 60) | timestamp_custom('%Y-%m-%d %H:%M', false) %}
                 {% if minute < remaining_time %}
-                  {% set data_points = data_points + [{'x': new_time, 'y': remaining_time - minute}] %}
+                  {% set data_point = {'x': new_time, 'y': remaining_time - minute} %}
                 {% else %}
-                  {% set data_points = data_points + [{'x': new_time, 'y': 0}] %}
+                  {% set data_point = {'x': new_time, 'y': 0} %}
                 {% endif %}
+                {% set _ = data_points.append(data_point) %}
               {% endfor %}
-              {% for data_point in data_points %}
-                {% set data_point_str = '{"x": "' + data_point.x + '", "y": ' + data_point.y|string + '}' %}
-                {% if not loop.last %}
-                  {{ data_point_str }} ,
-                {% else %}
-                  {{ data_point_str }}
-                {% endif %}
-              {% endfor %}
+              [{{ data_points | join(', ') }}]
             {% else %}
               unknown
             {% endif %}
+
+
+
+    binary_sensor:
+      - name: "sunrise before 6:30"
+        attributes:
+          friendly_name: "opkomst zon voor 6:30"
+        state: >
+          {% set sunrise_time = as_timestamp(states('sensor.zon_van_eikenbos_opkomst')) | timestamp_custom('%H:%M') %}
+          {% if sunrise_time < "06:30" %}
+            on
+          {% else %}
+            off
+          {% endif %}
 
 sensor:
   # - platform: statistics
