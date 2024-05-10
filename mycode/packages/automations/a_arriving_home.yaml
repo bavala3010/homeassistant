@@ -30,29 +30,34 @@ automation:
       message: TTS
       data:
         tts_text: >-
-          {% if now().hour < 3 %}{% set t = now().date() %}{% set d = 'vandaag' %}
-          {% else %}{% set t = now().date() + timedelta(days=1) %}{% set d = 'morgen' %}
-          {% endif %}
-          {% set target_soc = 'input_number.car_1_min_target_soc_day_' ~ t.isoweekday() %}
-          {% set current_soc = states('sensor.car_1_soc') | round(default=0) %}
-          {% set use = 'input_select.car_1_use_day_' ~ t.isoweekday() %}
-          {% set v = states('sensor.solar_sim_energy_today_adj') | int %}
-          {% set m = states('sensor.solar_sim_energy_tomorrow_adj') | int %}
-          {% set nu = states('sensor.sma_today') | float %}
-          {% set restzon = (v - nu )| int %}
-          {% set resturen = (((states('sensor.sun_next_setting') | as_timestamp) - (now() | as_timestamp)) / 3600 ) %}
-          {% set restperuur = (restzon / resturen) | round(1) %}
+          {% set now_hour = now().hour %}
+          {% set isoweekday = now().date().isoweekday() %}
+          {% set target_soc = 'input_number.car_1_min_target_soc_day_' ~ isoweekday %}
+          {% set current_soc = states('sensor.car_1_soc') | int %}
+          {% set use = 'input_select.car_1_use_day_' ~ isoweekday %}
+          {% set today_sun = states('sensor.solar_sim_energy_today_adj') | int %}
+          {% set tomorrow_sun = states('sensor.solar_sim_energy_tomorrow_adj') | int %}
+          {% set today_sun_total = states('sensor.sma_today') | float %}
+          {% set remaining_sun = (today_sun - today_sun_total ) | int %}
+          {% set remaining_hours_until_sunset = ((states('sensor.sun_next_setting') | as_timestamp) - (now() | as_timestamp)) / 3600 %}
+          {% set remaining_per_hour = (remaining_sun / remaining_hours_until_sunset) | round(1) %}
           Welkom thuis Bart!
-          {% if states('sensor.car_1_soc') | float(default=0) <  states(target_soc) | float(default=0) %}Vergeet niet de laadkabel in te steken.
-            {% if current_soc == unavailable %}Er moet geladen worden tot {{ states(target_soc) | round(default=0) }}%
-            {% else %}Er moet geladen worden van {{ current_soc }}% naar {{ states(target_soc) | round(default=0) }}%.
-            {% endif %}
-            {% if restperuur > 1 and states('sensor.sun_phase') =="Day" %}Je kan met zon laden. Er wordt vandaag nog {{ restzon }} kilowattuur zon verwacht.
-            {% endif %}
-          {% else %}De auto heeft {{states('sensor.car_1_soc') | round(default=0) }}% batterij en dit is voldoende voor {{ d }}. Er is {{d}} maar {{ states(target_soc) | round(default=0) }}% nodig.
-            {% if restperuur > 1 %}Je mag de kabel insteken om met zon te laden. Er wordt vandaag nog {{ restzon }} kilowattuur zon verwacht.
-            {% elif restperuur <= 1 and m > 5 and ( states(use) == 'thuis' or t.isoweekday() > 5 ) %}Aangezien de auto {{ d }} waarschijnlijk thuis is, mag je wel de kabel insteken om met zon te laden. Er wordt {{ d }} {{ m }} kilowatuur zon verwacht.
-            {% endif %}
+          {% if current_soc < states(target_soc) | float(default=0) %}
+              {% if current_soc == 0 %}
+                  Er moet geladen worden tot {{ states(target_soc) | round(default=0) }}%
+              {% else %}
+                  Er moet geladen worden van {{ current_soc }}% naar {{ states(target_soc) | round(default=0) }}%.
+              {% endif %}
+              {% if remaining_per_hour > 1 and states('sensor.sun_phase') == "Day" %}
+                  Je kan met zon laden. Er wordt vandaag nog {{ remaining_sun }} kilowattuur zon verwacht.
+              {% endif %}
+          {% else %}
+              De auto heeft {{ current_soc }}% batterij en dit is voldoende voor {{ 'vandaag' if now_hour < 3 else 'morgen' }}. Er is maar {{ states(target_soc) | round(default=0) }}% nodig.
+              {% if remaining_per_hour > 1 %}
+                  Je mag de kabel insteken om met zon te laden. Er wordt vandaag nog {{ remaining_sun }} kilowattuur zon verwacht.
+              {% elif remaining_per_hour <= 1 and tomorrow_sun > 5 and (states(use) == 'thuis' or isoweekday > 5) %}
+                  Aangezien de auto {{ 'vandaag' if now_hour < 3 else 'morgen' }} waarschijnlijk thuis is, mag je de kabel insteken om met zon te laden. Er wordt {{ 'vandaag' if now_hour < 3 else 'morgen' }} {{ tomorrow_sun }} kilowattuur zon verwacht.
+              {% endif %}
           {% endif %}
         ttl: 0
         priority: high
@@ -98,25 +103,34 @@ automation:
       message: TTS
       data:
         tts_text: >
-          {% if now().hour < 3 %}{% set t = now().date() %}{% set d = 'vandaag' %}
-          {% else %}{% set t = now().date() + timedelta(days=1) %}{% set d = 'morgen' %}
-          {% endif %}
-          {% set target_soc = 'input_number.car_1_min_target_soc_day_' ~ t.isoweekday() %}
-          {% set use = 'input_select.car_1_use_day_' ~ t.isoweekday() %}
-          {% set v = states('sensor.solar_sim_energy_today_adj') | int %}
-          {% set m = states('sensor.solar_sim_energy_tomorrow_adj') | int %}
-          {% set nu = states('sensor.sma_today') | float %}
-          {% set restzon = (v - nu )| int %}
-          {% set resturen = (((states('sensor.sun_next_setting') | as_timestamp) - (now() | as_timestamp)) / 3600 ) %}
-          {% set restperuur = (restzon / resturen) | round(1) %}
+          {% set now_hour = now().hour %}
+          {% set isoweekday = now().date().isoweekday() %}
+          {% set target_soc = 'input_number.car_1_min_target_soc_day_' ~ isoweekday %}
+          {% set current_soc = states('sensor.car_1_soc') | int %}
+          {% set use = 'input_select.car_1_use_day_' ~ isoweekday %}
+          {% set today_sun = states('sensor.solar_sim_energy_today_adj') | int %}
+          {% set tomorrow_sun = states('sensor.solar_sim_energy_tomorrow_adj') | int %}
+          {% set today_sun_total = states('sensor.sma_today') | float %}
+          {% set remaining_sun = (today_sun - today_sun_total ) | int %}
+          {% set remaining_hours_until_sunset = ((states('sensor.sun_next_setting') | as_timestamp) - (now() | as_timestamp)) / 3600 %}
+          {% set remaining_per_hour = (remaining_sun / remaining_hours_until_sunset) | round(1) %}
           Welkom thuis Madoes!
-          {% if states('sensor.car_1_soc') | float(default=0) <  states(target_soc) | float(default=0) %}Vergeet de laadkabel niet in te steken. Er moet geladen worden van {{states('sensor.car_1_soc') | round(default=0)}}% naar {{ states(target_soc) | round(default=0) }}%.
-            {% if restperuur > 1 and states('sensor.sun_phase') =="Day" %}Je kan met zon laden. Er wordt vandaag nog {{ restzon }} kilowatuur zon verwacht.
-            {% endif %}
-          {% else %}De auto heeft {{states('sensor.car_1_soc') | round(default=0) }}% batterij en dit is voldoende voor {{ d }}. Er is {{d}} maar {{ states(target_soc) | round(default=0) }}% nodig.
-            {% if restperuur > 1 %}Je mag de kabel insteken om met zon te laden. Er wordt vandaag nog {{ restzon }} kilowatuur zon verwacht.
-            {% elif restperuur <= 1 and m > 5 and ( states(use) == 'thuis' or t.isoweekday() > 5 ) %}Aangezien de auto {{ d }} waarschijnlijk thuis is, mag je wel de kabel insteken om met zon te laden. Er wordt {{ d }} {{ m }} kilowatuur zon verwacht.
-            {% endif %}
+          {% if current_soc < states(target_soc) | float(default=0) %}
+              {% if current_soc == 0 %}
+                  Er moet geladen worden tot {{ states(target_soc) | round(default=0) }}%
+              {% else %}
+                  Er moet geladen worden van {{ current_soc }}% naar {{ states(target_soc) | round(default=0) }}%.
+              {% endif %}
+              {% if remaining_per_hour > 1 and states('sensor.sun_phase') == "Day" %}
+                  Je kan met zon laden. Er wordt vandaag nog {{ remaining_sun }} kilowattuur zon verwacht.
+              {% endif %}
+          {% else %}
+              De auto heeft {{ current_soc }}% batterij en dit is voldoende voor {{ 'vandaag' if now_hour < 3 else 'morgen' }}. Er is maar {{ states(target_soc) | round(default=0) }}% nodig.
+              {% if remaining_per_hour > 1 %}
+                  Je mag de kabel insteken om met zon te laden. Er wordt vandaag nog {{ remaining_sun }} kilowattuur zon verwacht.
+              {% elif remaining_per_hour <= 1 and tomorrow_sun > 5 and (states(use) == 'thuis' or isoweekday > 5) %}
+                  Aangezien de auto {{ 'vandaag' if now_hour < 3 else 'morgen' }} waarschijnlijk thuis is, mag je de kabel insteken om met zon te laden. Er wordt {{ 'vandaag' if now_hour < 3 else 'morgen' }} {{ tomorrow_sun }} kilowattuur zon verwacht.
+              {% endif %}
           {% endif %}
         ttl: 0
         priority: high

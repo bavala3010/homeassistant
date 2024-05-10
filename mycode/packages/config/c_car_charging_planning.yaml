@@ -6,6 +6,7 @@ input_number:
     step: 1
     unit_of_measurement: "%"
     mode: box
+    icon: mdi:target
 
   car_1_min_target_soc_day_1:
     name: maandag

@@ -122,9 +122,13 @@ automation:
                       data: {}
                       target:
                         entity_id: input_boolean.car_charge_busy
-                    - service: timer.start
-                      target:
-                        entity_id: timer.car_1_remaining_charge_time                        
+                    - if:
+                        - condition: template
+                          value_template: "{{ states('timer.car_1_remaining_charge_time') =='paused' }}"
+                      then:
+                        - service: timer.start
+                          target:
+                            entity_id: timer.car_1_remaining_charge_time                        
                     - service: input_number.set_value
                       target:
                         entity_id: input_number.car_charger_watt
@@ -149,9 +153,13 @@ automation:
                       data: {}
                       target:
                         entity_id: input_boolean.car_charge_busy
-                    - service: timer.start
-                      target:
-                        entity_id: timer.car_1_remaining_charge_time                        
+                    - if:
+                        - condition: template
+                          value_template: "{{ states('timer.car_1_remaining_charge_time') =='paused' }}"
+                      then:
+                        - service: timer.start
+                          target:
+                            entity_id: timer.car_1_remaining_charge_time                       
                     - service: input_number.set_value
                       target:
                         entity_id: input_number.car_charger_watt
@@ -176,9 +184,13 @@ automation:
                       data: {}
                       target:
                         entity_id: input_boolean.car_charge_busy
-                    - service: timer.start
-                      target:
-                        entity_id: timer.car_1_remaining_charge_time                        
+                    - if:
+                        - condition: template
+                          value_template: "{{ states('timer.car_1_remaining_charge_time') =='paused' }}"
+                      then:
+                        - service: timer.start
+                          target:
+                            entity_id: timer.car_1_remaining_charge_time                        
                     - service: input_number.set_value
                       target:
                         entity_id: input_number.car_charger_watt
@@ -202,9 +214,13 @@ automation:
                       data: {}
                       target:
                         entity_id: input_boolean.car_charge_busy
-                    - service: timer.start
-                      target:
-                        entity_id: timer.car_1_remaining_charge_time                        
+                    - if:
+                        - condition: template
+                          value_template: "{{ states('timer.car_1_remaining_charge_time') =='paused' }}"
+                      then:
+                        - service: timer.start
+                          target:
+                            entity_id: timer.car_1_remaining_charge_time                        
                     - service: input_number.set_value
                       target:
                         entity_id: input_number.car_charger_watt
@@ -332,9 +348,13 @@ automation:
               data: {}
               target:
                 entity_id: input_boolean.car_charge_busy
-            - service: timer.start
-              target:
-                entity_id: timer.car_1_remaining_charge_time                
+            - if:
+                - condition: template
+                  value_template: "{{ states('timer.car_1_remaining_charge_time') =='paused' }}"
+              then:
+                - service: timer.start
+                  target:
+                    entity_id: timer.car_1_remaining_charge_time                 
             - service: input_number.set_value
               target:
                 entity_id: input_number.car_charger_watt
@@ -359,9 +379,13 @@ automation:
               data: {}
               target:
                 entity_id: input_boolean.car_charge_busy
-            - service: timer.start
-              target:
-                entity_id: timer.car_1_remaining_charge_time                
+            - if:
+                - condition: template
+                  value_template: "{{ states('timer.car_1_remaining_charge_time') =='paused' }}"
+              then:
+                - service: timer.start
+                  target:
+                    entity_id: timer.car_1_remaining_charge_time                
             - service: input_number.set_value
               target:
                 entity_id: input_number.car_charger_watt
@@ -386,9 +410,13 @@ automation:
               data: {}
               target:
                 entity_id: input_boolean.car_charge_busy
-            - service: timer.start
-              target:
-                entity_id: timer.car_1_remaining_charge_time                
+            - if:
+                - condition: template
+                  value_template: "{{ states('timer.car_1_remaining_charge_time') =='paused' }}"
+              then:
+                - service: timer.start
+                  target:
+                    entity_id: timer.car_1_remaining_charge_time               
             - service: input_number.set_value
               target:
                 entity_id: input_number.car_charger_watt
@@ -413,9 +441,13 @@ automation:
               data: {}
               target:
                 entity_id: input_boolean.car_charge_busy
-            - service: timer.start
-              target:
-                entity_id: timer.car_1_remaining_charge_time                
+            - if:
+                - condition: template
+                  value_template: "{{ states('timer.car_1_remaining_charge_time') =='paused' }}"
+              then:
+                - service: timer.start
+                  target:
+                    entity_id: timer.car_1_remaining_charge_time               
             - service: input_number.set_value
               target:
                 entity_id: input_number.car_charger_watt
@@ -439,9 +471,13 @@ automation:
               data: {}
               target:
                 entity_id: input_boolean.car_charge_busy
-            - service: timer.start
-              target:
-                entity_id: timer.car_1_remaining_charge_time                
+            - if:
+                - condition: template
+                  value_template: "{{ states('timer.car_1_remaining_charge_time') =='paused' }}"
+              then:
+                - service: timer.start
+                  target:
+                    entity_id: timer.car_1_remaining_charge_time         
             - service: input_text.set_value
               data:
                 value: "[{{ as_timestamp(now()) | timestamp_custom('%-d/%-m %H:%M') }}] {{ wattage  | round(1) }} kW beschikbaar -> met dit wattage laden"

@@ -48,10 +48,9 @@ automation:
     value_template: '{{ trigger.to_state.attributes.dir_of_travel  == "towards" }}'
   action:
   - service: audiconnect.refresh_cloud_data
-    data: {}   
-  # - service: audiconnect.refresh_vehicle_data
-  #   data:
-  #     vin: !secret vin
+  - service: audiconnect.refresh_vehicle_data
+    data:
+      vin: !secret vin 
   mode: single
   
 - alias: 🚗 car 1 // Madouce 3 km van thuis = vernieuwen status auto
@@ -66,10 +65,9 @@ automation:
     value_template: '{{ trigger.to_state.attributes.dir_of_travel  == "towards" }}'
   action:
   - service: audiconnect.refresh_cloud_data
-    data: {}   
-  # - service: audiconnect.refresh_vehicle_data
-  #   data:
-  #     vin: !secret vin
+  - service: audiconnect.refresh_vehicle_data
+    data:
+      vin: !secret vin
   mode: single  
   
 - alias: 🚗 car 1 // 🔋 charge // Car sim km veranderd
