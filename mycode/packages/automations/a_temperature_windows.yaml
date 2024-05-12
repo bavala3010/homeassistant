@@ -118,11 +118,11 @@ automation:
         message: >
           Temperatuur stijgt in: {{expand(states.group.home_temp_rising) |
           selectattr('state','eq','on') | map(attribute='name') | list | join(',
-          ') }}<br> {% if is_state('group.alle_raam_sensoren', 'off') %} Gelukkig
+          ') }}<br> {% if is_state('group.alle_ramen', 'off') %} Gelukkig
           zijn alle ramen dicht! {% else %}
-          {{expand(states.group.alle_raam_sensoren) |selectattr('state','eq','on')
+          {{expand(states.group.alle_ramen) |selectattr('state','eq','on')
           | list | length }} open ramen: 
-          {{expand(states.group.alle_raam_sensoren) |
+          {{expand(states.group.alle_ramen) |
           selectattr('state','eq','on') | map(attribute='name') | list | join(',
           ') }} {% endif %}
         data:
@@ -138,8 +138,7 @@ automation:
     value_template: >
       {% set outdoor = states('sensor.eikenbos_temperature') | float %}
       {% set indoor =  states('sensor.living_temperature') | float %}
-      {% if outdoor < indoor %} true
-      {% endif %}
+      {{ outdoor < (indoor + 0.5) }}
   condition:
   - condition: state
     entity_id: group.living_ramen
@@ -176,7 +175,7 @@ automation:
     value_template: >
       {% set outdoor = states('sensor.eikenbos_temperature') |float %}
       {% set indoor =  states('sensor.veranda_temperature') |float %}
-      {{ outdoor < indoor }}
+      {{ outdoor < (indoor + 0.5) }}
   condition:
   - condition: state
     entity_id: binary_sensor.veranda_schuifraam
@@ -213,7 +212,7 @@ automation:
     value_template: >
       {% set outdoor = states('sensor.eikenbos_temperature') |float %}
       {% set indoor =  states('sensor.kamer_amilya_temperature') |float %}
-      {{ outdoor < indoor }}
+      {{ outdoor < (indoor + 0.5) }}
   condition:
   - condition: state
     entity_id: binary_sensor.kamer_amilya_raam
@@ -250,7 +249,7 @@ automation:
     value_template: >
       {% set outdoor = states('sensor.eikenbos_temperature') |float %}
       {% set indoor =  states('sensor.kamer_alunya_temperature') |float %}
-      {{ outdoor < indoor }}
+      {{ outdoor < (indoor + 0.5) }}
   condition:
   - condition: state
     entity_id: group.kamer_alunya_ramen
@@ -287,7 +286,7 @@ automation:
     value_template: >
       {% set outdoor = states('sensor.eikenbos_temperature') |float %}
       {% set indoor =  states('sensor.master_bedroom_temperature') |float %}
-      {{ outdoor < indoor }}
+      {{ outdoor < (indoor + 0.5) }}
   condition:
   - condition: state
     entity_id: binary_sensor.master_bedroom_raam_kantel

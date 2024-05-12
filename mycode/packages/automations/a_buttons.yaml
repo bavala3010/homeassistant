@@ -88,6 +88,7 @@ automation:
         message: >-
           Het is nu {{ as_timestamp(now()) |timestamp_custom('%-H') }} uur {{
           as_timestamp(now()) |timestamp_custom('%-M') }}. Buiten is het {{ states('sensor.eikenbos_temperature') |string|replace('.', ',') }} graden.
+          De volgende 8 uren wordt het gemiddeld {{ states('sensor.eikenbos_temperature_average_forecast_8_hours') |string|replace('.', ',') }} graden.
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
     - service: tts.edge_tts_say 
@@ -123,8 +124,17 @@ automation:
             {% if states('input_boolean.car_charge_mode_stoptimer') == 'on' %}Om het laaddoel te bereiken om {{ state_attr('input_datetime.car_charge_target_time', 'timestamp') | timestamp_custom('%-H uur %M',) }} zal het laden starten om {{ as_timestamp(states('sensor.car_charge_stoptimer_starttime'),0) | timestamp_custom('%-H uur %M') }}
             Het laden gebeurt aan {{ watt }} kilowatt.
             {% endif %}
+            {% set night = states('input_boolean.car_charge_night_net') %}
+            {% set day_net = states('input_boolean.car_charge_day_net') %}
+            {% set day_sun = states('input_boolean.car_charge_day_sun') %}
+            {% if night == 'on' and day_net =='off' and day_sun =='off' %}Er zal enkel vannacht worden geladen en niet morgen overdag.
+            {% elif night == 'on' and day_net =='on' %}Er zal vannacht en overdag van het net worden geladen.
+            {% elif night == 'on' and day_sun =='on' %}Er zal vannacht worden geladen en overdag met zon.
+            {% elif night == 'off' and day_net =='on' %}Er zal enkel overdag worden geladen van het net.
+            {% elif night == 'off' and day_sun =='on' %}Er zal enkel overdag worden geladen met zon.
+            {% endif %}
           {% else %}
-          Het laaddoel van {{ target }}% is al bereikt.
+          Het minimum laaddoel van {{ target }}% is al bereikt.
           {% endif %}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
@@ -142,7 +152,7 @@ automation:
         entity_id: media_player.master_bedroom_speaker
         cache: true
         message: >-
-          {% if is_state('group.alle_raam_sensoren', 'off') %} Alle ramen zijn
+          {% if is_state('group.alle_ramen', 'off') %} Alle ramen zijn
           dicht!
           {% else %} De volgende ramen staan nog open:
           {{expand(states.binary_sensor.kamer_amilya_raam,
@@ -166,9 +176,13 @@ automation:
         entity_id: media_player.master_bedroom_speaker
         cache: true
         message: >-
-          {% if now().strftime("%H")|int > 20 %} Slaap lekker straks.
-          {% elif now().strftime("%H")|int > 22 %} Het is bijna tijd om te slapen.
-          {% else %} Nog een prettige dag.
+          {% set current_hour = now().strftime("%H") | int %}
+          {% if current_hour >= 21 or current_hour < 2 %}
+              Slaap lekker!
+          {% elif current_hour >= 20 %}
+              Het is bijna tijd om te slapen.
+          {% else %}
+              Nog een prettige dag.
           {% endif %}
   mode: single
 

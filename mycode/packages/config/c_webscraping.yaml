@@ -1,3 +1,9 @@
 
-      
-
+scrape:
+- resource: "https://www.belsimpel.nl/samsung-galaxy-s23-plus"
+  scan_interval: 240
+  verify_ssl: false
+  sensor:
+  - name: belsimpel_S23+
+    select: "#react > main > div.ProductDetailSkeletonstyle__StyledProductDetail-sc-dcofu2-0.dEAVOo > div > div.ProductDetailSkeletonstyle__StyledAboveTheFoldContainer-sc-dcofu2-1.gFjBzf > section.ModuleSectionstyle__BaseSection-sc-1drvb51-0.ModuleSectionstyle__StyledActionSection-sc-1drvb51-3.ffGKJg.dOuDqI > div > div:nth-child(2) > div > div.SharedCallToActionstyle__StyledModuleBody-sc-qxkqcm-2.dHhoxD > div.MainCallToActionstyle__StyledPricingLabelWrapper-sc-pr39s2-3.kfjvOL > div:nth-child(1) > span"
+    unit_of_measurement: "EUR"   

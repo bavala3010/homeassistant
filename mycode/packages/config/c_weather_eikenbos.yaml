@@ -80,6 +80,15 @@ template:
         unit_of_measurement: °C
         device_class: temperature
 
+      - name: eikenbos_temperature_average_forecast_8_hours
+        # You can get a free api key from Openweather
+        # To have hourly temperature forecast, in the OpenWeather integration select the option "onecall_hourly"
+        attributes:           
+          friendly_name: "Eikenbos gemiddelde temperatuur volgende 4 uren"
+        state: "{{ state_attr('sensor.eikenbos_weather_forecast_hourly', 'forecast')[:8] | map(attribute='temperature') | average | round(1) }}"
+        unit_of_measurement: °C
+        device_class: temperature
+
       - name: eikenbos_temperature_average_forecast_24_hours
         # You can get a free api key from Openweather
         # To have hourly temperature forecast, in the OpenWeather integration select the option "onecall_hourly"

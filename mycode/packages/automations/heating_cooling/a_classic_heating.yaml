@@ -67,7 +67,10 @@ automation:
     entity_id: climate.kamer_amilya
     attribute: temperature
     above: '21'
-  condition: []
+  condition:
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"  
   action:
   - service: notify.bart_phone
     data:
@@ -91,6 +94,9 @@ automation:
   - condition: time
     after: '23:00'
     before: '06:00'
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state: "on"    
   action:
   - service: notify.bart_phone
     data:
@@ -114,6 +120,9 @@ automation:
   - condition: time
     after: '06:00'
     before: '23:00'
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state: "on"    
   action:
   - service: notify.bart_phone
     data:
@@ -137,6 +146,9 @@ automation:
   - condition: time
     after: '06:00'
     before: '23:00'
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state: "on"    
   action:
   - service: notify.bart_phone
     data:
@@ -155,6 +167,9 @@ automation:
   - minutes: /25
     platform: time_pattern
   condition:
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state: "on"  
   - condition: time
     after: '00:00'
     before: '06:00'
@@ -176,6 +191,9 @@ automation:
   - minutes: /25
     platform: time_pattern
   condition:
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state: "on"  
   - condition: time
     after: '00:00'
     before: '06:00'

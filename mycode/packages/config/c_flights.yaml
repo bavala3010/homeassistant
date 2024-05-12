@@ -1,0 +1,14 @@
+
+
+utility_meter:
+  flights_above_hourly:
+    source: sensor.flightradar24_current_in_area
+    cycle: hourly
+
+  flights_above_daily:
+    source: sensor.flightradar24_current_in_area
+    cycle: daily
+
+  flights_above_weekly:
+    source: sensor.flightradar24_current_in_area
+    cycle: weekly
