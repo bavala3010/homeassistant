@@ -17,7 +17,7 @@ automation:
       message: Temperatuur in living is nu {{ states('sensor.living_temperature') }} graden.
   mode: single
 
-- alias: temperatuur living boven 22 graden = koelen met airco
+- alias: temperatuur living boven 22 graden en zonneopwek 2000 W = koelen met airco
   id: 'a8f80e84-1935-4cb4-8109-99c5ee6d2dc2'
   description: ''
   trigger:
@@ -31,10 +31,13 @@ automation:
   - condition: state
     entity_id: input_boolean.cooling_season
     state: "on"
+  - condition: numeric_state
+    entity_id: sensor.solar_power
+    below: -1500
   action:
   - service: script.living_airco_cooling_start
   - service: notify.bart_phone
     data:
-      title: Airco koelt nu in livig
+      title: Airco koelt nu in living
       message: Temperatuur in living is nu {{ states('sensor.living_temperature') | round(1) }} °C.
   mode: single   
