@@ -33,7 +33,7 @@ automation:
     state: "on"
   - condition: numeric_state
     entity_id: sensor.solar_power
-    below: -1500
+    above: 1500
   action:
   - service: script.living_airco_cooling_start
   - service: notify.bart_phone

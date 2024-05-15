@@ -6,6 +6,9 @@ automation:
     - platform: template
       value_template: >
         {{ state_attr('remote.living_google_tv','current_activity') == "org.xbmc.kodi" }}
+    - platform: template
+      value_template: >
+        {{ state_attr('remote.master_bedroom_google_tv','current_activity') == "org.xbmc.kodi" }}
   condition: []
   action:
     - service: switch.turn_off
@@ -20,7 +23,8 @@ automation:
   trigger:
     - platform: template
       value_template: >
-        {{ state_attr('remote.living_google_tv','current_activity') != "org.xbmc.kodi" }}
+        {{ state_attr('remote.living_google_tv','current_activity') != "org.xbmc.kodi" 
+        and state_attr('remote.master_bedroom_google_tv','current_activity') != "org.xbmc.kodi"}}
   condition: []
   action:
     - service: switch.turn_on

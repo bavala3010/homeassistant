@@ -226,7 +226,7 @@ automation:
           - service: tts.edge_tts_say
             data:
               entity_id: media_player.living_speaker
-              message: Amilya doet garagepoort open.
+              message: De garagepoort wordt geopend door Amilya.
               options:
                 pitch: +0Hz
                 rate: -10%
@@ -250,7 +250,7 @@ automation:
           - service: tts.edge_tts_say
             data:
               entity_id: media_player.living_speaker
-              message: Alunya doet garagepoort open.
+              message: De garagepoort wordt geopend door Alunya.
               options:
                 pitch: +0Hz
                 rate: -10%
@@ -273,7 +273,7 @@ automation:
           - service: tts.edge_tts_say
             data:
               entity_id: media_player.living_speaker
-              message: Bart doet garagepoort open.
+              message: De garagepoort wordt geopend door Bart.
               options:
                 pitch: +0Hz
                 rate: -10%
@@ -296,7 +296,7 @@ automation:
           - service: tts.edge_tts_say
             data:
               entity_id: media_player.living_speaker
-              message: Madoes doet garagepoort open.
+              message: De garagepoort wordt geopend door Madoes.
               options:
                 pitch: +0Hz
                 rate: -10%
