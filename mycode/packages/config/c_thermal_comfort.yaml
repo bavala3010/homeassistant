@@ -37,3 +37,7 @@ sensor:
         temperature_sensor: sensor.master_bedroom_temperature
         humidity_sensor: sensor.master_bedroom_humidity
         unique_id: 013d786b-dc05-4852-bf3c-2a7a3efe36dd
+      garage_thermal:
+        temperature_sensor: sensor.garage_temperature
+        humidity_sensor: sensor.garage_humidity
+        unique_id: bdb99ae0-869f-4525-aaa3-0a132ca7a219
