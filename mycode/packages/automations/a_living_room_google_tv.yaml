@@ -1,5 +1,16 @@
 automation:
 
+- alias: tag scannen = Kodi starten op living Google TV
+  id: 'dc004044-06a8-4ad2-acb8-cafe5f617d1f'
+  description: OK
+  trigger:
+  - platform: tag
+    tag_id: !secret tag_kodi_starten_living_google_tv
+  condition: []
+  action:
+    - service: script.living_google_tv_kodi_launch
+  mode: single
+
 - alias: Starten Kodi op living Google TV = adblocker uitschakelen
   id: 'b231a923-cb2e-487e-8def-21cf6f7fba83'
   trigger:

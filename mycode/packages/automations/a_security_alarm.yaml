@@ -126,38 +126,38 @@ automation:
       volume_level: 0.4
   mode: queued
 
-- alias: 🚨 alarm // alarm uitgeschakeld aan voordeur
-  id: 'dc004044-06a8-4ad2-acb8-cafe5f617d1f'
-  description: OK
-  trigger:
-  - platform: tag
-    tag_id: !secret tag_voordeur_disarm_alarm
-  condition: []
-  action:
-  - device_id: !secret id_tel_bart
-    domain: mobile_app
-    type: notify
-    title: ''
-    message: ✅ Alarm uitgeschakeld aan voordeur.
-  - service: alarm_control_panel.alarm_disarm
-    data:
-      code: !secret alarm_code
-    target:
-      entity_id: alarm_control_panel.home_alarm
-  - service: media_player.volume_set
-    data:
-      entity_id: media_player.living_speaker
-      volume_level: 0.8
-  - service: tts.google_say
-    data:
-      entity_id: media_player.living_speaker
-      message: Alarm uitgeschakeld!
-  - delay: 00:00:10
-  - service: media_player.volume_set
-    data:
-      entity_id: media_player.living_speaker
-      volume_level: 0.4
-  mode: single
+# - alias: 🚨 alarm // alarm uitgeschakeld aan voordeur
+#   id: 'dc004044-06a8-4ad2-acb8-cafe5f617d1f'
+#   description: OK
+#   trigger:
+#   - platform: tag
+#     tag_id: !secret tag_voordeur_disarm_alarm
+#   condition: []
+#   action:
+#   - device_id: !secret id_tel_bart
+#     domain: mobile_app
+#     type: notify
+#     title: ''
+#     message: ✅ Alarm uitgeschakeld aan voordeur.
+#   - service: alarm_control_panel.alarm_disarm
+#     data:
+#       code: !secret alarm_code
+#     target:
+#       entity_id: alarm_control_panel.home_alarm
+#   - service: media_player.volume_set
+#     data:
+#       entity_id: media_player.living_speaker
+#       volume_level: 0.8
+#   - service: tts.google_say
+#     data:
+#       entity_id: media_player.living_speaker
+#       message: Alarm uitgeschakeld!
+#   - delay: 00:00:10
+#   - service: media_player.volume_set
+#     data:
+#       entity_id: media_player.living_speaker
+#       volume_level: 0.4
+#   mode: single
   
 - alias: 🚨 alarm // beweging = alarm
   id: 'f4cc29aa-ef63-411b-a755-343f97a9b721'

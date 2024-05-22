@@ -399,16 +399,6 @@ sensor:
     daily_fixed_energy:
       value: 0.00
 
-  - platform: buienalarm
-    timeframe: 15
-    name: buienalarm
-    monitored_conditions:
-      - temperature
-      - precipitation
-      - precipitation_forecast_average
-      - precipitation_forecast_total
-      - next_rain_forecast
-
   - platform: time_date
     display_options:
       - 'time'
