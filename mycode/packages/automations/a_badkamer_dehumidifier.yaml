@@ -15,17 +15,17 @@ automation:
     above: 20
   condition: []
   action:
-    - service: input_select.select_option
+    - action: input_select.select_option
       data:
         option: aan
       target:
         entity_id: input_select.badkamer_dehumidifier_state
-    - service: input_datetime.set_datetime
+    - action: input_datetime.set_datetime
       data:
         datetime: '{{ now() }}'
       target:
         entity_id: input_datetime.badkamer_dehumidifier_start_time
-    - service: timer.start
+    - action: timer.start
       data:
         duration: "{{ states('input_number.badkamer_dehumidifier_timer_minutes') | float * 60 }}"   
       target:
@@ -47,7 +47,7 @@ automation:
     - condition: template
       value_template: " {{ states('binary_sensor.badkamer_raam_wijd') != 'on' }}"
   action:
-    - service: switch.turn_on
+    - action: switch.turn_on
       data: {}
       target:
         entity_id: switch.badkamer_dehumidifier_switch
@@ -70,7 +70,7 @@ automation:
         entity_id: sensor.badkamer_dehumidifier_power
         above: 0
       sequence:
-      - service: notify.bart_phone      
+      - action: notify.bart_phone      
         data:
           title: Ontvochtiger staat al tijdje aan.
           message: >
@@ -81,7 +81,7 @@ automation:
             notification_icon: "mdi:air-humidifier"
       - delay:
           minutes: 15            
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: "Ontvochtiger staat nu uit."
       message: >
@@ -110,7 +110,7 @@ automation:
     - condition: template
       value_template: " {{ states('binary_sensor.badkamer_raam_wijd') != 'on' }}"
   action:
-    - service: switch.turn_on
+    - action: switch.turn_on
       data: {}
       target:
         entity_id: switch.badkamer_dehumidifier_switch
@@ -132,32 +132,32 @@ automation:
     below: 20
   condition: []
   action:
-    - service: input_select.select_option
+    - action: input_select.select_option
       data:
         option: uit
       target:
         entity_id: input_select.badkamer_dehumidifier_state
-    - service: input_datetime.set_datetime
+    - action: input_datetime.set_datetime
       data:
         datetime: '{{ now() }}'
       target:
         entity_id: input_datetime.badkamer_dehumidifier_stop_time
-    - service: timer.finish
+    - action: timer.finish
       data: {}
       target:
         entity_id: timer.airco_dehumidify_timer
-    - service: switch.turn_off
+    - action: switch.turn_off
       data: {}
       target:
         entity_id: switch.badkamer_dehumidifier_switch         
-    - service: notify.bart_madouce_phone
+    - action: notify.bart_madouce_phone
       data:
         message: "clear_notification"
         data:
           tag: ontvochtiger                
   mode: single
 
-- alias: 💧 humidity // badkamer ontvochtiger // timer komt op 0 of raam wijd open of <65% vocht = uitschakelen
+- alias: 💧 humidity // badkamer ontvochtiger // timer komt op 0 of raam wijd open of <60% vocht = uitschakelen
   id: 'cf189eff-93b5-4452-b62d-8c14cdbd7bb4'
   description: ''
   trigger:
@@ -170,14 +170,14 @@ automation:
     to: "on"
   - platform: numeric_state
     entity_id: sensor.badkamer_humidity
-    below: 65
+    below: 60
   condition: []
   action:  
-    - service: switch.turn_off
+    - action: switch.turn_off
       data: {}
       target:
         entity_id: switch.badkamer_dehumidifier_switch
-    - service: timer.cancel
+    - action: timer.cancel
       data: {}
       target:
         entity_id: timer.badkamer_dehumidifier_timer           

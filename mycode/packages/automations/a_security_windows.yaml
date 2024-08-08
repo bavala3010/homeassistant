@@ -30,7 +30,7 @@ automation:
           {{ states('binary_sensor.bart_phone_connected_to_car_1') == on 
           or states('binary_sensor.bart_phone_connected_to_car_2') == on }}
     then:
-      - service: notify.bart_phone
+      - action: notify.bart_phone
         data:
           message: TTS
           data:
@@ -47,7 +47,7 @@ automation:
           {{ states('binary_sensor.madouce_phone_connected_to_car_1') == on 
           or states('binary_sensor.madouce_phone_connected_to_car_2') == on }}
     then:
-      - service: notify.madouce_phone
+      - action: notify.madouce_phone
         data:
           message: TTS
           data:
@@ -63,7 +63,7 @@ automation:
       entity_id: group.gezin
       state: not_home
     then:
-      - service: notify.bart_madouce_phone
+      - action: notify.bart_madouce_phone
         data:
           title: Niemand thuis en ramen open
           message: >

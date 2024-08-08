@@ -53,10 +53,10 @@ automation:
           - condition: template
             value_template: "{{ states('sensor.gram_water_living_diff_outside') | float(default=0) >= 1 }}"
   action:
-  - service: input_boolean.turn_on
+  - action: input_boolean.turn_on
     target:
       entity_id: input_boolean.living_raam_moet_open
-  - service: input_boolean.turn_off
+  - action: input_boolean.turn_off
     target:
       entity_id: input_boolean.living_raam_moet_dicht
   mode: restart
@@ -102,10 +102,10 @@ automation:
           - condition: template
             value_template: "{{ states('sensor.gram_water_kamer_amilya_diff_outside') | float(default=0) >= 1 }}"
   action:
-  - service: input_boolean.turn_on
+  - action: input_boolean.turn_on
     target:
       entity_id: input_boolean.kamer_amilya_raam_moet_open
-  - service: input_boolean.turn_off
+  - action: input_boolean.turn_off
     target:
       entity_id: input_boolean.kamer_amilya_raam_moet_dicht
   mode: restart
@@ -153,10 +153,10 @@ automation:
             state: 'on'
           - condition: template
             value_template: "{{ states('sensor.gram_water_veranda_diff_outside') | float(default=0) >= 1 }}"
-  - service: input_boolean.turn_on
+  - action: input_boolean.turn_on
     target:
       entity_id: input_boolean.veranda_schuifraam_moet_open
-  - service: input_boolean.turn_off
+  - action: input_boolean.turn_off
     target:
       entity_id: input_boolean.veranda_schuifraam_moet_dicht
   mode: restart
@@ -210,10 +210,10 @@ automation:
             entity_id: sensor.berging_temperature
             above: '16.5'
   action:
-  - service: input_boolean.turn_on
+  - action: input_boolean.turn_on
     target:
       entity_id: input_boolean.berging_raam_moet_open
-  - service: input_boolean.turn_off
+  - action: input_boolean.turn_off
     target:
       entity_id: input_boolean.berging_raam_moet_dicht
   mode: restart
@@ -259,10 +259,10 @@ automation:
           - condition: template
             value_template: "{{ states('sensor.gram_water_badkamer_diff_outside') | float(default=0) >= 1 }}"
   action:
-    - service: input_boolean.turn_on
+    - action: input_boolean.turn_on
       target:
         entity_id: input_boolean.badkamer_raam_moet_open
-    - service: input_boolean.turn_off
+    - action: input_boolean.turn_off
       target:
         entity_id: input_boolean.badkamer_raam_moet_dicht
   mode: restart
@@ -316,10 +316,10 @@ automation:
             entity_id: sensor.gang_temperature
             above: '16.5'
   action:
-  - service: input_boolean.turn_on
+  - action: input_boolean.turn_on
     target:
       entity_id: input_boolean.gang_raam_moet_open
-  - service: input_boolean.turn_off
+  - action: input_boolean.turn_off
     target:
       entity_id: input_boolean.gang_raam_moet_dicht
   mode: restart
@@ -365,10 +365,10 @@ automation:
           - condition: template
             value_template: "{{ states('sensor.gram_water_kamer_alunya_diff_outside') | float(default=0) >= 1 }}"
   action:
-    - service: input_boolean.turn_on
+    - action: input_boolean.turn_on
       target:
         entity_id: input_boolean.kamer_alunya_raam_moet_open
-    - service: input_boolean.turn_off
+    - action: input_boolean.turn_off
       target:
         entity_id: input_boolean.kamer_alunya_raam_moet_dicht
   mode: restart
@@ -416,10 +416,10 @@ automation:
           - condition: template
             value_template: "{{ states('sensor.gram_water_master_bedroom_diff_outside') | float(default=0) >= 1 }}"
   action:
-  - service: input_boolean.turn_on
+  - action: input_boolean.turn_on
     target:
       entity_id: input_boolean.master_bedroom_raam_moet_open
-  - service: input_boolean.turn_off
+  - action: input_boolean.turn_off
     target:
       entity_id: input_boolean.master_bedroom_raam_moet_dicht
   mode: restart

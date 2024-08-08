@@ -14,7 +14,7 @@ automation:
   variables:
     message_text: Er is bliksem op {{ states('sensor.blitzortung_lightning_distance') | round() }} kilometer van huis in het {{ states('sensor.lightning_direction')}}.
   action:
-    - service: notify.bart_madouce_phone
+    - action: notify.bart_madouce_phone
       data:
         title: Bliksem!
         message: >
@@ -27,13 +27,13 @@ automation:
         - condition: template
           value_template: "{{ 8 < now().hour < 23 }}"
       then:
-        - service: tts.edge_tts_say
+        - action: tts.edge_tts_say
           data:
             entity_id: media_player.living_speaker
             message: >
               Opgelet. {{ message_text }}
     # Update the previous distance with the current distance
-    - service: input_number.set_value
+    - action: input_number.set_value
       data_template:
         entity_id: input_number.lightning_previous_distance
         value: "{{ states('sensor.blitzortung_lightning_distance') | round() }}"
@@ -54,7 +54,7 @@ automation:
   - condition: template
     value_template: "{{ (states('sensor.blitzortung_lightning_distance') | round(0) ) < ( states('input_number.lightning_previous_distance') | round() + 5 ) }}"    
   action:
-    - service: counter.increment
+    - action: counter.increment
       entity_id: counter.lightning_counter_close_area
   mode: parallel
 
@@ -67,11 +67,11 @@ automation:
       {{ states('sensor.blitzortung_lightning_counter') == '0' }}
   condition: []
   action:
-  - service: input_number.set_value
+  - action: input_number.set_value
     data_template:
       entity_id: input_number.lightning_previous_distance
       value: 50
-  - service: counter.reset
+  - action: counter.reset
     entity_id: counter.lightning_counter_close_area    
   mode: single
 

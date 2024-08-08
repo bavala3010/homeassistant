@@ -16,7 +16,7 @@ automation:
         entity_id: sensor.cheapest_hours_electricity_tomorrow
         state: unknown
     action:
-    - service: input_datetime.set_datetime
+    - action: input_datetime.set_datetime
       data:
         time: '{{ as_timestamp(states(''sensor.cheapest_hours_electricity_tomorrow'')) | timestamp_custom(''%H:%M'') }}'
       target:
@@ -38,7 +38,7 @@ automation:
         entity_id: sensor.mostexpensive_hours_electricity_tomorrow
         state: unknown
     action:
-    - service: input_datetime.set_datetime
+    - action: input_datetime.set_datetime
       data:
         time: '{{ as_timestamp(states(''sensor.mostexpensive_hours_electricity_tomorrow'')) | timestamp_custom(''%H:%M'') }}'
       target:

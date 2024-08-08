@@ -9,7 +9,7 @@ automation:
     above: '0'
   condition: []
   action:
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       title: Regen
       message: Het regent. Zijn de ramen dicht?
@@ -26,7 +26,7 @@ automation:
     above: '0'
   condition: []
   action:
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       message: Het gaat regenen over een {{ states('regenvoorspelling_min')}} minuten.
       data:
@@ -45,7 +45,7 @@ automation:
     entity_id: binary_sensor.kamer_amilya_raam
     state: 'on'
   action:
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       message: Het regent en het raam van Amilya staat open.
       title: Het regent. Doe raam Amilya dicht aub.
@@ -62,6 +62,8 @@ automation:
     - platform: state
       entity_id: sensor.buienalarm_15min_precipitation_forecast_level
   condition:
+    - condition: template
+      value_template: "{{ ('sensor.buienalarm_15min_precipitation_forecast_level') | float(default=0) > 1.5 }}"
     - condition: not
       conditions:
         - condition: or
@@ -73,7 +75,7 @@ automation:
               entity_id: sensor.buienalarm_15min_precipitation_forecast_level
               state: unavailable
   action:
-    - service: notify.bart_madouce_phone
+    - action: notify.bart_madouce_phone
       data:
         title: ☔️ Buienalarm
         message: >

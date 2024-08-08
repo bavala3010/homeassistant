@@ -27,15 +27,15 @@ automation:
           entity_id: binary_sensor.master_bedroom_raam_kantel
           state: "off"
       then:
-        - service: input_number.increment
+        - action: input_number.increment
           data: {}
           target:
             entity_id: input_number.master_bedroom_airco_dehumid_counter       
-        - service: notify.bart_phone
+        - action: notify.bart_phone
           data:
             message: "Er is een overschot aan zonne-energie. "
             title: Master bedroom wordt nu ontvochtigd.
-        - service: script.master_bedroom_airco_ontvochtigen
+        - action: script.master_bedroom_airco_ontvochtigen
           data: {}
     - if:   
         - condition: numeric_state
@@ -51,14 +51,14 @@ automation:
           entity_id: binary_sensor.kamer_alunya_schuifraam
           state: "off"
       then:
-        - service: input_number.increment
+        - action: input_number.increment
           data: {}
           target:
             entity_id: input_number.kamer_alunya_airco_dehumid_counter      
-        - service: notify.bart_phone
+        - action: notify.bart_phone
           data:
             message: "Er is een overschot aan zonne-energie. "
             title: Kamer Alunya wordt nu ontvochtigd    
-        - service: script.kamer_alunya_airco_ontvochtigen
+        - action: script.kamer_alunya_airco_ontvochtigen
           data: {}
   mode: single

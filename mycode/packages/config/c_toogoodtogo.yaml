@@ -5,12 +5,11 @@
 sensor:
   - platform: tgtg
     email: 'bartland@gmail.com'
-    access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTI5MjcyODYsImlhdCI6MTcxMjc1NDQ4NiwiaXNzIjoidGd0Z19zb3RlcmlhIiwidCI6Ijlac05iNElOUVFlcnJjeThYM2pwcVE6MDoxIiwic3ViIjoiNDk5MjEwNSJ9.7Bcpp9jvM_rjeS44cYewrjywWlQVs7nPNBIvpEpUDs0'
-    refresh_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDQyOTA0ODYsImlhdCI6MTcxMjc1NDQ4NiwiaXNzIjoidGd0Z19zb3RlcmlhIiwidCI6IjI0NldYaDYtUWV5R2lxTjhLejZKdkE6MDowIiwic3ViIjoiNDk5MjEwNSJ9.KcxVuBxmpdR-ZtGHsvNQRNKaJH8WvUafO4Yn5z4TxwA'
+    access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTgwMjkyNzQsImlhdCI6MTcxNzg1NjQ3NCwiaXNzIjoidGd0Z19zb3RlcmlhIiwidCI6IlVZS01ES0hOUUpLanJDc1pVTkY0R0E6MDoxIiwic3ViIjoiNDk5MjEwNSJ9.gwmjzKMdeVGbXt1rYQDjvwNEYb2J0BdNkIGq3QXwWv0'
+    refresh_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDkzOTI0NzQsImlhdCI6MTcxNzg1NjQ3NCwiaXNzIjoidGd0Z19zb3RlcmlhIiwidCI6Im9rZFlnUEdvU1dTT0dZSUo2N3NDUWc6MDowIiwic3ViIjoiNDk5MjEwNSJ9.gqhSuG_nCyFUhjmL5h-sj2SNN9PyIWsZLgoXOhECM1U'
     user_id: '4992105'
-    cookie: 'datadome=sSITyl33WhTCoL3SCinj1_wzNwDkEzQ60W1yOkBmx4PMtCbmPgIwDfJ~uShTMVR2gnPCnTKz9hD5aNW7PmiB0WKRhfY_x02vpKqE42xuw4XGUxxxtVmZdliSdvl9cMIQ; Max-Age=5184000; Domain=.apptoogoodtogo.com; Path=/; Secure; SameSite=Lax'
-    scan_interval: 300
-    
+    cookie: 'datadome=0sS9QPxhHXbUHHg9JaRzm8Zf~BHQN8CRMtfEB43pUAPUMauT7kfXqKXudkIrfy91HtzOyWMiiNrEwb6VmC5xcmpqPt5sUgq~AFExQFt0oh99vWppCX7vMQZF~bnRP_4E; Max-Age=5184000; Domain=.apptoogoodtogo.com; Path=/; Secure; SameSite=Lax'
+    scan_interval: 300    
 
 input_boolean:
   tgtg_geen_brood_nodig:

@@ -13,16 +13,16 @@ automation:
       state: "on"
   action:
     - parallel: 
-        - service: script.master_bedroom_play_sunrise
+        - action: script.master_bedroom_play_sunrise
           data: {}
         - sequence:  
             - wait_template: ''
               timeout: 00:05:00
-            - service: media_player.volume_set
+            - action: media_player.volume_set
               data:
                 entity_id: media_player.master_bedroom_speaker
                 volume_level: 0.3
-            - service: media_player.play_media
+            - action: media_player.play_media
               data:
                 entity_id: media_player.master_bedroom_speaker
                 media_content_id: http://192.168.68.100:8123/local/soft_morning_alarm.mp3
@@ -46,7 +46,7 @@ automation:
         - input_select.bart_activity_day_7
   condition: []
   action:
-    - service: script.set_alarmclock_bart_based_on_calendar
+    - action: script.set_alarmclock_bart_based_on_calendar
       data: {}
   mode: restart
 
@@ -64,16 +64,16 @@ automation:
       state: "on"  
   action:
     - parallel: 
-        - service: script.master_bedroom_play_bart_sunrise
+        - action: script.master_bedroom_play_bart_sunrise
           data: {}
         - sequence:  
             - wait_template: ''
               timeout: 00:05:00
-            - service: media_player.volume_set
+            - action: media_player.volume_set
               data:
                 entity_id: media_player.master_bedroom_speaker
                 volume_level: 0.3
-            - service: media_player.play_media
+            - action: media_player.play_media
               data:
                 entity_id: media_player.master_bedroom_speaker
                 media_content_id: http://192.168.68.100:8123/local/soft_morning_alarm.mp3
@@ -94,7 +94,7 @@ automation:
 #         seconds: 10
 #   condition: []
 #   action:
-#     - service: automation.turn_on
+#     - action: automation.turn_on
 #       target:
 #         entity_id: script.master_bedroom_play_bart_gradual_light
 #       data: {}
@@ -115,16 +115,16 @@ automation:
       state: "on"
   action:
     - parallel: 
-        - service: script.master_bedroom_play_madouce_sunrise
+        - action: script.master_bedroom_play_madouce_sunrise
           data: {}
         - sequence:  
             - wait_template: ''
               timeout: 00:05:00
-            - service: media_player.volume_set
+            - action: media_player.volume_set
               data:
                 entity_id: media_player.master_bedroom_speaker
                 volume_level: 0.3
-            - service: media_player.play_media
+            - action: media_player.play_media
               data:
                 entity_id: media_player.master_bedroom_speaker
                 media_content_id: http://192.168.68.100:8123/local/soft_morning_alarm.mp3
@@ -144,16 +144,16 @@ automation:
       state: "on"  
   action:
     - parallel: 
-        - service: script.master_bedroom_play_madouce_sunrise
+        - action: script.master_bedroom_play_madouce_sunrise
           data: {}
         - sequence:  
             - wait_template: ''
               timeout: 00:05:00
-            - service: media_player.volume_set
+            - action: media_player.volume_set
               data:
                 entity_id: media_player.master_bedroom_speaker
                 volume_level: 0.3
-            - service: media_player.play_media
+            - action: media_player.play_media
               data:
                 entity_id: media_player.master_bedroom_speaker
                 media_content_id: http://192.168.68.100:8123/local/soft_morning_alarm.mp3
@@ -175,7 +175,7 @@ automation:
 #         seconds: 10
 #   condition: []
 #   action:
-#     - service: automation.turn_on
+#     - action: automation.turn_on
 #       target:
 #         entity_id: script.master_bedroom_play_madouce_gradual_light
 #       data: {}
@@ -190,6 +190,6 @@ automation:
       at: "12:00:00"
   condition: []
   action:
-    - service: script.set_alarmclock_bart_based_on_calendar
+    - action: script.set_alarmclock_bart_based_on_calendar
       data: {}
   mode: single

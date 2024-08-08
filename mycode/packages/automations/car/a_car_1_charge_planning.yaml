@@ -24,8 +24,8 @@ automation:
     - input_select.car_1_use_day_6
     - input_select.car_1_use_day_7
   action:
-  - service: script.set_target_soc_based_on_calendar
-  - service: input_number.set_value
+  - action: script.set_target_soc_based_on_calendar
+  - action: input_number.set_value
     target:
       entity_id: input_number.car_1_min_target_soc
     data:
@@ -41,8 +41,8 @@ automation:
   - platform: time
     at: '06:30:00'
   action:
-  - service: script.set_target_soc_based_on_calendar
-  - service: input_number.set_value
+  - action: script.set_target_soc_based_on_calendar
+  - action: input_number.set_value
     target:
       entity_id: input_number.car_1_min_target_soc
     data:
@@ -50,7 +50,7 @@ automation:
         {% set t = (now().date() + timedelta(days=1)) %}
         {% set car_1_min_target_soc_day = 'input_number.car_1_min_target_soc_day_' ~ t.isoweekday() %}  
         {{ states(car_1_min_target_soc_day) | float(default=0) }}
-  - service: input_number.set_value
+  - action: input_number.set_value
     target:
       entity_id: input_number.car_1_optimal_target_soc
     data:

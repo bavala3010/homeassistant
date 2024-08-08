@@ -8,7 +8,7 @@ automation:
        {{ states('sensor.carbu_com_oilstd_1000l_prediction') | float() < 0 }}
   condition: []
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: "Stookolie morgen goedkoper! Prijs daalt met {{ states('sensor.carbu_com_oilstd_1000l_prediction') }}%"
   mode: single

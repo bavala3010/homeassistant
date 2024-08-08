@@ -35,7 +35,7 @@ automation:
     above: 30                              
   condition: []
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Temperatuur kamer Amilya
       message: Temperatuur in kamer Amilya is nu {{ states('sensor.kamer_amilya_temperature') | round(1) }} °C.
@@ -65,8 +65,8 @@ automation:
     entity_id: binary_sensor.kamer_amilya_raam
     state: 'off'    
   action:
-  - service: script.amilya_airco_cooling_start
-  - service: notify.bart_phone
+  - action: script.amilya_airco_cooling_start
+  - action: notify.bart_phone
     data:
       title: Airco koelt nu in kamer Amilya
       message: Temperatuur in kamer Amilya is nu {{ states('sensor.kamer_amilya_temperature') | round(1) }} °C.

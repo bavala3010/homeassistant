@@ -12,7 +12,7 @@ automation:
       for: '00:05:00'
   condition: []
   action:
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         title: Garage staat al lang open!
         message: >-
@@ -32,7 +32,7 @@ automation:
         sequence:
           - delay:
               minutes: 2
-          - service: notify.bart_phone
+          - action: notify.bart_phone
             data:
               title: Garagepoort staat al lang open!
               message: >-
@@ -47,7 +47,7 @@ automation:
                 sticky: true
                 notification_icon: mdi:garage-alert
                 clickAction: "lovelace-security/overview" 
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         title: Garagepoort is nu terug dicht.
         message: >-
@@ -75,14 +75,14 @@ automation:
     device_id: !secret id_nfc_bart
   condition: []
   action:
-  - service: tts.google_say
+  - action: tts.google_say
     data:
       entity_id: media_player.living_speaker
       message: Bart scant garagepoort.
-  - service: cover.open_cover
+  - action: cover.open_cover
     target:
       entity_id: cover.garagepoort
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       message: 'Bart scant garagepoorttag buiten.'
       title: 'Garagepoort'
@@ -100,14 +100,14 @@ automation:
     device_id: !secret id_nfc_madouce
   condition: []
   action:
-  - service: tts.google_say
+  - action: tts.google_say
     data:
       entity_id: media_player.living_speaker
       message: Madouce scant garagepoort.
-  - service: cover.open_cover
+  - action: cover.open_cover
     target:
       entity_id: cover.garagepoort
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: 'Madouce scant garagepoorttag buiten.'
       title: 'Garagepoort'
@@ -125,14 +125,14 @@ automation:
     device_id: !secret id_nfc_alunya
   condition: []
   action:
-  - service: tts.google_say
+  - action: tts.google_say
     data:
       entity_id: media_player.living_speaker
       message: Alunya scant garagepoort.
-  - service: cover.open_cover
+  - action: cover.open_cover
     target:
       entity_id: cover.garagepoort
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       message: 'Alunya scant garagepoorttag buiten.'
       title: 'Garagepoort'
@@ -155,10 +155,10 @@ automation:
     device_id: !secret id_nfc_bart
   condition: []
   action:
-  - service: cover.open_cover
+  - action: cover.open_cover
     target:
       entity_id: cover.garagepoort
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: 'Bart scant tag garagepoort binnen.'
       title: 'Garagepoort'
@@ -176,10 +176,10 @@ automation:
     device_id: !secret id_nfc_madouce
   condition: []
   action:
-  - service: cover.open_cover
+  - action: cover.open_cover
     target:
       entity_id: cover.garagepoort
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: 'Madouce scant tag garagepoort binnen.'
       title: 'Garagepoort'
@@ -197,10 +197,10 @@ automation:
     device_id: !secret id_nfc_alunya
   condition: []
   action:
-  - service: cover.open_cover
+  - action: cover.open_cover
     target:
       entity_id: cover.garagepoort
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       message: 'Alunya scant tag garagepoort binnen.'
       title: 'Garagepoort'
@@ -220,10 +220,10 @@ automation:
       value_template: >
         {{trigger.to_state.context.user_id == '7678e64f5e984bc2aac5d1d92cc318eb'}}
   action:
-    - service: script.google_home_resume
+    - action: script.google_home_resume
       data:
         action:
-          - service: tts.edge_tts_say
+          - action: tts.edge_tts_say
             data:
               entity_id: media_player.living_speaker
               message: De garagepoort wordt geopend door Amilya.
@@ -244,10 +244,10 @@ automation:
     value_template: >
       {{trigger.to_state.context.user_id == '7e508a5d2a5c42029f3d9238f0cc4648'}}
   action:
-    - service: script.google_home_resume
+    - action: script.google_home_resume
       data:
         action:
-          - service: tts.edge_tts_say
+          - action: tts.edge_tts_say
             data:
               entity_id: media_player.living_speaker
               message: De garagepoort wordt geopend door Alunya.
@@ -267,10 +267,10 @@ automation:
     value_template: >
       {{trigger.to_state.context.user_id == '87d0c2e6c3d4403396d34b43046072ae'}}
   action:
-    - service: script.google_home_resume
+    - action: script.google_home_resume
       data:
         action:
-          - service: tts.edge_tts_say
+          - action: tts.edge_tts_say
             data:
               entity_id: media_player.living_speaker
               message: De garagepoort wordt geopend door Bart.
@@ -290,10 +290,10 @@ automation:
     value_template: >
       {{trigger.to_state.context.user_id == '12bbc36927b7443c915b9492d89f6c24'}}
   action:
-    - service: script.google_home_resume
+    - action: script.google_home_resume
       data:
         action:
-          - service: tts.edge_tts_say
+          - action: tts.edge_tts_say
             data:
               entity_id: media_player.living_speaker
               message: De garagepoort wordt geopend door Madoes.

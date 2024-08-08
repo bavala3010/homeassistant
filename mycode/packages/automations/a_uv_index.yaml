@@ -30,7 +30,7 @@ automation:
     entity_id: person.bart
     state: home
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Zon & gezondheid
       message: "UV-index is hoog: {{states('sensor.eikenbos_uv_index')}}. Huid verbrandt langzaam."
@@ -58,7 +58,7 @@ automation:
     entity_id: person.bart
     state: home
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: "Zon & gezondheid: waarschuwing"
       message: "UV-index is zeer hoog: {{states('sensor.eikenbos_uv_index')}}. Huid verbrandt gemakkelijk."
@@ -86,7 +86,7 @@ automation:
     entity_id: person.bart
     state: home
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: "Zon & gezondheid: gevaar"
       message: "UV-index is extreem hoog: {{states('sensor.eikenbos_uv_index')}}. Huid verbrandt zeer snel."
@@ -114,7 +114,7 @@ automation:
     entity_id: person.madouce
     state: home
   action:
-  - service: notify.madouce_phone
+  - action: notify.madouce_phone
     data:
       title: Zon & gezondheid
       message: "UV-index is hoog: {{states('sensor.eikenbos_uv_index')}}. Huid verbrandt langzaam."
@@ -142,7 +142,7 @@ automation:
     entity_id: person.madouce
     state: home
   action:
-  - service: notify.madouce_phone
+  - action: notify.madouce_phone
     data:
       title: "Zon & gezondheid: waarschuwing"
       message: "UV-index is zeer hoog: {{states('sensor.eikenbos_uv_index')}}. Huid verbrandt gemakkelijk."
@@ -170,7 +170,7 @@ automation:
     entity_id: person.madouce
     state: home
   action:
-  - service: notify.madouce_phone
+  - action: notify.madouce_phone
     data:
       title: "Zon & gezondheid: gevaar"
       message: "UV-index is extreem hoog: {{states('sensor.eikenbos_uv_index')}}. Huid verbrandt zeer snel."

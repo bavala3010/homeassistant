@@ -18,7 +18,7 @@ automation:
       below: 20      
   condition: []
   action:
-    - service: notify.bart_madouce_phone
+    - action: notify.bart_madouce_phone
       data:
         title: Toyota kan maar {{ states('sensor.aygo_x_2024_fuel_range') | int }} km meer rijden
         message: >

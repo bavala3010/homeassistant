@@ -20,7 +20,7 @@ template:
       - platform: time_pattern
         hours: /1
     action:
-      - service: weather.get_forecasts
+      - action: weather.get_forecasts
         data:
           type: hourly
         target:
@@ -36,7 +36,7 @@ template:
       - platform: time_pattern
         hours: /1
     action:
-      - service: weather.get_forecasts
+      - action: weather.get_forecasts
         data:
           type: daily
         target:

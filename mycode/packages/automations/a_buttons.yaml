@@ -22,7 +22,7 @@ automation:
     subtype: remote_button_short_press
   condition: []
   action:
-  - service: cover.close_cover
+  - action: cover.close_cover
     target:
       entity_id: cover.garagepoort
   mode: single
@@ -38,30 +38,30 @@ automation:
     subtype: remote_button_long_release
   condition: []
   action:
-  - service: cover.open_cover
+  - action: cover.open_cover
     target:
       entity_id: cover.garagepoort
-  - service: media_player.volume_set
+  - action: media_player.volume_set
     data:
       entity_id: media_player.living_speaker
       volume_level: 0.6
-  - service: media_player.volume_set
+  - action: media_player.volume_set
     data:
       entity_id: media_player.living_speaker
       volume_level: 0.6
-  - service: tts.speak
+  - action: tts.speak
     data:
       entity_id: media_player.living_speaker
       message: Garagepoort gaat open!
-  - service: tts.speak
+  - action: tts.speak
     data:
       entity_id: media_player.living_speaker
       message: Garagepoort gaat open!
-  - service: media_player.volume_set
+  - action: media_player.volume_set
     data:
       entity_id: media_player.living_speaker
       volume_level: 0.4
-  - service: media_player.volume_set
+  - action: media_player.volume_set
     data:
       entity_id: media_player.living_speaker
       volume_level: 0.4
@@ -81,7 +81,7 @@ automation:
   - condition: template
     value_template:  "{{ not (6 < now().hour < 11) }}"
   action:
-    - service: tts.edge_tts_say
+    - action: tts.edge_tts_say
       data:
         entity_id: media_player.master_bedroom_speaker
         cache: true
@@ -91,7 +91,7 @@ automation:
           De volgende 8 uren wordt het gemiddeld {{ states('sensor.eikenbos_temperature_average_forecast_8_hours') |string|replace('.', ',') }} graden.
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.edge_tts_say 
+    - action: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
         message: >-
@@ -99,7 +99,7 @@ automation:
           Jullie zijn al {{ relative_time_plus('2022-04-30', 4, language='nl') }} getrouwd. {{("Dat begint al te tellen!", "Lukt het nog altijd als man en vrouw?", "Ik vind jullie ringen nog altijd schitterend!", "Het kleur van de jurk was de verrassing van de dag. Weet je nog?", "En lukt het nog met de geloften?" )|random }}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    # - service: tts.speak
+    # - action: tts.speak
     #   data:
     #     entity_id: media_player.master_bedroom_speaker
     #     message: >-
@@ -108,7 +108,7 @@ automation:
     #       {% endif %}
     # - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.edge_tts_say 
+    - action: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
         message: >-
@@ -138,7 +138,7 @@ automation:
           {% endif %}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.edge_tts_say 
+    - action: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
         cache: true
@@ -147,7 +147,7 @@ automation:
           slot. {% else %} De voordeur is op slot. {% endif %}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.edge_tts_say 
+    - action: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
         cache: true
@@ -171,7 +171,7 @@ automation:
           {% endif %}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.edge_tts_say 
+    - action: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
         cache: true
@@ -200,7 +200,7 @@ automation:
   - condition: template
     value_template: "{{ 6 < now().hour < 11 }}"
   action:
-    - service: tts.edge_tts_say 
+    - action: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
         cache: true
@@ -211,7 +211,7 @@ automation:
           De volgende 4 uren wordt het {{ states('sensor.eikenbos_temperature_average_forecast_4_hours') | round() }} graden.
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.edge_tts_say 
+    - action: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
         cache: true
@@ -219,7 +219,7 @@ automation:
           Er wordt vandaag {{ states('sensor.solar_sim_energy_today_adj') | round() }} kilowatuur zon verwacht.
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.edge_tts_say 
+    - action: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
         message: >-
@@ -240,7 +240,7 @@ automation:
           {% endif %}
     - delay: '00:00:02'
     - wait_template: "{{ is_state('media_player.master_bedroom_speaker', 'idle')}}"
-    - service: tts.edge_tts_say 
+    - action: tts.edge_tts_say 
       data:
         entity_id: media_player.master_bedroom_speaker
         cache: true
@@ -262,13 +262,13 @@ automation:
     subtype: remote_button_short_press
   condition: []
   action:
-  - service: switch.turn_off
+  - action: switch.turn_off
     target:
       entity_id: switch.madouce_matrasverwarmer
   - condition: time
     after: '09:00:00'
     before: '23:00:00'
-  - service: tts.speak
+  - action: tts.speak
     data:
       entity_id: media_player.master_bedroom_speaker
       cache: true
@@ -290,13 +290,13 @@ automation:
     subtype: remote_button_long_press
   condition: []
   action:
-  - service: switch.turn_on
+  - action: switch.turn_on
     target:
       entity_id: switch.madouce_matrasverwarmer
   - condition: time
     after: '09:00:00'
     before: '23:00:00'
-  - service: tts.speak
+  - action: tts.speak
     data:
       entity_id: media_player.master_bedroom_speaker
       cache: true
@@ -317,7 +317,7 @@ automation:
     subtype: turn_on
   condition: []
   action:
-  - service: light.toggle
+  - action: light.toggle
     data: {}
     target:
       entity_id:
@@ -337,7 +337,7 @@ automation:
     subtype: turn_off
   condition: []
   action:
-    - service: button.press
+    - action: button.press
       data: {}
       target:
         entity_id: button.pet_feeder_feed
@@ -356,7 +356,7 @@ automation:
     subtype: dim_up
   condition: []
   action:
-  - service: light.turn_on
+  - action: light.turn_on
     data:
       brightness_step_pct: 10
     target:
@@ -377,7 +377,7 @@ automation:
     subtype: dim_down
   condition: []
   action:
-  - service: light.turn_on
+  - action: light.turn_on
     data:
       brightness_step_pct: -10
     target:

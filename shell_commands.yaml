@@ -5,3 +5,5 @@ raspi_maintenance: ssh -i /config/ssh/id_rsa -o 'StrictHostKeyChecking=no' bart@
 #shell_mobile_vikings: '/config/mobile_vikings.sh'
 
 shell_mobile_vikings: ssh -i /config/ssh_keys/id_rsa -o 'StrictHostKeyChecking=no' bart@192.168.68.100 '/config/mobile_vikings.sh'
+
+shell_pdfmerge: ssh -i /config/ssh_keys/id_rsa -o 'StrictHostKeyChecking=no' bart@192.168.68.100 '/config/pdfrectoversomerge.sh'

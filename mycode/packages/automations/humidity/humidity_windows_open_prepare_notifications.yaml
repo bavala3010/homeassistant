@@ -36,14 +36,14 @@ automation:
     entity_id: input_boolean.living_window_pause
     state: 'off'
   action:
-  - service: script.notify_bart_windows_open
+  - action: script.notify_bart_windows_open
     data:
       title: '{{title}}'
       message: '{{reason}}<br>{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}'
       uri: "/lucht-vocht-temperatuur/vocht-gram"      
-  - service: script.notify_madouce_windows_open
+  - action: script.notify_madouce_windows_open
     data:  
       title: '{{title}}'
       message: '{{reason}}<br>{{message}}'
@@ -87,13 +87,13 @@ automation:
     entity_id: person.bart
     zone: zone.home
   action:
-  - service: script.notify_bart_windows_open
+  - action: script.notify_bart_windows_open
     data:
       title: '{{title}}'
       message: '{{reason}}<br>{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}' 
-  - service: script.notify_madouce_windows_open
+  - action: script.notify_madouce_windows_open
     data:  
       title: '{{title}}'
       message: '{{reason}}<br>{{message}}'
@@ -134,13 +134,13 @@ automation:
     entity_id: input_boolean.veranda_window_pause
     state: 'off'
   action:
-  - service: script.notify_bart_windows_open
+  - action: script.notify_bart_windows_open
     data:
       title: '{{title}}'
       message: '{{reason}}<br>{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}' 
-  - service: script.notify_madouce_windows_open
+  - action: script.notify_madouce_windows_open
     data:  
       title: '{{title}}'
       message: '{{reason}}<br>{{message}}'
@@ -181,13 +181,13 @@ automation:
     entity_id: input_boolean.berging_window_pause
     state: 'off'
   action:
-  - service: script.notify_bart_windows_open
+  - action: script.notify_bart_windows_open
     data:
       title: '{{title}}'
       message: '{{reason}}<br>{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}'
-  - service: script.notify_madouce_windows_open
+  - action: script.notify_madouce_windows_open
     data:  
       title: '{{title}}'
       message: '{{reason}}<br>{{message}}'
@@ -228,13 +228,13 @@ automation:
     entity_id: input_boolean.badkamer_window_pause
     state: 'off'
   action:
-  - service: script.notify_bart_windows_open
+  - action: script.notify_bart_windows_open
     data:
       title: '{{title}}'
       message: '{{reason}}<br>{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}'
-  - service: script.notify_madouce_windows_open
+  - action: script.notify_madouce_windows_open
     data:  
       title: '{{title}}'
       message: '{{reason}}<br>{{message}}'
@@ -278,13 +278,13 @@ automation:
     entity_id: input_boolean.kamer_alunya_window_pause
     state: 'off'
   action:
-  - service: script.notify_bart_windows_open
+  - action: script.notify_bart_windows_open
     data:
       title: '{{title}}'
       message: '{{reason}}<br>{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}'
-  - service: script.notify_madouce_windows_open
+  - action: script.notify_madouce_windows_open
     data:  
       title: '{{title}}'
       message: '{{reason}}<br>{{message}}'
@@ -325,13 +325,13 @@ automation:
     entity_id: input_boolean.master_bedroom_window_pause
     state: 'off'
   action:
-  - service: script.notify_bart_windows_open
+  - action: script.notify_bart_windows_open
     data:
       title: '{{title}}'
       message: '{{reason}}<br>{{message}}'
       tag: '{{tag}}'
       action_window_pause: '{{action_window_pause}}'
-  - service: script.notify_madouce_windows_open
+  - action: script.notify_madouce_windows_open
     data:  
       title: '{{title}}'
       message: '{{reason}}<br>{{message}}'
@@ -370,7 +370,7 @@ automation:
       entity_id: input_boolean.badkamer_raam_moet_open
       state: 'on'
   action:
-    - service: tts.google_say
+    - action: tts.google_say
       data:
         entity_id: media_player.badkamer_speaker
         message: Het raam mag open. Er is {{states('sensor.badkamer_humidity')}}% vocht.

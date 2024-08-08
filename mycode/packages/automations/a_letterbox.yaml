@@ -8,7 +8,7 @@ automation:
       entity_id: binary_sensor.letterbox_vibration
       to: 'on'
   action:
-    - service: notify.bart_madouce_phone
+    - action: notify.bart_madouce_phone
       data:
         title: Brievenbus
         message: "De klep van brievenbus werd geopend."

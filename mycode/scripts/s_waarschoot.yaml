@@ -1,5 +1,5 @@
 set_waarschoot_chauffage_away:
-  - service: climate.set_preset_mode
+  - action: climate.set_preset_mode
     data:
       preset_mode: away
     target:
@@ -10,7 +10,7 @@ set_waarschoot_chauffage_away:
         # - climate.waarschoot_overloop
         # - climate.waarschoot_badkamer
         # - climate.waarschoot_slaapkamer
-  - service: climate.set_hvac_mode
+  - action: climate.set_hvac_mode
     data:
       hvac_mode: "off"
     target:
@@ -24,7 +24,7 @@ set_waarschoot_chauffage_away:
 
 
 set_waarschoot_chauffage_home:
-  - service: climate.set_preset_mode
+  - action: climate.set_preset_mode
     data:
       preset_mode: home
     target:
@@ -35,7 +35,7 @@ set_waarschoot_chauffage_home:
         # - climate.waarschoot_overloop
         # - climate.waarschoot_badkamer
         # - climate.waarschoot_slaapkamer
-  - service: climate.set_hvac_mode
+  - action: climate.set_hvac_mode
     data:
       hvac_mode: auto
     target:

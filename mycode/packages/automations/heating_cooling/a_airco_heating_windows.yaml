@@ -15,11 +15,9 @@ automation:
       minutes: 0
       seconds: 30
   condition:
-    alias: als airco niet uit staat
-    not:
     - condition: state
       entity_id: climate.master_bedroom_airco
-      state: 'off'
+      state: 'heat'
   action:
   - device_id: 64296bd295e4506b8a3ec42c8aae7e58
     domain: climate
@@ -42,11 +40,9 @@ automation:
       minutes: 0
       seconds: 30
   condition:
-    alias: als airco niet uit staat
-    not:
     - condition: state
-      entity_id: climate.living_airco
-      state: 'off'
+      entity_id: climate.master_bedroom_airco
+      state: 'heat'
   action:
   - device_id: 1c560bbc7917f45d737e87d3e2bd0d89
     domain: climate

@@ -14,7 +14,7 @@ automation:
         seconds: 0
   condition: []
   action:
-    - service: counter.increment
+    - action: counter.increment
       metadata: {}
       data: {}
       target:
@@ -34,7 +34,7 @@ automation:
         seconds: 0
   condition: []
   action:
-    - service: counter.increment
+    - action: counter.increment
       metadata: {}
       data: {}
       target:
@@ -54,7 +54,7 @@ automation:
         seconds: 0
   condition: []
   action:
-    - service: counter.increment
+    - action: counter.increment
       metadata: {}
       data: {}
       target:
@@ -74,7 +74,7 @@ automation:
         seconds: 0
   condition: []
   action:
-    - service: counter.increment
+    - action: counter.increment
       metadata: {}
       data: {}
       target:
@@ -95,7 +95,7 @@ automation:
         seconds: 0
   condition: []
   action:
-    - service: counter.increment
+    - action: counter.increment
       metadata: {}
       data: {}
       target:
@@ -116,7 +116,7 @@ automation:
         seconds: 0
   condition: []
   action:
-    - service: counter.increment
+    - action: counter.increment
       metadata: {}
       data: {}
       target:

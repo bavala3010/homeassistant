@@ -19,14 +19,14 @@ automation:
     entity_id: sun.sun
     state: below_horizon
   action:
-  - service: netatmo.set_camera_light
+  - action: netatmo.set_camera_light
     data:
       camera_light_mode: 'on'
     target:
       entity_id: light.eikenbos_oprit
   - wait_template: ''
     timeout: 00:03:00      
-  - service: netatmo.set_camera_light
+  - action: netatmo.set_camera_light
     data:
       camera_light_mode: auto
     target:
@@ -45,31 +45,31 @@ automation:
   condition: []
   action:
     - parallel:  
-        - service: script.google_home_resume
+        - action: script.google_home_resume
           data:
             action:
-              - service: tts.edge_tts_say
+              - action: tts.edge_tts_say
                 data:
                   entity_id: media_player.living_speaker
                   message: Beweging op oprit!
                   options:
                     pitch: +0Hz
                     rate: -10%
-        - service: script.google_home_resume
+        - action: script.google_home_resume
           data:
             action:
-              - service: tts.edge_tts_say
+              - action: tts.edge_tts_say
                 data:
                   entity_id: media_player.veranda_speaker
                   message: Beweging op oprit!
-    - service: fully_kiosk.load_url
+    - action: fully_kiosk.load_url
       data:
         url: http://192.168.68.100:8123/lovelace-security/camera
       target:
         device_id: 9db72afc8fd0936719dbe6cdbe6d9711
     - wait_template: ''
       timeout: 00:02:00        
-    - service: camera.play_stream
+    - action: camera.play_stream
       data:
         format: hls
         media_player: media_player.living_speaker
@@ -77,12 +77,12 @@ automation:
         entity_id: camera.eikenbos_oprit        
     - wait_template: ''
       timeout: 00:02:00
-    - service: fully_kiosk.load_url
+    - action: fully_kiosk.load_url
       data:
         url: http://192.168.68.100:8123/dashboard-tablet/0
       target:
         device_id: 9db72afc8fd0936719dbe6cdbe6d9711
-    - service: media_player.media_stop
+    - action: media_player.media_stop
       data: {}
       target:
         entity_id: media_player.living_speaker  
@@ -105,14 +105,14 @@ automation:
     entity_id: alarm_control_panel.home_alarm
     state: armed_home  
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Beweging in tuin! 
       message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }}."
       data:
         color: red
         tag: beweging_in_tuin
-  - service: input_datetime.set_datetime
+  - action: input_datetime.set_datetime
     target:
       entity_id: input_datetime.tuin_motion_first_trigger
     data:
@@ -125,7 +125,7 @@ automation:
       sequence:
       - delay:
           seconds: 15
-      - service: notify.bart_phone      
+      - action: notify.bart_phone      
         data:
           title: Beweging in tuin!
           message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }} en duurt al {{((as_timestamp(now()) - state_attr('input_datetime.tuin_motion_first_trigger', 'timestamp')) / 60 )| round(1)  }} min."
@@ -138,7 +138,7 @@ automation:
               title: pauzeer detector 1u
             - action: tuin_detector_pause_2u
               title: pauzeer detector 2u
-  - service: notify.bart_phone      
+  - action: notify.bart_phone      
     data:
       title: "Geen beweging in tuin meer."
       message: "Beweging begon om {{ state_attr('input_datetime.tuin_motion_first_trigger', 'timestamp') | timestamp_custom('%H:%M:%S') }} en duurde {{((as_timestamp(now()) - state_attr('input_datetime.tuin_motion_first_trigger', 'timestamp')) / 60 )| round(1) }} min."
@@ -169,14 +169,14 @@ automation:
     entity_id: alarm_control_panel.home_alarm
     state: armed_home
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: 🚨 alarm // Beweging op terras! 
       message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }}."
       data:
         color: red
         tag: beweging_op_terras
-  - service: input_datetime.set_datetime
+  - action: input_datetime.set_datetime
     target:
       entity_id: input_datetime.terras_motion_first_trigger
     data:
@@ -189,7 +189,7 @@ automation:
       sequence:
       - delay:
           seconds: 15
-      - service: notify.bart_phone      
+      - action: notify.bart_phone      
         data:
           title: 🚨 alarm // Beweging op terras!
           message: "Beweging begon om {{ as_timestamp(now()) | timestamp_custom('%H:%M:%S') }} en duurt al {{((as_timestamp(now()) - state_attr('input_datetime.terras_motion_first_trigger', 'timestamp')) / 60 )| round(1)  }} min."
@@ -202,7 +202,7 @@ automation:
               title: pauzeer detector 1u
             - action: terras_detector_pause_2u
               title: pauzeer detector 2u
-  - service: notify.bart_phone      
+  - action: notify.bart_phone      
     data:
       title: "Geen beweging op terras meer."
       message: "Beweging begon om {{ state_attr('input_datetime.terras_motion_first_trigger', 'timestamp') | timestamp_custom('%H:%M:%S') }} en duurde {{((as_timestamp(now()) - state_attr('input_datetime.terras_motion_first_trigger', 'timestamp')) / 60 )| round(1) }} min."
@@ -227,18 +227,18 @@ automation:
       action: terras_detector_pause_1u
   condition: []    
   action:
-  - service: input_boolean.turn_on
+  - action: input_boolean.turn_on
     target:
       entity_id: input_boolean.terras_detector_pause
-  - service: switch.turn_off
+  - action: switch.turn_off
     target:
       entity_id: switch.terras_detector_motion 
   - wait_template: ''
     timeout: 01:00:00
-  - service: switch.turn_on
+  - action: switch.turn_on
     target:
       entity_id: switch.terras_detector_motion
-  - service: input_boolean.turn_off
+  - action: input_boolean.turn_off
     target:
       entity_id: input_boolean.terras_detector_pause
   mode: single
@@ -253,18 +253,18 @@ automation:
       action: terras_detector_pause_2u
   condition: []
   action:
-  - service: input_boolean.turn_on
+  - action: input_boolean.turn_on
     target:
       entity_id: input_boolean.terras_detector_pause  
-  - service: switch.turn_off
+  - action: switch.turn_off
     target:
       entity_id: switch.terras_bewegingssensor_motion
   - wait_template: ''
     timeout: 02:00:00
-  - service: switch.turn_on
+  - action: switch.turn_on
     target:
       entity_id: switch.terras_bewegingssensor_motion   
-  - service: input_boolean.turn_off
+  - action: input_boolean.turn_off
     target:
       entity_id: input_boolean.terras_detector_pause
   mode: single      
@@ -279,18 +279,18 @@ automation:
       action: tuin_detector_pause_1u
   condition: []
   action:
-  - service: input_boolean.turn_on
+  - action: input_boolean.turn_on
     target:
       entity_id: input_boolean.tuin_detector_pause
-  - service: switch.turn_off
+  - action: switch.turn_off
     target:
       entity_id: switch.tuin_bewegingssensor_motion
   - wait_template: ''
     timeout: 01:00:00
-  - service: switch.turn_on
+  - action: switch.turn_on
     target:
       entity_id: switch.tuin_bewegingssensor_motion  
-  - service: input_boolean.turn_off
+  - action: input_boolean.turn_off
     target:
       entity_id: input_boolean.tuin_detector_pause
   mode: single
@@ -305,18 +305,18 @@ automation:
       action: tuin_detector_pause_2u
   condition: []
   action:
-  - service: input_boolean.turn_on
+  - action: input_boolean.turn_on
     target:
       entity_id: input_boolean.tuin_detector_pause  
-  - service: switch.turn_off
+  - action: switch.turn_off
     target:
       entity_id: switch.tuin_bewegingssensor_motion
   - wait_template: ''
     timeout: 02:00:00
-  - service: switch.turn_on
+  - action: switch.turn_on
     target:
       entity_id: switch.tuin_bewegingssensor_motion    
-  - service: input_boolean.turn_off
+  - action: input_boolean.turn_off
     target:
       entity_id: input_boolean.tuin_detector_pause
   mode: single
@@ -340,7 +340,7 @@ automation:
       entity_id: sun.sun
       state: below_horizon
   action:
-    - service: netatmo.set_camera_light
+    - action: netatmo.set_camera_light
       data:
         camera_light_mode: "on"
       target:
@@ -348,7 +348,7 @@ automation:
           - light.eikenbos_oprit
     - wait_template: ''
       timeout: 00:02:00
-    - service: netatmo.set_camera_light
+    - action: netatmo.set_camera_light
       data:
         camera_light_mode: "off"
       target:
@@ -366,7 +366,7 @@ automation:
       event_data:
         type: human # other possible types: animal, vehicle
   action:
-    - service: notify.bart_phone  
+    - action: notify.bart_phone  
       data_template:
         title: Persoon op oprit
         message: >
@@ -386,7 +386,7 @@ automation:
       event_data:
         type: animal # other possible types: human, vehicle
   action:
-    - service: notify.bart_phone  
+    - action: notify.bart_phone  
       data_template:
         title: Kat op oprit
         message: >

@@ -25,14 +25,14 @@ automation:
     entity_id: alarm_control_panel.home_alarm
     state: armed_away
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Alarm
       message: '✅  Alarm is automatisch uitgeschakeld door thuiskomst.'
       data:
         color: green
         notification_icon: mdi:security-off  
-  - service: alarm_control_panel.alarm_disarm
+  - action: alarm_control_panel.alarm_disarm
     target:
       entity_id: alarm_control_panel.home_alarm
     data:
@@ -49,12 +49,12 @@ automation:
     for: 00:05:00
   condition: []
   action:
-  - service: alarm_control_panel.alarm_arm_away
+  - action: alarm_control_panel.alarm_arm_away
     data:
       code: !secret alarm_code
     target:
       entity_id: alarm_control_panel.home_alarm 
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Alarm
       message: '⛔ Alarm is automatisch ingeschakeld wegens niemand thuis.' 
@@ -75,10 +75,10 @@ automation:
     entity_id: alarm_control_panel.home_alarm
     state: armed_away
   action:
-  - service: alarm_control_panel.alarm_disarm
+  - action: alarm_control_panel.alarm_disarm
     target:
       entity_id: alarm_control_panel.home_alarm
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Alarm
       message: '✅  Alarm is automatisch uitgeschakeld door thuiskomst.' 
@@ -95,23 +95,23 @@ automation:
     tag_id: !secret tag_voordeur_arm_alarm
   condition: []
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: ⛔ Alarm ingeschakeld aan voordeur.
       title: ''
       data:
         color: blue
         clickAction: "/lovelace-security/overview"
-  - service: alarm_control_panel.alarm_arm_away
+  - action: alarm_control_panel.alarm_arm_away
     target:
       entity_id: alarm_control_panel.home_alarm
     data:
       code: !secret alarm_code
-  - service: media_player.volume_set
+  - action: media_player.volume_set
     data:
       entity_id: media_player.living_speaker
       volume_level: 0.7
-  - service: tts.google_say
+  - action: tts.google_say
     data:
       entity_id: media_player.living_speaker
       message: "Alarm ingeschakeld!
@@ -120,7 +120,7 @@ automation:
       {% endif %}"
   - wait_template: ''
     timeout: 00:00:02
-  - service: media_player.volume_set
+  - action: media_player.volume_set
     data:
       entity_id: media_player.living_speaker
       volume_level: 0.4
@@ -139,21 +139,21 @@ automation:
 #     type: notify
 #     title: ''
 #     message: ✅ Alarm uitgeschakeld aan voordeur.
-#   - service: alarm_control_panel.alarm_disarm
+#   - action: alarm_control_panel.alarm_disarm
 #     data:
 #       code: !secret alarm_code
 #     target:
 #       entity_id: alarm_control_panel.home_alarm
-#   - service: media_player.volume_set
+#   - action: media_player.volume_set
 #     data:
 #       entity_id: media_player.living_speaker
 #       volume_level: 0.8
-#   - service: tts.google_say
+#   - action: tts.google_say
 #     data:
 #       entity_id: media_player.living_speaker
 #       message: Alarm uitgeschakeld!
 #   - delay: 00:00:10
-#   - service: media_player.volume_set
+#   - action: media_player.volume_set
 #     data:
 #       entity_id: media_player.living_speaker
 #       volume_level: 0.4
@@ -191,11 +191,11 @@ automation:
     entity_id: alarm_control_panel.home_alarm
     state: armed_away
   action:
-  - service: input_text.set_value
+  - action: input_text.set_value
     data:
       entity_id: input_text.alarm_trigger_source
       value: '{{ trigger.to_state.attributes.friendly_name }}'
-  - service: alarm_control_panel.alarm_trigger
+  - action: alarm_control_panel.alarm_trigger
     entity_id: alarm_control_panel.home_alarm
   mode: single
 
@@ -208,7 +208,7 @@ automation:
     to: 'triggered'
   condition: []
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: TTS
       data:
@@ -217,7 +217,7 @@ automation:
         ttl: 0
         priority: high
         media_stream: alarm_stream_max
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       title: '🚨 alarm // Alarm!'
       message: 'Alarm in Eikenbos: beweging aan {{ states(''input_text.alarm_trigger_source'')}}'
@@ -227,7 +227,7 @@ automation:
         channel: alarm
         clickAction: "/lovelace/security"
         vibrationPattern: 10, 10, 10, 10, 10, 10, 10        
-  - service: media_player.volume_set
+  - action: media_player.volume_set
     data:
       entity_id: 
       - media_player.living_speaker
@@ -240,12 +240,12 @@ automation:
           entity_id: alarm_control_panel.home_alarm
           state: "disarmed"
       sequence:
-        - service: media_player.play_media
+        - action: media_player.play_media
           data:
             entity_id: media_player.living_speaker
             media_content_id: http://192.168.68.100:8123/local/siren.mp3
             media_content_type: music
-        - service: media_player.play_media
+        - action: media_player.play_media
           data:
             media_content_id: http://192.168.68.100:8123/local/siren.mp3
             media_content_type: music
@@ -253,7 +253,7 @@ automation:
             entity_id: media_player.veranda_speaker
         - delay:
             seconds: 30          
-  - service: media_player.volume_set
+  - action: media_player.volume_set
     data:
       entity_id: 
       - media_player.living_speaker
@@ -270,7 +270,7 @@ automation:
     event_data:
       action: set_alarm_arm_away
   action:
-  - service: alarm_control_panel.alarm_arm_away
+  - action: alarm_control_panel.alarm_arm_away
     data:
       code: !secret alarm_code
     target:

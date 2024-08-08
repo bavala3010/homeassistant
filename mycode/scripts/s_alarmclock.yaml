@@ -1,7 +1,7 @@
 bart_set_alarmclock:
   alias: Zet alarm op telefoon Bart
   sequence:
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         message: "command_activity"
         data:
@@ -19,7 +19,7 @@ bart_set_alarmclock:
 madouce_set_alarmclock:
   alias: Zet alarm op telefoon Madouce
   sequence:
-    - service: notify.madouce_phone
+    - action: notify.madouce_phone
       data:
         message: "command_activity"
         data:
@@ -35,7 +35,7 @@ madouce_set_alarmclock:
 set_alarmclock_bart_based_on_calendar:
   alias: 'zet wekker Bart gebaseerd op kalender'
   sequence:
-    - service: input_datetime.set_datetime
+    - action: input_datetime.set_datetime
       target:
         entity_id: input_datetime.bart_alarmclock_time
       data:

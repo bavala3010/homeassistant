@@ -4,22 +4,22 @@ direct_mode_start:
   description: ''
   sequence:
   # toggle the switches to keep track of the status
-  - service: input_boolean.turn_on
+  - action: input_boolean.turn_on
     data: {}
     target:
       entity_id:
         - input_boolean.car_charge_sun_busy
         - input_boolean.car_charge_busy
   # use injection minus 1 kW as car charger Watt (so you keep 1 kW injection)      
-  - service: input_number.set_value
+  - action: input_number.set_value
     target:
       entity_id: input_number.car_charger_watt
     data:
       value: "{{ (( states('sensor.net_power') | float(default=0)  / 1000 ) | abs ) - 1  }}"
   - wait_template: ''
     timeout: '00:00:05'
-  - service: script.charger_define_and_write_register_based_on_ampere
-  - service: notify.bart_phone
+  - action: script.charger_define_and_write_register_based_on_ampere
+  - action: notify.bart_phone
     data:
       title: Auto is gestart met laden in directe modus.
       message: >

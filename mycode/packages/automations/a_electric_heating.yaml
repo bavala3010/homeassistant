@@ -28,7 +28,7 @@ automation:
           {% set car_1_use_day = 'input_select.car_1_use_day_' ~ now().isoweekday() %}
           {% if states(car_1_use_day) != "thuis" %} true {% endif %}
   action:
-    - service: switch.turn_on
+    - action: switch.turn_on
       data: {}
       target:
         entity_id: switch.badkamer_electric_heater
@@ -55,7 +55,7 @@ automation:
       - condition: template
         value_template: "{{ 6 < now().hour < 14 }}"
   action:
-  - service: switch.turn_on
+  - action: switch.turn_on
     target:
       entity_id: switch.badkamer_electric_heater
   mode: single
@@ -81,7 +81,7 @@ automation:
         entity_id: sensor.badkamer_raam
         state: "gesloten"    
   action:
-    - service: switch.turn_on
+    - action: switch.turn_on
       data: {}
       target:
         entity_id: switch.badkamer_electric_heater
@@ -100,7 +100,7 @@ automation:
     above: 300
   condition: []
   action:
-    - service: input_datetime.set_datetime
+    - action: input_datetime.set_datetime
       data:
         datetime: '{{ now() }}'
       target:
@@ -135,11 +135,11 @@ automation:
       entity_id: switch.badkamer_electric_heater
       state: 'on'  
   action:
-    - service: switch.turn_off
+    - action: switch.turn_off
       data: {}
       target:
         entity_id: switch.badkamer_electric_heater
-    - service: input_datetime.set_datetime
+    - action: input_datetime.set_datetime
       data:
         datetime: '{{ now() }}'
       target:
@@ -164,10 +164,10 @@ automation:
         entity_id: light.badkamer_wasbak_rechts
         state: 'on'      
       sequence: []
-  - service: switch.turn_off
+  - action: switch.turn_off
     target:
       entity_id: switch.badkamer_electric_heater
-  - service: input_datetime.set_datetime
+  - action: input_datetime.set_datetime
     data:
       datetime: '{{ now() }}'
     target:

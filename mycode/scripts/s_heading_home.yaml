@@ -20,12 +20,12 @@ bart_leaving_brussels_central_station:
               )
             ).strftime('%H:%M')
           }}
-    - service: input_text.set_value
+    - action: input_text.set_value
       data:
         value: "{{ arrival_hour_written }}"
       target:
         entity_id: input_text.arriving_home_time_bart
-    - service: browser_mod.popup
+    - action: browser_mod.popup
       data:
         title: Bericht is verstuurd.
         content: >
@@ -34,17 +34,17 @@ bart_leaving_brussels_central_station:
         timeout: 5000
       target:
         entity_id: binary_sensor.bartsamsung
-    - service: script.google_home_resume
+    - action: script.google_home_resume
       data:
         action:
-          - service: tts.edge_tts_say
+          - action: tts.edge_tts_say
             data:
               entity_id: media_player.living_speaker
               message: Aandacht. Bart is om {{ arrival_hour_spoken }} thuis.
               options:
                 pitch: +0Hz
                 rate: -10%        
-    - service: notify.madouce_phone
+    - action: notify.madouce_phone
       data:
         title: >
           Bart is om {{ arrival_hour_written }} thuis.
@@ -60,7 +60,7 @@ bart_leaving_brussels_central_station:
           entity_id: person.madouce
           state: "home"
       then:
-        - service: notify.madouce_phone
+        - action: notify.madouce_phone
           data:
             message: TTS
             data:

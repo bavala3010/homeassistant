@@ -12,21 +12,21 @@
 car_1_climatisation_start_now_google_home:
   alias: auto start climatisatie via Google Home
   sequence:
-  - service: timer.start
+  - action: timer.start
     data:
       duration: '1800'
     target:
       entity_id: timer.car_1_climatisation
-  - service: tts.edge_tts_say
+  - action: tts.edge_tts_say
     data:
       entity_id: media_player.living_speaker
       message: "De verwarming van de auto wordt ingeschakeld."      
-  - service: audiconnect.execute_vehicle_action
+  - action: audiconnect.execute_vehicle_action
     data:
       vin: !secret vin
       action: start_climatisation
   - wait_template: "{{ is_state('sensor.audi_e_tron_sportback_climatisation_state', 'heating') }}"
-  - service: tts.edge_tts_say
+  - action: tts.edge_tts_say
     data:
       entity_id: media_player.living_speaker
       message: "De auto is aan het verwarmen."
@@ -35,7 +35,7 @@ car_1_climatisation_start_now_google_home:
       minutes: 30
       seconds: 0
       milliseconds: 0
-  - service: audiconnect.execute_vehicle_action
+  - action: audiconnect.execute_vehicle_action
     data:
       vin: !secret vin
       action: stop_climatisation
@@ -49,7 +49,7 @@ car_1_climatisation_start_now_google_home:
             entity_id: binary_sensor.bart_phone_connected_to_car_1
             state: "off"
     then:
-      - service: notify.bart_madouce_phone
+      - action: notify.bart_madouce_phone
         data:
           message: Climatisatie auto gestopt
           data:
@@ -63,7 +63,7 @@ car_1_climatisation_start_now_google_home:
 car_1_climatisation_start_now:
   alias: auto start climatisatie nu
   sequence:
-  - service: script.define_car_1_climatisation_time
+  - action: script.define_car_1_climatisation_time
     data:
       duration_sec: "0"
       duration_txt: "nu" 
@@ -71,7 +71,7 @@ car_1_climatisation_start_now:
 car_1_climatisation_start_0h30:
   alias: auto start climatisatie over 30 min
   sequence:
-  - service: script.define_car_1_climatisation_time
+  - action: script.define_car_1_climatisation_time
     data:
       duration_sec: "1800"
       duration_txt: "een half uur"      
@@ -79,7 +79,7 @@ car_1_climatisation_start_0h30:
 car_1_climatisation_start_1h:
   alias: auto start climatisatie over 1 uur
   sequence:
-  - service: script.define_car_1_climatisation_time
+  - action: script.define_car_1_climatisation_time
     data:
       duration_sec: "3600"
       duration_txt: "een 1 uur"      
@@ -87,7 +87,7 @@ car_1_climatisation_start_1h:
 car_1_climatisation_start_1h30:
   alias: auto start climatisatie over 1,5 uur
   sequence:
-  - service: script.define_car_1_climatisation_time
+  - action: script.define_car_1_climatisation_time
     data:
       duration_sec: "5400"
       duration_txt: "1,5 uur"
@@ -95,7 +95,7 @@ car_1_climatisation_start_1h30:
 car_1_climatisation_start_2h:
   alias: auto start climatisatie over 2 uren
   sequence:
-  - service: script.define_car_1_climatisation_time
+  - action: script.define_car_1_climatisation_time
     data:
       duration_sec: "7200"
       duration_txt: "2 uren"
@@ -103,7 +103,7 @@ car_1_climatisation_start_2h:
 car_1_climatisation_start_2h30:
   alias: auto start climatisatie over 2,5 uren
   sequence:
-  - service: script.define_car_1_climatisation_time
+  - action: script.define_car_1_climatisation_time
     data:
       duration_sec: "9000"
       duration_txt: "2,5 uren"
@@ -111,25 +111,25 @@ car_1_climatisation_start_2h30:
 define_car_1_climatisation_time:
   alias: bepaal startuur climatisatie auto 1
   sequence:
-  - service: input_datetime.set_datetime
+  - action: input_datetime.set_datetime
     data:
       time: >
         {{ (as_timestamp(now()) + ( duration_sec | int) ) | timestamp_custom('%H:%M:%S', true) }}
     target:
       entity_id: input_datetime.car_1_climatisation_time
-  - service: timer.start
+  - action: timer.start
     data:
       duration: "{{ duration_sec }}"
     target:
       entity_id: timer.car_1_climatisation
-  - service: input_boolean.turn_on
+  - action: input_boolean.turn_on
     data: {}
     target:
       entity_id: input_boolean.car_1_climatisation_timer
   - if: >
       {{ duration_txt !="nu" }}
     then:
-      - service: notify.bart_madouce_phone
+      - action: notify.bart_madouce_phone
         data:
           message: Climatisatie Audi zal starten over {{ duration_txt }}.
           data:
@@ -141,11 +141,11 @@ define_car_1_climatisation_time:
 car_1_climatisation_start:
   alias: start climatisatie Audi
   sequence:
-  - service: audiconnect.execute_vehicle_action
+  - action: audiconnect.execute_vehicle_action
     data:
       vin: !secret vin
       action: start_climatisation
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       message: Climatisatie Audi wordt aangevraagd.
       data:
@@ -161,7 +161,7 @@ car_1_climatisation_start:
       sequence:
       - delay:
           seconds: 30    
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       message: Climatisatie Audi is effectief gestart.
       data:
@@ -174,7 +174,7 @@ car_1_climatisation_start:
 car_1_climatisation_stop:
   alias: auto stop climatisatie
   sequence:
-  - service: audiconnect.execute_vehicle_action
+  - action: audiconnect.execute_vehicle_action
     data:
       vin: !secret vin
       action: stop_climatisation
@@ -188,7 +188,7 @@ car_1_climatisation_stop:
             entity_id: binary_sensor.bart_phone_connected_to_car_1
             state: "off"
     then:
-      - service: notify.bart_madouce_phone
+      - action: notify.bart_madouce_phone
         data:
           message: Climatisatie auto gestopt
           data:

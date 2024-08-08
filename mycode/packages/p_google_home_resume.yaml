@@ -114,7 +114,7 @@ script:
               for_each: "{{ groups_existing }}"
               sequence:
                 - alias: "Remove one group"
-                  service: group.remove
+                  action: group.remove
                   data:
                     object_id: "{{ states[repeat.item].object_id }}"
       - alias: "Set based on other scripts"
@@ -137,7 +137,7 @@ script:
                 error: true
           - conditions: "{{ not (event_script or automation) and no_service_count > 0 }}"
             sequence:
-              - service: system_log.write
+              - action: system_log.write
                 data:
                   level: "warning"
                   logger: "{{ this.entity_id }}"
@@ -173,7 +173,7 @@ script:
         if: "{{ spotify_entities | count > 0 }}"
         then:
           - alias: "Update Spotify entities"
-            service: homeassistant.update_entity
+            action: homeassistant.update_entity
             target:
               entity_id: "{{ spotify_entities }}"
       - alias: "Store data of media player entities and determine target_list"
@@ -416,7 +416,7 @@ script:
       - alias: "Send log message about wrong wrong primary_spotcast"
         if: "{{ not primary_spotcast_check }}"
         then:
-          - service: system_log.write
+          - action: system_log.write
             data:
               level: "warning"
               logger: "{{ this.entity_id }}"
@@ -446,7 +446,7 @@ script:
                 | list
             }}
       - alias: "Create group with entities for which the script is active"
-        service: group.set
+        action: group.set
         data:
           object_id: resume_script_active_ghresume_{{ context.id | lower }}
           name: "Entities currently active with Google Home Resume script"
@@ -459,7 +459,7 @@ script:
         if: "{{ iif(resume_this_action is defined and resume_this_action,false,true) }}"
         then:
           - alias: "Create group entities with resume_this_action to false"
-            service: group.set
+            action: group.set
             data:
               object_id: resume_action_false_ghresume_{{ context.id | lower }}
               name: "Entities with actions which should not be resumed"
@@ -473,7 +473,7 @@ script:
           {{ target_no_volume | count > 0 }}
         then:
           - alias: "Turn non playing entities on"
-            service: media_player.turn_on
+            action: media_player.turn_on
             continue_on_error: true
             target:
               entity_id: "{{ target_no_volume }}"
@@ -510,7 +510,7 @@ script:
               | count > 0
           }}
         then:
-          - service: ytube_music_player.call_method
+          - action: ytube_music_player.call_method
             data:
               entity_id: >
                 {{
@@ -598,7 +598,7 @@ script:
                 data: >
                   {{ dict(service_call.get('data', {}).items() | rejectattr('0', 'in', ['entity_id', 'area_id', 'device_id', 'script_extra']) | list) }}
             - alias: "Stop all targets which are playing"
-              service: media_player.media_stop
+              action: media_player.media_stop
               target:
                 entity_id: "{{ expand(media_entities) | selectattr('state', 'eq', 'playing') | map(attribute='entity_id') | list }}"
             - alias: "Wait until they are all stopped"
@@ -608,7 +608,7 @@ script:
                 - conditions: "{{ volume_set }}"
                   sequence:
                     - alias: "Apply TTS volume"
-                      service: media_player.volume_set
+                      action: media_player.volume_set
                       target:
                         entity_id: >
                           {{
@@ -626,7 +626,7 @@ script:
                 - conditions: "{{ tts and screen }}"
                   sequence:
                     - alias: "Call TTS for screen script"
-                      service: script.turn_on
+                      action: script.turn_on
                       target:
                         entity_id: script.google_home_resume_helper
                       data:
@@ -638,7 +638,7 @@ script:
                           picture_url: "{{ extra.screen_tts.get('picture_url', '') }}"
                           action_type: tts
                       continue_on_error: true
-            - service: "{{ service_call.service }}"
+            - action: "{{ service_call.service }}"
               target: >
                 {%- if screen and tts %}
                   {{ dict(entity_id = settings.dummy_player) }}
@@ -678,7 +678,7 @@ script:
               variables:
                 player: "{{ player_data | selectattr('entity_id', 'eq', repeat.item) | join }}"
             - alias: "Start perform resume script"
-              service: script.turn_on
+              action: script.turn_on
               target:
                 entity_id: script.google_home_resume_helper
               data:
@@ -712,7 +712,7 @@ script:
           for_each: "{{ groups_to_remove }}"
           sequence:
             - alias: "Remove group"
-              service: group.remove
+              action: group.remove
               data:
                 object_id: >
                   {{ states[repeat.item].object_id }}
@@ -764,7 +764,7 @@ script:
                       current_volume: "{{ state_attr(player.entity_id, 'volume_level') | round(2, default=0.0) }}"
                       data_volume: "{{ player.get('volume_level', 0.0) | round(2) }}"
                   - alias: "Add entity to the restore active group"
-                    service: group.set
+                    action: group.set
                     data:
                       object_id: resume_active_ghresume_{{ context.id | lower }}
                       name: "Entities which will be resumed by the Google Home Resume script"
@@ -799,7 +799,7 @@ script:
                           for_each: "{{ player.members if player.type == 'group' else [ player.entity_id ] }}"
                           sequence:
                             - alias: "Set volume back to old state"
-                              service: media_player.volume_set
+                              action: media_player.volume_set
                               target:
                                 entity_id: "{{ repeat.item }}"
                               data:
@@ -813,7 +813,7 @@ script:
                     if: "{{ player.type == 'screen' and not resume }}"
                     then:
                       - alias: "Turn Google Home off to return to idle mode (photo display)"
-                        service: media_player.turn_off
+                        action: media_player.turn_off
                         target:
                           entity_id: "{{ player.entity_id }}"
                   - alias: "Resume needed?"
@@ -843,13 +843,13 @@ script:
                             conditions: "{{ bbc }}"
                             sequence:
                               - alias: "Play video"
-                                service: media_player.play_media
+                                action: media_player.play_media
                                 target:
                                   entity_id: "{{ player.entity_id }}"
                                 data:
                                   media_content_type: cast
                                   media_content_id: '{{ dict(app_name="youtube", media_id=player.media_content_id) | to_json }}'
-                              - service: media_player.play_media
+                              - action: media_player.play_media
                                 target:
                                   entity_id: "{{ player.entity_id }}"
                                 data:
@@ -877,7 +877,7 @@ script:
                                     if: "{{ wait.completed }}"
                                     then: &seek
                                       - alias: "Seek"
-                                        service: media_player.media_seek
+                                        action: media_player.media_seek
                                         target:
                                           entity_id: "{{ player.entity_id }}"
                                         data:
@@ -888,7 +888,7 @@ script:
                             sequence:
                               - variables:
                                   player_ytube: "{{ player.yt_player }}"
-                              - service: ytube_music_player.call_method
+                              - action: ytube_music_player.call_method
                                 data:
                                   entity_id: "{{ player_ytube }}"
                                   command: interrupt_resume
@@ -903,7 +903,7 @@ script:
                             conditions: "{{ player.type == 'screen' and youtube }}"
                             sequence:
                               - alias: "Play video"
-                                service: media_player.play_media
+                                action: media_player.play_media
                                 target:
                                   entity_id: "{{ player.entity_id }}"
                                 data:
@@ -929,7 +929,7 @@ script:
                                   account_data:
                                     account: "{{ player.spotcast }}"
                               - alias: "Resume spotify"
-                                service: spotcast.start
+                                action: spotcast.start
                                 data: >
                                   {{ service_data if player.spotcast == 'primary_account' else dict(service_data, **account_data) }}
                               - alias: "Wait until song is playing"
@@ -941,7 +941,7 @@ script:
                                 then: *seek
                                 else:
                                   - alias: "Resume spotify"
-                                    service: spotcast.start
+                                    action: spotcast.start
                                     data: >
                                       {{ service_data if player.spotcast == 'primary_account' else dict(service_data, **account_data) }}
                                   - alias: "Wait until song is playing"
@@ -964,7 +964,7 @@ script:
                                     images:
                                       - url: "{{ picture_url }}"
                               - alias: "Resume stream"
-                                service: media_player.play_media
+                                action: media_player.play_media
                                 target:
                                   entity_id: "{{ player.entity_id }}"
                                 data:
@@ -992,7 +992,7 @@ script:
                                     images:
                                       - url: "{{ picture_url }}"
                               - alias: "Resume stream"
-                                service: media_player.play_media
+                                action: media_player.play_media
                                 target:
                                   entity_id: "{{ player.entity_id }}"
                                 data:
@@ -1008,7 +1008,7 @@ script:
                                 if: "{{ wait.completed }}"
                                 then:
                                   - alias: "Play (avoids long delay)"
-                                    service: media_player.media_play
+                                    action: media_player.media_play
                                     target:
                                       entity_id: "{{ player.entity_id }}"
                   - alias: "Check if resume_action_false group exists"
@@ -1016,7 +1016,7 @@ script:
                       {{ integration_entities('group') | select('search', 'resume_action_false_ghresume_' ~ context.id | lower) | list | count > 0 }}
                     then:
                       - alias: "Remove entity + members from group"
-                        service: group.set
+                        action: group.set
                         data:
                           object_id: resume_action_false_ghresume_{{ context.id | lower }}
                           name: "Entities with actions which should not be resumed"
@@ -1025,7 +1025,7 @@ script:
                             {%- set current = state_attr('group.resume_action_false_ghresume' ~ context.id | lower, 'entity_id') %}
                             {{ iif(current == none, [], current) | reject('in', [player.entity_id] + player.members) | list }}
                   - alias: "Remove entity + members from group"
-                    service: group.set
+                    action: group.set
                     data:
                       object_id: resume_active_ghresume_{{ context.id | lower }}
                       name: "Entities which will be resumed by the Google Home Resume script"
@@ -1035,7 +1035,7 @@ script:
                         {%- set current = state_attr(g, 'entity_id') %}
                         {{ iif(current == none, [], current) | reject('in', [player.entity_id] + player.members) | list }}
                   - alias: "Remove entity + members from group"
-                    service: group.set
+                    action: group.set
                     data:
                       object_id: resume_script_active_ghresume_{{ context.id | lower }}
                       name: "Entities currently active with Google Home Resume script"
@@ -1063,12 +1063,12 @@ script:
                 event_type: call_service
                 event_data:
                   domain: media_player
-                  service: play_media
+                  action: play_media
                   service_data:
                     media_content_type: music
                     entity_id: "{{ [ dummy_player ] }}"
           - alias: "Send TTS message with picture"
-            service: media_player.play_media
+            action: media_player.play_media
             target: "{{ target }}"
             data:
               media_content_id: "{{ wait.trigger.event.data.service_data.media_content_id }}"
@@ -1100,7 +1100,7 @@ script:
         if: "{{ integration_entities('spotify') | count > 0 }}"
         then:
           - alias: "Update Spotify entities"
-            service: homeassistant.update_entity
+            action: homeassistant.update_entity
             target:
               entity_id: "{{ integration_entities('spotify') }}"
       - alias: "Set variables for service calls"
@@ -1122,7 +1122,7 @@ script:
               | count > 0
           }}
         then:
-          - service: ytube_music_player.call_method
+          - action: ytube_music_player.call_method
             data:
               entity_id: >
                 {{
@@ -1160,7 +1160,7 @@ script:
               {{ [ target ] }}
             {%- endif %}
       - alias: "Stop ambient sound"
-        service: media_player.media_stop
+        action: media_player.media_stop
         target:
           entity_id: "{{ target }}"
       - alias: "Wrong actions provided"
@@ -1171,7 +1171,7 @@ script:
                 error: true
           - conditions: "{{ no_service_count > 0 }}"
             sequence:
-              - service: system_log.write
+              - action: system_log.write
                 data:
                   level: "warning"
                   logger: "{{ this.entity_id }}"
@@ -1183,7 +1183,7 @@ script:
         if: "{{ use_resume if use_resume is defined else true }}"
         then:
           - alias: "Send actions using Google Home Resume script"
-            service: script.turn_on
+            action: script.turn_on
             target:
               entity_id: script.google_home_resume
             data:
@@ -1243,7 +1243,7 @@ script:
                     - alias: "Variables for specific media_player"
                       variables:
                         player: "{{ player_data | selectattr('entity_id', 'eq', repeat.item) | join }}"
-                    - service: script.turn_on
+                    - action: script.turn_on
                       target:
                         entity_id: script.google_home_resume_helper
                       data:
@@ -1279,14 +1279,14 @@ script:
                       {%- else %}
                         {{ data }}
                       {%- endif %}
-                - service: "{{ repeat.item.service }}"
+                - action: "{{ repeat.item.service }}"
                   target: "{{ repeat.item.get('target', { 'entity_id': target_list}) }}"
                   data: "{{ data }}"
       - alias: "Volume defined"
         if: "{{ volume is defined and iif(volume) }}"
         then:
           - alias: "Apply volume"
-            service: media_player.volume_set
+            action: media_player.volume_set
             target:
               entity_id: "{{ target_list }}"
             data:
@@ -1409,7 +1409,7 @@ script:
                 if: "{{ integration_entities('spotify') | count > 0 }}"
                 then:
                   - alias: "Update Spotify entities"
-                    service: homeassistant.update_entity
+                    action: homeassistant.update_entity
                     target:
                       entity_id: "{{ integration_entities('spotify') }}"
               - variables:
@@ -1434,7 +1434,7 @@ script:
                       | count > 0
                   }}
                 then:
-                  - service: ytube_music_player.call_method
+                  - action: ytube_music_player.call_method
                     data:
                       entity_id: >
                         {{ player_data
@@ -1471,7 +1471,7 @@ script:
                     {%- else %}
                       []
                     {%- endif %}
-              - service: media_player.turn_off
+              - action: media_player.turn_off
                 target:
                   entity_id: "{{ (integration_entities('cast') | select('in', target_list) | list + also_stop_list) | unique | list }}"
           - conditions: "{{ resume if resume is defined else false }}"
@@ -1495,7 +1495,7 @@ script:
                 if: "{{ players_to_resume | count > 0 }}"
                 then:
                   - alias: "Resume players"
-                    service: script.turn_on
+                    action: script.turn_on
                     target:
                       entity_id: script.google_home_resume
                     data:
@@ -1538,7 +1538,7 @@ automation:
         event_type: call_service
         event_data:
           domain: media_player
-          service: play_media
+          action: play_media
         variables:
           announce_volume: "{{ state_attr('script.google_home_resume', 'settings').get('announce_volume_automation') }}"
         id: play
@@ -1547,7 +1547,7 @@ automation:
         event_type: call_service
         event_data:
           domain: cast
-          service: show_lovelace_view
+          action: show_lovelace_view
         id: cast
     variables:
       version: *ver
@@ -1590,7 +1590,7 @@ automation:
               for_each: "{{ groups_existing }}"
               sequence:
                 - alias: "Remove one group"
-                  service: group.remove
+                  action: group.remove
                   data:
                     object_id: "{{ states[repeat.item].object_id }}"
       - alias: "Check if target is already being resumed on in a group which is already being resumed"
@@ -1616,7 +1616,7 @@ automation:
         if: "{{ integration_entities('spotify') | count > 0 }}"
         then:
           - alias: Update Spotify entities
-            service: homeassistant.update_entity
+            action: homeassistant.update_entity
             target:
               entity_id: "{{ integration_entities('spotify') }}"
       - alias: Set data_source and determine target list
@@ -1634,7 +1634,7 @@ automation:
         if: >
           {{ player_data | selectattr('entity_id', 'in', target_list) | selectattr('yt_player', 'defined') | list | count > 0 }}
         then:
-          - service: ytube_music_player.call_method
+          - action: ytube_music_player.call_method
             data:
               entity_id: >
                 {{ player_data | selectattr('entity_id', 'in', target_list) | selectattr('yt_player', 'defined') | map(attribute='yt_player') | list }}
@@ -1643,7 +1643,7 @@ automation:
         then:
           - wait_template: "{{ is_state(entities|first, 'idle') }}"
           - alias: Set volume for announcement
-            service: media_player.volume_set
+            action: media_player.volume_set
             target:
               entity_id: "{{ entities }}"
             data:
@@ -1654,7 +1654,7 @@ automation:
         condition: template
         value_template: *group_check
       - alias: Send actions using Google Home Resume script
-        service: script.turn_on
+        action: script.turn_on
         target:
           entity_id: script.google_home_resume
         data:

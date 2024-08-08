@@ -8,14 +8,14 @@
 charge_button_stop:
   alias: charge button stop geklikt
   sequence:
-  - service: input_boolean.turn_off
+  - action: input_boolean.turn_off
     data: {}
     target:
       entity_id:
         - input_boolean.car_charge_mode_now
         - input_boolean.car_charge_busy
   # set Ampere of charger to 5 to DISABLE the charging (charger requires at least 6 A)
-  - service: modbus.write_register
+  - action: modbus.write_register
     data:
       address: 1210
       unit: 1
@@ -30,7 +30,7 @@ charge_button_stop:
 auto_start_laden_nu:
   alias: auto start laden nu
   sequence:
-  - service: audiconnect.execute_vehicle_action
+  - action: audiconnect.execute_vehicle_action
     data:
       vin: !secret vin
       action: start_charger
@@ -38,7 +38,7 @@ auto_start_laden_nu:
 auto_start_laden_timer:
   alias: auto start laden timer
   sequence:
-  - service: audiconnect.execute_vehicle_action
+  - action: audiconnect.execute_vehicle_action
     data:
       vin: !secret vin
       action: start_timed_charger
@@ -47,7 +47,7 @@ auto_stop_laden:
   # the stop_charge does not function on Audi Etron
   alias: auto stop laden
   sequence:
-  - service: audiconnect.execute_vehicle_action
+  - action: audiconnect.execute_vehicle_action
     data:
       vin: !secret vin
       action: stop_charge
@@ -60,13 +60,13 @@ auto_stop_laden:
 stop_charger:
   alias: "laadpaal - stop laden door op 5 A te zetten"
   sequence:
-  - service: modbus.write_register
+  - action: modbus.write_register
     data:
       address: 1210
       unit: 1
       hub: car_charger
       value: [0x40a0, 0x0000]
-  - service: input_boolean.turn_off
+  - action: input_boolean.turn_off
     data: {}
     target:
       entity_id: 
@@ -78,9 +78,9 @@ stop_charger:
 start_charger:
   alias: "laadpaal - aansturing"
   sequence:
-    - service: script.charger_define_phase_1_or_3_based_on_watt
-    - service: script.charger_define_ampere_based_on_watt
-    - service: script.charger_define_and_write_register_based_on_ampere
+    - action: script.charger_define_phase_1_or_3_based_on_watt
+    - action: script.charger_define_ampere_based_on_watt
+    - action: script.charger_define_and_write_register_based_on_ampere
 
 
 
@@ -92,7 +92,7 @@ charger_define_phase_1_or_3_based_on_watt:
   alias: "laadpaal - bepaal 1 of 3 fases"
   # 3 phases as of 4 kw
   sequence:
-  - service: >-
+  - action: >-
       {% if states('input_number.car_charger_watt') | float < 4 %}
       script.set_charger_to_1_phase
       {% elif states('input_number.car_charger_watt') | float >= 4 %}
@@ -102,7 +102,7 @@ charger_define_phase_1_or_3_based_on_watt:
 set_charger_to_1_phase:
   alias: "laadpaal - zet op 1 fase"
   sequence:
-  - service: modbus.write_register
+  - action: modbus.write_register
     data:
       address: 1215
       unit: 1
@@ -112,7 +112,7 @@ set_charger_to_1_phase:
 set_charger_to_3_phases:
   alias: "laadpaal - zet op 3 fases"
   sequence:
-  - service: modbus.write_register
+  - action: modbus.write_register
     data:
       address: 1215
       unit: 1
@@ -126,7 +126,7 @@ set_charger_to_3_phases:
 charger_define_ampere_based_on_watt:
   alias: "laadpaal: bepaal ampère"
   sequence:
-  - service: input_number.set_value
+  - action: input_number.set_value
     target:
       entity_id: input_number.car_charger_ampere
     data:
@@ -155,7 +155,7 @@ charger_define_ampere_based_on_watt:
 charger_define_and_write_register_based_on_ampere:
   alias: "laadpaal: bepaal registerwaarde voor ampère en stuur naar laadpaal"
   sequence:
-  - service: script.send_ampere_to_charger
+  - action: script.send_ampere_to_charger
     data:
       registervalue: '{{registervalue}}'
   variables:
@@ -175,7 +175,7 @@ charger_define_and_write_register_based_on_ampere:
 send_ampere_to_charger:
   alias: "laadpaal - schrijf Ampère naar register van laadpaal"
   sequence:
-  - service: modbus.write_register
+  - action: modbus.write_register
     data:
       address: 1210
       unit: 1
@@ -191,28 +191,28 @@ manual_charge_during_x_min:
   alias: laad gedurende x minuten
   mode: restart
   sequence:
-  - service: timer.start
+  - action: timer.start
     data:
       duration: "{{ (states('input_number.manual_charging_time') | float * 3600) | int }}"
     target:
       entity_id: timer.manual_charging_timer
   # laden starten
-  - service: script.charger_define_phase_1_or_3_based_on_watt
-  - service: script.charger_define_ampere_based_on_watt
-  - service: script.charger_define_and_write_register_based_on_ampere
+  - action: script.charger_define_phase_1_or_3_based_on_watt
+  - action: script.charger_define_ampere_based_on_watt
+  - action: script.charger_define_and_write_register_based_on_ampere
   - delay:
       minutes: "{{ ( states('input_number.manual_charging_time') | float * 60 ) | int }}"
   # stoppen
-  - service: input_boolean.turn_off
+  - action: input_boolean.turn_off
     data: {}
     target:
       entity_id: input_boolean.car_charge_mode_now
-  - service: input_boolean.turn_off
+  - action: input_boolean.turn_off
     data: {}
     target:
       entity_id: input_boolean.car_charge_busy
   # set Ampere of charger to 5 to DISABLE the charging (charger requires at least 6 A)
-  - service: modbus.write_register
+  - action: modbus.write_register
     data:
       address: 1210
       unit: 1
@@ -223,13 +223,13 @@ manual_charge_stop:
   alias: stop handmatig laden
   sequence:
   # set Ampere of charger to 5 to DISABLE the charging (charger requires at least 6 A)
-  - service: modbus.write_register
+  - action: modbus.write_register
     data:
       address: 1210
       unit: 1
       hub: car_charger
       value: [0x40a0, 0x0000]
-  - service: timer.cancel
+  - action: timer.cancel
     target:
       entity_id: timer.manual_charging_timer      
 

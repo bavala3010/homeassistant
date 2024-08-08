@@ -18,10 +18,10 @@ automation:
           value_template: >-          
             {{ states('sensor.eikenbos_temperature_average_forecast_24_hours') | round(1) < 15 }}
       then:
-        - service: input_boolean.turn_on
+        - action: input_boolean.turn_on
           target:
             entity_id: input_boolean.heating_season
-        - service: input_boolean.turn_off
+        - action: input_boolean.turn_off
           target:
             entity_id: input_boolean.cooling_season              
     - if:
@@ -29,10 +29,10 @@ automation:
           value_template: >-          
             {{ states('sensor.eikenbos_temperature_average_forecast_24_hours') | round(1) >= 15 }}
       then:
-        - service: input_boolean.turn_on
+        - action: input_boolean.turn_on
           target:
             entity_id: input_boolean.cooling_season
-        - service: input_boolean.turn_off
+        - action: input_boolean.turn_off
           target:
             entity_id: input_boolean.heating_season  
 
@@ -64,7 +64,7 @@ automation:
           value_template: >-
             {{ is_state('input_select.load_priority_2', 'Alunya airco') and is_state('input_select.kamer_alunya_heating_mode', 'centrale verwarming') and is_state('person.alunya', 'home') }}
       then:
-        - service: notify.bart_phone
+        - action: notify.bart_phone
           metadata: {}
           data:
             title: Verwarming kamer Alunya op airco
@@ -75,12 +75,12 @@ automation:
             data:
               notification_icon: mdi:radiator
               color: "#FFC000"  
-        - service: input_select.select_option
+        - action: input_select.select_option
           target:
             entity_id: input_select.kamer_alunya_heating_mode
           data:
             option: airco
-        - service: tado.set_climate_timer
+        - action: tado.set_climate_timer
           target:
             entity_id: climate.kamer_alunya
           data:
@@ -94,7 +94,7 @@ automation:
           value_template: >-
             {{ is_state('input_select.load_priority_2', 'master bedroom airco') and is_state('input_select.master_bedroom_heating_mode', 'centrale verwarming') and is_state('sensor.master_bedroom_raam', 'gesloten') }}
       then:
-        - service: notify.bart_phone
+        - action: notify.bart_phone
           metadata: {}
           data:
             title: Verwarming master bedroom op airco
@@ -105,12 +105,12 @@ automation:
             data:
               notification_icon: mdi:radiator
               color: "#FFC000"  
-        - service: input_select.select_option
+        - action: input_select.select_option
           target:
             entity_id: input_select.master_bedroom_heating_mode
           data:
             option: airco
-        - service: tado.set_climate_timer
+        - action: tado.set_climate_timer
           target:
             entity_id: climate.master_bedroom
           data:
@@ -124,7 +124,7 @@ automation:
           value_template: >-
             {{ is_state('input_select.load_priority_2', 'living airco') and is_state('input_select.living_heating_mode', 'centrale verwarming') and is_state('group.bart_madouce', 'home') }}
       then:
-        - service: notify.bart_phone
+        - action: notify.bart_phone
           metadata: {}
           data:
             title: Verwarming living op airco
@@ -135,12 +135,12 @@ automation:
             data:
               notification_icon: mdi:radiator
               color: "#FFC000"              
-        - service: input_select.select_option
+        - action: input_select.select_option
           target:
             entity_id: input_select.living_heating_mode
           data:
             option: airco
-        - service: tado.set_climate_timer
+        - action: tado.set_climate_timer
           target:
             entity_id: climate.living
           data:
@@ -156,7 +156,7 @@ automation:
             {% set n = now().hour %}
             {{ states('group.bart_madouce') == 'home' or (states('group.bart_madouce') == 'not_home' and h <= n <= h+2) }}
       then:
-        - service: notify.bart_phone
+        - action: notify.bart_phone
           metadata: {}
           data:
             title: Verwarming living op airco
@@ -168,12 +168,12 @@ automation:
             data:
               notification_icon: mdi:radiator
               color: "#FFC000"              
-        - service: input_select.select_option
+        - action: input_select.select_option
           target:
             entity_id: input_select.living_heating_mode
           data:
             option: airco
-        - service: tado.set_climate_timer
+        - action: tado.set_climate_timer
           target:
             entity_id: climate.living
           data:
@@ -184,7 +184,7 @@ automation:
           value_template: >-
             {{ is_state('input_select.load_priority_1', 'Alunya airco') and is_state('input_select.kamer_alunya_heating_mode', 'centrale verwarming') and is_state('group.kamer_alunya_ramen', 'off') }}
       then:
-        - service: notify.bart_phone
+        - action: notify.bart_phone
           metadata: {}
           data:
             title: Verwarming kamer Alunya op airco
@@ -195,12 +195,12 @@ automation:
             data:
               notification_icon: mdi:radiator
               color: "#FFC000"              
-        - service: input_select.select_option
+        - action: input_select.select_option
           target:
             entity_id: input_select.kamer_alunya_heating_mode
           data:
             option: airco
-        - service: tado.set_climate_timer
+        - action: tado.set_climate_timer
           target:
             entity_id: climate.kamer_alunya
           data:
@@ -228,7 +228,7 @@ automation:
       entity_id: group.bart_madouce
       state: home  
   action:
-    - service: climate.set_temperature
+    - action: climate.set_temperature
       data:
         hvac_mode: heat
         temperature: 22
@@ -236,12 +236,12 @@ automation:
         device_id: 1c560bbc7917f45d737e87d3e2bd0d89
     - wait_template: ''
       timeout: "00:00:10"
-    - service: climate.set_swing_mode
+    - action: climate.set_swing_mode
       data:
         swing_mode: 3D
       target:
         device_id: 1c560bbc7917f45d737e87d3e2bd0d89
-    - service: climate.set_fan_mode
+    - action: climate.set_fan_mode
       data:
         fan_mode: auto
       target:
@@ -263,18 +263,18 @@ automation:
       entity_id: group.bart_madouce
       state: home  
   action:
-    - service: climate.set_temperature
+    - action: climate.set_temperature
       data:
         hvac_mode: heat
         temperature: 22
       target:
         device_id: 3c12e341dfd1d1fe2327ec66f3613321
-    - service: climate.set_swing_mode
+    - action: climate.set_swing_mode
       data:
         swing_mode: 3D
       target:
         device_id: 3c12e341dfd1d1fe2327ec66f3613321
-    - service: climate.set_fan_mode
+    - action: climate.set_fan_mode
       data:
         fan_mode: auto
       target:
@@ -296,13 +296,13 @@ automation:
       entity_id: group.bart_madouce
       state: home  
   action:
-    - service: climate.set_temperature
+    - action: climate.set_temperature
       data:
         hvac_mode: heat
         temperature: 22
       target:
         device_id: 64296bd295e4506b8a3ec42c8aae7e58
-    - service: climate.set_fan_mode
+    - action: climate.set_fan_mode
       data:
         fan_mode: auto
       target:
@@ -330,7 +330,7 @@ automation:
       entity_id: input_select.living_heating_mode
       state: airco        
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     metadata: {}
     data:
       title: Verwarming living op centrale verwarming
@@ -338,7 +338,7 @@ automation:
       data:
         notification_icon: mdi:radiator
         color: "#FFC000"      
-  - service: input_select.select_option
+  - action: input_select.select_option
     target:
       entity_id: input_select.living_heating_mode
     data:
@@ -361,7 +361,7 @@ automation:
       entity_id: input_select.kamer_alunya_heating_mode
       state: airco        
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     metadata: {}
     data:
       title: Verwarming kamer Alunya op centrale verwarming
@@ -369,7 +369,7 @@ automation:
       data:
         notification_icon: mdi:radiator
         color: "#FFC000"      
-  - service: input_select.select_option
+  - action: input_select.select_option
     target:
       entity_id: input_select.kamer_alunya_heating_mode
     data:
@@ -392,7 +392,7 @@ automation:
       entity_id: input_select.master_bedroom_heating_mode
       state: airco        
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     metadata: {}
     data:
       title: Verwarming master bedroom op centrale verwarming
@@ -400,7 +400,7 @@ automation:
       data:
         notification_icon: mdi:radiator
         color: "#FFC000"      
-  - service: input_select.select_option
+  - action: input_select.select_option
     target:
       entity_id: input_select.master_bedroom_heating_mode
     data:
@@ -424,12 +424,12 @@ automation:
       entity_id: input_boolean.heating_season
       state: "on"
   action:
-  - service: climate.set_hvac_mode
+  - action: climate.set_hvac_mode
     data:
       hvac_mode: auto
     target:
       entity_id: climate.living
-  - service: script.living_airco_stop
+  - action: script.living_airco_stop
   mode: single  
 
 - alias: 'heating modus kamer Alunya op centrale verwarming = centrale verwarming op auto en airco stoppen'
@@ -444,12 +444,12 @@ automation:
       entity_id: input_boolean.heating_season
       state: "on"
   action:
-  - service: climate.set_hvac_mode
+  - action: climate.set_hvac_mode
     data:
       hvac_mode: auto
     target:
       entity_id: climate.kamer_alunya
-  - service: script.alunya_airco_stop
+  - action: script.alunya_airco_stop
   mode: single
 
 - alias: 'heating modus master bedroom op centrale verwarming = centrale verwarming op auto en airco stoppen'
@@ -464,10 +464,10 @@ automation:
       entity_id: input_boolean.heating_season
       state: "on"
   action:
-  - service: climate.set_hvac_mode
+  - action: climate.set_hvac_mode
     data:
       hvac_mode: auto
     target:
       entity_id: climate.master_bedroom
-  - service: script.master_bedroom_airco_stop
+  - action: script.master_bedroom_airco_stop
   mode: single  

@@ -639,10 +639,10 @@ template:
 ################################################################################
 
 binary_sensor:
-  - platform: ping
-    name: google_server
-    host: 8.8.8.8
-    scan_interval: 5    # scan every 5 minutes
+  # - platform: ping
+  #   name: google_server
+  #   host: 8.8.8.8
+  #   scan_interval: 5    # scan every 5 minutes
 
 rest_command:
 # webhook om meterstanden op de site energieid te posten
@@ -669,6 +669,20 @@ rest_command:
     url: >
       http://api.iternio.com/1/tlm/send?token=444e9623-255e-44b7-b2cd-bf9dade6f46b&api_key=846001dd-c532-4e61-a9f4-11cd1123fb6b&tlm={"utc":{{ as_timestamp(utcnow()) | float(default=0) }},"soc":{{ states('sensor.audi_e_tron_sportback_state_of_charge') }},"soh":99,"is_charging":"no","car_model":"audi:etron:21:86:other"}
 
+
+  spoolman_patch:
+    url: http://192.168.68.100:7912/api/v1/spool/1
+    method: 'patch'
+    headers:    
+      content_type: "application/json"
+    payload: '{"remaining_weight": 123, "used_weight": 456}'
+
+  spoolman_get_api_info:
+    url: http://192.168.68.100:7912/api/v1/info
+    method: 'get'
+    headers:    
+      content_type: "application/json"
+  
         
 # Add Portainer to Home Assistant navigation menu
 panel_iframe:

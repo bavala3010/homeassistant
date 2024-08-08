@@ -24,8 +24,16 @@ automation:
   trigger:
     - platform: numeric_state
       entity_id: sensor.avg_inside_humidity
+      above: '65'
+      for: '00:15'
+    - platform: numeric_state
+      entity_id: sensor.avg_inside_humidity
       above: '70'
       for: '00:15'
+    - platform: numeric_state
+      entity_id: sensor.avg_inside_humidity
+      above: '75'
+      for: '00:15'      
   condition:
     - condition: state
       entity_id: person.bart
@@ -34,7 +42,7 @@ automation:
       after: '07:00:00'
       before: '23:00:00'
   action:
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         title: Vocht
         message: >
@@ -59,7 +67,7 @@ automation:
         entity_id: sensor.badkamer_thermal_absolute_humidity
         above: '14'
       sequence:
-      - service: notify.bart_madouce_phone
+      - action: notify.bart_madouce_phone
         data:
           title: "Veel vocht in badkamer! Raam is {{states('sensor.badkamer_raam')}}."
           message: "{{states('sensor.badkamer_thermal_absolute_humidity') | round(1) }} gram
@@ -72,7 +80,7 @@ automation:
             clickAction: "/lucht-vocht-temperatuur/vocht-gram"
       - delay:
           hours: 1
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       message: "clear_notification"
       data:
@@ -94,7 +102,7 @@ automation:
         entity_id: sensor.master_bedroom_humidity
         above: '80'
       sequence:
-      - service: notify.bart_madouce_phone
+      - action: notify.bart_madouce_phone
         data:
           title: "Veel vocht in master bedroom! Raam is {{states('sensor.master_bedroom_raam')}}"
           message: "{{states('sensor.master_bedroom_thermal_absolute_humidity') | round(1)}} gram
@@ -107,7 +115,7 @@ automation:
             clickAction: "/lucht-vocht-temperatuur/vocht-gram"
       - delay:
           hours: 1
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       message: "clear_notification"
       data:
@@ -130,7 +138,7 @@ automation:
         entity_id: sensor.kamer_alunya_humidity
         above: '80'
       sequence:
-      - service: notify.bart_madouce_phone
+      - action: notify.bart_madouce_phone
         data:
           title: >
             Veel vocht in kamer Alunya! Raam is {{state_translated('binary_sensor.kamer_alunya_raam')}}.
@@ -145,7 +153,7 @@ automation:
             clickAction: "/lucht-vocht-temperatuur/vocht-gram"
       - delay:
           hours: 1
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       message: "clear_notification"
       data:
@@ -160,7 +168,7 @@ automation:
     entity_id: binary_sensor.bathroom_hygrostat
     to: 'on'
   action:
-    - service: switch.turn_on
+    - action: switch.turn_on
       entity_id: switch.toilet_douche_ventilatie
   mode: single
 
@@ -171,6 +179,6 @@ automation:
     entity_id: binary_sensor.bathroom_hygrostat
     to: 'off'
   action:
-    - service: switch.turn_off
+    - action: switch.turn_off
       entity_id: switch.toilet_douche_ventilatie
   mode: single      

@@ -111,10 +111,10 @@ device_tracker:
     new_device_defaults:
       track_new_devices: true
     hosts:
-      amilya_iphone: 192.168.68.214
-      alunya_iphone: 192.168.68.113
-      amilya_appletv: 192.168.68.48
-      bart_iphone: 192.168.68.51
+      amilya_iphone_detect: 192.168.68.214
+      alunya_iphone_detect: 192.168.68.113
+      amilya_appletv_detect: 192.168.68.48
+      bart_iphone_detect: 192.168.68.51
 
   - platform: ping
     hosts:

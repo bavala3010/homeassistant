@@ -15,7 +15,7 @@ automation:
     from: 'home'
   condition: []
   action:
-    service: climate.set_hvac_mode
+    action: climate.set_hvac_mode
     target:
       entity_id: climate.kamer_amilya
     data:
@@ -32,7 +32,7 @@ automation:
     for: 00:03:00
   condition: []
   action:
-    service: climate.set_hvac_mode
+    action: climate.set_hvac_mode
     target:
       entity_id: climate.kamer_alunya
     data:
@@ -49,12 +49,12 @@ automation:
       {{ state_attr('climate.kamer_amilya', 'hvac_action') == "heating" 
       and states('input_select.heating_mode') == "airco" }}
   action:
-  - service: climate.set_hvac_mode
+  - action: climate.set_hvac_mode
     data:
       hvac_mode: auto
     target:
       entity_id: climate.kamer_amilya
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: Chauffage op kamer Amilya werd aangezet, hoewel modus op airco staat. Chauffage terug op automatisch gezet.
   mode: single
@@ -72,10 +72,10 @@ automation:
       entity_id: input_boolean.heating_season
       state: "on"  
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: Kamer Amilya op {{state_attr('climate.kamer_amilya', 'temperature') }} gezet = herzet naar automatisch.
-  - service: climate.set_hvac_mode
+  - action: climate.set_hvac_mode
     target:
       entity_id: climate.kamer_amilya
     data:
@@ -98,10 +98,10 @@ automation:
     entity_id: input_boolean.heating_season
     state: "on"    
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: Kamer Amilya op {{state_attr('climate.kamer_amilya', 'temperature') }} 's nachts gezet = herzet naar automatisch.  
-  - service: climate.set_hvac_mode
+  - action: climate.set_hvac_mode
     target:
       entity_id: climate.kamer_amilya
     data:
@@ -124,10 +124,10 @@ automation:
     entity_id: input_boolean.heating_season
     state: "on"    
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: Kamer Amilya op {{state_attr('climate.kamer_amilya', 'temperature') }} gezet (overdag) = herzet naar 20°.
-  - service: climate.set_temperature
+  - action: climate.set_temperature
     data:
       temperature: 20
     target:
@@ -150,10 +150,10 @@ automation:
     entity_id: input_boolean.heating_season
     state: "on"    
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: Kamer Alunya op {{state_attr('climate.kamer_alunya', 'temperature') }} gezet (overdag) = herzet naar 20°.
-  - service: climate.set_temperature
+  - action: climate.set_temperature
     data:
       temperature: 20
     target:
@@ -177,7 +177,7 @@ automation:
     entity_id: climate.kamer_alunya
     state: "heat"
   action:
-  - service: climate.set_hvac_mode
+  - action: climate.set_hvac_mode
     target:
       entity_id: climate.kamer_alunya
     data:
@@ -201,7 +201,7 @@ automation:
     entity_id: climate.kamer_amilya
     state: "heat"
   action:
-  - service: climate.set_hvac_mode
+  - action: climate.set_hvac_mode
     target:
       entity_id: climate.kamer_amilya
     data:
@@ -230,14 +230,14 @@ automation:
     entity_id: sensor.badkamer_temperature
     below: 17.5      
   action:
-  - service: climate.set_temperature
+  - action: climate.set_temperature
     data:
       temperature: 18
     target:
       entity_id: climate.badkamer
   - delay:
       minutes: 25
-  - service: climate.set_hvac_mode
+  - action: climate.set_hvac_mode
     data:
       hvac_mode: auto
     target:
@@ -265,7 +265,7 @@ automation:
         - condition: template
           value_template: " {{ states('binary_sensor.badkamer_raam_kantel') == 'on' }}"
       then:
-        - service: input_boolean.turn_off
+        - action: input_boolean.turn_off
           data: {}
           target:
             entity_id: input_boolean.badkamer_18graden      
@@ -273,7 +273,7 @@ automation:
             - condition: template
               value_template: "{{trigger.to_state.context.user_id == '87d0c2e6c3d4403396d34b43046072ae'}}"
           then:
-            - service: notify.bart_phone
+            - action: notify.bart_phone
               data:
                 title: Verwarming badkamer
                 message: "Het raam staat nog open: de verwarming is niet ingeschakeld."
@@ -281,7 +281,7 @@ automation:
             - condition: template
               value_template: "{{trigger.to_state.context.user_id == '12bbc36927b7443c915b9492d89f6c24'}}"
           then:
-            - service: notify.madouce_phone
+            - action: notify.madouce_phone
               data:
                 title: Verwarming badkamer
                 message: "Het raam staat nog open: de verwarming is niet ingeschakeld."
@@ -289,12 +289,12 @@ automation:
             - condition: template
               value_template: "{{trigger.to_state.context.user_id == '7678e64f5e984bc2aac5d1d92cc318eb'}}"
           then:
-            - service: notify.amilya_phone
+            - action: notify.amilya_phone
               data:
                 title: Verwarming badkamer
                 message: "Het raam staat nog open: de verwarming is niet ingeschakeld."
       else:
-        - service: script.badkamer_chauffage_18_graden_30_min
+        - action: script.badkamer_chauffage_18_graden_30_min
           data: {}
   mode: restart
 
@@ -307,7 +307,7 @@ automation:
       at: input_datetime.badkamer_18graden_starttime
   condition: []
   action:
-    - service: script.badkamer_chauffage_18_graden_30_min
+    - action: script.badkamer_chauffage_18_graden_30_min
       data: {}
   mode: single
 
@@ -333,10 +333,10 @@ automation:
     - condition: template
       value_template: "{{ trigger.to_state.state == 'unknown' }}"
   action:
-    - service: homeassistant.reload_config_entry
+    - action: homeassistant.reload_config_entry
       target:
         entity_id: "{{ trigger.entity_id }}"
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         title: Tado integratie herstart
         message: "Tado is herstart omdat er een sensor onbeschikbaar was."        

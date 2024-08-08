@@ -48,20 +48,20 @@ automation:
       entity_id: binary_sensor.kamer_alunya_raam
       state: "off"
   action:
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: >
         {{ states('input_number.kamer_alunya_normal_temperature') | float }}
     target:
       entity_id: input_number.alunya_airco_target_temperature          
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 30
     target:
       entity_id: input_number.alunya_airco_timer_minutes
   - wait_template: ''
     timeout: "00:00:02"
-  - service: script.alunya_airco_start_heating
+  - action: script.alunya_airco_start_heating
   mode: restart
 
 - alias: "♨️ airco heating // Alunya // verwarm van 21u45 tot 22u15" 
@@ -86,19 +86,19 @@ automation:
           entity_id: sensor.kamer_alunya_temperature
           below: 16
       then:
-        - service: input_number.set_value
+        - action: input_number.set_value
           data:
             value: 21
           target:
             entity_id: input_number.alunya_airco_target_temperature          
-        - service: input_number.set_value
+        - action: input_number.set_value
           data:
             value: 30
           target:
             entity_id: input_number.alunya_airco_timer_minutes
         - delay:
             seconds: 2
-        - service: script.alunya_airco_start_heating
+        - action: script.alunya_airco_start_heating
           data: {}   
 
 
@@ -131,21 +131,21 @@ automation:
       at: input_datetime.alunya_airco_timer_stop      
   condition: []
   action:
-    - service: climate.turn_off
+    - action: climate.turn_off
       data: {}
       target:
         device_id: 3c12e341dfd1d1fe2327ec66f3613321  
-    - service: climate.set_temperature
+    - action: climate.set_temperature
       data:
         temperature: 14
       target:
         device_id: 3c12e341dfd1d1fe2327ec66f3613321
-    - service: input_number.set_value
+    - action: input_number.set_value
       data:
         value: 14
       target:
         entity_id: input_number.alunya_airco_target_temperature        
-    - service: timer.finish
+    - action: timer.finish
       data: {}
       target:
         entity_id: timer.alunya_airco_timer
@@ -166,17 +166,17 @@ automation:
   - condition: template
     value_template: "{{trigger.to_state.context.user_id == '7e508a5d2a5c42029f3d9238f0cc4648'}}"
   action:
-  - service: notify.alunya_phone
+  - action: notify.alunya_phone
     data:
       title: De temperatuur wordt 's nachts beperkt.
       message: "{{ states('input_number.alunya_airco_target_temperature') }} graden is niet mogelijk."
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: De temperatuur wordt 's nachts beperkt.
       message: >
         Alunya probeerde temperatuur op {{ states('input_number.alunya_airco_target_temperature') }} graden in te stellen.
         De kamertemperatuur was {{ states('sensor.kamer_alunya_temperature') }} graden.
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 14
     target:
@@ -200,12 +200,12 @@ automation:
     entity_id: person.alunya
     state: home
   action:
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 30
     target:
       entity_id: input_number.alunya_airco_timer_minutes
-  - service: script.alunya_airco_start_heating
+  - action: script.alunya_airco_start_heating
     data: {}            
   mode: restart
 
@@ -219,21 +219,21 @@ automation:
       {{ states('sensor.kamer_alunya_temperature') | float > states('input_number.alunya_airco_target_temperature') | float }}
   condition: []
   action:  
-  - service: climate.turn_off
+  - action: climate.turn_off
     data: {}
     target:
       device_id: 3c12e341dfd1d1fe2327ec66f3613321  
-  - service: climate.set_temperature
+  - action: climate.set_temperature
     data:
       temperature: 14
     target:
       device_id: 3c12e341dfd1d1fe2327ec66f3613321
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 14
     target:
       entity_id: input_number.alunya_airco_target_temperature
-  - service: timer.finish
+  - action: timer.finish
     data: {}
     target:
       entity_id: timer.alunya_airco_timer
@@ -255,16 +255,16 @@ automation:
       entity_id: schedule.kamer_alunya_normal_temperature_schema
       state: "off"
   action:
-  - service: climate.turn_off
+  - action: climate.turn_off
     data: {}
     target:
       device_id: 3c12e341dfd1d1fe2327ec66f3613321 
-  - service: climate.set_temperature
+  - action: climate.set_temperature
     data:
       temperature: 14
     target:
       device_id: 3c12e341dfd1d1fe2327ec66f3613321
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 14
     target:

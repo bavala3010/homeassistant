@@ -10,7 +10,7 @@ automation:
     below: 20
   condition: []
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     metadata: {}
     data:
       message: >

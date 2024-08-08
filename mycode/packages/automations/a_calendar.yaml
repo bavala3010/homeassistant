@@ -10,14 +10,14 @@ automation:
     entity_id: calendar.fortis
   condition: []
   action:
-    - service: fully_kiosk.load_url
+    - action: fully_kiosk.load_url
       data: 
         url: http://192.168.68.100:8123/lovelace-testing/agenda
       target:
         device_id: 9db72afc8fd0936719dbe6cdbe6d9711      
     - wait_template: ''
       timeout: 00:15:00
-    - service: fully_kiosk.load_url
+    - action: fully_kiosk.load_url
       data:
         url: http://192.168.68.100:8123/dashboard-tablet/0
       target:

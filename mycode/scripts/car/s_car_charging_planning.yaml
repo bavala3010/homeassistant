@@ -4,14 +4,14 @@ set_target_soc_based_on_calendar:
     - repeat:
         count: 7
         sequence:
-          - service: input_number.set_value
+          - action: input_number.set_value
             target:
               entity_id: "input_number.car_1_min_target_soc_day_{{ repeat.index }}"
             data:
               value: >-
                 {% set l = states('input_select.car_1_use_day_' ~ repeat.index) %}
                 {% set base = states('sensor.car_range_per_10percent') | float(default=0) / 10  %}
-                {% if l == 'thuis' %}          {{ ( 100       / base ) | round(0) }}
+                {% if l == 'thuis' %}          {{ ( 120       / base ) | round(0) }}
                 {% elif l == 'Toyota Diest' %} {{ ( (75 + 50) / base ) + 10 | round(0) }}
                 {% elif l == 'Toyota Evere' %} {{ ( (56 + 50) / base ) + 10 | round(0) }}
                 {% elif l == '275 km' %}       {{ ( 275       / base ) | round(0) }}

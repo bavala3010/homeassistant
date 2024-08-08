@@ -17,7 +17,7 @@ automation:
   - condition: template
     value_template: "{{ states('binary_sensor.madouce_phone_connected_to_car_2') != 'on' }}"
   action:
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       title: Toyota niet op slot!
       message: 🚙 Toyota niet op slot!
@@ -47,7 +47,7 @@ automation:
   - condition: template
     value_template: "{{ states('binary_sensor.madouce_phone_connected_to_car_2') != 'on' }}"  
   action:
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       title: Toyota niet op slot!
       message: 🚙 Toyota niet op slot!
@@ -71,7 +71,7 @@ automation:
     to: 'off'
   condition: []
   action:
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       message: "clear_notification"
       data:

@@ -29,7 +29,7 @@ automation:
   - condition: template
     value_template: '{{ result > 20 }}'    
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: "Open raam master bedroom (NEW)"
       message: >

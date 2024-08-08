@@ -8,7 +8,7 @@ automation:
     at: "01:15:00"
   condition: []
   action:
-  - service: input_number.increment
+  - action: input_number.increment
     metadata: {}
     data: {}
     target:
@@ -35,7 +35,7 @@ automation:
           entity_id: person.bart
           state: "home"
       then:
-        - service: notify.bart_phone
+        - action: notify.bart_phone
           data:
             title: "Tijd om Rio zijn maandelijkse verzorging te geven."
             message: >
@@ -50,7 +50,7 @@ automation:
           entity_id: person.madouce
           state: "home"
       then:
-        - service: notify.madouce_phone
+        - action: notify.madouce_phone
           data:
             title: "Tijd om Rio zijn maandelijkse verzorging te geven."
             message: >
@@ -79,7 +79,7 @@ automation:
           entity_id: person.bart
           state: "home"
       then:
-        - service: notify.bart_phone
+        - action: notify.bart_phone
           data:
             title: "Tijd om Smarty zijn maandelijkse verzorging te geven."
             message: >
@@ -94,7 +94,7 @@ automation:
           entity_id: person.madouce
           state: "home"
       then:
-        - service: notify.madouce_phone
+        - action: notify.madouce_phone
           data:
             title: "Tijd om Smarty zijn maandelijkse verzorging te geven."
             message: >

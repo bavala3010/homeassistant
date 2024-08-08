@@ -44,18 +44,18 @@ automation:
       entity_id: binary_sensor.kamer_amilya_raam
       state: "off"
   action:
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: >
         {{ states('input_number.kamer_amilya_normal_temperature') | float }}
     target:
       entity_id: input_number.amilya_airco_target_temperature  
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 30
     target:
       entity_id: input_number.amilya_airco_timer_minutes
-  - service: script.amilya_airco_start_heating
+  - action: script.amilya_airco_start_heating
     data: {} 
   mode: restart
 
@@ -78,19 +78,19 @@ automation:
           entity_id: sensor.kamer_amilya_temperature
           below: 15          
       then:
-        - service: input_number.set_value
+        - action: input_number.set_value
           data:
             value: 21
           target:
             entity_id: input_number.amilya_airco_target_temperature  
-        - service: input_number.set_value
+        - action: input_number.set_value
           data:
             value: 30
           target:
             entity_id: input_number.amilya_airco_timer_minutes
         - delay:
             seconds: 2
-        - service: script.amilya_airco_start_heating
+        - action: script.amilya_airco_start_heating
           data: {} 
 
 - alias: "♨️ airco heating // Amilya // starttimer = start airco en schakel timer uit"
@@ -104,11 +104,11 @@ automation:
       entity_id: input_boolean.amilya_airco_timer_switch
       state: "on"  
   action:
-    - service: input_boolean.turn_off
+    - action: input_boolean.turn_off
       data: {}
       target:
         entity_id: input_boolean.amilya_airco_timer_switch
-    - service: script.amilya_airco_21
+    - action: script.amilya_airco_21
       data: {}
   mode: single
 
@@ -140,21 +140,21 @@ automation:
       at: input_datetime.amilya_airco_timer_stop
   condition: []
   action:
-    - service: climate.turn_off
+    - action: climate.turn_off
       data: {}
       target:
         device_id: 61864d1ab32c5af91d5f13faf697c27e  
-    - service: climate.set_temperature
+    - action: climate.set_temperature
       data:
         temperature: 14
       target:
         device_id: 61864d1ab32c5af91d5f13faf697c27e
-    - service: input_number.set_value
+    - action: input_number.set_value
       data:
         value: 14
       target:
         entity_id: input_number.amilya_airco_target_temperature
-    - service: timer.finish
+    - action: timer.finish
       data: {}
       target:
         entity_id: timer.amilya_airco_timer
@@ -174,18 +174,18 @@ automation:
   - condition: template
     value_template: "{{trigger.to_state.context.user_id == '7678e64f5e984bc2aac5d1d92cc318eb'}}"
   action:
-  - service: notify.amilya_phone
+  - action: notify.amilya_phone
     data:
       title: De temperatuur wordt 's nachts beperkt.
       message: '{{ states(''input_number.amilya_airco_target_temperature'') }} graden
         is niet mogelijk.'
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: De temperatuur wordt 's nachts beperkt.
       message: >
         Amilya probeerde temperatuur op {{ states('input_number.amilya_airco_target_temperature')}} graden in te stellen.
         De kamertemperatuur was {{ states('sensor.kamer_amilya_temperature') }} graden.
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 14
     target:
@@ -207,7 +207,7 @@ automation:
         - "06:00:00"
   condition: []
   action:
-    - service: climate.turn_off
+    - action: climate.turn_off
       data: {}
       target:
         entity_id: climate.amilya_airco
@@ -236,12 +236,12 @@ automation:
     entity_id: person.amilya
     state: home
   action:
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 30
     target:
       entity_id: input_number.amilya_airco_timer_minutes
-  - service: script.amilya_airco_start_heating
+  - action: script.amilya_airco_start_heating
     data: {}            
   mode: restart
 
@@ -255,21 +255,21 @@ automation:
       {{ states('sensor.kamer_amilya_temperature') | float > states('input_number.amilya_airco_target_temperature') | float }}
   condition: []
   action:  
-  - service: climate.turn_off
+  - action: climate.turn_off
     data: {}
     target:
       device_id: 61864d1ab32c5af91d5f13faf697c27e  
-  - service: climate.set_temperature
+  - action: climate.set_temperature
     data:
       temperature: 14
     target:
       device_id: 61864d1ab32c5af91d5f13faf697c27e
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 14
     target:
       entity_id: input_number.amilya_airco_target_temperature
-  - service: timer.finish
+  - action: timer.finish
     data: {}
     target:
       entity_id: timer.amilya_airco_timer          
@@ -291,21 +291,21 @@ automation:
       entity_id: schedule.kamer_amilya_normal_temperature_schema
       state: "off"
   action:
-  - service: climate.turn_off
+  - action: climate.turn_off
     data: {}
     target:
       device_id: 61864d1ab32c5af91d5f13faf697c27e  
-  - service: climate.set_temperature
+  - action: climate.set_temperature
     data:
       temperature: 14
     target:
       device_id: 61864d1ab32c5af91d5f13faf697c27e
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 14
     target:
       entity_id: input_number.amilya_airco_target_temperature
-  - service: timer.finish
+  - action: timer.finish
     data: {}
     target:
       entity_id: timer.amilya_airco_timer      
@@ -329,26 +329,26 @@ automation:
     value_template: '{{ states(''sensor.kamer_amilya_temperature'') | float > states(''input_number.amilya_airco_target_temperature'')
       | float }}'
   action:
-  - service: notify.amilya_phone
+  - action: notify.amilya_phone
     data:
       title: Gevraagde temperatuur al bereikt.
       message: Kamertemperatuur is momenteel {{ states('sensor.kamer_amilya_temperature')
         | float }} graden.
-  - service: climate.turn_off
+  - action: climate.turn_off
     data: {}
     target:
       device_id: 61864d1ab32c5af91d5f13faf697c27e
-  - service: climate.set_temperature
+  - action: climate.set_temperature
     data:
       temperature: 14
     target:
       device_id: 61864d1ab32c5af91d5f13faf697c27e
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 14
     target:
       entity_id: input_number.amilya_airco_target_temperature
-  - service: timer.finish
+  - action: timer.finish
     data: {}
     target:
       entity_id: timer.amilya_airco_timer

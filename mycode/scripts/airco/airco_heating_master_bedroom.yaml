@@ -4,19 +4,19 @@ master_bedroom_airco_start_heating:
     - condition: template
       value_template: "{{ states('input_select.master_bedroom_airco_timer_mode') == 'timer' }}"
     then:  
-    - service: timer.start
+    - action: timer.start
       data:
         duration: "{{ states('input_number.master_bedroom_airco_timer_minutes') | float * 60 }}"
       target:
         entity_id: timer.master_bedroom_airco_timer
-    - service: input_datetime.set_datetime
+    - action: input_datetime.set_datetime
       data:
         datetime: >
           {% set t =states('input_number.master_bedroom_airco_timer_minutes') | float %}
           {{ (now().timestamp() + t*60 ) | timestamp_custom("%Y-%m-%d %-H:%M:%S") }}
       target:
         entity_id: input_datetime.master_bedroom_airco_timer_stop
-  - service: climate.set_temperature
+  - action: climate.set_temperature
     data:
       hvac_mode: heat
       temperature: >
@@ -24,17 +24,17 @@ master_bedroom_airco_start_heating:
         {{ state_attr('climate.master_bedroom_airco', 'current_temperature') + adj }}
     target:
       device_id: 64296bd295e4506b8a3ec42c8aae7e58
-  # - service: climate.set_preset_mode
+  # - action: climate.set_preset_mode
   #   data:
   #     preset_mode: eco
   #   target:
   #     device_id: 64296bd295e4506b8a3ec42c8aae7e58
-  - service: climate.set_swing_mode
+  - action: climate.set_swing_mode
     data:
       swing_mode: 3D
     target:
       device_id: 64296bd295e4506b8a3ec42c8aae7e58
-  - service: climate.set_fan_mode
+  - action: climate.set_fan_mode
     data:
       fan_mode: auto
     target:
@@ -43,69 +43,69 @@ master_bedroom_airco_start_heating:
 
 master_bedroom_airco_19:
   sequence:
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 19
     target:
       entity_id: input_number.master_bedroom_airco_target_temperature          
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 30
     target:
       entity_id: input_number.master_bedroom_airco_timer_minutes
-  - service: script.master_bedroom_airco_start
+  - action: script.master_bedroom_airco_start
     data: {} 
   mode: restart
 
 master_bedroom_airco_20:
   sequence:
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 20
     target:
       entity_id: input_number.master_bedroom_airco_target_temperature          
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 30
     target:
       entity_id: input_number.master_bedroom_airco_timer_minutes
-  - service: script.master_bedroom_airco_start
+  - action: script.master_bedroom_airco_start
     data: {} 
   mode: restart
 
 master_bedroom_airco_21:
   sequence:
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 21
     target:
       entity_id: input_number.master_bedroom_airco_target_temperature          
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 30
     target:
       entity_id: input_number.master_bedroom_airco_timer_minutes
-  - service: script.master_bedroom_airco_start
+  - action: script.master_bedroom_airco_start
     data: {} 
   mode: restart
 
 master_bedroom_airco_stop:
   sequence:
-  - service: climate.turn_off
+  - action: climate.turn_off
     data: {}
     target:
       device_id: 64296bd295e4506b8a3ec42c8aae7e58  
-  - service: climate.set_temperature
+  - action: climate.set_temperature
     data:
       temperature: 14
     target:
       device_id: 64296bd295e4506b8a3ec42c8aae7e58 
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 14
     target:
       entity_id: input_number.master_bedroom_airco_target_temperature
-  - service: timer.finish
+  - action: timer.finish
     data: {}
     target:
       entity_id: timer.master_bedroom_airco_timer
@@ -123,12 +123,12 @@ master_bedroom_airco_increment_temperature:
         - condition: template
           value_template: "{{ current_temperature < target_temperature }}"
         sequence:
-          - service: climate.set_temperature
+          - action: climate.set_temperature
             data:
               temperature: "{{ current_temperature + step }}"
             target:
               device_id: 64296bd295e4506b8a3ec42c8aae7e58
-          - service: input_number.set_value
+          - action: input_number.set_value
             data:
               value: "{{ current_temperature + step }}"
             target:

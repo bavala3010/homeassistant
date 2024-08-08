@@ -1,0 +1,233 @@
+automation:
+  
+- alias: 3D printer // Print is gestart
+  id: ce73d212-feac-48e1-8979-55d2d919f6fb
+  trigger:
+    - platform: state
+      entity_id: sensor.x1c_current_stage
+      to: "printing"
+  condition: []
+  variables:
+    spool_id: >
+      {% set serial = state_attr('sensor.x1c_active_tray', 'tag_uid') %}    
+      {% set spool = states.sensor
+      | selectattr('attributes.lot_nr','eq', serial )
+      | map(attribute='entity_id')
+      | list %}
+      {% set spool_entity = spool[0] %}
+      {{ state_attr(spool_entity, 'id') }}
+    updated_weight: >
+      {% set serial = state_attr('sensor.x1c_active_tray', 'tag_uid') %}    
+      {% set spool = states.sensor
+      | selectattr('attributes.lot_nr','eq', serial )
+      | map(attribute='entity_id')
+      | list %}
+      {% set spool_entity = spool[0] %}
+      {% set spool_id = state_attr(spool_entity, 'id') %}
+      {% set initial_weight = state_attr(spool_entity, 'remaining_weight') | float %}
+      {{ initial_weight - states('sensor.x1c_print_weight') | float }}
+  action:
+  - delay:
+      seconds: 30
+  - action: notify.bart_phone
+    data:
+      title: De 3D-printer start.
+      message: >
+        {% set hours = ( states('sensor.x1c_remaining_time') | int // 60) %}
+        {% set minutes = ((states('sensor.x1c_remaining_time') | int % 60) ) %}
+        Voorwerp: {{ states('sensor.x1c_task_name')}}<br>
+        Gewicht: {{ states('sensor.x1c_print_weight') | round() }} g<br>
+        Duur: {{ hours }} uren en {{ minutes }} minuten.<br>
+        Verwacht einde: {{ states('sensor.x1c_end_time') | as_timestamp | timestamp_custom("%-d/%-m %H:%M") }}
+  - action: spoolman.patch_spool
+    data:
+      id: "{{ spool_id }}"
+      location: "AMS slot {{ states('sensor.x1c_active_tray_index') }}"
+      remaining_weight: "{{ updated_weight }}"
+      last_used: "{{ now() | as_timestamp | timestamp_custom('%Y-%m-%d %H:%M:%S') }}"
+      comment: "{{ states('sensor.x1c_task_name')}} = {{ states('sensor.x1c_print_weight') }} gram"
+
+- alias: 3D printer // Print is klaar
+  id: 7198a8c7-95c3-47a4-beb0-fc7074e5dba0
+  trigger:
+    - platform: state
+      entity_id: sensor.x1c_print_status
+      to: "finish"
+  condition: []
+  action:
+  - action: notify.bart_madouce_phone
+    data:
+      title: De 3D-print is klaar.
+      message: >
+        {% set start_time = as_timestamp(states('sensor.x1c_start_time')) %}
+        {% set elapsed_time = (as_timestamp(now()) - start_time) | int %}
+        {% set hours = (elapsed_time // 3600) %}
+        {% set minutes = ((elapsed_time % 3600) // 60) %}      
+        Voorwerp: {{ states('sensor.x1c_task_name')}}.<br>
+        Gewicht: {{ states('sensor.x1c_print_weight') | round() }} gram.<br>
+        Duur: {{ hours }} uren en {{ minutes }} minuten.
+  - action: media_player.volume_set
+    data:
+      entity_id: media_player.living_speaker
+      volume_level: 0.5      
+  - action: tts.edge_tts_say
+    data:
+      entity_id: media_player.living_speaker
+      message: >
+        De print is voltooid.
+        {{ ("Veel plezier ermee!", "Hopelijk is het geen spaghetti!", "Veel plezier ermee!") | random }}
+  - wait_template: ''
+    timeout: 00:05:00
+  - action: light.turn_off
+    target:
+      entity_id: light.x1c_chamber_light
+
+
+- alias: 3D printer // wissel actieve spoel = zoek spoel (nieuw)
+  id: 2abe832a-ca20-4d9d-959e-1aa3678aad69
+  trigger:
+    - platform: state
+      entity_id: sensor.x1c_active_tray
+  variables:
+    spool_id: >
+      {% set serial = state_attr('sensor.x1c_active_tray', 'tag_uid') %}    
+      {% set spool = states.sensor
+      | selectattr('attributes.lot_nr','eq', serial )
+      | map(attribute='entity_id')
+      | list %}
+      {% set spool_entity = spool[0] %}
+      {{ state_attr(spool_entity, 'id') }}
+    updated_weight: >
+      {% set serial = state_attr('sensor.x1c_active_tray', 'tag_uid') %}    
+      {% set spool = states.sensor
+      | selectattr('attributes.lot_nr','eq', serial )
+      | map(attribute='entity_id')
+      | list %}
+      {% set spool_entity = spool[0] %}
+      {% set spool_id = state_attr(spool_entity, 'id') %}
+      {% set initial_weight = state_attr(spool_entity, 'remaining_weight') | float %}
+      {{ initial_weight - states('sensor.x1c_print_weight') | float }}
+  condition:
+  - condition: template
+    value_template: >
+      {{ states('sensor.x1c_active_tray') !='unavailable' }}  
+  action:
+  - action: notify.bart_phone
+    data:
+      title: Wissel van spoel
+      message: >
+        {% set active = states('sensor.x1c_active_tray_index') %}
+        {% set type = states('sensor.x1c_active_tray') %}
+        {% set serial = state_attr('sensor.x1c_active_tray', 'tag_uid') %}
+        Actieve spoel in AMS slot {{ active }}<br>
+        Type: {{ type }}<br>
+        Serienummer: {{ serial }}
+  - action: spoolman.patch_spool
+    data:
+      id: "{{ spool_id }}"
+      remaining_weight: "{{ updated_weight }}"
+
+
+- alias: 3D printer // nieuwe spoel in AMS 1 geplaatst = update locatie in Spoolman
+  id: e3c9197d-8afb-4d30-ac95-a1644ef6acde
+  trigger:
+    - platform: state
+      entity_id: sensor.x1c_ams_tray_1
+  condition:
+    condition: template
+    value_template: >
+      {{ trigger.from_state is not none and
+        trigger.to_state.attributes.tag_uid !=
+        trigger.from_state.attributes.tag_uid }}
+  variables:
+    spool_id: >
+      {% set serial = state_attr('sensor.x1c_ams_tray_1', 'tag_uid') %}
+      {% set spool = states.sensor
+      | selectattr('attributes.lot_nr','eq', serial )
+      | map(attribute='entity_id')
+      | list %}
+      {% set spool_entity = spool[0] %}
+      {{ state_attr(spool_entity, 'id') }} 
+  action:
+  - action: spoolman.patch_spool
+    data:
+      id: "{{ spool_id }}"
+      location: "AMS slot 1"
+
+- alias: 3D printer // nieuwe spoel in AMS 2 geplaatst = update locatie in Spoolman
+  id: 29e250ce-6f7a-472d-baf7-9fce2104eff8
+  trigger:
+    platform: state
+    entity_id: sensor.x1c_ams_tray_2
+  condition:
+    condition: template
+    value_template: >
+      {{ trigger.from_state is not none and
+        trigger.to_state.attributes.tag_uid !=
+        trigger.from_state.attributes.tag_uid }}
+  variables:
+    spool_id: >
+      {% set serial = state_attr('sensor.x1c_ams_tray_2', 'tag_uid') %}
+      {% set spool = states.sensor
+      | selectattr('attributes.lot_nr','eq', serial )
+      | map(attribute='entity_id')
+      | list %}
+      {% set spool_entity = spool[0] %}
+      {{ state_attr(spool_entity, 'id') }} 
+  action:
+  - action: spoolman.patch_spool
+    data:
+      id: "{{ spool_id }}"
+      location: "AMS slot 2"      
+
+- alias: 3D printer // nieuwe spoel in AMS 3 geplaatst = update locatie in Spoolman
+  id: f1db3bde-e634-4ad6-83cb-d830093e1960
+  trigger:
+    platform: state
+    entity_id: sensor.x1c_ams_tray_3
+  condition:
+    condition: template
+    value_template: >
+      {{ trigger.from_state is not none and
+        trigger.to_state.attributes.tag_uid !=
+        trigger.from_state.attributes.tag_uid }}
+  variables:
+    spool_id: >
+      {% set serial = state_attr('sensor.x1c_ams_tray_3', 'tag_uid') %}
+      {% set spool = states.sensor
+      | selectattr('attributes.lot_nr','eq', serial )
+      | map(attribute='entity_id')
+      | list %}
+      {% set spool_entity = spool[0] %}
+      {{ state_attr(spool_entity, 'id') }} 
+  action:
+  - action: spoolman.patch_spool
+    data:
+      id: "{{ spool_id }}"
+      location: "AMS slot 3"
+
+- alias: 3D printer // nieuwe spoel in AMS 4 geplaatst = update locatie in Spoolman
+  id: adaf9c37-2b02-43f8-a07b-5194b5c3c6a2
+  trigger:
+    platform: state
+    entity_id: sensor.x1c_ams_tray_4
+  condition:
+    condition: template
+    value_template: >
+      {{ trigger.from_state is not none and
+        trigger.to_state.attributes.tag_uid !=
+        trigger.from_state.attributes.tag_uid }}
+  variables:
+    spool_id: >
+      {% set serial = state_attr('sensor.x1c_ams_tray_4', 'tag_uid') %}
+      {% set spool = states.sensor
+      | selectattr('attributes.lot_nr','eq', serial )
+      | map(attribute='entity_id')
+      | list %}
+      {% set spool_entity = spool[0] %}
+      {{ state_attr(spool_entity, 'id') }} 
+  action:
+  - action: spoolman.patch_spool
+    data:
+      id: "{{ spool_id }}"
+      location: "AMS slot 4"        

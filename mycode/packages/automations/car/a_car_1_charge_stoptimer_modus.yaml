@@ -31,20 +31,20 @@ automation:
     entity_id: input_boolean.car_charge_busy
     state: 'off'
   action:
-  - service: input_boolean.turn_on
+  - action: input_boolean.turn_on
     data: {}
     target:
       entity_id:
       - input_boolean.car_charge_busy
       - input_boolean.car_charge_net_busy
-  - service: input_number.set_value
+  - action: input_number.set_value
     target:
       entity_id: input_number.car_charger_watt
     data:
       value: >-
         {{ states('input_number.car_charge_fixed_wattage') | float(default=0) }}
-  - service: script.start_charger
-  - service: notify.bart_phone
+  - action: script.start_charger
+  - action: notify.bart_phone
     data:
       title: laden gestart met netstroom
       message: >
@@ -78,7 +78,7 @@ automation:
     entity_id: input_boolean.car_charge_sun_busy
     state: 'off'    
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Laaddoel bereikt!
       message: >
@@ -94,7 +94,7 @@ automation:
           title: meer info
           uri: /dashboard-car/car-charging      
   # stop charging
-  - service: script.stop_charger
+  - action: script.stop_charger
     data: {}
     
   mode: single
@@ -110,9 +110,9 @@ automation:
     entity_id: input_boolean.car_charge_mode_stoptimer
     state: 'on'  
   action:
-  - service: script.stop_charger
+  - action: script.stop_charger
     data: {}
-  - service: input_datetime.set_datetime
+  - action: input_datetime.set_datetime
     data:
       entity_id: input_datetime.car_charge_target_time
       datetime: "{{ (as_timestamp(states('input_datetime.car_charge_target_time')) + (24 * 60 * 60)) | timestamp_custom('%Y-%m-%d %H:%M:%S', true) }}"

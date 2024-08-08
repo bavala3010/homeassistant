@@ -29,21 +29,21 @@ automation:
     entity_id: input_boolean.car_charge_busy
     state: 'off'
   action:
-  - service: input_boolean.turn_on
+  - action: input_boolean.turn_on
     data: {}
     target:
       entity_id:
       - input_boolean.car_charge_busy
       - input_boolean.car_charge_net_busy
       - input_boolean.car_charge_sun_busy
-  - service: input_number.set_value
+  - action: input_number.set_value
     target:
       entity_id: input_number.car_charger_watt
     data:
       value: >-
         {{ states('input_number.car_charge_minimum_wattage') | float(default=0) }}
-  - service: script.start_charger
-  - service: notify.bart_phone
+  - action: script.start_charger
+  - action: notify.bart_phone
     data:
       title: Laden gestart
       message: >

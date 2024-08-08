@@ -43,7 +43,7 @@ automation:
           entity_id: person.bart
           state: "home"
       then:
-        - service: script.notify_bart_windows_close
+        - action: script.notify_bart_windows_close
           data:
             title: '{{title}}'
             message: '{{reason}}<br>{{message}}'
@@ -54,7 +54,7 @@ automation:
           entity_id: person.madouce
           state: "home"
       then:            
-        - service: script.notify_madouce_windows_close
+        - action: script.notify_madouce_windows_close
           data:
             title: '{{title}}'
             message: '{{reason}}<br>{{message}}'
@@ -101,7 +101,7 @@ automation:
           entity_id: person.bart
           state: "home"
       then:
-        - service: script.notify_bart_windows_close
+        - action: script.notify_bart_windows_close
           data:
             title: '{{title}}'
             message: '{{reason}}<br>{{message}}'
@@ -112,7 +112,7 @@ automation:
           entity_id: person.madouce
           state: "home"
       then:            
-        - service: script.notify_madouce_windows_close
+        - action: script.notify_madouce_windows_close
           data:
             title: '{{title}}'
             message: '{{reason}}<br>{{message}}'
@@ -158,7 +158,7 @@ automation:
           entity_id: person.bart
           state: "home"
       then:
-        - service: script.notify_bart_windows_close
+        - action: script.notify_bart_windows_close
           data:
             title: '{{title}}'
             message: '{{reason}}<br>{{message}}'
@@ -169,7 +169,7 @@ automation:
           entity_id: person.madouce
           state: "home"
       then:            
-        - service: script.notify_madouce_windows_close
+        - action: script.notify_madouce_windows_close
           data:
             title: '{{title}}'
             message: '{{reason}}<br>{{message}}'
@@ -215,7 +215,7 @@ automation:
           entity_id: person.bart
           state: "home"
       then:
-        - service: script.notify_bart_windows_close
+        - action: script.notify_bart_windows_close
           data:
             title: '{{title}}'
             message: '{{reason}}<br>{{message}}'
@@ -226,7 +226,7 @@ automation:
           entity_id: person.madouce
           state: "home"
       then:            
-        - service: script.notify_madouce_windows_close
+        - action: script.notify_madouce_windows_close
           data:
             title: '{{title}}'
             message: '{{reason}}<br>{{message}}'
@@ -272,7 +272,7 @@ automation:
           entity_id: person.bart
           state: "home"
       then:
-        - service: script.notify_bart_windows_close
+        - action: script.notify_bart_windows_close
           data:
             title: '{{title}}'
             message: '{{reason}}<br>{{message}}'
@@ -283,7 +283,7 @@ automation:
           entity_id: person.madouce
           state: "home"
       then:            
-        - service: script.notify_madouce_windows_close
+        - action: script.notify_madouce_windows_close
           data:
             title: '{{title}}'
             message: '{{reason}}<br>{{message}}'
@@ -335,7 +335,7 @@ automation:
           entity_id: person.bart
           state: "home"
       then:
-        - service: script.notify_bart_windows_close
+        - action: script.notify_bart_windows_close
           data:
             title: '{{title}}'
             message: '{{reason}}<br>{{message}}'
@@ -346,7 +346,7 @@ automation:
           entity_id: person.madouce
           state: "home"
       then:            
-        - service: script.notify_madouce_windows_close
+        - action: script.notify_madouce_windows_close
           data:
             title: '{{title}}'
             message: '{{reason}}<br>{{message}}'
@@ -393,7 +393,7 @@ automation:
           entity_id: person.bart
           state: "home"
       then:
-        - service: script.notify_bart_windows_close
+        - action: script.notify_bart_windows_close
           data:
             title: '{{title}}'
             message: '{{reason}}<br>{{message}}'
@@ -404,7 +404,7 @@ automation:
           entity_id: person.madouce
           state: "home"
       then:            
-        - service: script.notify_madouce_windows_close
+        - action: script.notify_madouce_windows_close
           data:
             title: '{{title}}'
             message: '{{reason}}<br>{{message}}'

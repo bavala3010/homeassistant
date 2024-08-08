@@ -27,7 +27,7 @@ automation:
       entity_id: sensor.audi_e_tron_sportback_range
       state: unavailable
   action:
-    - service: homeassistant.reload_config_entry
+    - action: homeassistant.reload_config_entry
       target:
         entity_id: sensor.audi_e_tron_sportback_range
 
@@ -47,8 +47,8 @@ automation:
   - condition: template
     value_template: '{{ trigger.to_state.attributes.dir_of_travel  == "towards" }}'
   action:
-  - service: audiconnect.refresh_cloud_data
-  - service: audiconnect.refresh_vehicle_data
+  - action: audiconnect.refresh_cloud_data
+  - action: audiconnect.refresh_vehicle_data
     data:
       vin: !secret vin 
   mode: single
@@ -64,8 +64,8 @@ automation:
   - condition: template
     value_template: '{{ trigger.to_state.attributes.dir_of_travel  == "towards" }}'
   action:
-  - service: audiconnect.refresh_cloud_data
-  - service: audiconnect.refresh_vehicle_data
+  - action: audiconnect.refresh_cloud_data
+  - action: audiconnect.refresh_vehicle_data
     data:
       vin: !secret vin
   mode: single  
@@ -78,7 +78,7 @@ automation:
     entity_id: input_number.car_sim_km
   condition: []
   action:
-  - service: input_number.set_value
+  - action: input_number.set_value
     target:
       entity_id: input_number.car_sim_batteryprocent
     data:
@@ -97,7 +97,7 @@ automation:
     entity_id: input_number.car_sim_batteryprocent
   condition: []
   action:
-  - service: input_number.set_value
+  - action: input_number.set_value
     target:
       entity_id: input_number.car_sim_km
     data:
@@ -127,7 +127,7 @@ automation:
       {% set car_1_use_day = 'input_select.car_1_use_day_' ~ now().isoweekday() %}
       {%if states(car_1_use_day) == "Toyota Evere"%} true {% endif %}
   action:
-  - service: notify.madouce_phone
+  - action: notify.madouce_phone
     data:
       title: Goede morgen, Madouce!
       message: "Reistijd naar Toyota Evere is {{states('sensor.waze_travel_time_huis_toyota_evere')}} minuten."
@@ -151,7 +151,7 @@ automation:
       {% if states(car_1_use_day) == "Toyota Diest"%}true
       {% endif %}
   action:
-  - service: notify.madouce_phone
+  - action: notify.madouce_phone
     data:
       title: Goede morgen, Madouce!
       message: "Reistijd naar Toyota Diest is {{states('sensor.waze_travel_time_huis_toyota_diest')}} minuten."
@@ -172,7 +172,7 @@ automation:
       entity_id: sensor.audi_e_tron_sportback_primary_engine_range
       to:
   action:
-    - service: rest_command.update_abrp
+    - action: rest_command.update_abrp
 
 
 
@@ -184,7 +184,7 @@ automation:
       value_template: "{{ state_attr('sensor.audi_e_tron_sportback_trip_short_current','tripID')  }}"
   condition: []
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Nieuwe ritstatistieken beschikbaar
       message: >
@@ -200,7 +200,7 @@ automation:
     - platform: state
       entity_id: device_tracker.audi_e_tron_sportback_position
   action:
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         title: Audi op nieuwe locatie
         message: >

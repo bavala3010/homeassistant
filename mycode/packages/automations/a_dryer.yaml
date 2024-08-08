@@ -13,23 +13,23 @@ automation:
     above: 300
   condition: []
   action:
-    - service: input_datetime.set_datetime
+    - action: input_datetime.set_datetime
       data:
         datetime: '{{ now() }}'
       target:
         entity_id: input_datetime.dryer_start_time
-    - service: input_datetime.set_datetime
+    - action: input_datetime.set_datetime
       data:
         datetime: '{{ (now().timestamp() + states(''input_number.dryer_expected_run_time'')
           | float(0)) | timestamp_local() }}'
       target:
         entity_id: input_datetime.dryer_expected_stop_time
-    - service: input_select.select_option
+    - action: input_select.select_option
       data:
         option: bezig
       target:
         entity_id: input_select.dryer_state
-    - service: notify.bart_madouce_phone
+    - action: notify.bart_madouce_phone
       data:
         message: De droogkast is gestart!
         title: 👕👙 Droogkast
@@ -37,10 +37,10 @@ automation:
           tag: droogkast
           notification_icon: "mdi:tumble-dryer"
           clickAction: "/lovelace-apparaten/droogkast"
-    - service: script.google_home_resume
+    - action: script.google_home_resume
       data:
         action:
-          - service: tts.edge_tts_say
+          - action: tts.edge_tts_say
             data:
               entity_id: media_player.living_speaker
               message: De droogkast is gestart!
@@ -69,23 +69,23 @@ automation:
         entity_id: input_select.dryer_state
         state: uit       
   action:
-    - service: input_datetime.set_datetime
+    - action: input_datetime.set_datetime
       data:
         datetime: '{{ now() }}'
       target:
         entity_id: input_datetime.dryer_stop_time
-    - service: input_number.set_value
+    - action: input_number.set_value
       data:
         value: '{{ (as_timestamp(states(''input_datetime.dryer_stop_time'')) - as_timestamp(states(''input_datetime.dryer_start_time'')))
           | float(0) }}'
       target:
         entity_id: input_number.dryer_expected_run_time
-    - service: input_select.select_option
+    - action: input_select.select_option
       data:
         option: klaar
       target:
         entity_id: input_select.dryer_state
-    - service: notify.bart_madouce_phone
+    - action: notify.bart_madouce_phone
       data:
         message: De droogkast is klaar! Je mag de was uithalen.
         title: 👕👙 Droogkast
@@ -93,10 +93,10 @@ automation:
           tag: droogkast
           notification_icon: "mdi:tumble-dryer" 
           clickAction: "/lovelace-apparaten/droogkast"              
-    - service: script.google_home_resume
+    - action: script.google_home_resume
       data:
         action:
-          - service: tts.edge_tts_say
+          - action: tts.edge_tts_say
             data:
               entity_id: media_player.living_speaker
               message: De droogkast is klaar! Je mag de was uithalen.
@@ -114,9 +114,11 @@ automation:
         - input_select.dryer_state
       to: klaar
       for:
-        hours: 0
         minutes: 15
-        seconds: 0
+    - platform: template
+      value_template: >
+        {% set now_time = now().strftime('%H:%M') %}
+        {{ (now_time == '08:30' or now_time == '22:00') and states('input_select.dryer_state') == 'klaar' }}        
   condition:
     - condition: state
       entity_id: binary_sensor.dryer_vibration
@@ -126,7 +128,7 @@ automation:
         minutes: 14
         seconds: 30
   action:
-    - service: notify.bart_madouce_phone
+    - action: notify.bart_madouce_phone
       data:
         title: Droogkast
         message: "Haal de was uit de droogkast. De droogkast was klaar op {{ as_timestamp(states('input_datetime.dryer_stop_time')) | timestamp_custom('%-d/%-m om %-H:%M') }}."
@@ -134,10 +136,10 @@ automation:
           tag: droogkast        
           notification_icon: "mdi:tumble-dryer"
           clickAction: "/lovelace-apparaten/droogkast"                 
-    - service: script.google_home_resume
+    - action: script.google_home_resume
       data:
         action:
-          - service: tts.edge_tts_say
+          - action: tts.edge_tts_say
             data:
               entity_id: media_player.living_speaker
               message: De was zit nog in de droogkast.
@@ -169,10 +171,10 @@ automation:
   action:
     - repeat:
         sequence:
-          - service: script.google_home_resume
+          - action: script.google_home_resume
             data:
               action:
-                - service: tts.edge_tts_say
+                - action: tts.edge_tts_say
                   data:
                     entity_id: media_player.living_speaker
                     message: De was zit nog in de droogkast.
@@ -199,12 +201,12 @@ automation:
       entity_id: input_select.dryer_state
       state: klaar 
   action:
-    - service: input_select.select_option
+    - action: input_select.select_option
       data:
         option: uit
       target:
         entity_id: input_select.dryer_state
-    - service: notify.bart_madouce_phone
+    - action: notify.bart_madouce_phone
       data:
         message: "clear_notification"
         data:

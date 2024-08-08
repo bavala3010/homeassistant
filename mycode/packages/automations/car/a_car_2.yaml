@@ -8,6 +8,6 @@ automation:
     to: unavailable
   condition: []
   action:
-  - service: script.reload_toyota_aygo
+  - action: script.reload_toyota_aygo
     data: {}
   mode: single

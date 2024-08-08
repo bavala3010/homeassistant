@@ -1,0 +1,16 @@
+card_mod:
+  style:
+    mushroom-shape-icon$: |
+      ha-icon {
+        --icon-animation: 
+      }
+
+{{ '--icon-animation: java 4s linear infinite;' if is_state(config.entity, 'on') }}
+
+card_mod:
+  style:
+    mushroom-template-chip:nth-child(1)$: |
+      ha-state-icon {
+        animation: pulse 2s ease-in-out infinite;
+        }
+

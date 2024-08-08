@@ -1,6 +1,6 @@
 ring_iphone_bart:
   sequence:
-    - service: notify.bart_iphone
+    - action: notify.bart_iphone
       data:
         message: "Wie zoekt, die vindt."
         data:

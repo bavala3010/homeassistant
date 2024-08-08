@@ -17,7 +17,7 @@ automation:
     #   above: 20      
   condition: []
   action:
-    - service: timer.start
+    - action: timer.start
       data:
         duration: "{{ states('input_number.infrared_panel_timer_minutes') | float * 60 }}"   
       target:
@@ -36,7 +36,7 @@ automation:
         hours: 2
   condition: []
   action:
-    - service: switch.turn_off
+    - action: switch.turn_off
       data: {}
       target:
         entity_id: switch.infrared_panel
@@ -62,11 +62,11 @@ automation:
     to: "off"        
   condition: []
   action:  
-    - service: switch.turn_off
+    - action: switch.turn_off
       data: {}
       target:
         entity_id: switch.infrared_panel
-    - service: timer.cancel
+    - action: timer.cancel
       data: {}
       target:
         entity_id: timer.infrared_panel_timer           

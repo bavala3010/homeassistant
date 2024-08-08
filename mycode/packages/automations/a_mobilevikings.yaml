@@ -16,7 +16,7 @@ automation:
       entity_id: sensor.mobile_vikings_0456109679_product
       state: unavailable
   action:
-    - service: homeassistant.reload_config_entry
+    - action: homeassistant.reload_config_entry
       target:
         entity_id: sensor.mobile_vikings_0456109679_product
 
@@ -37,7 +37,7 @@ automation:
       entity_id: sensor.mobile_vikings_332839874_loyalty_points_available
       state: unavailable
   action:
-    - service: homeassistant.reload_config_entry
+    - action: homeassistant.reload_config_entry
       target:
         entity_id: sensor.mobile_vikings_332839874_loyalty_points_available
 
@@ -78,7 +78,7 @@ automation:
       below: 1      
   condition: []
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Mobile Vikings krediet van mama is laag.
       message: >

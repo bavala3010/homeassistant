@@ -27,7 +27,7 @@ automation:
     for: 00:10
   condition: []
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Raspberry Pi CPU
       message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}% en temperatuur is {{states('sensor.processor_temperature')}}°C.
@@ -46,7 +46,7 @@ automation:
     for: 00:15
   condition: []
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Raspberry Pi CPU
       message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}% en temperatuur is {{states('sensor.processor_temperature')}}°C.
@@ -60,7 +60,7 @@ automation:
         entity_id: sensor.processor_use_percent
         above: '50'
       sequence:
-      - service: notify.bart_phone
+      - action: notify.bart_phone
         data:
           title: Raspberry Pi CPU
           message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}% en temperatuur is {{states('sensor.processor_temperature')}}°C.
@@ -73,7 +73,7 @@ automation:
           minutes: 15
           seconds: 0
           milliseconds: 0          
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Raspberry Pi CPU terug normaal.
       message: CPU van Raspberry Pi werkt aan {{states('sensor.processor_use_percent')}}% en temperatuur is {{states('sensor.processor_temperature')}}°C.
@@ -90,7 +90,7 @@ automation:
   - platform: homeassistant
     event: shutdown
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: Home Assistant wordt gestopt.
   mode: single
@@ -103,7 +103,7 @@ automation:
     event: start
   condition: []
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: Home Assistant is volledig gestart.
   mode: single
@@ -119,7 +119,7 @@ automation:
       to: "on"
   condition: []
   action:
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         title: Home Assistant update beschikbaar.
         message: "Versie {{ states('sensor.home_assistant_website') }} is nu beschikbaar."
@@ -150,7 +150,7 @@ automation:
     at: 04:00
   condition: []
   action:
-  - service: recorder.purge
+  - action: recorder.purge
     data:
       keep_days: 7
       repack: true  # if you do not repack, the database size will not reduce
@@ -167,7 +167,7 @@ automation:
     for: "00:01:00"
   condition: []
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Probleem met internettoegang thuis.
       message: Google servers konden niet worden bereikt.
@@ -186,11 +186,11 @@ automation:
 #     event_data:
 #       action: reboot_wifi
 #   action:
-#   - service: notify.bart_phone
+#   - action: notify.bart_phone
 #     data:
 #       title: Wifi router wordt nu opnieuw gestart.
 #       message: Het wifi-netwerk zal enkele minuten onbereikbaar zijn.  
-#   - service: googlewifi.reset
+#   - action: googlewifi.reset
 #     data:
 #       entity_id: binary_sensor.wifi_access_point
 #   mode: single
@@ -205,7 +205,7 @@ automation:
     to: 'on'
   condition: []
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Internettoegang thuis opnieuw OK.
       message: Google servers konden opnieuw worden bereikt.
@@ -220,7 +220,7 @@ automation:
     to: 'on'
   condition: []
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Er is een update van Home Assistant beschikbaar.
       message: >
@@ -239,23 +239,42 @@ automation:
     for: '00:15:00'
   condition: []
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Switch van ventilator onbereikbaar.
       message: "Herstart switch op zolder."
   mode: single    
 
-
-- alias: system // at 3:15 = create backup
-  id: 'ea13be6e-29a1-4728-bb4e-1f90886fad8f'
-  description: 'maak backup elke nacht om 3u15'
+- alias: "AutoBackup: Daily backup"
+  id: 8100fbe8-340c-418f-b4ec-756c03a5fc84
   trigger:
-  - platform: time
-    at: '03:15:00'
+    platform: time
+    at: "03:15:00"
   condition: []
   action:
-    - service: backup.create
-      data: {}
-  mode: single 
+    action: auto_backup.backup_full
+    data:
+      name: "DailyBackup: {{ now().strftime('%A, %B %-d, %Y') }}"
+      keep_days: 7
 
-
+- alias: battery // batterij voordeur laag
+  id: '2f17182f-dbe0-424f-b1a8-c396f4cf4ab6'
+  description: ''
+  trigger:
+  - platform: time
+    at: "19:30:00"
+  - platform: numeric_state
+    entity_id: sensor.voordeur_nuki_battery
+    below: '20'
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.voordeur_nuki_battery
+    below: '20'  
+  action:
+  - action: notify.bart_phone
+    data:
+      title: Batterij voordeur laag
+      message: Batterijniveau is maar {{states('sensor.voordeur_nuki_battery')}}%.
+      data:
+        color: red
+  mode: single

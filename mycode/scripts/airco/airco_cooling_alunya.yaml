@@ -6,13 +6,13 @@ alunya_airco_cooling_start:
   - condition: template
     value_template: >-
       {{ states('group.kamer_alunya_ramen') == 'off' }}
-  - service: climate.set_temperature
+  - action: climate.set_temperature
     data:
       hvac_mode: cool
       temperature: 18
     target:
       device_id: 3c12e341dfd1d1fe2327ec66f3613321
-  - service: climate.set_fan_mode
+  - action: climate.set_fan_mode
     data:
       fan_mode: auto
     target:
@@ -22,19 +22,19 @@ alunya_airco_cooling_start:
 
 alunya_airco_cooling_18:
   sequence:
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 18
     target:
       entity_id: input_number.alunya_airco_target_temperature
-  - service: script.alunya_airco_cooling_start
+  - action: script.alunya_airco_cooling_start
     data: {} 
   mode: restart
 
 
 alunya_airco_cooling_boost:
   sequence:
-  - service: climate.set_preset_mode
+  - action: climate.set_preset_mode
     data:
       preset_mode: boost
     target:

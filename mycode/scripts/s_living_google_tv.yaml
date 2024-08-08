@@ -1,7 +1,7 @@
 living_google_tv_kodi_launch:
   alias: living Google TV launch Kodi
   sequence:
-    - service: remote.turn_on
+    - action: remote.turn_on
       data:
         activity: https://play.google.com/store/apps/details?id=org.xbmc.kodi
       target:
@@ -14,19 +14,19 @@ living_google_tv_kodi_launch:
       timeout:
         seconds: 5
       continue_on_timeout: true
-    - service: remote.send_command
+    - action: remote.send_command
       data:
         command: HOME
       target:
         entity_id: remote.living_google_tv
-    - service: remote.turn_on
+    - action: remote.turn_on
       data:
         activity: https://play.google.com/store/apps/details?id=org.xbmc.kodi
       target:
         entity_id: remote.living_google_tv
     - delay:
         seconds: 3        
-    - service: remote.send_command
+    - action: remote.send_command
       data:
         command: DPAD_CENTER
         hold_secs: 0.5
@@ -44,32 +44,32 @@ living_google_tv_vtm_nieuws:
           entity_id: media_player.living_tv_samsung
           state: "off"
       then:    
-        - service: remote.turn_on
+        - action: remote.turn_on
           data: {}
           target:
             entity_id: remote.living_google_tv
         - delay: 00:00:03
-    - service: remote.turn_on
+    - action: remote.turn_on
       data:
         activity: https://vtm.be/vtmgo/vtm-nieuws~3975934b-22a2-4b4d-a10c-e2727448a6fe
       target:
         entity_id:
           - remote.living_google_tv
     - delay: 00:00:03
-    - service: remote.send_command
+    - action: remote.send_command
       data:
         command: DPAD_DOWN
         num_repeats: 2
         delay_secs: 0.4      
       target:
         entity_id: remote.living_google_tv
-    - service: remote.send_command
+    - action: remote.send_command
       data:
         command: DPAD_CENTER
         delay_secs: 0.4      
       target:
         entity_id: remote.living_google_tv
-    - service: remote.send_command
+    - action: remote.send_command
       data:
         command: DPAD_DOWN
         num_repeats: 2

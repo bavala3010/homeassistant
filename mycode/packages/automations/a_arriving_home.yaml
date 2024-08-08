@@ -25,7 +25,7 @@ automation:
     entity_id: binary_sensor.bart_phone_connected_to_car_1
     state: 'on'
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: TTS
       data:
@@ -62,7 +62,7 @@ automation:
         ttl: 0
         priority: high
         media_stream: alarm_stream_max
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: Welkom thuis! (veeg omlaag voor acties)
       data:
@@ -98,7 +98,7 @@ automation:
     entity_id: binary_sensor.madouce_phone_connected_to_car_1
     state: 'on'
   action:
-  - service: notify.madouce_phone
+  - action: notify.madouce_phone
     data:
       message: TTS
       data:
@@ -135,7 +135,7 @@ automation:
         ttl: 0
         priority: high
         media_stream: alarm_stream_max
-  - service: notify.madouce_phone
+  - action: notify.madouce_phone
     data:
       message: Welkom thuis! (veeg omlaag voor acties)
       data:
@@ -163,7 +163,7 @@ automation:
     event_data:
       action: open_garage
   action:
-  - service: cover.open_cover
+  - action: cover.open_cover
     target:
       entity_id: cover.garagepoort
   mode: single
@@ -176,7 +176,7 @@ automation:
     event_data:
       action: open_voordeur
   action:
-  - service: lock.unlock
+  - action: lock.unlock
     target:
       entity_id: lock.voordeur_nuki
   mode: single
@@ -189,10 +189,10 @@ automation:
     event_data:
       action: open_voordeur_garage
   action:
-  - service: lock.unlock
+  - action: lock.unlock
     target:
       entity_id: lock.voordeur_nuki
-  - service: cover.open_cover
+  - action: cover.open_cover
     target:
       entity_id: cover.garagepoort      
   mode: single
@@ -216,7 +216,7 @@ automation:
   - condition: template
     value_template: "{{ states('person.madouce') != 'blocked_zone' }}"
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Madouce is bijna thuis.
       message: Nu in de buurt van {{states('sensor.sm_g986b_geocoded_location')}}.
@@ -231,13 +231,13 @@ automation:
       - condition: template
         value_template: "{{ 7 < now().hour < 23 }}"
     then:
-      - service: notify.bart_phone
+      - action: notify.bart_phone
         data:
           message: command_volume_level
           data:
             command: 10
             media_stream: alarm_stream
-      - service: notify.bart_phone
+      - action: notify.bart_phone
         data:
           message: TTS
           data:
@@ -266,7 +266,7 @@ automation:
       minutes: 5
       seconds: 0    
   action:
-  - service: notify.madouce_phone
+  - action: notify.madouce_phone
     data:
       title: Bart is bijna thuis.
       message: Hoera.
@@ -281,7 +281,7 @@ automation:
       - condition: template
         value_template: "{{ 7 < now().hour < 23 }}"
     then:
-      - service: notify.madouce_phone
+      - action: notify.madouce_phone
         data:
           message: TTS
           data:
@@ -319,7 +319,7 @@ automation:
             - condition: template
               value_template: "{{ 7 < now().hour < 23 }}"
           then:      
-            - service: notify.bart_phone
+            - action: notify.bart_phone
               data:
                 message: TTS
                 data:
@@ -333,7 +333,7 @@ automation:
           entity_id: lock.voordeur_nuki
           state: locked      
       then:
-        - service: lock.unlock
+        - action: lock.unlock
           data: {}
           target:
             entity_id: lock.voordeur_nuki
@@ -341,7 +341,7 @@ automation:
             - condition: template
               value_template: "{{ 7 < now().hour < 23 }}"
           then:
-          - service: notify.bart_phone
+          - action: notify.bart_phone
             data:
               message: TTS
               data:
@@ -352,7 +352,7 @@ automation:
                 media_stream: alarm_stream_max
         - wait_template: ''
           timeout: "00:07:00"
-        - service: lock.lock
+        - action: lock.lock
           data: {}
           target:
             entity_id: lock.voordeur_nuki            
@@ -380,7 +380,7 @@ automation:
           entity_id: lock.voordeur_nuki
           state: unlocked      
       then:
-        - service: notify.madouce_phone
+        - action: notify.madouce_phone
           data:
             message: TTS
             data:
@@ -394,7 +394,7 @@ automation:
           entity_id: lock.voordeur_nuki
           state: locked      
       then:
-        - service: lock.unlock
+        - action: lock.unlock
           data: {}
           target:
             entity_id: lock.voordeur_nuki
@@ -402,7 +402,7 @@ automation:
             - condition: template
               value_template: "{{ 7 < now().hour < 23 }}"
           then:            
-            - service: notify.madouce_phone
+            - action: notify.madouce_phone
               data:
                 message: TTS
                 data:
@@ -413,7 +413,7 @@ automation:
                   media_stream: alarm_stream_max
         - wait_template: ''
           timeout: "00:07:00"
-        - service: lock.lock
+        - action: lock.lock
           data: {}
           target:
             entity_id: lock.voordeur_nuki            
@@ -441,7 +441,7 @@ automation:
         - condition: template
           value_template: "{{ states('sensor.oprit_bewegingssensor_light_level') | int < 10 }}"
       then:
-        - service: light.turn_on
+        - action: light.turn_on
           data:
             brightness: 150
           target:
@@ -450,7 +450,7 @@ automation:
               - light.buiten_voordeur
         - wait_template: ""
           timeout: "00:05:00"
-        - service: light.turn_off
+        - action: light.turn_off
           data: {}
           target:
             entity_id:
@@ -479,7 +479,7 @@ automation:
         - condition: template
           value_template: "{{ states('sensor.oprit_bewegingssensor_light_level') | int < 10 }}"
       then:
-        - service: light.turn_on
+        - action: light.turn_on
           data:
             brightness: 150
           target:
@@ -488,7 +488,7 @@ automation:
               - light.buiten_voordeur
         - wait_template: ''
           timeout: "00:05:00"
-        - service: light.turn_off
+        - action: light.turn_off
           data: {}
           target:
             entity_id:
@@ -503,7 +503,7 @@ automation:
       entity_id: input_text.arriving_home_reminder_madouce
   condition: []
   action:
-    - service: input_boolean.turn_on
+    - action: input_boolean.turn_on
       data: {}
       target:
         entity_id: input_boolean.arriving_home_reminder_madouce
@@ -525,7 +525,7 @@ automation:
       value_template: >-
         {% set dif = as_timestamp(now()) - as_timestamp(states.cover.garagepoort.last_changed) %} {{ dif > 120 }}    
   action:
-    - service: cover.open_cover
+    - action: cover.open_cover
       target:
         entity_id: cover.garagepoort
       data: {}
@@ -553,7 +553,7 @@ automation:
         {% set dif = as_timestamp(now()) -
         as_timestamp(states.cover.garagepoort.last_changed) %} {{ dif > 120 }}    
   action:
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         message: TTS
         data:
@@ -561,7 +561,7 @@ automation:
           ttl: 0
           priority: high
           media_stream: alarm_stream_max
-    - service: cover.open_cover
+    - action: cover.open_cover
       target:
         entity_id: cover.garagepoort
       data: {}
@@ -575,7 +575,7 @@ automation:
       at: "00:15:00"
   condition: []
   action:
-    - service: input_text.set_value
+    - action: input_text.set_value
       data:
         value: "nog geen uur bepaald"
       target:

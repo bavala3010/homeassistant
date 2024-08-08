@@ -8,7 +8,7 @@ automation:
     seconds: /30
   condition: []
   action:
-  - service: homeassistant.update_entity
+  - action: homeassistant.update_entity
     target:
       entity_id:
       - sensor.solar_power
@@ -28,7 +28,7 @@ automation:
       above: "99"
   condition: []
   action:
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         title: Proficiat. Je verbruik is nu 100% ecologisch.
         message: "Er wordt nu {{ states('sensor.solar_power') | round() }} W zonne-energie opgewekt."
@@ -61,7 +61,7 @@ automation:
         {% if loc =="thuis" %}true
         {% endif %}
     then:
-      - service: notify.bart_phone
+      - action: notify.bart_phone
         data:
           title: Gebruik de zonne-energie verstandig
           message: >
@@ -75,7 +75,7 @@ automation:
             channel: solar
             timeout: 3600
     else:
-      - service: notify.bart_phone
+      - action: notify.bart_phone
         data:
           title: Gebruik de zonne-energie verstandig
           message: >
@@ -102,7 +102,7 @@ automation:
       above: "4000"
   condition: []
   action:
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         title: Hoog energieverbruik
         message: "Er wordt nu {{ states('sensor.net_power') }} kW verbruikt van het net."
@@ -125,7 +125,7 @@ automation:
       below: "1"
   condition: []
   action:
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         title: Zonne-energie
         message: >
@@ -151,7 +151,7 @@ automation:
       at: "23:45:00"
   condition: []
   action:
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: "{{ states('sensor.sma_today') }}"
     target:

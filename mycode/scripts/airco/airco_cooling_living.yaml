@@ -9,13 +9,13 @@ living_airco_cooling_start:
   - condition: template
     value_template: >-
       {{ states('group.living_ramen') == 'off' }}
-  - service: climate.set_temperature
+  - action: climate.set_temperature
     data:
       hvac_mode: cool
       temperature: 19
     target:
       device_id: 1c560bbc7917f45d737e87d3e2bd0d89
-  - service: climate.set_fan_mode
+  - action: climate.set_fan_mode
     data:
       fan_mode: auto
     target:
@@ -25,18 +25,18 @@ living_airco_cooling_start:
 
 living_airco_cooling_18:
   sequence:
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 18
     target:
       entity_id: input_number.amilya_airco_target_temperature          
-  - service: script.living_airco_cooling_start
+  - action: script.living_airco_cooling_start
     data: {} 
   mode: restart
 
 living_airco_cooling_boost:
   sequence:
-  - service: climate.set_preset_mode
+  - action: climate.set_preset_mode
     data:
       preset_mode: boost
     target:

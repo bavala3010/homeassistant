@@ -19,7 +19,7 @@ automation:
     after: '07:00'
     before: '23:30'
   action:
-  - service: fan.set_preset_mode
+  - action: fan.set_preset_mode
     data:
       entity_id: fan.air_purifier
       preset_mode: auto
@@ -37,7 +37,7 @@ automation:
     entity_id: input_boolean.busy_cooking
     state: 'off'    
   action:
-  - service: fan.turn_off
+  - action: fan.turn_off
     target:
       entity_id: fan.air_purifier
   mode: single
@@ -52,7 +52,7 @@ automation:
     for: 00:05:00
   condition: []
   action:
-  - service: fan.turn_off
+  - action: fan.turn_off
     target:
       entity_id: fan.air_purifier
   mode: single
@@ -65,7 +65,7 @@ automation:
     at: '23:00:00'
   condition: []
   action:
-  - service: fan.turn_off
+  - action: fan.turn_off
     target:
       entity_id: fan.air_purifier
   mode: single
@@ -84,23 +84,23 @@ automation:
     subtype: remote_button_short_press
   condition: []
   action:
-  - service: input_boolean.turn_on
+  - action: input_boolean.turn_on
     target:
       entity_id: input_boolean.busy_cooking
-  - service: fan.turn_on
+  - action: fan.turn_on
     target:
       entity_id: fan.air_purifier
     data: {}
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: Lekker aan het koken? De lucht wordt gezuiverd.
       data:
         tag: lucht-zuivering
-  - service: media_player.volume_set
+  - action: media_player.volume_set
     data:
       entity_id: media_player.living_speaker
       volume_level: 0.5      
-  - service: tts.edge_tts_say
+  - action: tts.edge_tts_say
     data:
       entity_id: media_player.living_speaker
       message: >
@@ -115,15 +115,15 @@ automation:
         "Vergeet de groentjes niet voor de vitaminen!")
         |random }}
   - delay: '00:00:10'
-  - service: media_player.volume_set
+  - action: media_player.volume_set
     data:
       entity_id: media_player.living_speaker
       volume_level: 0.4
   - delay: '01:00:00'
-  - service: input_boolean.turn_off
+  - action: input_boolean.turn_off
     target:
       entity_id: input_boolean.busy_cooking
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: clear_notification
       data:
@@ -139,11 +139,11 @@ automation:
     to: 'off'
   condition: []
   action:
-  - service: fan.turn_off
+  - action: fan.turn_off
     data: {}
     target:
       entity_id: fan.air_purifier
-  - service: tts.edge_tts_say
+  - action: tts.edge_tts_say
     data:
       entity_id: media_player.living_speaker
       message: >
@@ -156,7 +156,7 @@ automation:
         "De luchtkwaliteit is weer top. Ontspan en geniet."
         )
         |random }}
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: clear_notification
       data:

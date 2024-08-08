@@ -1,0 +1,13 @@
+automation:
+
+- alias: "Scheduled flight takes off"
+  id: e110e2d6-33d7-4adf-8c07-c7f795f0cf3e
+  trigger:
+    platform: event
+    event_type: flightradar24_tracked_took_off
+  action:
+    action: notify.bart_phone
+    data:
+      content: >-
+        Flight takes off {{ trigger.event.data.callsign }} to {{ trigger.event.data.airport_destination_city }}
+        [Open FlightRadar](https://www.flightradar24.com/{{ trigger.event.data.callsign }})

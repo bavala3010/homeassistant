@@ -22,25 +22,25 @@ heating_mode_based_on_weather_forceast:
                       value_template: >-
                         {{ heating_season_stopdate <= now()|as_timestamp|timestamp_custom('%m-%d', False) <= heating_season_startdate }}
                   sequence:
-                    - service: input_text.set_value
+                    - action: input_text.set_value
                       data:
                         value: >-
                           ({{now().strftime("%Y-%m-%d %H:%M:%S")}}) - forecast temp above thresholds. Dates are in spring. Setting mode to OFF.
                       target:
                         entity_id: input_text.heating_mode_from_weather_forecast_log
-                    - service: input_select.select_option
+                    - action: input_select.select_option
                       data:
                         option: 'off'
                       target:
                         entity_id: input_select.heating_mode_from_weather_forecast
               default:
-                - service: input_text.set_value
+                - action: input_text.set_value
                   data:
                     value: >-
                       ({{now().strftime("%Y-%m-%d %H:%M:%S")}}) - forecast temp above thresholds. Dates are in autumn. Setting mode to ECO.
                   target:
                     entity_id: input_text.heating_mode_from_weather_forecast_log
-                - service: input_select.select_option
+                - action: input_select.select_option
                   data:
                     option: 'eco'
                   target:
@@ -52,25 +52,25 @@ heating_mode_based_on_weather_forceast:
                   value_template: >-
                     {{ heating_season_stopdate <= now()|as_timestamp|timestamp_custom('%m-%d', False) <= heating_season_startdate }}
               sequence:
-                - service: input_text.set_value
+                - action: input_text.set_value
                   data:
                     value: >-
                       ({{now().strftime("%Y-%m-%d %H:%M:%S")}}) - forecast temperatures are below thresholds. Dates are in spring. Setting mode to ECO.
                   target:
                     entity_id: input_text.heating_mode_from_weather_forecast_log
-                - service: input_select.select_option
+                - action: input_select.select_option
                   data:
                     option: 'eco'
                   target:
                     entity_id: input_select.heating_mode_from_weather_forecast
           default:
-            - service: input_text.set_value
+            - action: input_text.set_value
               data:
                 value: >-
                   ({{now().strftime("%Y-%m-%d %H:%M:%S")}}) - DEFAULT. forecast temperatures are below thresholds. Dates are in autumn. Setting mode to ON (Auto).
               target:
                 entity_id: input_text.heating_mode_from_weather_forecast_log
-            - service: input_select.select_option
+            - action: input_select.select_option
               data:
                 option: 'on'
               target:

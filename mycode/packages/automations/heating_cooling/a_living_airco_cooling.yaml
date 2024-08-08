@@ -11,7 +11,7 @@ automation:
     above: 23
   condition: []
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Temperatuur living
       message: Temperatuur in living is nu {{ states('sensor.living_temperature') }} graden.
@@ -35,8 +35,8 @@ automation:
     entity_id: sensor.solar_power
     above: 1500
   action:
-  - service: script.living_airco_cooling_start
-  - service: notify.bart_phone
+  - action: script.living_airco_cooling_start
+  - action: notify.bart_phone
     data:
       title: Airco koelt nu in living
       message: Temperatuur in living is nu {{ states('sensor.living_temperature') | round(1) }} °C.

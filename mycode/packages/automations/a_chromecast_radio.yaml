@@ -47,14 +47,14 @@ automation:
     - platform: state
       entity_id: input_select.radio_station
   action: 
-    - service: script.radio
+    - action: script.radio
 
 - alias: 'Set Chromecast Radio Volume'
   trigger:
     - platform: state
       entity_id: input_number.volume_radio
   action:
-    - service: media_player.volume_set
+    - action: media_player.volume_set
       data:
         entity_id: >
           {% if is_state("input_select.chromecast_speaker", "Living") %} media_player.living_speaker
@@ -71,7 +71,7 @@ script:
   radio:
     alias: Play Radio on Chromecast Audio
     sequence:
-    - service: media_player.volume_set
+    - action: media_player.volume_set
       data:
         entity_id: >
           {% if is_state("input_select.chromecast_speaker", "Living") %} media_player.living_speaker
@@ -83,7 +83,7 @@ script:
           {% endif %}
  #      volume_level: '{{  states.input_number.volume_radio.state  }}'
         volume_level: "{{ states('input_number.volume_radio') | float / 100 | round(0) }}"
-    - service: media_player.play_media
+    - action: media_player.play_media
       data:
         entity_id: >
           {% if is_state("input_select.chromecast_speaker", "Living") %} media_player.living_speaker

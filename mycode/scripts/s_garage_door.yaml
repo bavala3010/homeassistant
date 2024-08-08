@@ -1,0 +1,11 @@
+garage_door_small_opening:
+  alias: Doe garagepoort beetje open voor verluchting
+  sequence:
+    - action: cover.open_cover
+      target:
+        entity_id: cover.garagepoort
+    - delay: 
+        seconds: 2
+    - action: cover.toggle
+      target:
+        entity_id: cover.garagepoort

@@ -8,13 +8,13 @@ automation:
     at: '23:00'
   condition: []
   action:
-    - service: input_number.set_value
+    - action: input_number.set_value
       data_template:
         value: >
           {{ states('sensor.weather_eikenbos_min_temp_tomorrow') | float() }}
       target:
         entity_id: input_number.weather_eikenbos_min_temp_today
-    - service: input_number.set_value
+    - action: input_number.set_value
       data_template:
         value: >
           {{ states('sensor.weather_eikenbos_max_temp_tomorrow') | float() }}
@@ -30,7 +30,7 @@ automation:
     at: '07:00'
   condition: []
   action:
-    - service: weather.get_forecasts
+    - action: weather.get_forecasts
       target:
         entity_id:
           - weather.eikenbos_openweather
@@ -56,17 +56,17 @@ automation:
       entity_id: sensor.eikenbos_humidity
       below: 70
   action:
-  - service: media_player.volume_set
+  - action: media_player.volume_set
     data:
       entity_id: media_player.living_speaker
       volume_level: 0.5      
-  - service: tts.edge_tts_say
+  - action: tts.edge_tts_say
     data:
       entity_id: media_player.living_speaker
       message: >
         Opgelet: het kan buiten glad zijn. Het is {{ states('sensor.eikenbos_temperature') | round() }} graden.
   - delay: '00:00:10'
-  - service: media_player.volume_set
+  - action: media_player.volume_set
     data:
       entity_id: media_player.living_speaker
       volume_level: 0.4

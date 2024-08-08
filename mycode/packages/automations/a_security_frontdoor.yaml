@@ -28,7 +28,7 @@ automation:
         - "01:00:00"                 
   condition: []
   action:
-    - service: lock.lock
+    - action: lock.lock
       data: {}
       target:
         entity_id: lock.voordeur_nuki
@@ -45,10 +45,10 @@ automation:
     entity_id: lock.voordeur_nuki
     state: 'unlocked'
   action:
-  - service: lock.lock
+  - action: lock.lock
     target:
       entity_id: lock.voordeur_nuki
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       title: Voordeur 
       message: Niemand thuis. Gelukkig heb ik de voordeur voor jou op slot gedaan. 
@@ -77,10 +77,10 @@ automation:
     entity_id: group.bart_madouce
     state: not_home    
   action:
-  - service: lock.lock
+  - action: lock.lock
     target:
       entity_id: lock.voordeur_nuki
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       title: Ik heb de voordeur voor jou op slot gedaan.
       message: >-
@@ -109,10 +109,10 @@ automation:
     entity_id: group.alleen_bart
     state: not_home    
   action:
-  - service: lock.lock
+  - action: lock.lock
     target:
       entity_id: lock.voordeur_nuki
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Ik heb de voordeur voor jou op slot gedaan.
       message: Bart, je bent alleen thuis.
@@ -137,10 +137,10 @@ automation:
     entity_id: group.alleen_madouce
     state: not_home    
   action:
-  - service: lock.lock
+  - action: lock.lock
     target:
       entity_id: lock.voordeur_nuki
-  - service: notify.madouce_phone
+  - action: notify.madouce_phone
     data:
       title: Ik heb de voordeur voor jou op slot gedaan.
       message: Madouce, je bent alleen thuis.
@@ -160,10 +160,10 @@ automation:
     entity_id: lock.voordeur_nuki
     state: 'unlocked'
   action:
-  - service: lock.lock
+  - action: lock.lock
     target:
       entity_id: lock.voordeur_nuki
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Ik heb de voordeur voor jou op slot gedaan.
       message: Bart, jij en Madouce zitten op het terras.
@@ -182,7 +182,7 @@ automation:
     for: '00:03:00'
   condition: []
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Voordeur staat al lang open! 
       message: "Staat al {{((as_timestamp(now()) - as_timestamp(states.binary_sensor.voordeur.last_changed)) / 60 )| int() }} minuten open."
@@ -198,7 +198,7 @@ automation:
       sequence:
       - delay:
           minutes: 1
-      - service: notify.bart_phone      
+      - action: notify.bart_phone      
         data:
           title: Voordeur staat al lang open!
           message: >-
@@ -208,7 +208,7 @@ automation:
             tag: voordeur
             alert_once: true
             notification_icon: mdi:door-open
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: "Voordeur is nu terug dicht."
       # + 3 = automation is triggered when the door is already 3 minutes open
@@ -236,7 +236,7 @@ automation:
     entity_id: binary_sensor.bart_phone_connected_to_car_1
     state: 'on'    
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: TTS
       data:
@@ -245,7 +245,7 @@ automation:
         clickAction: "/lovelace/security"
         vibrationPattern: 10, 10, 10, 10, 10, 10, 10
         media_stream: alarm_stream_max
-  - service: lock.lock
+  - action: lock.lock
     target:
       entity_id: lock.voordeur_nuki
   mode: single
@@ -265,7 +265,7 @@ automation:
             {% set s = states('sensor.voordeur_nuki_last_unlock_user') %}
             {{ s !='Nuki Web ()' or s !='' or s !='Unknown'}}
       then:     
-        - service: notify.bart_phone
+        - action: notify.bart_phone
           data:
             title: >
               {% set full = states('sensor.voordeur_nuki_last_unlock_user') %}
@@ -293,7 +293,7 @@ automation:
               entity_id: lock.voordeur_nuki
               state: unlocked
           then:
-            - service: notify.bart_phone
+            - action: notify.bart_phone
               data:
                 title: Voordeur
                 message: Voordeur is nog altijd ontgrendeld.
@@ -307,7 +307,7 @@ automation:
               entity_id: lock.voordeur_nuki
               state: locked
           then:
-            - service: notify.bart_phone
+            - action: notify.bart_phone
               data:
                 title: Voordeur
                 message: Voordeur is opnieuw vergrendeld.
@@ -328,7 +328,7 @@ automation:
       to: locked
   condition: []
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: clear_notification
       data:

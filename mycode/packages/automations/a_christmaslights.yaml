@@ -28,16 +28,16 @@ automation:
     entity_id: input_boolean.christmas_season_lights
     state: "on"
   action:
-  - service: switch.turn_on
+  - action: switch.turn_on
     target:
       entity_id: switch.kerstverlichting
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       message: '{{ ["Joehoe, de kerstverlichting brandt weer!","Jingle bells. Laat de lichtjes maar branden!", "Merry Christmas with lots of love.", "Kerst is leuker met lichtjes.", "Wishing you a Christmas that is merry and bright!"] | random }}'
       data:
         timeout: 25200  # 7 uren
   # rode lamp living links 4 op kerstboom
-  - service: light.turn_on
+  - action: light.turn_on
     target:
       entity_id:
         - light.living_links_4
@@ -76,7 +76,7 @@ automation:
   action:
   - delay:
       minutes: '{{ range(0,10) | random }}'  
-  - service: switch.turn_on
+  - action: switch.turn_on
     target:
       entity_id: switch.kerstverlichting
   mode: single
@@ -104,12 +104,12 @@ automation:
     entity_id: switch.kerstverlichting
     state: 'off' 
   action:
-  - service: switch.turn_on
+  - action: switch.turn_on
     target:
       entity_id: switch.kerstverlichting
   - wait_template: ''
     timeout: 00:03:00 
-  - service: switch.turn_off
+  - action: switch.turn_off
     target:
       entity_id: switch.kerstverlichting
   mode: restart
@@ -131,7 +131,7 @@ automation:
     entity_id: input_boolean.christmas_season_lights
     state: "on"      
   action:
-  - service: switch.turn_off
+  - action: switch.turn_off
     target:
       entity_id: switch.kerstverlichting
   mode: single
@@ -156,10 +156,10 @@ automation:
   action:
   - delay:
       minutes: '{{ range(0,10) | random }}'   
-  - service: switch.turn_off
+  - action: switch.turn_off
     target:
       entity_id: switch.kerstverlichting
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       message: Wat jammer, de kerstverlichting is weer uit!
       data:
@@ -196,10 +196,10 @@ automation:
   action:
   - delay:
       minutes: '{{ range(0,10) | random }}'  
-  - service: switch.turn_on
+  - action: switch.turn_on
     target:
       entity_id: switch.kerstboom
-  - service: light.turn_on
+  - action: light.turn_on
     target:
       entity_id:
         - light.living_links_4
@@ -235,7 +235,7 @@ automation:
   action:
   - delay:
       minutes: '{{ range(0,10) | random }}'   
-  - service: switch.turn_on
+  - action: switch.turn_on
     target:
       entity_id: switch.kerstboom
   mode: single
@@ -251,10 +251,10 @@ automation:
     entity_id: input_boolean.christmas_season_lights
     state: "on"  
   action:
-  - service: switch.turn_on
+  - action: switch.turn_on
     target:
       entity_id: switch.kerstboom
-  - service: light.turn_on
+  - action: light.turn_on
     target:
       entity_id:
         - light.living_links_4
@@ -300,7 +300,7 @@ automation:
   action:
   - delay:
       minutes: '{{ range(0,10) | random }}'  
-  - service: switch.turn_off
+  - action: switch.turn_off
     target:
       entity_id: switch.kerstboom
   mode: single
@@ -317,7 +317,7 @@ automation:
     entity_id: input_boolean.christmas_season_lights
     state: "on"  
   action:
-    - service: light.turn_on
+    - action: light.turn_on
       data:
         transition: 3
         rgb_color: 
@@ -341,7 +341,7 @@ automation:
     entity_id: input_boolean.christmas_season_lights
     state: "on"  
   action:
-    - service: light.turn_off
+    - action: light.turn_off
       data: {}
       target:
         entity_id:

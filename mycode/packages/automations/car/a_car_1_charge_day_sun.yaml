@@ -32,26 +32,26 @@ automation:
         - condition: template
           value_template: "{{ wattage > 1.3 }}"          
       then:   
-        - service: input_boolean.turn_on
+        - action: input_boolean.turn_on
           data: {}
           target:
             entity_id: input_boolean.car_charge_busy
-        - service: input_number.set_value
+        - action: input_number.set_value
           target:
             entity_id: input_number.car_charger_watt
           data:
             value: "{{ wattage }}"
         - wait_template: ''
           timeout: '00:00:05'
-        - service: script.start_charger
+        - action: script.start_charger
       else:
         if:
           - condition: template
             value_template: "{{ states('sensor.charger_current_power') | float() > 0 }}"
         then:      
-          - service: script.stop_charger
+          - action: script.stop_charger
             data: {}
-          - service: notify.bart_phone
+          - action: notify.bart_phone
             data:
               title: Auto is gestopt met laden. Nu 3 minuten wachten.
               message: >
@@ -61,7 +61,7 @@ automation:
   mode: single
 
 
-  # - service: notify.bart_phone
+  # - action: notify.bart_phone
   #   data:
   #     title: Auto is gestart met laden op zonne-energie
   #     message: "{{ message }}"

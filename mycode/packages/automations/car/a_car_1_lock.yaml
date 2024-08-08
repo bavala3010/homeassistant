@@ -32,7 +32,7 @@ automation:
   - condition: template
     value_template: "{{ states('binary_sensor.madouce_phone_connected_to_car_1') != 'on' }}"
   action:
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       title: Auto niet op slot!
       message: 🚙 Er wordt nu geprobeerd om de auto te sluiten.
@@ -45,7 +45,7 @@ automation:
         - action: URI
           title: meer info
           uri: /dashboard-car/car-1
-  - service: lock.lock
+  - action: lock.lock
     target:
       entity_id: lock.audi_e_tron_sportback_door_lock
   mode: single
@@ -58,7 +58,7 @@ automation:
     event_data:
       action: lock_car
   action:
-  - service: lock.lock
+  - action: lock.lock
     target:
       entity_id: lock.audi_e_tron_sportback_door_lock
   mode: single
@@ -72,7 +72,7 @@ automation:
     to: 'locked'
   condition: []
   action:
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       message: "clear_notification"
       data:
@@ -104,7 +104,7 @@ automation:
     for:
       minutes: 15
   action:
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       title: Audi niet op slot!
       message: 🚙 Er wordt nu geprobeerd om de auto te sluiten.
@@ -116,7 +116,7 @@ automation:
         - action: URI
           title: meer info
           uri: /dashboard-car/car-1
-  - service: lock.lock
+  - action: lock.lock
     target:
       entity_id: lock.audi_e_tron_sportback_door_lock
   mode: single

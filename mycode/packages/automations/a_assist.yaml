@@ -14,7 +14,7 @@ automation:
       {% else %}De auto is {{ states('sensor.car_1_soc') | int() }}% geladen. Dit is voor {{ states('sensor.car_1_range') }} km.
       {% endif %}    
   action:
-    - service: script.from_atom_to_speaker
+    - action: script.from_atom_to_speaker
       data:
         message: '{{message}}'
   mode: single
@@ -27,7 +27,7 @@ automation:
     command: Verwarm de auto
   condition: []   
   action:
-    - service: script.auto_start_climatisatie_nu_google_home
+    - action: script.auto_start_climatisatie_nu_google_home
   mode: single
 
 
@@ -39,7 +39,7 @@ automation:
     command: Doe het licht in de keuken uit
   condition: []   
   action:
-    - service: light.turn_off
+    - action: light.turn_off
       data:
         transition: 1
       target:
@@ -55,7 +55,7 @@ automation:
     command: Doe het licht in de keuken aan
   condition: []   
   action:
-    - service: light.turn_on
+    - action: light.turn_on
       data:
         transition: 1
       target:
@@ -85,7 +85,7 @@ automation:
       {% elif c > 0 %}De auto laadt aan {{ c | abs }} Watt. Als de auto stopt met laden, kan er {{ (c + p) | round(-2) | int | abs }} Watt worden gebruikt.
       {% endif %}   
   action:  
-    - service: script.from_atom_to_speaker
+    - action: script.from_atom_to_speaker
       data:
         message: '{{message}}'         
   mode: single
@@ -106,7 +106,7 @@ automation:
       {% else %}Het regent {{ r }} liter per uur.
       {% endif %}
   action:
-    - service: script.from_atom_to_speaker
+    - action: script.from_atom_to_speaker
       data:
         message: '{{message}}'
   mode: single
@@ -119,7 +119,7 @@ automation:
     command: Speel het nieuws
   condition: []
   action:
-  - service: script.living_google_tv_vtm_nieuws
+  - action: script.living_google_tv_vtm_nieuws
   mode: single
 
 - alias: Assist // Zet TV aan
@@ -130,7 +130,7 @@ automation:
     command: zet tv aan
   condition: []
   action:
-  - service: script.living_google_tv_kodi_launch
+  - action: script.living_google_tv_kodi_launch
   mode: single
 
 
@@ -142,7 +142,7 @@ automation:
     command: speel kerstmuziek
   condition: []
   action:
-    - service: media_player.play_media
+    - action: media_player.play_media
       data:
         entity_id: media_player.living_speaker
         media_content_id: >

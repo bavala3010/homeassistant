@@ -7,11 +7,18 @@ automation:
   - platform: time
     at:
     - '00:00:00'
+  - platform: time
+    at:
+    - '01:00:00'    
   - platform: state
     entity_id: group.gezin
     to: not_home
+  condition:
+  - condition: state
+    entity_id: media_player.living_tv_samsung
+    state: "off"  
   action:
-  - service: switch.turn_off
+  - action: switch.turn_off
     target:
       entity_id: switch.living_plug
   mode: single
@@ -27,7 +34,7 @@ automation:
     entity_id: group.gezin
     to: home
   action:
-  - service: switch.turn_on
+  - action: switch.turn_on
     target:
       entity_id: switch.living_plug 
   mode: single 
@@ -45,7 +52,7 @@ automation:
     entity_id: switch.bart_laptop_brum05007458
     state: 'on'
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: De laptop van het werk staat nog aan.
   mode: single

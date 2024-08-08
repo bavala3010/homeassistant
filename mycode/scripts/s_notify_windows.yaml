@@ -10,7 +10,7 @@ notify_bart_windows_close:
     - condition: zone
       entity_id: person.bart
       zone: zone.home
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         title: " {{title}}"
         message: "{{reason}}<br>{{message}}"
@@ -37,7 +37,7 @@ notify_bart_windows_open:
     - condition: zone
       entity_id: person.bart
       zone: zone.home
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         title: " {{title}}"
         message: "{{reason}}<br>{{message}}"
@@ -64,7 +64,7 @@ notify_madouce_windows_close:
     - condition: zone
       entity_id: person.madouce
       zone: zone.home
-    - service: notify.madouce_phone
+    - action: notify.madouce_phone
       data:
         title: " {{title}}"
         message: "{{reason}}<br>{{message}}"
@@ -91,7 +91,7 @@ notify_madouce_windows_open:
     - condition: zone
       entity_id: person.madouce
       zone: zone.home
-    - service: notify.madouce_phone
+    - action: notify.madouce_phone
       data:
         title: " {{title}}"
         message: "{{reason}}<br>{{message}}"
@@ -118,7 +118,7 @@ notify_alunya_windows:
     - condition: zone
       entity_id: person.alunya
       zone: zone.home
-    - service: notify.alunya_phone
+    - action: notify.alunya_phone
       data:
         title: " {{title}}"
         message: "{{reason}}<br>{{message}}"

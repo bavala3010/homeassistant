@@ -20,12 +20,12 @@ automation:
       entity_id: group.gezin
       state: home
   action:
-    - service: light.turn_on
+    - action: light.turn_on
       metadata: {}
       data: {}
       target:
         entity_id: light.diffuser_lightbulb
-    - service: humidifier.turn_on
+    - action: humidifier.turn_on
       metadata: {}
       data: {}
       target:
@@ -34,7 +34,7 @@ automation:
     - condition: state
       entity_id: humidifier.diffuser_humidifier_dehumidifier
       state: "off"
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         title: Diffuser is gestopt.
         message: Mogelijk moet je water toevoegen.
@@ -58,12 +58,12 @@ automation:
       entity_id: binary_sensor.workday_sensor
       state: "on"
   action:
-    - service: light.turn_off
+    - action: light.turn_off
       metadata: {}
       data: {}
       target:
         entity_id: light.diffuser_lightbulb  
-    - service: humidifier.turn_off
+    - action: humidifier.turn_off
       target:
         device_id:
           - d803d244c0cb99f74345bfe8f50061ef
@@ -91,12 +91,12 @@ automation:
       entity_id: group.gezin
       state: home
   action:
-    - service: light.turn_on
+    - action: light.turn_on
       metadata: {}
       data: {}
       target:
         entity_id: light.diffuser_lightbulb
-    - service: humidifier.turn_on
+    - action: humidifier.turn_on
       metadata: {}
       data: {}
       target:
@@ -105,7 +105,7 @@ automation:
     - condition: state
       entity_id: humidifier.diffuser_humidifier_dehumidifier
       state: "off"
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         title: Diffuser is gestopt.
         message: Mogelijk moet je water toevoegen.
@@ -129,12 +129,12 @@ automation:
       entity_id: binary_sensor.workday_sensor
       state: "off"
   action:
-    - service: light.turn_off
+    - action: light.turn_off
       metadata: {}
       data: {}
       target:
         entity_id: light.diffuser_lightbulb  
-    - service: humidifier.turn_off
+    - action: humidifier.turn_off
       target:
         device_id:
           - d803d244c0cb99f74345bfe8f50061ef

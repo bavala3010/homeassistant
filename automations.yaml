@@ -65,67 +65,6 @@
           = ''input_select.car_1_use_day_'' ~ t.isoweekday() %}  {{ states(car_1_use_day)
           }}'
   mode: single
-- id: '1668774395681'
-  alias: Zonnestopcontact
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.net_power
-    for:
-      hours: 0
-      minutes: 5
-      seconds: 0
-    below: -20
-    id: enough injection
-  - platform: numeric_state
-    entity_id: sensor.net_power
-    for:
-      hours: 0
-      minutes: 5
-      seconds: 0
-    above: -20
-    id: not enough injection
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: enough injection
-      sequence:
-      - service: switch.turn_on
-        data: {}
-        target:
-          entity_id: switch.living_zonnestopcontact
-    - conditions:
-      - condition: trigger
-        id: not enough injection
-      sequence:
-      - service: switch.turn_off
-        data: {}
-        target:
-          entity_id: switch.living_zonnestopcontact
-  mode: single
-- id: '1670006028162'
-  alias: test alarm als trigger
-  description: ''
-  trigger:
-  - platform: template
-    value_template: '{{ as_timestamp(states(''sensor.sm_g975f_next_alarm'')) | int()
-      == as_timestamp(now() + timedelta(minutes=10)) | int() }}
-
-      '
-  condition: []
-  action:
-  - service: notify.bart_phone
-    data:
-      message: het werkt
-      title: het werkt
-  - delay:
-      hours: 0
-      minutes: 25
-      seconds: 0
-      milliseconds: 0
-  mode: single
 - id: '1671288400613'
   alias: extreem piekverbruik = melding en stop laden auto
   description: ''
@@ -187,39 +126,6 @@
     state: 'on'
   action: []
   mode: single
-- id: '1691840935541'
-  alias: Bart komt thuis na fietsen = doe garagepoort open
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.sm_s916b_wifi_connection
-    to: BMWifi
-  - platform: state
-    entity_id:
-    - sensor.sm_s916b_wifi_connection
-    to: BMWifiBackup
-  condition:
-  - condition: template
-    value_template: '{% set act = states(''sensor.sm_s916b_detected_activity'') %}
-      {{ act == "on_bicycle" }} # {{ act == "on_bicycle" or act == "walking" }}'
-  - condition: template
-    value_template: '{% set dif = as_timestamp(now()) - as_timestamp(states.cover.garagepoort.last_changed)
-      %} {{ dif > 120 }}    '
-  action:
-  - service: notify.bart_phone
-    data:
-      message: TTS
-      data:
-        tts_text: Welkom thuis Bart. De garagepoort gaat nu open.
-        ttl: 0
-        priority: high
-        media_stream: alarm_stream_max
-  - service: cover.open_cover
-    target:
-      entity_id: cover.garagepoort
-    data: {}
-  mode: single
 - id: '1691846149230'
   alias: Madouce komt thuis na fietsen = doe garagepoort open
   description: ''
@@ -253,27 +159,6 @@
       entity_id: cover.garagepoort
     data: {}
   mode: single
-- id: '1691846545004'
-  alias: Bart komt thuis na fietsen (iPhone) = doe garagepoort open
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.iphone_ssid
-    to: BMWifi
-  condition:
-  - condition: template
-    value_template: '{% set act = states(''sensor.iphone_activity'') %} {{ act ==
-      "cycling" }}'
-  - condition: template
-    value_template: '{% set dif = as_timestamp(now()) - as_timestamp(states.cover.garagepoort.last_changed)
-      %} {{ dif > 120 }}    '
-  action:
-  - service: cover.open_cover
-    target:
-      entity_id: cover.garagepoort
-    data: {}
-  mode: single
 - id: '1697358918402'
   alias: Assist // Geef de katten eten
   description: ''
@@ -285,3 +170,132 @@
   - service: script.pet_feeder_feed_1_portion
     data: {}
   mode: single
+- id: '1704638333676'
+  alias: keuken lichten remote control
+  description: ''
+  use_blueprint:
+    path: EPMatt/ikea_e1524_e1810.yaml
+    input:
+      integration: ZHA
+      controller_device: 1d3fdf1b031521ddfe7bdcc86aa2c8a9
+      action_button_center_short:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          area_id:
+          - keuken_aanrecht
+          - keuken_gang
+      action_button_up_short:
+      - service: light.turn_on
+        metadata: {}
+        data:
+          brightness_step_pct: 20
+        target:
+          area_id:
+          - keuken_aanrecht
+          - keuken_gang
+      action_button_down_short:
+      - service: light.turn_on
+        metadata: {}
+        data:
+          brightness_step_pct: -20
+        target:
+          area_id:
+          - keuken_aanrecht
+          - keuken_gang
+- id: '1704643181003'
+  alias: keuken lichten remote control 2
+  description: ''
+  use_blueprint:
+    path: Malte/zha-ikea-four-button-remote-styrbar-for-lights-e2001-e2002.yaml
+    input:
+      remote: 702f561860112966ce7ae9ee39e89ce5
+      light:
+        area_id:
+        - keuken_aanrecht
+        - keuken_gang
+      brightness: 75
+      hold_time: 0.3
+- id: '1602585004975'
+  alias: 'Test: alarm lichten'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.alarm_lights
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: scene.create
+    data:
+      scene_id: alarm_triggered_lights_restore
+      entities:
+        light.living_links:
+          state: '{{ states(''light.living_links'') }}'
+          brightness: '{{ state_attr(''light.living_links'',''brightness'') }}'
+        light.living_rechts:
+          state: '{{ states(''light.living_rechts'') }}'
+          brightness: '{{ state_attr(''light.living_rechts'',''brightness'') }}'
+        light.gang:
+          state: '{{ states(''light.gang'') }}'
+          brightness: '{{ state_attr(''light.gang'',''brightness'') }}'
+  - repeat:
+      until:
+      - condition: state
+        entity_id: input_boolean.alarm_lights
+        state: 'off'
+      sequence:
+      - service: light.toggle
+        target:
+          entity_id:
+          - light.veranda_staande_lamp
+          - light.gang
+          - light.living_links
+          - light.living_rechts
+        data:
+          flash: long
+          rgb_color:
+          - 255
+          - 0
+          - 0
+          brightness_pct: 100
+      - delay:
+          seconds: 30
+  - service: scene.turn_on
+    entity_id: scene.alarm_triggered_lights_restore
+  mode: single
+- id: '1711727672278'
+  alias: 'Test - Systeem: reclameblokkering 4 uren uit = terug inschakelen'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.adguard_home_bescherming
+    to: 'off'
+    for:
+      hours: 4
+      minutes: 0
+      seconds: 0
+  condition: []
+  action:
+  - service: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.adguard_home_bescherming
+  mode: single
+- id: '1712528302140'
+  alias: Brievenbus geopend - camerabeeld
+  description: Brievenbus geopend - camerabeeld
+  use_blueprint:
+    path: TheRealFalseReality/send_snapshot_conditional.yaml
+    input:
+      sensor: binary_sensor.letterbox_vibration
+      camera: camera.eikenbos_oprit
+      notify_device: 5739ab8e62f11dbeb91c77556314270c
+      notification_title: Brievenbus geopend om {{ time }}.
+      notification_icon: mdi:mailbox-open
+      save_archive_file: false
+      notification_message: Zie camerabeeld
+      data_clickaction_url: /lovelace-security/overview

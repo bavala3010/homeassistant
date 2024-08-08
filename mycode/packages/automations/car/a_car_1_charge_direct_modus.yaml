@@ -26,7 +26,7 @@ automation:
   - condition: template
     value_template: "{{ states('sensor.charger_status') in ['connected', 'charging'] }}"
   action:
-    - service: input_number.set_value
+    - action: input_number.set_value
       target:
         entity_id: input_number.car_charger_watt
       data:
@@ -41,9 +41,9 @@ automation:
           {% endif %}
     - wait_template: ''
       timeout: '00:00:05'
-    - service: script.charger_define_phase_1_or_3_based_on_watt
-    - service: script.charger_define_ampere_based_on_watt      
-    - service: script.charger_define_and_write_register_based_on_ampere
+    - action: script.charger_define_phase_1_or_3_based_on_watt
+    - action: script.charger_define_ampere_based_on_watt      
+    - action: script.charger_define_and_write_register_based_on_ampere
   mode: single
 
 - alias: "🚗 car 1 // 🔋 charge // direct modus // stop bij bereiken laaddoel"
@@ -62,7 +62,7 @@ automation:
   - condition: template
     value_template: "{{ states('sensor.charger_status') == 'charging' or states('sensor.charger_status') == 'error'}}"
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Laaddoel bereikt!
       message: >
@@ -75,7 +75,7 @@ automation:
         color: green
         clickAction: "/dashboard-car/car-charging"      
   # stop charging
-  - service: script.stop_charger
+  - action: script.stop_charger
     data: {}
   mode: single
 
@@ -85,7 +85,7 @@ automation:
   - platform: state
     entity_id: input_select.car_charge_minimum_wattage
   action:
-    - service: input_number.set_value
+    - action: input_number.set_value
       target:
         entity_id: input_number.car_charge_minimum_wattage
       data:
@@ -97,7 +97,7 @@ automation:
   - platform: state
     entity_id: input_select.car_charge_fixed_wattage
   action:
-    - service: input_number.set_value
+    - action: input_number.set_value
       target:
         entity_id: input_number.car_charge_fixed_wattage
       data:

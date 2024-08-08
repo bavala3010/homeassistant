@@ -1,0 +1,29 @@
+sensor:
+- platform: template
+  sensors:
+    current_spool_entity:
+      friendly_name: entiteit van huidige spoel
+      value_template: >
+        {% set entities = label_entities('spoolman') %}
+        {% set current_serial = (state_attr('sensor.x1c_active_tray', 'tag_uid') | string).strip().upper() %}
+        {% set matching_entity = None %}
+        {% for entity in entities %}
+          {% set serial_number = (state_attr(entity, 'lot_nr') | string).strip().upper().replace(" ", "") %}
+          {%- if serial_number is not none %}
+            {% if serial_number == current_serial %}
+              {% set matching_entity = entity %}
+              {{ entity }}
+              {% break %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+
+
+utility_meter:
+  3d_printer_usage_daily:
+    source: sensor.x1c_total_usage
+    cycle: daily
+
+  3d_printer_usage_weekly:
+    source: sensor.x1c_total_usage
+    cycle: weekly

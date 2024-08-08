@@ -1,35 +1,35 @@
 master_bedroom_airco_cooling_start:
   sequence:
-  - service: timer.start
+  - action: timer.start
     data:
       duration: "{{ states('input_number.master_bedroom_airco_timer_minutes') | float * 60 }}"
     target:
       entity_id: timer.master_bedroom_airco_timer
-  - service: input_datetime.set_datetime
+  - action: input_datetime.set_datetime
     data:
       datetime: >
         {% set t =states('input_number.master_bedroom_airco_timer_minutes') | float %}
         {{ (now().timestamp() + t*60 ) | timestamp_custom("%Y-%m-%d %-H:%M:%S") }}
     target:
       entity_id: input_datetime.master_bedroom_airco_timer_stop
-  - service: climate.set_temperature
+  - action: climate.set_temperature
     data:
       hvac_mode: cool
       temperature: >
         {{ states('input_number.master_bedroom_airco_cooling_temperature') | float }}
     target:
       device_id: 64296bd295e4506b8a3ec42c8aae7e58
-  # - service: climate.set_preset_mode
+  # - action: climate.set_preset_mode
   #   data:
   #     preset_mode: eco
   #   target:
   #     device_id: 64296bd295e4506b8a3ec42c8aae7e58
-  - service: climate.set_swing_mode
+  - action: climate.set_swing_mode
     data:
       swing_mode: 3D
     target:
       device_id: 64296bd295e4506b8a3ec42c8aae7e58
-  - service: climate.set_fan_mode
+  - action: climate.set_fan_mode
     data:
       fan_mode: auto
     target:
@@ -38,17 +38,17 @@ master_bedroom_airco_cooling_start:
 
 master_bedroom_airco_cooling_18:
   sequence:
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 18
     target:
       entity_id: input_number.master_bedroom_airco_cooling_temperature          
-  - service: input_number.set_value
+  - action: input_number.set_value
     data:
       value: 30
     target:
       entity_id: input_number.master_bedroom_airco_timer_minutes
-  - service: script.master_bedroom_airco_cooling_start
+  - action: script.master_bedroom_airco_cooling_start
     data: {} 
   mode: restart
 

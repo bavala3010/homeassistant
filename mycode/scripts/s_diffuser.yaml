@@ -1,24 +1,24 @@
 diffuser_on_1_hour:
   alias: Diffuser 1 uur aan
   sequence:
-    - service: light.turn_on
+    - action: light.turn_on
       metadata: {}
       data: {}
       target:
         entity_id: light.diffuser_lightbulb
-    - service: humidifier.turn_on
+    - action: humidifier.turn_on
       metadata: {}
       data: {}
       target:
         device_id: d803d244c0cb99f74345bfe8f50061ef
     - wait_template: ''
       timeout: 01:00:00
-    - service: light.turn_off
+    - action: light.turn_off
       metadata: {}
       data: {}
       target:
         entity_id: light.diffuser_lightbulb
-    - service: humidifier.turn_off
+    - action: humidifier.turn_off
       metadata: {}
       data: {}
       target:

@@ -46,7 +46,7 @@ automation:
   - condition: template
     value_template: "{{ states('device_tracker.audi_e_tron_sportback_position') != 'home' }}"
   action:
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       title: "🚙 Autolader is verbonden." 
       message: >
@@ -72,7 +72,7 @@ automation:
   - condition: template
     value_template: "{{ states('device_tracker.audi_e_tron_sportback_position') != 'home' }}"
   action:
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       title: 🚙 Auto is aan het laden.
       message: Nu {{states('sensor.car_1_soc') | round()}}% = {{states('sensor.car_1_range')}} km.
@@ -96,7 +96,7 @@ automation:
     to: 'completed'
   condition: []
   action:
-  - service: input_boolean.turn_off
+  - action: input_boolean.turn_off
     data: {}
     target:
       entity_id: 
@@ -104,7 +104,7 @@ automation:
       - input_boolean.car_charge_busy
       - input_boolean.car_charge_sun_busy
       - input_boolean.car_charge_net_busy
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       message: "🚙 Auto heeft gedaan met laden. Nu {{states('sensor.car_1_soc') | round()}}%. {{states('sensor.car_1_range')}} km."
       data:
@@ -134,7 +134,7 @@ automation:
     entity_id: input_number.car_1_optimal_target_soc
   condition: []
   action:
-  - service: input_number.set_value
+  - action: input_number.set_value
     target:
       entity_id: input_number.car_1_target_range
     data:
@@ -152,7 +152,7 @@ automation:
     entity_id: input_number.car_1_target_range
   condition: []
   action:
-  - service: input_number.set_value
+  - action: input_number.set_value
     target:
       entity_id: input_number.car_1_optimal_target_soc
     data:
@@ -176,7 +176,7 @@ automation:
     entity_id: input_number.car_charger_watt
   condition: []
   action:
-  - service: input_number.set_value
+  - action: input_number.set_value
     target:
       entity_id: input_number.car_1_min_per_1pct
     data:
@@ -187,8 +187,8 @@ automation:
         entity_id: input_boolean.car_charge_busy
         state: 'on'
     then:
-      - service: script.charger_define_phase_1_or_3_based_on_watt
-      - service: script.charger_define_ampere_based_on_watt
+      - action: script.charger_define_phase_1_or_3_based_on_watt
+      - action: script.charger_define_ampere_based_on_watt
         data: {}  
   mode: restart
 
@@ -204,7 +204,7 @@ automation:
     entity_id: input_boolean.car_charge_busy
     state: 'on'
   action:
-  - service: script.charger_define_and_write_register_based_on_ampere
+  - action: script.charger_define_and_write_register_based_on_ampere
   mode: restart
 
   
@@ -227,9 +227,9 @@ automation:
         entity_id: sensor.car_1_charging_state
         state: 'charging'
       sequence:
-      - service: audiconnect.refresh_cloud_data
+      - action: audiconnect.refresh_cloud_data
         data: {}       
-      # - service: audiconnect.refresh_vehicle_data
+      # - action: audiconnect.refresh_vehicle_data
       #   data:
       #     vin: !secret vin
       - delay:
@@ -252,10 +252,10 @@ automation:
     below: '5000'    
   condition: []
   action:
-  - service: script.send_ampere_to_charger
+  - action: script.send_ampere_to_charger
     data:
       registervalue: '{{registervalue}}'
-  - service: >
+  - action: >
       {% if is_state('sensor.charger_use_1_or_3_phases', '1') %}
         script.set_charger_to_1_phase
       {% elif is_state('sensor.charger_use_1_or_3_phases','3') %}
@@ -297,7 +297,7 @@ automation:
         - condition: template
           value_template: "{{ 7 < now().hour < 23 }}"          
       then:
-        - service: notify.bart_phone
+        - action: notify.bart_phone
           data:
             message: TTS
             data:
@@ -306,7 +306,7 @@ automation:
               ttl: 0
               priority: high
               media_stream: alarm_stream    
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         title: Fout bij laden auto
         message: Status van auto is in "error"
@@ -315,7 +315,7 @@ automation:
           tag: charge_error
     # tip: when the car gets in error status while charging, unlocking the doors solves the error
     # unlock the doors
-    - service: lock.unlock
+    - action: lock.unlock
       target:
         entity_id: lock.audi_e_tron_sportback_door_lock
     - repeat:
@@ -327,7 +327,7 @@ automation:
         - delay:
             seconds: 15
       # lock the doors again
-    - service: lock.lock
+    - action: lock.lock
       target:
         entity_id: lock.audi_e_tron_sportback_door_lock
     - repeat:
@@ -338,7 +338,7 @@ automation:
         sequence:
         - delay:
             minutes: 1
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         message: "clear_notification"
         data:
@@ -370,7 +370,7 @@ automation:
         - condition: template
           value_template: "{{ 8 < now().hour < 23 }}"          
       then:
-        - service: notify.bart_phone
+        - action: notify.bart_phone
           data:
             message: TTS
             data:
@@ -379,14 +379,14 @@ automation:
               ttl: 0
               priority: high
               media_stream: alarm_stream  
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       metadata: {}
       data:
         message: Laadpaal laadt nu aan {{ states('sensor.charger_current_power') | round() }} W terwijl er {{ states('sensor.charger_modbus_maxcurrent') | int() }} Ampère wordt gevraagd.
         title: Mogelijk probleem met auto laden.
         data:
           tag: charge_error
-    - service: tts.edge_tts_say
+    - action: tts.edge_tts_say
       data:
         entity_id: media_player.living_speaker
         message: Het laden van de auto geeft een fout.
@@ -404,7 +404,7 @@ automation:
       from: "invalid"
       to: "charging"
   action:
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         message: "clear_notification"
         data:
@@ -424,7 +424,7 @@ automation:
       {{ states('sensor.charger_actual_applied_maxcurrent') > '5' and states('sensor.charger_current_power') =="0" and t >= 4}}
   condition: []
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: 🚙 Conflict met lader
       message: De laadpaal wil laden aan {{ states('sensor.charger_actual_applied_maxcurrent') }}, maar de auto reageert niet.
@@ -463,7 +463,7 @@ automation:
     soc: >
       {{ states('sensor.car_1_soc') | int }}
   action:
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         title: >
           🚗 Laaddoel nog niet bereikt: nog {{ target - soc }}%.
@@ -503,7 +503,7 @@ automation:
     condition: template
     value_template: "{{ trigger.from_state.state != trigger.to_state.state }}"        
   action:
-    - service: timer.start
+    - action: timer.start
       data:
         duration: >
           {% set target = states('sensor.car_1_charge_limit') | int %}

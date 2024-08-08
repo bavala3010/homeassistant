@@ -8,7 +8,7 @@ automation:
     tag_id: !secret tag_kodi_starten_living_google_tv
   condition: []
   action:
-    - service: script.living_google_tv_kodi_launch
+    - action: script.living_google_tv_kodi_launch
   mode: single
 
 - alias: Starten Kodi op living Google TV = adblocker uitschakelen
@@ -22,7 +22,7 @@ automation:
         {{ state_attr('remote.master_bedroom_google_tv','current_activity') == "org.xbmc.kodi" }}
   condition: []
   action:
-    - service: switch.turn_off
+    - action: switch.turn_off
       target:
         entity_id: switch.adguard_home_bescherming
       data: {}
@@ -38,7 +38,7 @@ automation:
         and state_attr('remote.master_bedroom_google_tv','current_activity') != "org.xbmc.kodi"}}
   condition: []
   action:
-    - service: switch.turn_on
+    - action: switch.turn_on
       target:
         entity_id: switch.adguard_home_bescherming
       data: {}

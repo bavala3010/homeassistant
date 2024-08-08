@@ -8,7 +8,7 @@ automation:
       at: "23:59:30"
   condition: []
   action:
-    - service: notify.ha_logging
+    - action: notify.ha_logging
       data:
         message: >
           {{ states('sensor.date')}},
@@ -59,7 +59,7 @@ automation:
       at: "23:59:30"
   condition: []
   action:
-    - service: google_sheets.append_sheet
+    - action: google_sheets.append_sheet
       data:
         config_entry: a76dccf14ff43d5199650ea4986f6eb9
         worksheet: Energy

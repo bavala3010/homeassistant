@@ -1,16 +1,16 @@
 'master_bedroom_tv_light_ambience':
   alias: master_bedroom_tv_light_ambience
   sequence:
-    - service: light.turn_off
+    - action: light.turn_off
       target:
         entity_id: light.master_bedroom_staande_lamp
-    - service: light.turn_on
+    - action: light.turn_on
       target:
         entity_id: light.master_bedroom_play_bart
       data:
         brightness: 130
         rgb_color: [255,0,0]
-    - service: light.turn_on
+    - action: light.turn_on
       target:
         entity_id: light.master_bedroom_play_madouce
       data:
@@ -21,7 +21,7 @@
 speak:
   alias: TTS handler
   sequence:
-  - service: tts.google_say
+  - action: tts.google_say
     entity_id: media_player.veranda_speaker
     data:
       message: "{{ message }}"
@@ -30,7 +30,7 @@ speak:
 toilet_douche_ventilator_10_min_aan:
   alias: 💨 ventilator in toilet/douche 10 minuten aan  
   sequence:
-  - service: switch.turn_on
+  - action: switch.turn_on
     target:
       entity_id:
       - switch.toilet_douche_ventilatie
@@ -39,7 +39,7 @@ toilet_douche_ventilator_10_min_aan:
       minutes: 10
       seconds: 0
       milliseconds: 0
-  - service: switch.turn_off
+  - action: switch.turn_off
     target:
       entity_id:
       - switch.toilet_douche_ventilatie
@@ -47,7 +47,7 @@ toilet_douche_ventilator_10_min_aan:
 publish_electricity_usage:
   alias: elektriciteitsverbruik publiceren op site energie ID
   sequence:
-  - service: rest_command.energie_id_set_electricity_usage
+  - action: rest_command.energie_id_set_electricity_usage
     data:
       usage: "{{ states('input_number.electricity_usage') | int }}"
 

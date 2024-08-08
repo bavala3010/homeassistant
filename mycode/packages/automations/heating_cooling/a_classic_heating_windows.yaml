@@ -96,7 +96,7 @@ automation:
       - condition: trigger
         id: living
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.living
         data:
@@ -105,7 +105,7 @@ automation:
       - condition: trigger
         id: kamer_amilya
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.kamer_amilya
         data:
@@ -114,12 +114,12 @@ automation:
       - condition: trigger
         id: veranda
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.veranda
         data:
           hvac_mode: 'off'
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.gang
         data:
@@ -128,7 +128,7 @@ automation:
       - condition: trigger
         id: berging
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.berging
         data:
@@ -137,7 +137,7 @@ automation:
       - condition: trigger
         id: badkamer
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.badkamer
         data:
@@ -146,7 +146,7 @@ automation:
       - condition: trigger
         id: kamer_alunya
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.kamer_alunya
         data:
@@ -155,7 +155,7 @@ automation:
       - condition: trigger
         id: master_bedroom
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.master_bedroom
         data:
@@ -259,7 +259,7 @@ automation:
               entity_id: group.living_ramen
               state: 'off'
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.living
         data:
@@ -273,7 +273,7 @@ automation:
               entity_id: binary_sensor.kamer_amilya_raam
               state: 'off'
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.kamer_amilya
         data:
@@ -287,12 +287,12 @@ automation:
               entity_id: binary_sensor.veranda_schuifraam
               state: 'off'
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.veranda
         data:
           hvac_mode: auto
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.gang
         data:
@@ -306,12 +306,12 @@ automation:
               entity_id: binary_sensor.berging_raam
               state: 'off'
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.berging
         data:
           hvac_mode: auto
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.gang
         data:
@@ -325,7 +325,7 @@ automation:
               entity_id: binary_sensor.badkamer_raam_kantel
               state: 'off'
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.badkamer
         data:
@@ -339,7 +339,7 @@ automation:
               entity_id: group.kamer_alunya_ramen
               state: 'off'
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.kamer_alunya
         data:
@@ -353,7 +353,7 @@ automation:
               entity_id: binary_sensor.master_bedroom_raam_kantel
               state: 'off'
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.master_bedroom
         data:
@@ -406,7 +406,7 @@ automation:
               entity_id: group.living_ramen
               state: 'on'
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.living
         data:
@@ -420,7 +420,7 @@ automation:
               entity_id: binary_sensor.kamer_amilya_raam
               state: 'on'
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.kamer_amilya
         data:
@@ -434,12 +434,12 @@ automation:
               entity_id: binary_sensor.veranda_schuifraam
               state: 'on'
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.veranda
         data:
           hvac_mode: 'off'
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.gang
         data:
@@ -453,12 +453,12 @@ automation:
               entity_id: binary_sensor.berging_raam
               state: 'on'
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.berging
         data:
           hvac_mode: 'off'
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.gang
         data:
@@ -472,7 +472,7 @@ automation:
               entity_id: binary_sensor.badkamer_raam_kantel
               state: 'on'
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.badkamer
         data:
@@ -486,7 +486,7 @@ automation:
               entity_id: group.kamer_alunya_ramen
               state: 'on'
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.kamer_alunya
         data:
@@ -500,7 +500,7 @@ automation:
               entity_id: binary_sensor.master_bedroom_raam_kantel
               state: 'on'
       sequence:
-      - service: climate.set_hvac_mode
+      - action: climate.set_hvac_mode
         target:
           entity_id: climate.master_bedroom
         data:

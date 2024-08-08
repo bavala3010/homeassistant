@@ -25,7 +25,7 @@ automation:
       - condition: trigger
         id: enough injection
       sequence:
-      - service: switch.turn_on
+      - action: switch.turn_on
         data: {}
         target:
           entity_id: switch.living_zonnestopcontact
@@ -33,7 +33,7 @@ automation:
       - condition: trigger
         id: not enough injection
       sequence:
-      - service: switch.turn_off
+      - action: switch.turn_off
         data: {}
         target:
           entity_id: switch.living_zonnestopcontact

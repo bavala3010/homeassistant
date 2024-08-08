@@ -17,10 +17,10 @@ automation:
   - condition: template
     value_template: "{{ ('sensor.kamer_amilya_heating') | float(default=0) == 0 }}"
   action:
-  - service: input_boolean.turn_on
+  - action: input_boolean.turn_on
     target:
       entity_id: input_boolean.kamer_amilya_raam_moet_open    
-  - service: script.notify_bart_windows_open
+  - action: script.notify_bart_windows_open
     data:
       title: Zet raam Amilya nu even open. Warmste moment van de dag.
       reason: >
@@ -28,7 +28,7 @@ automation:
       message: >
         Vocht kamer Amilya: {{states('sensor.gram_water_kamer_amilya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br><br>Vocht kamer Amilya: {{states('sensor.kamer_amilya_humidity') | round() }}%. Buiten: {{states('sensor.eikenbos_humidity')}}%<br>Temp kamer Amilya: {{states('sensor.kamer_amilya_temperature')}} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.
       tag: window_kamer_amilya  
-  - service: script.notify_madouce_windows_open
+  - action: script.notify_madouce_windows_open
     data:
       title: Zet raam Amilya nu even open. Warmste moment van de dag.
       reason: >
@@ -50,10 +50,10 @@ automation:
   - condition: template
     value_template: "{{ ('sensor.kamer_alunya_heating') | float(default=0) == 0 }}"
   action:
-  - service: input_boolean.turn_on
+  - action: input_boolean.turn_on
     target:
       entity_id: input_boolean.kamer_alunya_raam_moet_open
-  - service: script.notify_bart_windows_open
+  - action: script.notify_bart_windows_open
     data:
       title: Zet raam Alunya nu even open. Warmste moment van de dag.
       reason: >
@@ -61,7 +61,7 @@ automation:
       message: >
         Vocht kamer Alunya: {{states('sensor.gram_water_kamer_alunya')}} g/m³. Buiten: {{states('sensor.gram_water_outside')}} g/m³.<br>Vocht kamer Alunya: {{states('sensor.kamer_alunya_humidity') | round() }}%. Buiten: {{states('sensor.eikenbos_humidity')}}%<br>Temp kamer Alunya: {{states('sensor.kamer_alunya_temperature')}} °C. Buiten: {{states('sensor.eikenbos_temperature')}} °C.
       tag: window_kamer_alunya
-  - service: script.notify_madouce_windows_open
+  - action: script.notify_madouce_windows_open
     data:
       title: Zet raam Alunya nu even open. Warmste moment van de dag.
       reason: >
@@ -83,10 +83,10 @@ automation:
   - condition: template
     value_template: "{{ ('sensor.living_heating') | float(default=0) == 0 }}"
   action:
-  - service: input_boolean.turn_on
+  - action: input_boolean.turn_on
     target:
       entity_id: input_boolean.living_raam_moet_open  
-  - service: script.notify_bart_windows_open
+  - action: script.notify_bart_windows_open
     data:
       title: "Zet keukenraam nu even open. Warmste moment van de dag."
       reason: >
@@ -94,7 +94,7 @@ automation:
       message: >
         Temp buiten: {{states('sensor.eikenbos_temperature')}} °C. Vocht living: {{states('sensor.living_humidity') | round() }}%.
       tag: "window_living"
-  - service: script.notify_madouce_windows_open
+  - action: script.notify_madouce_windows_open
     data:
       title: "Zet keukenraam nu even open. Warmste moment van de dag."
       reason: >
@@ -125,7 +125,7 @@ automation:
     after: '07:00'
     before: '23:30'
   action:
-  - service: switch.turn_on
+  - action: switch.turn_on
     target:
       entity_id:
       - switch.toilet_douche_ventilatie
@@ -134,7 +134,7 @@ automation:
       minutes: 3
       seconds: 0
       milliseconds: 0
-  - service: switch.turn_off
+  - action: switch.turn_off
     target:
       entity_id: switch.toilet_douche_ventilatie
   mode: single
@@ -155,7 +155,7 @@ automation:
     entity_id: person.bart
     state: home
   action:
-  - service: switch.turn_on
+  - action: switch.turn_on
     target:
       entity_id:
       - switch.toilet_douche_ventilatie
@@ -164,7 +164,7 @@ automation:
       minutes: 5
       seconds: 0
       milliseconds: 0
-  - service: switch.turn_off
+  - action: switch.turn_off
     target:
       entity_id: switch.toilet_douche_ventilatie
   mode: single
@@ -196,7 +196,7 @@ automation:
       milliseconds: 0    
   condition: []
   action:
-  - service: switch.turn_off
+  - action: switch.turn_off
     target:
       entity_id: switch.toilet_douche_ventilatie
   mode: restart  
@@ -220,7 +220,7 @@ automation:
         entity_id: light.badkamer_douche
         state: 'on'
       sequence:
-      - service: switch.turn_on
+      - action: switch.turn_on
         target:
           entity_id:
           - switch.toilet_douche_ventilatie      
@@ -229,7 +229,7 @@ automation:
       minutes: 10
       seconds: 0
       milliseconds: 0
-  - service: switch.turn_off
+  - action: switch.turn_off
     target:
       entity_id: switch.toilet_douche_ventilatie
   mode: single
@@ -247,7 +247,7 @@ automation:
     event_data:
       action: toilet_douche_ventilator_10_min_aan
   action:
-  - service: switch.turn_on
+  - action: switch.turn_on
     target:
       entity_id:
       - switch.toilet_douche_ventilatie
@@ -256,7 +256,7 @@ automation:
       minutes: 10
       seconds: 0
       milliseconds: 0
-  - service: switch.turn_off
+  - action: switch.turn_off
     target:
       entity_id:
       - switch.toilet_douche_ventilatie
@@ -276,7 +276,7 @@ automation:
       seconds: 0
   condition: []
   action:
-  - service: switch.turn_off
+  - action: switch.turn_off
     target:
       entity_id:
       - switch.toilet_douche_ventilatie
@@ -298,7 +298,7 @@ automation:
       entity_id: sensor.kooldioxide_detector_carbon_dioxide
       above: 1000
   action:
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         title: Verlucht master bedroom.
         message: >

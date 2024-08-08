@@ -12,7 +12,7 @@ automation:
     at: '11:00'
   condition: []
   action:
-  - service: input_datetime.set_datetime
+  - action: input_datetime.set_datetime
     target:
       entity_id: input_datetime.max_dagtemperatuur_uur
     data:
@@ -27,7 +27,7 @@ automation:
     at: input_datetime.max_dagtemperatuur_uur
   condition: []
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Nu is het warmste moment van de dag.
       message: Buiten is het nu {{ states('sensor.eikenbos_temperature')}} °C.
@@ -57,7 +57,7 @@ automation:
     after: '07:00'
     before: '23:00'
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       message: "Temperatuur in kamer Amilya is {{states('sensor.kamer_amilya_temperature')}}°C. Buiten {{states('sensor.eikenbos_temperature')}}°C."
       title: Open het raam van Amilya!
@@ -90,7 +90,7 @@ automation:
     after: '07:00:00'
     before: '23:00:00'
   action:
-  - service: notify.madouce_phone
+  - action: notify.madouce_phone
     data:
       message: "Temperatuur in kamer Amilya is {{states('sensor.kamer_amilya_temperature')}}°C. Buiten {{states('sensor.eikenbos_temperature')}}°C."
       title: Open het raam van Amilya!
@@ -112,7 +112,7 @@ automation:
       to: 'on'
   condition: []
   action:
-    - service: notify.bart_madouce_phone
+    - action: notify.bart_madouce_phone
       data:
         title: Temperatuur in huis begint snel te stijgen.
         message: >
@@ -147,13 +147,13 @@ automation:
     entity_id: input_boolean.cooling_season
     state: "on"
   action:
-  - service: input_boolean.turn_on
+  - action: input_boolean.turn_on
     target:
       entity_id: input_boolean.living_raam_moet_open
-  - service: input_boolean.turn_off
+  - action: input_boolean.turn_off
     target:
       entity_id: input_boolean.living_raam_moet_dicht
-  - service: notify.bart_madouce_phone
+  - action: notify.bart_madouce_phone
     data:
       title: Ramen in living mogen open
       message: Buiten wordt het nu koeler ({{outdoor}} °C) dan binnen ({{indoor}} °C).
@@ -184,13 +184,13 @@ automation:
     entity_id: input_boolean.cooling_season
     state: "on"    
   action:
-    - service: input_boolean.turn_on
+    - action: input_boolean.turn_on
       target:
         entity_id: input_boolean.veranda_schuifraam_moet_open
-    - service: input_boolean.turn_off
+    - action: input_boolean.turn_off
       target:
         entity_id: input_boolean.veranda_schuifraam_moet_dicht
-    - service: notify.bart_madouce_phone
+    - action: notify.bart_madouce_phone
       data:
         title: Raam in veranda mag open
         message: Buiten wordt het nu koeler ({{outdoor}} °C) dan binnen ({{indoor}} °C).
@@ -221,13 +221,13 @@ automation:
     entity_id: input_boolean.cooling_season
     state: "on"    
   action:
-    - service: input_boolean.turn_on
+    - action: input_boolean.turn_on
       target:
         entity_id: input_boolean.kamer_amilya_raam_moet_open
-    - service: input_boolean.turn_off
+    - action: input_boolean.turn_off
       target:
         entity_id: input_boolean.kamer_amilya_raam_moet_dicht
-    - service: notify.bart_madouce_phone
+    - action: notify.bart_madouce_phone
       data:
         title: Raam Amilya mag open
         message: Buiten wordt het nu koeler ({{outdoor}} °C) dan binnen ({{indoor}} °C).
@@ -258,13 +258,13 @@ automation:
     entity_id: input_boolean.cooling_season
     state: "on"    
   action:
-    - service: input_boolean.turn_on
+    - action: input_boolean.turn_on
       target:
         entity_id: input_boolean.kamer_alunya_raam_moet_open
-    - service: input_boolean.turn_off
+    - action: input_boolean.turn_off
       target:
         entity_id: input_boolean.kamer_alunya_raam_moet_dicht
-    - service: notify.bart_madouce_phone
+    - action: notify.bart_madouce_phone
       data:
         title: Raam Alunya mag open
         message: Buiten wordt het nu koeler ({{outdoor}} °C) dan binnen ({{indoor}} °C).
@@ -295,13 +295,13 @@ automation:
     entity_id: input_boolean.cooling_season
     state: "on"    
   action:
-    - service: input_boolean.turn_on
+    - action: input_boolean.turn_on
       target:
         entity_id: input_boolean.master_bedroom_raam_moet_open
-    - service: input_boolean.turn_off
+    - action: input_boolean.turn_off
       target:
         entity_id: input_boolean.master_bedroom_raam_moet_dicht
-    - service: notify.bart_madouce_phone
+    - action: notify.bart_madouce_phone
       data:
         title: Raam in master bedroom mag open
         message: Buiten wordt het nu koeler ({{outdoor}} °C) dan binnen ({{indoor}} °C).

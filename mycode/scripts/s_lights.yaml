@@ -1,7 +1,7 @@
 living_links_avondeten:
   alias: living links avondeten
   sequence:
-  - service: light.turn_on
+  - action: light.turn_on
     data:
       transition: 3
       kelvin: 2700
@@ -15,7 +15,7 @@ living_links_avondeten:
 living_links_home_work:
   alias: living links home work
   sequence:
-  - service: light.turn_on
+  - action: light.turn_on
     data: {}
     target:
       entity_id: light.living_links_1
@@ -25,7 +25,7 @@ living_links_home_work:
 
 # master_bedroom_play_bart_gradual_light:
 #   sequence:
-#     - service: light.turn_on
+#     - action: light.turn_on
 #       data:
 #         brightness_pct: 1
 #         kelvin: 2000
@@ -37,7 +37,7 @@ living_links_home_work:
 #           - condition: template
 #             value_template: "{{state_attr('light.master_bedroom_play_bart', 'brightness') == '255' }}"
 #         sequence:
-#           - service: light.turn_on
+#           - action: light.turn_on
 #             data:
 #               brightness_step_pct: 1
 #               kelvin: 2000
@@ -53,7 +53,7 @@ living_links_home_work:
 #               - condition: template
 #                 value_template: "{{ states('light.master_bedroom_play_bart') == 'off' }}"
 #             then:
-#               - service: script.turn_off
+#               - action: script.turn_off
 #                 data: {}
 #                 target:
 #                   entity_id: script.master_bedroom_play_bart_gradual_light
@@ -61,7 +61,7 @@ living_links_home_work:
 
 # master_bedroom_play_madouce_gradual_light:
 #   sequence:
-#     - service: light.turn_on
+#     - action: light.turn_on
 #       data:
 #         brightness_pct: 1
 #         kelvin: 2000
@@ -73,7 +73,7 @@ living_links_home_work:
 #           - condition: template
 #             value_template: "{{state_attr('light.master_bedroom_play_madouce', 'brightness') == '255' }}"
 #         sequence:
-#           - service: light.turn_on
+#           - action: light.turn_on
 #             data:
 #               brightness_step_pct: 1
 #               kelvin: 2000
@@ -89,7 +89,7 @@ living_links_home_work:
 #               - condition: template
 #                 value_template: "{{ states('light.master_bedroom_play_madouce') == 'off' }}"
 #             then:
-#               - service: script.turn_off
+#               - action: script.turn_off
 #                 data: {}
 #                 target:
 #                   entity_id: script.master_bedroom_play_madouce_gradual_light
@@ -97,7 +97,7 @@ living_links_home_work:
 
 master_bedroom_play_bart_sunrise:
   sequence:
-    - service: script.sunrise_simulator
+    - action: script.sunrise_simulator
       data:
         duration: 10
         target: 
@@ -107,7 +107,7 @@ master_bedroom_play_bart_sunrise:
 
 master_bedroom_play_madouce_sunrise:
   sequence:
-    - service: script.sunrise_simulator
+    - action: script.sunrise_simulator
       data:
         duration: 10
         target: 
@@ -116,7 +116,7 @@ master_bedroom_play_madouce_sunrise:
 
 master_bedroom_play_sunrise:
   sequence:
-    - service: script.sunrise_simulator
+    - action: script.sunrise_simulator
       data:
         duration: 10
         target:
@@ -136,13 +136,13 @@ sunrise_simulator:
             - repeat:
                 for_each: "{{ wled }}"
                 sequence:
-                  - service: light.turn_on
+                  - action: light.turn_on
                     data:
                       effect: Sunrise
                     target:
                       entity_id: |
                         {{ repeat.item }}
-                  - service: number.set_value
+                  - action: number.set_value
                     data:
                       value: "{{ [(255 * (maxbri/100)) | int, 255] | min }}"
                     target:
@@ -151,7 +151,7 @@ sunrise_simulator:
                               | select('search', 'number.')
                               | select('search', 'intensity')
                               | list }}
-                  - service: number.set_value
+                  - action: number.set_value
                     data:
                       value: |
                         {{ [dur, 128] | min }}
@@ -186,7 +186,7 @@ sunrise_simulator:
                         {% else %}
                           {{ bright }}
                         {% endif %}
-                  - service: light.turn_on
+                  - action: light.turn_on
                     data:
                       transition: |
                         {{ ( ( dur * 60 ) / (maxbri) ) | int }}
@@ -228,7 +228,7 @@ sunrise_simulator:
                   - repeat:
                       for_each: "{{ temp }}"
                       sequence:
-                        - service: light.turn_on
+                        - action: light.turn_on
                           data:
                             transition: |
                               {{ ( ( dur * 60) / 100 ) | int }}
@@ -237,7 +237,7 @@ sunrise_simulator:
                           target:
                             entity_id: |
                               {{ repeat.item }}
-                        - service: light.turn_on
+                        - action: light.turn_on
                           data:
                             color_temp: >
                               {% set max = state_attr(repeat.item, 'max_mireds')
@@ -277,7 +277,7 @@ sunrise_simulator:
                         {% else %}
                           {{ color }}
                         {% endif %}
-                  - service: light.turn_on
+                  - action: light.turn_on
                     data:
                       transition: |
                         {{ (  ( dur * 60 ) / 100  ) | int }}
@@ -287,7 +287,7 @@ sunrise_simulator:
                     target:
                       entity_id: |
                         {{ color }}
-                  - service: light.turn_on
+                  - action: light.turn_on
                     data:
                       rgb_color: |
                         {% if repeat.index <= 20 %}
@@ -379,7 +379,7 @@ light_badkamer_douche_flash:
     repeat:
       count: "3"
       sequence:
-        - service: light.toggle
+        - action: light.toggle
           data: {}
           target:
             entity_id: light.badkamer_douche

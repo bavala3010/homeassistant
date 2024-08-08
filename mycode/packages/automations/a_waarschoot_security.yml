@@ -7,7 +7,7 @@ automation:
   - platform: state
     entity_id: siren.waarschoot_alarm_sirene_siren
     to: on
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: Alarm in Waarschoot
       message: Sirene gaat af.

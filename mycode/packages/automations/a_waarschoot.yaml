@@ -13,7 +13,7 @@ automation:
     entity_id: switch.waarschoot_boven_alarmknop
     state: 'off'
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: "Waarschoot: alarm wordt ingeschakeld."
       message: Via de knop in de living
@@ -32,7 +32,7 @@ automation:
     entity_id: switch.waarschoot_living_alarmknop
     state: 'off'  
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: "Waarschoot: alarm wordt ingeschakeld."
       message: Via de knop in de badkamer
@@ -52,7 +52,7 @@ automation:
     entity_id: input_boolean.waarschoot_holiday_modus
     state: 'on'
   action:
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: "Waarschoot: Alarm wordt voor 1 uur uitgeschakeld."
       message: Huis is in "vakantiemodus".
@@ -61,11 +61,11 @@ automation:
       minutes: 0
       seconds: 0
       milliseconds: 0
-  - service: switch.turn_on
+  - action: switch.turn_on
     data: {}
     target:
       entity_id: switch.waarschoot_living_alarmknop
-  - service: notify.bart_phone
+  - action: notify.bart_phone
     data:
       title: "Waarschoot: Alarm wordt opnieuw ingeschakeld."
       message: Huis is in "vakantiemodus".
@@ -86,7 +86,7 @@ automation:
         seconds: 0
   condition: []
   action:
-    - service: climate.set_preset_mode
+    - action: climate.set_preset_mode
       data:
         preset_mode: away
       target:
@@ -97,7 +97,7 @@ automation:
           - climate.waarschoot_overloop
           - climate.waarschoot_badkamer
           - climate.waarschoot_slaapkamer
-    - service: climate.set_hvac_mode
+    - action: climate.set_hvac_mode
       data:
         hvac_mode: "off"
       target:
@@ -108,27 +108,27 @@ automation:
           - climate.waarschoot_overloop
           - climate.waarschoot_badkamer
           - climate.waarschoot_slaapkamer
-    - service: switch.turn_on
+    - action: switch.turn_on
       data: {}
       target:
         entity_id:
           - switch.waarschoot_living_alarmknop
           - switch.waarschoot_living_camera
-    - service: notify.anita_phone
+    - action: notify.anita_phone
       data:
         title: Verwarming uit en alarm aan
         message: >
           De verwarming wordt uitgeschakeld door het verlaten van het huis. Het is
           nu nog {{ states('sensor.waarschoot_living_temperature') }} graden in de
           living.
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         title: "Waarschoot verlaten: Verwarming uit en alarm aan"
         message: >
           De verwarming wordt uitgeschakeld door het verlaten van het huis.<br>
           Het is nu nog {{ states('sensor.waarschoot_living_temperature') | round(1) }}°C in de living en {{
           states('sensor.waarschoot_keuken_temperature') | round(1) }}°C in de keuken.
-    - service: notify.anita_phone
+    - action: notify.anita_phone
       data:
         message: TTS
         data:
@@ -154,7 +154,7 @@ automation:
       to: Waarschoot
   condition: []
   action:
-    - service: climate.set_preset_mode
+    - action: climate.set_preset_mode
       data:
         preset_mode: home
       target:
@@ -165,7 +165,7 @@ automation:
           - climate.waarschoot_overloop
           - climate.waarschoot_badkamer
           - climate.waarschoot_slaapkamer
-    - service: climate.set_hvac_mode
+    - action: climate.set_hvac_mode
       data:
         hvac_mode: auto
       target:
@@ -176,27 +176,27 @@ automation:
           - climate.waarschoot_overloop
           - climate.waarschoot_badkamer
           - climate.waarschoot_slaapkamer
-    - service: switch.turn_off
+    - action: switch.turn_off
       data: {}
       target:
         entity_id:
           - switch.waarschoot_living_alarmknop
           - switch.waarschoot_living_camera
-    - service: notify.anita_phone
+    - action: notify.anita_phone
       data:
         title: Verwarming aan (volgens schema)
         message: >
           De verwarming wordt ingeschakeld bij aankomst thuis.<br>
           Het is nu nog {{ states('sensor.waarschoot_living_temperature') | round(1) }}°C in de living en {{
           states('sensor.waarschoot_keuken_temperature') | round(1) }}°C in de keuken.
-    - service: notify.bart_phone
+    - action: notify.bart_phone
       data:
         title: "Waarschoot thuiskomst: Verwarming aan (volgens schema)"
         message: >
           De verwarming wordt ingeschakeld bij aankomst thuis. Het is nu nog {{
           states('sensor.waarschoot_living_temperature') | round(1) }}°C in de living en {{
           states('sensor.waarschoot_keuken_temperature') | round(1) }}°C in de keuken.
-    - service: notify.anita_phone
+    - action: notify.anita_phone
       data:
         message: TTS
         data:
