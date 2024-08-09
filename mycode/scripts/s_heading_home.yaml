@@ -33,7 +33,7 @@ bart_leaving_brussels_central_station:
         dissmissable: false
         timeout: 5000
       target:
-        entity_id: binary_sensor.bartsamsung
+        entity_id: binary_sensor.bartphone_browsermod
     - action: script.google_home_resume
       data:
         action:

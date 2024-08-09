@@ -282,6 +282,11 @@ automation:
     id: airco-aan
   - platform: state
     entity_id: climate.living_airco
+    to: "cool"
+    for: "00:03:00"
+    id: airco-aan    
+  - platform: state
+    entity_id: climate.living_airco
     to: "off"
     for: "00:03:00"
     id: airco-uit

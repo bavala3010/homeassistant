@@ -64,10 +64,6 @@ input_text:
   heating_mode_from_weather_forecast_log:
     max: 255
 
-  heating_season_startdate:
-  
-  heating_season_stopdate:
-
 input_boolean:
   badkamer_18graden:
     name: badkamer 18 graden

@@ -682,39 +682,6 @@ rest_command:
     method: 'get'
     headers:    
       content_type: "application/json"
-  
-        
-# Add Portainer to Home Assistant navigation menu
-panel_iframe:
-  portainer:
-    title: "Portainer"
-    url: "http://192.168.68.100:9000/"
-    icon: mdi:docker
-    require_admin: true
-
-  # automation_list:
-  #   title: "Automations"
-  #   url: "http://192.168.86.100:8123/config/automation/dashboard"
-  #   icon: mdi:list-box-outline
-  #   require_admin: true
-
-  duplicati:
-    title: "Duplicati"
-    url: "http://192.168.68.100:8200/"
-    icon: mdi:backup-restore
-    require_admin: true
-
-  influxdb:
-    title: "InfluxDB"
-    url: "http://192.168.68.100:8086/orgs/6fe6192d84027fb4/dashboards/096bf9184c088000?lower=now%28%29%20-%202d"
-    icon: mdi:backup-restore
-    require_admin: true
-
-  music_assistant:
-    title: "Music Assistant"
-    url: "http://192.168.68.100:8095/#/home"
-    icon: mdi:music
-    require_admin: true
 
 panel_custom:
   - name: automations-tree
